@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { SITE, FOOTER_LINKS } from "@/lib/constants";
 
@@ -10,13 +11,13 @@ export function Footer() {
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
           <div>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/logos/logo-light-mono.svg"
+            <Image
+              src="/logos/logo-light-rgb.svg"
               alt="Cosmic Reach Creative"
-              className="h-8 w-auto mb-4"
               width={160}
-              height={32}
+              height={54}
+              className="h-8 w-auto mb-4 block"
+              unoptimized
             />
             <p className="text-muted text-sm max-w-xs">
               Strategy. Systems. Signal. Designing clarity for growing companies.

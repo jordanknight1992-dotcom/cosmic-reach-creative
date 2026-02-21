@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { NAV_LINKS } from "@/lib/constants";
 import { Button } from "@/components/ui/Button";
@@ -20,16 +21,17 @@ export function Header() {
         >
           <Link
             href="/"
-            className="relative z-50 flex items-center"
+            className="relative z-50 flex items-center shrink-0"
             aria-label="Cosmic Reach Creative, go to homepage"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/logos/logo-light-mono.svg"
+            <Image
+              src="/logos/logo-light-rgb.svg"
               alt="Cosmic Reach Creative"
-              className="h-8 md:h-10 w-auto"
               width={200}
-              height={40}
+              height={68}
+              className="h-8 md:h-10 w-auto block"
+              priority
+              unoptimized
             />
           </Link>
 
@@ -38,7 +40,7 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`text-sm font-medium transition-colors duration-200 ease-cosmic hover:text-starlight ${
+                className={`font-display text-sm font-medium transition-colors duration-200 ease-cosmic hover:text-starlight ${
                   pathname === link.href
                     ? "text-starlight"
                     : "text-muted"
