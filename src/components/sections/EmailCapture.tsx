@@ -6,9 +6,9 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { saveLead } from "@/lib/leads";
 
 const segments = [
-  { value: "consulting", label: "Consulting help" },
-  { value: "parallax", label: "Reporting automation" },
-  { value: "labs", label: "Frameworks and systems" },
+  { value: "consulting", label: "Strategy consulting" },
+  { value: "parallax", label: "Reporting clarity" },
+  { value: "labs", label: "Custom systems" },
 ];
 
 export function EmailCapture() {
@@ -39,8 +39,8 @@ export function EmailCapture() {
   return (
     <Section background="surface">
       <SectionHeading
-        label="Stay in orbit"
-        title="What are you here for?"
+        label="Stay Connected"
+        title="Tell us what you need."
         align="center"
       />
       <form
@@ -101,7 +101,7 @@ export function EmailCapture() {
 
         <div id="capture-status" aria-live="polite" className="text-center text-sm">
           {status === "success" && (
-            <p className="text-copper">You are in orbit. We will be in touch.</p>
+            <p className="text-copper">Signal received. We will be in touch.</p>
           )}
           {status === "error" && (
             <p className="text-spark-red">Something went wrong. Please try again.</p>

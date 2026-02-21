@@ -16,6 +16,13 @@
   --radius-sm: 10px;
   --radius-md: 14px;
   --radius-lg: 18px;
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 32px;
+  --space-xl: 64px;
+  --space-2xl: 96px;
 }
 
 @theme {
@@ -31,6 +38,7 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -52,12 +60,37 @@ body {
   background-color: var(--color-deep-space);
   color: var(--color-starlight);
   font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1 {
   font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+h2 {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+h3 {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.15;
+}
+
+h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.2;
 }
 
 ::selection {
@@ -75,7 +108,7 @@ a {
   text-decoration: none;
 }
 
-img {
+img:not([class*="!h-"]) {
   max-width: 100%;
   height: auto;
 }

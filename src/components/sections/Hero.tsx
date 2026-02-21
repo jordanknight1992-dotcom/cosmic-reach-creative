@@ -20,20 +20,21 @@ export function Hero() {
       <Container className="relative z-10">
         <div className="max-w-3xl">
           <p className="text-spark-red font-display font-semibold text-sm tracking-wide uppercase mb-4 motion-safe:animate-[fadeIn_0.3s_ease-out]">
-            Cosmic Reach Creative
+            Systems Design for Growing Companies
           </p>
-          <h1 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-starlight leading-[1.1] mb-6">
-            Designing clarity for growing companies.
+          <h1 className="text-starlight leading-[1.1] mb-6">
+            Growth created noise.<br />
+            We restore the signal.
           </h1>
-          <p className="text-muted text-lg md:text-xl mb-10 max-w-xl">
-            Strategy. Systems. Signal.
+          <p className="text-muted text-lg md:text-xl mb-10 max-w-xl leading-relaxed">
+            When scaling introduces complexity, decisions stall. We design the systems, strategy, and structure that give your team clarity to move.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Button href="/clarity-session" size="lg" chevron>
-              Book a Clarity Session
+              Request a Signal Scan
             </Button>
             <Button href="/work" variant="secondary" size="lg">
-              Explore Work
+              See the Work
             </Button>
           </div>
         </div>

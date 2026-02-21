@@ -31,9 +31,9 @@ export function FloatingCTA() {
           ? "translate-y-0 opacity-100"
           : "translate-y-4 opacity-0 pointer-events-none"
       }`}
-      aria-label="Schedule a free Clarity Session"
+      aria-label="Request a free Signal Scan"
     >
-      Book a Consult
+      Request Signal Scan
       <Chevron size={14} />
     </Link>
   );

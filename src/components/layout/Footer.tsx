@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import { Container } from "@/components/ui/Container";
 import { SITE, FOOTER_LINKS } from "@/lib/constants";
 
@@ -11,16 +10,15 @@ export function Footer() {
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
           <div>
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src="/logos/logo-light-rgb.svg"
               alt="Cosmic Reach Creative"
-              width={160}
-              height={54}
-              className="h-8 w-auto mb-4 block"
-              unoptimized
+              style={{ height: 32, width: "auto", display: "block" }}
+              className="mb-4"
             />
-            <p className="text-muted text-sm max-w-xs">
-              Strategy. Systems. Signal. Designing clarity for growing companies.
+            <p className="text-muted text-sm max-w-xs leading-relaxed">
+              Systems design for companies navigating complexity. We restore the signal when growth creates noise.
             </p>
           </div>
 
@@ -36,7 +34,7 @@ export function Footer() {
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-muted text-sm hover:text-starlight transition-colors duration-200 ease-cosmic"
+                      className="text-muted text-sm hover:text-starlight transition-colors duration-200"
                     >
                       {link.label}
                       <span className="sr-only"> (opens in new tab)</span>
@@ -44,7 +42,7 @@ export function Footer() {
                   ) : (
                     <Link
                       href={link.href}
-                      className="text-muted text-sm hover:text-starlight transition-colors duration-200 ease-cosmic"
+                      className="text-muted text-sm hover:text-starlight transition-colors duration-200"
                     >
                       {link.label}
                     </Link>
@@ -56,11 +54,11 @@ export function Footer() {
 
           <div>
             <h3 className="font-display font-semibold text-sm tracking-wide uppercase text-starlight mb-4">
-              Contact
+              Open Channel
             </h3>
             <a
               href={`mailto:${SITE.email}`}
-              className="text-muted text-sm hover:text-starlight transition-colors duration-200 ease-cosmic"
+              className="text-muted text-sm hover:text-starlight transition-colors duration-200"
             >
               {SITE.email}
             </a>

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { NAV_LINKS } from "@/lib/constants";
 import { Button } from "@/components/ui/Button";
@@ -24,14 +23,12 @@ export function Header() {
             className="relative z-50 flex items-center shrink-0"
             aria-label="Cosmic Reach Creative, go to homepage"
           >
-            <Image
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
               src="/logos/logo-light-rgb.svg"
               alt="Cosmic Reach Creative"
-              width={200}
-              height={68}
-              className="h-8 md:h-10 w-auto block"
-              priority
-              unoptimized
+              style={{ height: 32, width: "auto", display: "block" }}
+              className="md:!h-[40px]"
             />
           </Link>
 
@@ -40,7 +37,7 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`font-display text-sm font-medium transition-colors duration-200 ease-cosmic hover:text-starlight ${
+                className={`font-display text-sm font-medium transition-colors duration-200 hover:text-starlight ${
                   pathname === link.href
                     ? "text-starlight"
                     : "text-muted"
@@ -50,7 +47,7 @@ export function Header() {
               </Link>
             ))}
             <Button href="/clarity-session" size="sm">
-              Book Clarity Session
+              Request Signal Scan
             </Button>
           </div>
 
@@ -63,17 +60,17 @@ export function Header() {
             aria-label={isOpen ? "Close menu" : "Open menu"}
           >
             <span
-              className={`block w-6 h-0.5 bg-starlight transition-transform duration-200 ease-cosmic ${
+              className={`block w-6 h-0.5 bg-starlight transition-transform duration-200 ${
                 isOpen ? "translate-y-2 rotate-45" : ""
               }`}
             />
             <span
-              className={`block w-6 h-0.5 bg-starlight transition-opacity duration-200 ease-cosmic ${
+              className={`block w-6 h-0.5 bg-starlight transition-opacity duration-200 ${
                 isOpen ? "opacity-0" : ""
               }`}
             />
             <span
-              className={`block w-6 h-0.5 bg-starlight transition-transform duration-200 ease-cosmic ${
+              className={`block w-6 h-0.5 bg-starlight transition-transform duration-200 ${
                 isOpen ? "-translate-y-2 -rotate-45" : ""
               }`}
             />
@@ -96,7 +93,7 @@ export function Header() {
                   key={link.href}
                   href={link.href}
                   onClick={() => setIsOpen(false)}
-                  className={`font-display text-2xl font-semibold transition-colors duration-200 ease-cosmic hover:text-starlight ${
+                  className={`font-display text-2xl font-semibold transition-colors duration-200 hover:text-starlight ${
                     pathname === link.href
                       ? "text-starlight"
                       : "text-muted"
@@ -111,7 +108,7 @@ export function Header() {
                   size="lg"
                   onClick={() => setIsOpen(false)}
                 >
-                  Book Clarity Session
+                  Request Signal Scan
                 </Button>
               </div>
             </div>
