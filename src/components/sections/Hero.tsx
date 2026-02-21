@@ -10,11 +10,11 @@ export function Hero() {
           src="/images/homepage-hero.jpg"
           alt=""
           fill
-          className="object-cover opacity-20"
+          className="object-cover opacity-60"
           priority
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-deep-space/60 via-deep-space/80 to-deep-space" />
+        <div className="absolute inset-0 bg-gradient-to-b from-deep-space/30 via-deep-space/50 to-deep-space" />
       </div>
 
       <Container className="relative z-10">

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Section } from "@/components/ui/Section";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Card } from "@/components/ui/Card";
@@ -16,7 +17,7 @@ const pillars = [
     title: "Cosmic Reach Parallax",
     description:
       "A reporting dashboard that pulls GA4, Search Console, and LinkedIn data into one clean report.",
-    href: "#",
+    href: "/parallax",
   },
   {
     label: "Labs",
@@ -37,20 +38,22 @@ export function Pillars() {
       />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {pillars.map((pillar) => (
-          <Card key={pillar.label} hover>
-            <p className="text-spark-red font-display font-semibold text-xs tracking-wide uppercase mb-3">
-              {pillar.label}
-            </p>
-            <h3 className="font-display font-bold text-xl text-starlight mb-3">
-              {pillar.title}
-            </h3>
-            <p className="text-muted text-sm leading-relaxed mb-4">
-              {pillar.description}
-            </p>
-            <span className="inline-flex items-center gap-1 text-spark-red text-sm font-display font-semibold">
-              Learn more <Chevron size={14} />
-            </span>
-          </Card>
+          <Link key={pillar.label} href={pillar.href} className="group">
+            <Card hover className="h-full">
+              <p className="text-spark-red font-display font-semibold text-xs tracking-wide uppercase mb-3">
+                {pillar.label}
+              </p>
+              <h3 className="font-display font-bold text-xl text-starlight mb-3">
+                {pillar.title}
+              </h3>
+              <p className="text-muted text-sm leading-relaxed mb-4">
+                {pillar.description}
+              </p>
+              <span className="inline-flex items-center gap-1 text-spark-red text-sm font-display font-semibold group-hover:gap-2 transition-all duration-200 ease-cosmic">
+                Learn more <Chevron size={14} />
+              </span>
+            </Card>
+          </Link>
         ))}
       </div>
     </Section>

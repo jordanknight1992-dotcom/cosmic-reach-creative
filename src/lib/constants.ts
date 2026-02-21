@@ -21,7 +21,7 @@ export const NAV_LINKS = [
 ] as const;
 
 export const FOOTER_LINKS = [
-  { label: "Parallax", href: "#", external: false },
+  { label: "Parallax", href: "/parallax", external: false },
   { label: "Privacy", href: "/privacy", external: false },
   { label: "LinkedIn", href: "https://www.linkedin.com/company/cosmic-reach-creative", external: true },
 ] as const;

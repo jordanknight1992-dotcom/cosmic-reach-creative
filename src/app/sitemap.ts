@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/approach",
     "/about",
     "/labs",
+    "/parallax",
     "/clarity-session",
     "/contact",
     "/privacy",
