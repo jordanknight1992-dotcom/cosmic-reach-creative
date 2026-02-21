@@ -27,10 +27,43 @@ export const metadata: Metadata = {
   },
   description: SITE.description,
   metadataBase: new URL(SITE.url),
+  keywords: [
+    "brand strategy",
+    "marketing systems",
+    "content strategy",
+    "creative direction",
+    "growth strategy",
+    "Cosmic Reach Creative",
+    "Jordan Knight",
+  ],
+  authors: [{ name: SITE.founder, url: SITE.url }],
+  creator: SITE.name,
   openGraph: {
     type: "website",
     siteName: SITE.name,
     locale: "en_US",
+    images: [
+      {
+        url: "/images/homepage-hero.jpg",
+        width: 1200,
+        height: 630,
+        alt: `${SITE.name} — Strategy. Systems. Signal.`,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE.name} | Strategy. Systems. Signal.`,
+    description: SITE.description,
+    images: ["/images/homepage-hero.jpg"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
   },
 };
 
