@@ -11,14 +11,16 @@
   --color-muted: #8896AB;
   --color-border: #1e293b;
 
-  --font-display: var(--font-space-grotesk), sans-serif;
-  --font-body: var(--font-inter), sans-serif;
-
   --ease-cosmic: cubic-bezier(0.16, 1, 0.3, 1);
 
   --radius-sm: 10px;
   --radius-md: 14px;
   --radius-lg: 18px;
+}
+
+@theme {
+  --font-display: var(--font-space-grotesk), sans-serif;
+  --font-body: var(--font-inter), sans-serif;
 }
 
 *,
