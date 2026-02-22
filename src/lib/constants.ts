@@ -1,7 +1,7 @@
 export const SITE = {
   name: "Cosmic Reach Creative",
   domain: "cosmicreachcreative.com",
-  url: "https://cosmicreachcreative.com",
+  url: "https://www.cosmicreachcreative.com",
   email: "hjordan@cosmicreachcreative.com",
   founder: "Jordan Knight",
   founderTitle: "Managing Partner, Cosmic Reach",
