@@ -22,17 +22,17 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: `${SITE.name} | Strategy. Systems. Signal.`,
+    default: `${SITE.name} | Systems. Signal. Clarity.`,
     template: `%s | ${SITE.name}`,
   },
   description: SITE.description,
   metadataBase: new URL(SITE.url),
   keywords: [
-    "brand strategy",
-    "marketing systems",
-    "content strategy",
-    "creative direction",
-    "growth strategy",
+    "systems design",
+    "organizational clarity",
+    "decision systems",
+    "signal framework",
+    "operational alignment",
     "Cosmic Reach Creative",
     "Jordan Knight",
   ],
@@ -44,18 +44,18 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "/images/homepage-hero.jpg",
+        url: "/images/hero/home.jpg",
         width: 1200,
         height: 630,
-        alt: `${SITE.name} — Strategy. Systems. Signal.`,
+        alt: `${SITE.name} - Systems. Signal. Clarity.`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE.name} | Strategy. Systems. Signal.`,
+    title: `${SITE.name} | Systems. Signal. Clarity.`,
     description: SITE.description,
-    images: ["/images/homepage-hero.jpg"],
+    images: ["/images/hero/home.jpg"],
   },
   robots: {
     index: true,

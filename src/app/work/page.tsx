@@ -1,67 +1,69 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import Link from "next/link";
 import { Section } from "@/components/ui/Section";
-import { SectionHeading } from "@/components/ui/SectionHeading";
 import { Button } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
-import { FinalCTA } from "@/components/sections/FinalCTA";
-import { MILESTONE_URL } from "@/lib/constants";
+import { PageHero } from "@/components/sections/PageHero";
+import { MILESTONE_URL, CLEAR_ENOUGH_URL } from "@/lib/constants";
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createMetadata({
   title: "Work",
   description:
-    "Signal in action. Real systems. Real clarity. Real outcomes. See how Cosmic Reach Creative builds decision ready systems.",
+    "This is what systems design looks like when it leaves the whiteboard. Real systems. Real clarity. Real outcomes.",
   path: "/work",
+  heroImage: "/images/hero/work.jpg",
 });
 
 export default function WorkPage() {
   return (
     <>
-      <Section className="pt-32 md:pt-40">
-        <SectionHeading
-          label="Work"
-          title="Signal in Action"
-          description="Real systems. Real clarity. Real outcomes."
-        />
-      </Section>
+      <PageHero
+        title="Systems in Motion"
+        lead="This is what systems design looks like when it leaves the whiteboard."
+        imageSrc="/images/hero/work.jpg"
+        imageAlt="Systems in motion"
+      />
 
+      {/* Milestone */}
       <Section background="surface">
-        <Card className="overflow-hidden !p-0">
-          <div className="grid grid-cols-1 lg:grid-cols-2">
-            <div className="relative aspect-[4/3] lg:aspect-auto min-h-[300px]">
-              <Image
-                src="/images/website-image.jpg"
-                alt="Milestone project interface"
-                fill
-                className="object-cover"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-              />
-            </div>
-            <div className="p-8 md:p-12 flex flex-col justify-center">
-              <p className="text-spark-red font-display font-semibold text-xs tracking-wide uppercase mb-3">
-                Featured
-              </p>
-              <h2 className="font-display font-bold text-2xl md:text-3xl text-starlight mb-4">
-                Milestone
-              </h2>
-              <p className="text-muted text-base leading-relaxed mb-8">
-                From spreadsheet drift to a system that holds. A lightweight system that preserved the simplicity of a spreadsheet while adding structure, visibility, and decision readiness.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button href="/work/milestone" chevron>
-                  View Case Study
-                </Button>
-                <Button href={MILESTONE_URL} variant="secondary" external>
-                  View Live Tool
-                </Button>
-              </div>
-            </div>
+        <div className="max-w-3xl">
+          <h2 className="font-display font-bold text-2xl md:text-3xl text-starlight mb-4">
+            Milestone
+          </h2>
+          <p className="text-muted text-lg leading-relaxed mb-8">
+            A clarity system designed to make progress visible across complex work.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Button href="/work/milestone" chevron>
+              Read Case Study
+            </Button>
+            <Button href={MILESTONE_URL} variant="secondary" external>
+              View Live Tool
+            </Button>
           </div>
-        </Card>
+        </div>
       </Section>
 
-      <FinalCTA />
+      {/* Clear Enough */}
+      <Section>
+        <div className="max-w-3xl">
+          <h2 className="font-display font-bold text-2xl md:text-3xl text-starlight mb-4">
+            Clear Enough
+          </h2>
+          <p className="text-muted text-lg leading-relaxed mb-8">
+            A grounding clarity system designed to help individuals move forward in sobriety and daily life.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Button href="/work/clear-enough" chevron>
+              Read Case Study
+            </Button>
+            <Button href={CLEAR_ENOUGH_URL} variant="secondary" external>
+              View Live App
+            </Button>
+          </div>
+        </div>
+      </Section>
     </>
   );
 }

@@ -17,9 +17,16 @@ export function Footer() {
               style={{ height: 32, width: "auto", display: "block" }}
               className="mb-4"
             />
-            <p className="text-muted text-sm max-w-xs leading-relaxed">
-              Systems design for companies navigating complexity. We restore the signal when growth creates noise.
+            <p className="text-muted text-sm max-w-xs leading-relaxed mb-6">
+              {SITE.description}
             </p>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logos/icon-light-rgb.svg"
+              alt=""
+              style={{ height: 24, width: "auto", display: "block" }}
+              aria-hidden="true"
+            />
           </div>
 
           <div>

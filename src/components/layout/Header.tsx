@@ -32,7 +32,7 @@ export function Header() {
             />
           </Link>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-6">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
@@ -46,14 +46,14 @@ export function Header() {
                 {link.label}
               </Link>
             ))}
-            <Button href="/clarity-session" size="sm">
-              Request Signal Scan
+            <Button href="/signal-session" size="sm">
+              Start a Signal Session
             </Button>
           </div>
 
           <button
             type="button"
-            className="relative z-50 flex md:hidden flex-col justify-center items-center w-10 h-10 gap-1.5"
+            className="relative z-50 flex lg:hidden flex-col justify-center items-center w-10 h-10 gap-1.5"
             onClick={() => setIsOpen(!isOpen)}
             aria-expanded={isOpen}
             aria-controls="mobile-menu"
@@ -81,7 +81,7 @@ export function Header() {
       {isOpen && (
         <div
           id="mobile-menu"
-          className="fixed inset-0 z-40 bg-deep-space pt-20 md:hidden"
+          className="fixed inset-0 z-40 bg-deep-space pt-20 lg:hidden"
           role="dialog"
           aria-modal="true"
           aria-label="Mobile navigation"
@@ -104,11 +104,11 @@ export function Header() {
               ))}
               <div className="pt-4">
                 <Button
-                  href="/clarity-session"
+                  href="/signal-session"
                   size="lg"
                   onClick={() => setIsOpen(false)}
                 >
-                  Request Signal Scan
+                  Start a Signal Session
                 </Button>
               </div>
             </div>

@@ -1,62 +1,95 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { Section } from "@/components/ui/Section";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { FinalCTA } from "@/components/sections/FinalCTA";
-import { SITE } from "@/lib/constants";
+import { PageHero } from "@/components/sections/PageHero";
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createMetadata({
   title: "About",
   description:
-    "Meet Jordan Knight, Managing Partner at Cosmic Reach. Systems thinking for growing companies. Not just creative. Not just campaigns. Systems.",
+    "Cosmic Reach exists for organizations that know something is off but cannot see where.",
   path: "/about",
+  heroImage: "/images/hero/about.jpg",
 });
 
 export default function AboutPage() {
   return (
     <>
-      <Section className="pt-32 md:pt-40">
-        <SectionHeading
-          label="About"
-          title="Not just creative. Not just campaigns. Systems."
-        />
+      <PageHero
+        title="Why Cosmic Reach Exists"
+        lead="Cosmic Reach exists for organizations that know something is off but cannot see where."
+        imageSrc="/images/hero/about.jpg"
+        imageAlt="About Cosmic Reach Creative"
+      />
+
+      {/* The Origin of the Signal */}
+      <Section background="surface">
+        <div className="max-w-3xl">
+          <h2 className="text-starlight leading-tight mb-6">
+            The Origin of the Signal
+          </h2>
+          <p className="text-muted text-lg leading-relaxed mb-4">
+            I built Cosmic Reach after seeing the same pattern repeatedly.
+          </p>
+          <p className="text-muted text-lg leading-relaxed mb-4">
+            Strong teams. Smart leaders. Real effort.
+          </p>
+          <p className="text-muted text-lg leading-relaxed mb-4">
+            But progress slowed by unclear systems, disconnected tools, and communication that obscured more than it revealed.
+          </p>
+          <p className="text-starlight text-lg font-medium mb-4">
+            Most organizations do not need more ideas.<br />
+            They need better signal.
+          </p>
+          <p className="text-muted text-lg leading-relaxed">
+            Cosmic Reach exists to design that signal.
+          </p>
+        </div>
       </Section>
 
-      <Section background="surface">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-12 items-start">
-          <div className="relative aspect-[3/4] rounded-[var(--radius-lg)] overflow-hidden border border-border">
-            <Image
-              src="/images/jordan-knight-headshot.png"
-              alt="Jordan Knight, Managing Partner at Cosmic Reach Creative"
-              fill
-              className="object-cover"
-              sizes="(max-width: 1024px) 100vw, 33vw"
-            />
-          </div>
-          <div>
-            <h2 className="font-display font-bold text-2xl md:text-3xl text-starlight mb-2">
-              {SITE.founder}
-            </h2>
-            <p className="text-copper font-display font-semibold text-sm mb-6">
-              {SITE.founderTitle}
-            </p>
-            <div className="space-y-4 text-muted text-base leading-relaxed">
-              <p>
-                Jordan built Cosmic Reach after leading marketing strategy and analytics inside a scaling life sciences organization, where clarity was operational necessity.
+      {/* What We Hold Constant */}
+      <Section>
+        <div className="max-w-3xl">
+          <h2 className="text-starlight leading-tight mb-12">
+            What We Hold Constant
+          </h2>
+          <div className="space-y-10">
+            <div>
+              <h3 className="font-display font-semibold text-xl text-starlight mb-2">
+                Clarity over noise
+              </h3>
+              <p className="text-muted text-base leading-relaxed">
+                If something cannot be understood, it cannot be executed.
               </p>
-              <p>
-                Inside high growth environments, he built reporting systems, aligned cross functional teams, and translated performance data into executive level decisions.
+            </div>
+            <div>
+              <h3 className="font-display font-semibold text-xl text-starlight mb-2">
+                Systems over trends
+              </h3>
+              <p className="text-muted text-base leading-relaxed">
+                We build structures that last longer than tactics.
               </p>
-              <p>
-                Cosmic Reach was launched to bring that same structured thinking to growing companies.
+            </div>
+            <div>
+              <h3 className="font-display font-semibold text-xl text-starlight mb-2">
+                Execution over theory
+              </h3>
+              <p className="text-muted text-base leading-relaxed">
+                If it does not work in the real world, it does not count.
               </p>
             </div>
           </div>
         </div>
       </Section>
 
-      <FinalCTA />
+      {/* Closing */}
+      <Section background="surface">
+        <div className="max-w-3xl">
+          <p className="text-starlight text-xl md:text-2xl font-display font-semibold leading-relaxed">
+            We do not design for appearances.<br />
+            We design for movement.
+          </p>
+        </div>
+      </Section>
     </>
   );
 }

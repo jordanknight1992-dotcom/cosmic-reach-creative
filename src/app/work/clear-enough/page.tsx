@@ -3,27 +3,26 @@ import { Section } from "@/components/ui/Section";
 import { Card } from "@/components/ui/Card";
 import { CaseStudyHeader } from "@/components/sections/CaseStudyHeader";
 import { CTASection } from "@/components/sections/CTASection";
-import { MILESTONE_URL } from "@/lib/constants";
+import { CLEAR_ENOUGH_URL } from "@/lib/constants";
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createMetadata({
-  title: "Milestone Case Study",
+  title: "Clear Enough Case Study",
   description:
-    "From spreadsheet drift to a system that holds. How Cosmic Reach designed a decision surface that structured attention and surfaced critical path signals.",
-  path: "/work/milestone",
+    "From mental noise to a system that grounds the next step. A clarity system designed to help individuals move forward in sobriety and daily life.",
+  path: "/work/clear-enough",
 });
 
-export default function MilestonePage() {
+export default function ClearEnoughPage() {
   return (
     <>
       <CaseStudyHeader
-        title="Milestone"
-        subtitle="From spreadsheet drift to a system that holds"
-        tags={["Systems design", "Reporting workflow", "Product prototype"]}
-        role="Role: Strategy, UX, interface design, build direction"
+        title="Clear Enough"
+        subtitle="From mental noise to a system that grounds the next step"
+        tags={["Clarity system design", "Behavioral workflow", "Product prototype"]}
+        role="Role: Concept, UX, interaction design, build direction"
         links={[
-          { label: "Request a Similar Build", href: "/signal-session" },
-          { label: "View the Live Tool", href: MILESTONE_URL, external: true },
+          { label: "View the Live App", href: CLEAR_ENOUGH_URL, external: true },
         ]}
       />
 
@@ -31,18 +30,20 @@ export default function MilestonePage() {
       <Section background="surface">
         <div className="max-w-3xl">
           <h2 className="font-display font-bold text-2xl md:text-3xl text-starlight mb-6">
-            The Signal - Where clarity broke down
+            The Signal - Where clarity breaks down
           </h2>
+          <p className="text-muted text-base leading-relaxed mb-4">
+            For many people navigating sobriety, the hardest part of the day is not motivation.
+          </p>
           <p className="text-starlight text-lg font-medium mb-4">
-            A spreadsheet can track tasks.<br />
-            It cannot hold a system when reality shifts.
+            It is knowing where to begin when everything feels loud.
           </p>
           <p className="text-muted text-base leading-relaxed mb-4">
-            Milestone started as a simple tracking file used by a working PMP managing real dependencies across locations. The moment timelines moved, the file still functioned, but clarity broke down. The signal was buried. Decisions slowed. Confidence dropped.
+            Thoughts compete for attention. Emotions overlap. The future feels too large. The next step disappears.
           </p>
           <p className="text-starlight text-base font-medium">
-            This was not a tooling problem.<br />
-            It was a system problem.
+            The issue is not discipline.<br />
+            It is signal.
           </p>
         </div>
       </Section>
@@ -53,13 +54,13 @@ export default function MilestonePage() {
           <h2 className="font-display font-bold text-2xl md:text-3xl text-starlight mb-6">
             The Interference
           </h2>
-          <ul className="space-y-3" role="list">
+          <ul className="space-y-3 mb-6" role="list">
             {[
-              "Updates created drift across tabs, owners, and dates",
-              "Dependencies were easy to miss after changes",
-              "Reporting required manual translation for stakeholders",
-              "The same data created different interpretations",
-              "The system did not guide attention to the next decision",
+              "Too many inputs competing for focus",
+              "Emotional states changing faster than plans",
+              "No structure for grounding decisions in the present",
+              "Progress defined by intention, not action",
+              "The next step unclear even when the goal is known",
             ].map((item) => (
               <li key={item} className="flex items-start gap-3">
                 <span className="mt-2 w-1.5 h-1.5 rounded-full bg-spark-red shrink-0" aria-hidden="true" />
@@ -67,6 +68,9 @@ export default function MilestonePage() {
               </li>
             ))}
           </ul>
+          <p className="text-starlight text-base font-medium">
+            Without a visible signal, movement stalls.
+          </p>
         </div>
       </Section>
 
@@ -77,17 +81,17 @@ export default function MilestonePage() {
             Mission Objective
           </h2>
           <p className="text-muted text-lg leading-relaxed mb-8">
-            Design a lightweight system that preserves the simplicity of a spreadsheet while adding structure, visibility, and decision readiness.
+            Design a lightweight system that helps users ground themselves, identify one meaningful next step, and move forward with intention.
           </p>
           <h3 className="font-display font-semibold text-lg text-starlight mb-4">
             Success criteria
           </h3>
           <ul className="space-y-3" role="list">
             {[
-              "Make status obvious within seconds",
-              "Reduce manual reporting time",
-              "Highlight dependencies and risk before they surface",
-              "Create a repeatable pattern that scales across projects",
+              "Reduce cognitive overload in moments of uncertainty",
+              "Create a repeatable grounding pattern users can trust",
+              "Focus attention on the present action, not the entire journey",
+              "Support momentum without demanding perfection",
             ].map((item) => (
               <li key={item} className="flex items-start gap-3">
                 <span className="mt-2 w-1.5 h-1.5 rounded-full bg-spark-red shrink-0" aria-hidden="true" />
@@ -105,21 +109,21 @@ export default function MilestonePage() {
             Solution Architecture
           </h2>
           <p className="text-starlight text-lg font-medium mb-4">
-            Milestone became a decision surface.
+            Clear Enough became a decision surface for the individual.
           </p>
           <p className="text-muted text-base leading-relaxed mb-8">
-            Instead of tracking tasks, it structures attention. It separates planning from execution, surfaces critical path signals, and creates a consistent language for status that stakeholders can trust.
+            Instead of tracking goals, it structures attention. It turns emotional noise into a visible next step and creates a consistent rhythm for reflection, grounding, and forward motion.
           </p>
           <h3 className="font-display font-semibold text-lg text-starlight mb-4">
             Components
           </h3>
           <ul className="space-y-3" role="list">
             {[
-              "Timeline logic that adapts to change",
-              "Dependency visibility baked into the workflow",
-              "Status signals that prioritize what matters next",
-              "A clean executive view that reads fast",
-              "A system that can be reused across teams",
+              "Guided prompts that translate emotion into action",
+              "A structured flow that centers attention on the present",
+              "A calm interface that reduces friction during use",
+              "A repeatable pattern users can return to daily",
+              "A system designed to support momentum, not pressure",
             ].map((item) => (
               <li key={item} className="flex items-start gap-3">
                 <span className="mt-2 w-1.5 h-1.5 rounded-full bg-copper shrink-0" aria-hidden="true" />
@@ -137,14 +141,14 @@ export default function MilestonePage() {
             Design Treatment
           </h2>
           <p className="text-muted text-lg leading-relaxed mb-8">
-            The interface was designed to feel calm under pressure. Navigation is minimal. Visual hierarchy is strict. Movement is subtle. Color is used as signal, not decoration.
+            The interface was designed to feel steady and supportive. Navigation is minimal. Motion is subtle. Visual hierarchy keeps the mind anchored.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {[
-              "One primary focus per screen",
-              "Clear typography hierarchy",
-              "Red reserved for action and attention",
-              "Consistent spacing that keeps the mind steady",
+              "One clear interaction at a time",
+              "Calm typography and spacing",
+              "Limited color used as signal, not stimulation",
+              "Interaction patterns that reinforce presence and control",
             ].map((rule) => (
               <Card key={rule}>
                 <p className="text-starlight text-sm font-medium">{rule}</p>
@@ -162,10 +166,10 @@ export default function MilestonePage() {
           </h2>
           <ul className="space-y-3" role="list">
             {[
-              "Faster decisions because status is visible",
-              "Less friction updating plans after change",
-              "Reduced reporting noise for stakeholders",
-              "A reusable system structure, not a one-off file",
+              "Users move from overwhelm to grounded action",
+              "Decisions become smaller, clearer, and more manageable",
+              "Momentum builds through repetition, not force",
+              "The system supports forward motion even on difficult days",
             ].map((item) => (
               <li key={item} className="flex items-start gap-3">
                 <span className="mt-2 w-1.5 h-1.5 rounded-full bg-spark-red shrink-0" aria-hidden="true" />
@@ -184,10 +188,10 @@ export default function MilestonePage() {
           </h2>
           <blockquote className="border-l-2 border-spark-red pl-6">
             <p className="text-starlight text-lg leading-relaxed italic mb-4">
-              &ldquo;This tool preserves the governance backbone while making updates simple and reporting clean. It gives project leaders clarity and control without overcomplicating the process.&rdquo;
+              &ldquo;I don&#39;t use Clear Enough to plan my life. I use it to make one grounded decision when I need it most.&rdquo;
             </p>
             <footer className="text-muted text-sm">
-              <strong>Senior PMP, Texas</strong>
+              <strong>Clear Enough user, 520 days sober</strong>
             </footer>
           </blockquote>
         </div>
@@ -200,24 +204,25 @@ export default function MilestonePage() {
             What We Learned
           </h2>
           <p className="text-starlight text-lg font-medium mb-4">
-            Tools do not create clarity.<br />
-            Systems do.
+            Clarity systems are not just organizational tools.<br />
+            They are human ones.
+          </p>
+          <p className="text-muted text-base leading-relaxed mb-4">
+            When people can see one clear next step, movement becomes possible again.
           </p>
           <p className="text-muted text-base leading-relaxed">
-            When teams can see the same reality, they move together. When the signal is clean, decisions feel obvious.
+            That same principle applies everywhere:<br />
+            when the signal is visible, progress follows.
           </p>
         </div>
       </Section>
 
       {/* CTA */}
       <CTASection
-        title="Want a system like this inside your business?"
-        description="We start with a free Clarity Session. We map the signal, locate the interference, and design the simplest system that will hold."
+        title="Want clarity like this inside your organization?"
+        description="We start with a Clarity Session. We map the signal, locate the interference, and design the simplest system that will hold."
         buttonLabel="Book a Clarity Session"
         buttonHref="/signal-session"
-        secondaryLabel="View the Live Tool"
-        secondaryHref={MILESTONE_URL}
-        secondaryExternal
       />
     </>
   );

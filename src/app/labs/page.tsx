@@ -1,50 +1,67 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Section } from "@/components/ui/Section";
-import { SectionHeading } from "@/components/ui/SectionHeading";
-import { FinalCTA } from "@/components/sections/FinalCTA";
+import { Card } from "@/components/ui/Card";
+import { PageHero } from "@/components/sections/PageHero";
 import { createMetadata } from "@/lib/metadata";
 
 export const metadata: Metadata = createMetadata({
   title: "Labs",
   description:
-    "Cosmic Reach Labs. Designing solutions through systems thinking and digital experimentation. Structured curiosity meets real world friction.",
+    "Cosmic Reach Labs explores clarity systems in action. Projects that test ideas, tools, and frameworks that turn complexity into forward motion.",
   path: "/labs",
+  heroImage: "/images/hero/labs.jpg",
 });
 
 export default function LabsPage() {
   return (
     <>
-      <Section className="pt-32 md:pt-40">
-        <SectionHeading
-          label="Labs"
-          title="Cosmic Reach Labs"
-          description="Designing solutions to complex company problems through systems thinking and digital experimentation."
-        />
-      </Section>
+      <PageHero
+        title="Cosmic Reach Labs"
+        lead="Cosmic Reach Labs explores clarity systems in action."
+        imageSrc="/images/hero/labs.jpg"
+        imageAlt="Cosmic Reach Labs"
+      />
 
       <Section background="surface">
         <div className="max-w-3xl">
-          <p className="text-starlight text-lg font-medium mb-6">
-            Labs is where structured curiosity meets real world friction.
+          <p className="text-muted text-lg leading-relaxed mb-4">
+            These projects test ideas, tools, and frameworks that turn complexity into forward motion.
           </p>
-          <div className="space-y-4 text-muted text-base leading-relaxed">
-            <p>We prototype internal tools.</p>
-            <p>We design clarity systems.</p>
-            <p>We test frameworks before they enter orbit.</p>
-          </div>
-          <div className="mt-8 pt-8 border-t border-border">
-            <p className="text-muted text-base leading-relaxed">
-              Some ideas become products.
-              <br />
-              Some remain internal experiments.
-              <br />
-              All are built with intent.
-            </p>
-          </div>
+          <p className="text-muted text-lg leading-relaxed mb-4">
+            Some remain experiments.<br />
+            Some become products.<br />
+            All help us refine how systems create signal.
+          </p>
         </div>
       </Section>
 
-      <FinalCTA />
+      <Section>
+        <div className="max-w-3xl">
+          <h2 className="text-starlight leading-tight mb-8">
+            Systems Currently in Orbit
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Link href="/work/milestone" className="group">
+              <Card hover className="h-full">
+                <h3 className="font-display font-semibold text-xl text-starlight mb-2 group-hover:text-copper transition-colors duration-200">
+                  Milestone
+                </h3>
+              </Card>
+            </Link>
+            <Link href="/work/clear-enough" className="group">
+              <Card hover className="h-full">
+                <h3 className="font-display font-semibold text-xl text-starlight mb-2 group-hover:text-copper transition-colors duration-200">
+                  Clear Enough
+                </h3>
+              </Card>
+            </Link>
+          </div>
+          <p className="text-muted text-base mt-8">
+            More tools coming as they reach orbit.
+          </p>
+        </div>
+      </Section>
     </>
   );
 }

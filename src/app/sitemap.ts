@@ -4,21 +4,20 @@ import { SITE } from "@/lib/constants";
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes = [
     "",
+    "/approach",
     "/work",
     "/work/milestone",
-    "/approach",
-    "/about",
+    "/work/clear-enough",
     "/labs",
-    "/parallax",
-    "/clarity-session",
+    "/about",
+    "/signal-session",
     "/contact",
-    "/privacy",
   ];
 
   return routes.map((route) => ({
     url: `${SITE.url}${route}`,
     lastModified: new Date(),
     changeFrequency: route === "" ? "weekly" : "monthly",
-    priority: route === "" ? 1 : route === "/clarity-session" ? 0.9 : 0.7,
+    priority: route === "" ? 1 : route === "/signal-session" ? 0.9 : 0.7,
   }));
 }
