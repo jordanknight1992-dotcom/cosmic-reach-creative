@@ -140,7 +140,7 @@ export function Header() {
             className="mt-4 inline-flex items-center justify-center rounded-[var(--radius-md)] bg-spark-red text-white px-5 py-3 font-display font-semibold transition-all duration-[var(--duration-base)]"
             onClick={() => setMenuOpen(false)}
           >
-            Book
+            Start Here
           </a>
         </nav>
       </div>
