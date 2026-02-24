@@ -76,15 +76,7 @@ We translate marketing and operational activity into business insight so decisio
 - Executive-level reporting clarity
 - Visibility systems leaders can rely on without constant interpretation
 
-ICON: signal
-
----
-
-## In Short: What This Framework Does
-
-Cosmic Reach helps companies solve the operational problems behind marketing performance by designing the direction, alignment, execution, and visibility systems that allow teams to move forward with confidence.
-
-CTA: Book Clarity Session`;
+ICON: signal`;
 
 export default function FrameworkPage() {
   return <MarkdownPage content={content} />;

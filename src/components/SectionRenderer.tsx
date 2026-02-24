@@ -218,6 +218,69 @@ function groupBySubHeadings(blocks: MarkdownBlock[]): {
 }
 
 /**
+ * A bold-label (e.g. "Clients get:") paired with its following list,
+ * to be rendered as a centered framed card.
+ */
+interface LabelCardItem {
+  kind: "label-card";
+  label: string;
+  list: MarkdownBlock;
+}
+type FlowItem = MarkdownBlock | LabelCardItem;
+
+function isLabelCard(item: FlowItem): item is LabelCardItem {
+  return (item as LabelCardItem).kind === "label-card";
+}
+
+/**
+ * Scan flowBlocks and group consecutive bold-label + list pairs into
+ * LabelCardItem so they render as a single framed card.
+ */
+function groupLabelListPairs(blocks: MarkdownBlock[]): FlowItem[] {
+  const result: FlowItem[] = [];
+  let i = 0;
+  while (i < blocks.length) {
+    const block = blocks[i];
+    if (
+      block.kind === "bold-line" &&
+      block.text?.endsWith(":") &&
+      i + 1 < blocks.length &&
+      blocks[i + 1].kind === "list"
+    ) {
+      result.push({ kind: "label-card", label: block.text, list: blocks[i + 1] });
+      i += 2;
+    } else {
+      result.push(block);
+      i++;
+    }
+  }
+  return result;
+}
+
+/**
+ * Render a label + bullet list as a centered framed outcome/deliverable card.
+ */
+function renderOutcomeCard(label: string, list: MarkdownBlock, key: number | string) {
+  return (
+    <div
+      key={key}
+      className="mt-6 mx-auto w-full rounded-2xl border border-starlight/10 bg-navy/50 p-8 text-center transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/30 hover:shadow-subtle"
+    >
+      <h4 className="font-display font-semibold text-copper text-sm uppercase tracking-widest mb-5">
+        {label}
+      </h4>
+      <ul className="space-y-3">
+        {list.items!.map((item, j) => (
+          <li key={j} className="text-starlight/70 text-base">
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+/**
  * Render a bullet list with consistent alignment.
  */
 function renderList(list: MarkdownBlock, key: number | string) {
@@ -420,20 +483,39 @@ function ContentSection({
             </div>
           )}
 
-          {/* Heading */}
-          {heading?.text && (
-            <HeadingTag
-              level={(heading.level ?? 2) as 1 | 2 | 3}
-              id={`section-${index}`}
-              className="mb-3"
-            >
-              {heading.text}
-            </HeadingTag>
-          )}
+          {/* Heading — h2s with ": " get a split two-line treatment */}
+          {heading?.text && (() => {
+            const level = (heading.level ?? 2) as 1 | 2 | 3;
+            const colonIdx = level === 2 ? heading.text.indexOf(": ") : -1;
+            if (colonIdx > -1) {
+              const label = heading.text.slice(0, colonIdx);
+              const subtitle = heading.text.slice(colonIdx + 2);
+              return (
+                <h2 id={`section-${index}`} className="mb-3">
+                  <span className="block text-copper">{label}</span>
+                  <span className="block">{subtitle}</span>
+                </h2>
+              );
+            }
+            return (
+              <HeadingTag
+                level={level}
+                id={`section-${index}`}
+                className="mb-3"
+              >
+                {heading.text}
+              </HeadingTag>
+            );
+          })()}
 
-          {/* Flow blocks rendered in document order */}
+          {/* Flow blocks rendered in document order.
+              Bold-label + list pairs become centered framed outcome cards. */}
           {!hasSubHeadings &&
-            flowBlocks.map((block, i) => {
+            groupLabelListPairs(flowBlocks).map((item, i) => {
+              if (isLabelCard(item)) {
+                return renderOutcomeCard(item.label, item.list, i);
+              }
+              const block = item as MarkdownBlock;
               if (block.kind === "paragraph") {
                 return (
                   <p key={i} className="text-starlight/70 text-base mb-3">
