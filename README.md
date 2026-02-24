@@ -1,36 +1,131 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Cosmic Reach Creative
 
-## Getting Started
+Production website for Cosmic Reach Creative. Built with Next.js 15 (App Router), Tailwind CSS 4, and TypeScript. Statically generated and deployed on Vercel.
 
-First, run the development server:
+## Local Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Production Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+npm start
+```
 
-## Learn More
+## Deploy to Vercel
 
-To learn more about Next.js, take a look at the following resources:
+1. Push this repo to GitHub.
+2. In Vercel, import the repository.
+3. Framework preset: **Next.js** (auto-detected).
+4. No environment variables required. Domain is configured in `src/config/site.ts`.
+5. Deploy.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+If the domain `cosmicreachcreative.com` is already connected to the Vercel project, the new deployment will replace the existing site automatically.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Site Config
 
-## Deploy on Vercel
+All site-wide configuration lives in one file:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+src/config/site.ts
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+This includes:
+- Site name, canonical domain, contact email
+- Calendly booking URLs (Signal Check and Clarity Session)
+- GA4 measurement ID
+- Navigation items
+- Hidden routes (not shown in nav but publicly accessible)
+
+Update this file to change any global setting. All CTAs, metadata, and links read from this config.
+
+## How Markdown Mapping Works
+
+Page content is stored directly in each route file under `src/app/*/page.tsx`. The content strings follow a custom markdown format parsed by `src/lib/markdown-parser.ts`:
+
+| Syntax | Behavior |
+|---|---|
+| `# Title` | Hero section title (first H1) |
+| `---` | Section divider |
+| `IMAGE: filename.jpg` | Renders image from `/public/images/` |
+| `ICON: name` | Renders SVG icon from `/public/icons/` |
+| `[CTA: Label]` | Renders a CTA button |
+| `[Primary CTA: Label]` | Primary styled CTA |
+| `[Secondary CTA: Label]` | Secondary styled CTA |
+| `CTA: Label` | Bare CTA (also works) |
+| `**Title** - description` | Framework card (when 2+ appear in a section) |
+| `- item` | Bullet list |
+
+### Icon Alias Map
+
+The file `src/lib/icon-alias.ts` maps markdown icon names to the 10 actual SVG icons in the payload. If a referenced icon name doesn't exist, it falls back to `spark`. See the file for the full alias table.
+
+## Routes
+
+### Main Nav
+| Route | Page |
+|---|---|
+| `/` | Home |
+| `/about` | About |
+| `/services` | Services |
+| `/framework` | Framework |
+| `/work` | Work |
+| `/pricing` | Pricing |
+| `/faq` | FAQ |
+| `/contact` | Contact |
+
+### Public (not in nav)
+| Route | Page |
+|---|---|
+| `/clarity` | Clarity Session landing |
+| `/clarity-session` | Clarity Session landing (alternate) |
+
+### Confirmation Pages
+| Route | Page |
+|---|---|
+| `/signal-check-confirmed` | Post-booking confirmation |
+| `/clarity-confirmed` | Post-booking confirmation |
+
+### Policy Pages
+| Route | Page |
+|---|---|
+| `/privacy` | Privacy Policy |
+| `/terms` | Terms of Service |
+| `/accessibility` | Accessibility Statement |
+
+## Design System
+
+Design tokens from `design-tokens.json` are converted to CSS custom properties in `globals.css` and mapped into Tailwind's `@theme` directive.
+
+- **Fonts**: Space Grotesk (headings), Inter variable (body). Loaded locally from `/public/fonts/`.
+- **Colors**: Deep Space, Navy, Starlight, Copper, Spark Red.
+- **Spacing**: 4/8/12/16/24/32/48/64/96/128 scale.
+- **Motion**: 150/250/450ms with ease-out curve. Respects `prefers-reduced-motion`.
+
+## Assets
+
+All assets come from the payload ZIP and live in `/public/`:
+
+```
+public/
+  images/          # Hero and section images
+  images/founder/  # Founder photo
+  icons/           # 10 SVG icons
+  fonts/           # Space Grotesk + Inter woff2
+  favicon/         # Favicon set
+  logo/            # Logo variants (SVG + PNG)
+```
+
+## SEO and Analytics
+
+- Canonical URLs point to `https://cosmicreachcreative.com`
+- `sitemap.xml` and `robots.txt` generated by Next.js route handlers
+- GA4 (`G-BHD0025QXR`) loaded via `next/script` with `afterInteractive` strategy and `anonymize_ip: true`
+- OG and Twitter card images use payload hero images
+- Confirmation pages are excluded from indexing via `robots` meta
