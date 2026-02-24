@@ -19,24 +19,24 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: siteConfig.domain,
     siteName: siteConfig.siteName,
-    title: `${siteConfig.siteName} | Operational Clarity for Teams`,
+    title: "Cosmic Reach | Operational Clarity for Teams",
     description:
       "Cosmic Reach helps organizations diagnose friction, align execution, and build operational systems that make progress sustainable.",
     images: [
       {
-        url: "/images/01-home-hero.jpg",
+        url: "/images/og-preview.png",
         width: 1200,
-        height: 630,
-        alt: siteConfig.siteName,
+        height: 627,
+        alt: `${siteConfig.siteName} — Mission Control for Operational Clarity`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: `${siteConfig.siteName} | Operational Clarity for Teams`,
+    title: "Cosmic Reach | Operational Clarity for Teams",
     description:
       "Cosmic Reach helps organizations diagnose friction, align execution, and build operational systems that make progress sustainable.",
-    images: ["/images/01-home-hero.jpg"],
+    images: ["/images/og-preview.png"],
   },
   icons: {
     icon: [
