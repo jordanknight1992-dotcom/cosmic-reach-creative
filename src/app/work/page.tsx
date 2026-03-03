@@ -10,7 +10,7 @@ import { createMetadata } from "@/lib/metadata";
 export const metadata: Metadata = createMetadata({
   title: "Work",
   description:
-    "This is what systems design looks like when it leaves the whiteboard. Real systems. Real clarity. Real outcomes.",
+    "Real tools built for real teams. Dashboards, reporting systems, and operational workflows designed for marketing teams that need to move faster.",
   path: "/work",
   heroImage: "/images/hero/work.jpg",
 });
@@ -20,19 +20,39 @@ export default function WorkPage() {
     <>
       <PageHero
         title="Systems in Motion"
-        lead="This is what systems design looks like when it leaves the whiteboard."
+        lead="Real tools built for real teams. Not slide decks."
         imageSrc="/images/hero/work.jpg"
         imageAlt="Systems in motion"
       />
 
-      {/* Milestone */}
+      {/* Parallax */}
       <Section background="surface">
+        <div className="max-w-3xl">
+          <h2 className="font-display font-bold text-2xl md:text-3xl text-starlight mb-4">
+            Parallax
+          </h2>
+          <p className="text-muted text-lg leading-relaxed mb-4">
+            A marketing performance dashboard that connects GA4, Search Console, Google Ads, and social platforms into a single, readable report. Built for marketing teams that are tired of pulling numbers from six tabs into a slide deck.
+          </p>
+          <p className="text-muted text-base leading-relaxed mb-8">
+            Currently in development with three live clients.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4">
+            <Button href="/parallax" chevron>
+              Learn More
+            </Button>
+          </div>
+        </div>
+      </Section>
+
+      {/* Milestone */}
+      <Section>
         <div className="max-w-3xl">
           <h2 className="font-display font-bold text-2xl md:text-3xl text-starlight mb-4">
             Milestone
           </h2>
           <p className="text-muted text-lg leading-relaxed mb-8">
-            A clarity system designed to make progress visible across complex work.
+            A project tracking system that replaced spreadsheet drift with structured visibility. Built for a PMP managing dependencies across locations - designed to make status obvious within seconds and cut manual reporting time.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Button href="/work/milestone" chevron>
@@ -46,13 +66,13 @@ export default function WorkPage() {
       </Section>
 
       {/* Clear Enough */}
-      <Section>
+      <Section background="surface">
         <div className="max-w-3xl">
           <h2 className="font-display font-bold text-2xl md:text-3xl text-starlight mb-4">
             Clear Enough
           </h2>
           <p className="text-muted text-lg leading-relaxed mb-8">
-            A grounding clarity system designed to help individuals move forward in sobriety and daily life.
+            A personal clarity system that proves the same design principles scale from enterprise teams to individual users. Designed to reduce cognitive overload and surface one clear next step.
           </p>
           <div className="flex flex-col sm:flex-row gap-4">
             <Button href="/work/clear-enough" chevron>

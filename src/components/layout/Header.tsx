@@ -47,7 +47,7 @@ export function Header() {
               </Link>
             ))}
             <Button href="/signal-session" size="sm">
-              Start a Signal Session
+              Book a Strategy Call
             </Button>
           </div>
 
@@ -108,7 +108,7 @@ export function Header() {
                   size="lg"
                   onClick={() => setIsOpen(false)}
                 >
-                  Start a Signal Session
+                  Book a Strategy Call
                 </Button>
               </div>
             </div>

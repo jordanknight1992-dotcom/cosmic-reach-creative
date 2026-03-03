@@ -6,7 +6,7 @@ export const SITE = {
   founder: "Jordan Knight",
   founderTitle: "Managing Partner, Cosmic Reach",
   description:
-    "Cosmic Reach designs systems that help teams see clearly, decide faster, and move forward with confidence.",
+    "Performance infrastructure for marketing teams. Dashboards, reporting systems, and operational workflows that make results visible and decisions fast.",
   linkedIn: "https://www.linkedin.com/company/cosmic-reach-creative",
 } as const;
 

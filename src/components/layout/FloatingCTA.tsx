@@ -30,10 +30,10 @@ export function FloatingCTA() {
           ? "translate-y-0 opacity-100"
           : "translate-y-4 opacity-0 pointer-events-none"
       }`}
-      aria-label="Start a Signal Session"
+      aria-label="Book a strategy call"
     >
-      <span className="hidden sm:inline">Start a Signal Session</span>
-      <span className="sm:hidden">Signal Session</span>
+      <span className="hidden sm:inline">Book a Strategy Call</span>
+      <span className="sm:hidden">Strategy Call</span>
       <Chevron size={14} />
     </Link>
   );

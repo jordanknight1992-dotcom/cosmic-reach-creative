@@ -211,9 +211,9 @@ export default function MilestonePage() {
 
       {/* CTA */}
       <CTASection
-        title="Want a system like this inside your business?"
-        description="We start with a free Clarity Session. We map the signal, locate the interference, and design the simplest system that will hold."
-        buttonLabel="Book a Clarity Session"
+        title="Want a system like this for your marketing team?"
+        description="We start with a free strategy call. We audit where your reporting breaks down, map the gaps, and design the system that makes performance visible."
+        buttonLabel="Book a Free Strategy Call"
         buttonHref="/signal-session"
         secondaryLabel="View the Live Tool"
         secondaryHref={MILESTONE_URL}

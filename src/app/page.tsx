@@ -50,14 +50,15 @@ export default function HomePage() {
         <Container className="relative z-10">
           <div className="max-w-3xl">
             <h1 className="text-starlight leading-[1.1] mb-6">
-              Turn organizational noise into operational clarity.
+              Your marketing team is busy.<br />
+              But is it aligned?
             </h1>
             <p className="text-muted text-lg md:text-xl mb-10 max-w-2xl leading-relaxed">
-              Cosmic Reach designs systems that help teams see clearly, decide faster, and move forward with confidence.
+              Cosmic Reach designs the dashboards, reporting infrastructure, and operational workflows that help marketing teams see what&#39;s working, kill what isn&#39;t, and move faster.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button href="/signal-session" size="lg" chevron>
-                Start a Signal Session
+                Book a Free Strategy Call
               </Button>
               <Button href="/work" variant="secondary" size="lg">
                 See the Work
@@ -71,17 +72,17 @@ export default function HomePage() {
       <Section background="surface">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-starlight leading-tight mb-6">
-            Most organizations do not struggle with ideas.<br />
-            They struggle with alignment.
+            Most marketing teams do not struggle with effort.<br />
+            They struggle with visibility.
           </h2>
           <p className="text-muted text-lg leading-relaxed mb-4">
-            Teams use different tools, speak different languages, and measure progress in different ways. Decisions slow down. Work becomes reactive. Momentum fades.
+            Your team runs campaigns across six platforms, pulls reports from four dashboards, and still can&#39;t answer &ldquo;what&#39;s actually working?&rdquo; without a fire drill. Data is scattered. Reporting is manual. Decisions are slow because the information to make them is buried.
           </p>
           <p className="text-starlight text-lg font-medium mb-4">
             Cosmic Reach exists to fix that.
           </p>
           <p className="text-muted text-lg leading-relaxed">
-            We design the systems, structures, and communication patterns that turn complexity into coordinated motion.
+            We build the performance infrastructure that makes marketing results visible, measurable, and actionable - so your team spends less time pulling numbers and more time making decisions.
           </p>
         </div>
       </Section>
@@ -95,49 +96,81 @@ export default function HomePage() {
           <div className="space-y-10">
             <div>
               <h3 className="font-display font-semibold text-xl text-starlight mb-2">
-                Diagnose the noise
+                Audit Your Operations
               </h3>
               <p className="text-muted text-base leading-relaxed">
-                We map where clarity breaks down across teams, tools, and workflows.
+                We map where your marketing team loses time: disconnected platforms, manual reporting, unclear attribution, and metrics that don&#39;t connect to decisions.
               </p>
             </div>
             <div>
               <h3 className="font-display font-semibold text-xl text-starlight mb-2">
-                Design the signal
+                Design the System
               </h3>
               <p className="text-muted text-base leading-relaxed">
-                We build the structure, language, and systems that create alignment.
+                We build the dashboards, reporting workflows, and tooling that make performance visible across channels - GA4, Search Console, paid media, social - one view, one truth.
               </p>
             </div>
             <div>
               <h3 className="font-display font-semibold text-xl text-starlight mb-2">
-                Make it real
+                Ship It
               </h3>
               <p className="text-muted text-base leading-relaxed">
-                We implement tools, prototypes, and workflows that sustain momentum.
+                Not a slide deck. Working tools your team uses on Monday. Connected platforms, automated reports, and processes that hold when the quarter gets loud.
               </p>
             </div>
           </div>
         </div>
       </Section>
 
-      {/* Systems in Motion */}
+      {/* Who This Is For */}
       <Section background="surface">
+        <div className="max-w-3xl mx-auto">
+          <h2 className="text-starlight leading-tight mb-8">
+            Who This Orbit Fits
+          </h2>
+          <ul className="space-y-4" role="list">
+            {[
+              "Marketing teams of 5-20 that have outgrown spreadsheet reporting",
+              "Marketing ops leaders drowning in platform-switching and manual data pulls",
+              "VPs of Marketing who can't answer \"what's working?\" without a 3-day fire drill",
+              "Growth teams that need reporting infrastructure, not another agency retainer",
+            ].map((item) => (
+              <li key={item} className="flex items-start gap-3">
+                <span className="mt-2 w-1.5 h-1.5 rounded-full bg-spark-red shrink-0" aria-hidden="true" />
+                <span className="text-muted text-lg leading-relaxed">{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Section>
+
+      {/* Systems in Motion */}
+      <Section>
         <div className="max-w-3xl mx-auto">
           <h2 className="text-starlight leading-tight mb-6">
             Systems in Motion
           </h2>
           <p className="text-muted text-lg leading-relaxed mb-8">
-            This work is not theoretical.
+            Real tools built for real teams. Not mockups.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <Link href="/parallax" className="group">
+              <Card hover className="h-full">
+                <h3 className="font-display font-semibold text-xl text-starlight mb-2 group-hover:text-copper transition-colors duration-200">
+                  Parallax
+                </h3>
+                <p className="text-muted text-sm leading-relaxed">
+                  A marketing dashboard that pulls GA4, Search Console, social, and ad data into one clean report.
+                </p>
+              </Card>
+            </Link>
             <Link href="/work/milestone" className="group">
               <Card hover className="h-full">
                 <h3 className="font-display font-semibold text-xl text-starlight mb-2 group-hover:text-copper transition-colors duration-200">
                   Milestone
                 </h3>
                 <p className="text-muted text-sm leading-relaxed">
-                  A platform designed to turn scattered project data into visible progress.
+                  A project tracking system that turns scattered data into visible progress and decision-ready reporting.
                 </p>
               </Card>
             </Link>
@@ -147,7 +180,7 @@ export default function HomePage() {
                   Clear Enough
                 </h3>
                 <p className="text-muted text-sm leading-relaxed">
-                  A grounding clarity system that helps people move forward with intention.
+                  A personal clarity system that proves the same design principles work at every scale.
                 </p>
               </Card>
             </Link>
@@ -158,8 +191,8 @@ export default function HomePage() {
       {/* Where Momentum Begins */}
       <CTASection
         title="Where Momentum Begins"
-        description="Clarity creates momentum. Momentum creates results."
-        buttonLabel="Start a Signal Session"
+        description="Stop guessing what's working. Let's build the system that shows you."
+        buttonLabel="Book a Free Strategy Call"
         buttonHref="/signal-session"
       />
     </>

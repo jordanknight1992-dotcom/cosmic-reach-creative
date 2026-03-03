@@ -6,7 +6,7 @@ import { createMetadata } from "@/lib/metadata";
 export const metadata: Metadata = createMetadata({
   title: "About",
   description:
-    "Cosmic Reach exists for organizations that know something is off but cannot see where.",
+    "Built for marketing teams that know something is off but can't see where. We design the systems that make performance visible.",
   path: "/about",
   heroImage: "/images/hero/about.jpg",
 });
@@ -16,7 +16,7 @@ export default function AboutPage() {
     <>
       <PageHero
         title="Why Cosmic Reach Exists"
-        lead="Cosmic Reach exists for organizations that know something is off but cannot see where."
+        lead="Built for marketing teams that know something is off but can't see where."
         imageSrc="/images/hero/about.jpg"
         imageAlt="About Cosmic Reach Creative"
       />
@@ -28,20 +28,20 @@ export default function AboutPage() {
             The Origin of the Signal
           </h2>
           <p className="text-muted text-lg leading-relaxed mb-4">
-            I built Cosmic Reach after seeing the same pattern repeatedly.
+            I built Cosmic Reach after seeing the same pattern inside marketing teams repeatedly.
           </p>
           <p className="text-muted text-lg leading-relaxed mb-4">
-            Strong teams. Smart leaders. Real effort.
+            Smart people. Strong campaigns. Real budget. But the team can&#39;t tell you what&#39;s working without pulling four reports from four platforms and spending half a day stitching them together.
           </p>
           <p className="text-muted text-lg leading-relaxed mb-4">
-            But progress slowed by unclear systems, disconnected tools, and communication that obscured more than it revealed.
+            The tools exist. The data exists. What&#39;s missing is the system that connects them - the reporting infrastructure, the workflows, and the dashboards that make performance visible without a fire drill.
           </p>
           <p className="text-starlight text-lg font-medium mb-4">
-            Most organizations do not need more ideas.<br />
-            They need better signal.
+            Marketing teams do not need more tools.<br />
+            They need the infrastructure that makes their tools useful.
           </p>
           <p className="text-muted text-lg leading-relaxed">
-            Cosmic Reach exists to design that signal.
+            Cosmic Reach exists to build that infrastructure.
           </p>
         </div>
       </Section>
@@ -58,7 +58,7 @@ export default function AboutPage() {
                 Clarity over noise
               </h3>
               <p className="text-muted text-base leading-relaxed">
-                If something cannot be understood, it cannot be executed.
+                If your team can&#39;t read the dashboard in 10 seconds and know what to do next, the dashboard is wrong.
               </p>
             </div>
             <div>
@@ -66,7 +66,7 @@ export default function AboutPage() {
                 Systems over trends
               </h3>
               <p className="text-muted text-base leading-relaxed">
-                We build structures that last longer than tactics.
+                We build reporting infrastructure and workflows that outlast the next platform update or algorithm change.
               </p>
             </div>
             <div>
@@ -74,7 +74,7 @@ export default function AboutPage() {
                 Execution over theory
               </h3>
               <p className="text-muted text-base leading-relaxed">
-                If it does not work in the real world, it does not count.
+                Every engagement ends with working tools your team uses on Monday. If it doesn&#39;t run in production, it doesn&#39;t count.
               </p>
             </div>
           </div>

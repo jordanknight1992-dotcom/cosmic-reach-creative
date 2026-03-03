@@ -7,25 +7,25 @@ import { ParallaxSignupForm } from "./ParallaxSignupForm";
 export const metadata: Metadata = createMetadata({
   title: "Parallax",
   description:
-    "Cosmic Reach Parallax. One clean report from GA4, Search Console, and LinkedIn. Coming soon.",
+    "A marketing performance dashboard that connects GA4, Search Console, Google Ads, social platforms, and keyword tracking into one clean view. Built for marketing teams.",
   path: "/parallax",
 });
 
 const capabilities = [
   {
-    title: "GA4, Search Console, LinkedIn",
+    title: "Google Full Suite",
     description:
-      "Pull performance data from the platforms that matter into a single view. No tab switching. No stitching spreadsheets.",
+      "GA4, Search Console, Google Ads, Business Profile, and Tag Manager in one view. No more pulling from six tabs into a slide deck.",
   },
   {
-    title: "One clean report",
+    title: "Social + Ads Performance",
     description:
-      "A focused dashboard that surfaces what changed, what is working, and what needs attention. Built for decision makers, not analysts.",
+      "LinkedIn, Meta, and X analytics alongside your ad spend and conversion data. See which channels actually drive results.",
   },
   {
-    title: "Signal over noise",
+    title: "Keyword Tracking + Recommendations",
     description:
-      "We filter the metrics that matter from the ones that just look busy. You get clarity, not a wall of charts.",
+      "Track target keywords over time, see ranking movement, and get AI-powered recommendations for what to prioritize next.",
   },
 ];
 
@@ -36,21 +36,21 @@ export default function ParallaxPage() {
         <SectionHeading
           label="Parallax"
           title="Cosmic Reach Parallax"
-          description="A reporting dashboard that pulls GA4, Search Console, and LinkedIn data into one clean report. Currently in development."
+          description="A marketing performance dashboard that connects every platform your team uses into one clean, actionable report."
         />
       </Section>
 
       <Section background="surface">
         <div className="max-w-3xl">
           <p className="text-starlight text-lg font-medium mb-6">
-            Marketing data is scattered across platforms. Parallax brings it together.
+            Your marketing data is scattered across platforms. Parallax brings it together.
           </p>
           <div className="space-y-4 text-muted text-base leading-relaxed">
             <p>
-              Most teams spend hours pulling numbers from GA4, Search Console, and LinkedIn into slide decks that are outdated by the time they are presented.
+              Most marketing teams spend hours every week pulling numbers from GA4, Search Console, Google Ads, LinkedIn, and Meta into slide decks that are outdated by the time they&#39;re presented. The data exists. The problem is it lives in six different places with six different interfaces.
             </p>
             <p>
-              Parallax is a reporting layer that connects to your existing platforms and delivers a single, readable report. No dashboards that require a data science degree. No vanity metrics. Just the signal your team needs to make decisions.
+              Parallax connects to your existing platforms and delivers a single, readable dashboard. Each client gets their own portal with the metrics that matter to their business - not a wall of vanity charts. Just the signal your team needs to make decisions.
             </p>
           </div>
         </div>
@@ -59,7 +59,7 @@ export default function ParallaxPage() {
       <Section>
         <SectionHeading
           label="What it does"
-          title="Built for clarity"
+          title="Built for Marketing Teams"
           align="center"
         />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -81,10 +81,15 @@ export default function ParallaxPage() {
 
       <Section background="surface">
         <SectionHeading
-          label="Coming soon"
-          title="Be the first to know"
+          label="Early access"
+          title="Currently onboarding first clients"
           align="center"
         />
+        <div className="max-w-2xl mx-auto mb-8">
+          <p className="text-muted text-base text-center leading-relaxed">
+            Parallax is live with three initial clients. Drop your email to get on the list for early access.
+          </p>
+        </div>
         <ParallaxSignupForm />
       </Section>
     </>

@@ -9,7 +9,7 @@ import { createMetadata } from "@/lib/metadata";
 export const metadata: Metadata = createMetadata({
   title: "Contact",
   description:
-    "If your organization feels busy but not aligned, that is the moment we step in. Tell us what you are navigating.",
+    "Tell us about your marketing team and the operational challenges slowing you down. We'll help you figure out whether a strategy call makes sense.",
   path: "/contact",
   heroImage: "/images/hero/contact.jpg",
 });
@@ -19,7 +19,7 @@ export default function ContactPage() {
     <>
       <PageHero
         title="Contact Cosmic Reach"
-        lead="If your organization feels busy but not aligned, that is the moment we step in."
+        lead="If your marketing team feels busy but not aligned, that is the moment we step in."
         imageSrc="/images/hero/contact.jpg"
         imageAlt="Contact Cosmic Reach Creative"
       />
@@ -28,7 +28,7 @@ export default function ContactPage() {
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-12">
           <div>
             <p className="text-muted text-lg leading-relaxed mb-6">
-              Tell us what you&#39;re navigating and we&#39;ll help you determine whether a Signal Session makes sense.
+              Tell us about your team, your platforms, and where reporting or operations are slowing you down. We&#39;ll help you determine whether a strategy call makes sense.
             </p>
             <a
               href={`mailto:${SITE.email}`}

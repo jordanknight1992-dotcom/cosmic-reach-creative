@@ -219,9 +219,9 @@ export default function ClearEnoughPage() {
 
       {/* CTA */}
       <CTASection
-        title="Want clarity like this inside your organization?"
-        description="We start with a Clarity Session. We map the signal, locate the interference, and design the simplest system that will hold."
-        buttonLabel="Book a Clarity Session"
+        title="Want systems like this for your team?"
+        description="We start with a free strategy call. Same design principles, applied to your marketing operations."
+        buttonLabel="Book a Free Strategy Call"
         buttonHref="/signal-session"
       />
     </>
