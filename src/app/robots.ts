@@ -6,7 +6,15 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/signal-check-confirmed", "/clarity-confirmed"],
+      disallow: [
+        "/api/",
+        "/next-steps",
+        "/audit-intake",
+        "/signal-check-confirmed",
+        "/clarity-confirmed",
+        "/clarity",
+        "/clarity-session",
+      ],
     },
     sitemap: `${siteConfig.domain}/sitemap.xml`,
   };

@@ -5,7 +5,7 @@ import { Icon } from "@/components/Icon";
 import { CTAButton } from "@/components/CTAButton";
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "About Cosmic Reach | Business Clarity Consulting",
   description:
     "Cosmic Reach was built from years inside real delivery environments where visibility, structure, and execution determined whether projects succeeded.",
   alternates: { canonical: `${siteConfig.domain}/about` },

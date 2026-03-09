@@ -5,7 +5,7 @@ import { Icon } from "@/components/Icon";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "FAQ",
+  title: "FAQ | Business Clarity Audit Questions",
   description:
     "Clear expectations make better partnerships. Common questions about Cosmic Reach Creative.",
   alternates: { canonical: `${siteConfig.domain}/faq` },
@@ -87,9 +87,9 @@ export default function FAQPage() {
                 key={i}
                 className="rounded-2xl border border-starlight/8 bg-navy/40 p-6 sm:p-8 transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/20"
               >
-                <h2 className="font-display font-semibold text-xl text-starlight mb-3">
+                <h3 className="font-display font-semibold text-xl text-starlight mb-3">
                   {faq.question}
-                </h2>
+                </h3>
                 {faq.answer.split("\n\n").map((para, j) => (
                   <p key={j} className="text-starlight/70 text-base mb-3 last:mb-0">
                     {para}
@@ -116,7 +116,7 @@ export default function FAQPage() {
           <div className="max-w-2xl mx-auto mt-12 text-center">
             <div className="flex items-center justify-center gap-2 mb-3">
               <Icon name="spark" size={18} className="opacity-60" />
-              <p className="text-sm text-starlight/50">
+              <p className="text-sm text-starlight/60">
                 Still have questions?
               </p>
             </div>

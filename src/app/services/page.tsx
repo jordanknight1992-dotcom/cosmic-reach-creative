@@ -6,7 +6,7 @@ import { CTAButton } from "@/components/CTAButton";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Services",
+  title: "Services & Implementation Sprints",
   description:
     "Cosmic Reach engagements follow a deliberate progression designed to diagnose problems before building solutions.",
   alternates: { canonical: `${siteConfig.domain}/services` },
@@ -156,7 +156,7 @@ export default function ServicesPage() {
           </div>
           <div className="text-center mt-6">
             <CTAButton label="Start the Clarity Audit" variant="primary" />
-            <p className="mt-3 text-xs text-starlight/40">
+            <p className="mt-3 text-xs text-starlight/60">
               3&ndash;5 day turnaround &middot; Structured clarity report included
             </p>
           </div>
@@ -194,7 +194,7 @@ export default function ServicesPage() {
                 <p className="text-starlight/70 text-base mb-5">{tier.description}</p>
                 <div className="grid gap-6 md:grid-cols-2">
                   <div>
-                    <p className="text-xs font-display font-semibold tracking-widest text-starlight/50 uppercase mb-3">
+                    <p className="text-xs font-display font-semibold tracking-widest text-starlight/60 uppercase mb-3">
                       Typical work includes
                     </p>
                     <ul className="space-y-2">
@@ -207,7 +207,7 @@ export default function ServicesPage() {
                     </ul>
                   </div>
                   <div>
-                    <p className="text-xs font-display font-semibold tracking-widest text-starlight/50 uppercase mb-3">
+                    <p className="text-xs font-display font-semibold tracking-widest text-starlight/60 uppercase mb-3">
                       Framework coverage
                     </p>
                     <ul className="space-y-2">
