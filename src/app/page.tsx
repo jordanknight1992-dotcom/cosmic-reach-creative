@@ -224,8 +224,18 @@ export default function HomePage() {
       </section>
 
       {/* ── Testimonial ── */}
-      <section className="py-16 sm:py-24 bg-section-light" aria-label="What operators say">
-        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+      <section
+        className="relative overflow-hidden py-16 sm:py-24 bg-section-light"
+        aria-label="What operators say"
+      >
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute left-[8%] top-[18%] select-none font-serif text-[180px] leading-none text-navy/6"
+        >
+          &ldquo;
+        </div>
+
+        <div className="relative z-10 mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <p className="text-center text-xs font-display font-semibold tracking-widest text-copper uppercase mb-8">
             From the Mission Log
           </p>
@@ -238,18 +248,18 @@ export default function HomePage() {
                 &mdash; Fractional Sales &amp; Marketing Director, California
               </footer>
             </blockquote>
+
             <blockquote className="rounded-2xl border border-navy/10 bg-white shadow-subtle p-6 sm:p-8">
               <p className="text-navy/75 text-base italic leading-relaxed mb-4">
                 &ldquo;I&apos;ve spent decades leading infrastructure and network programs where milestone visibility and structured reporting were critical to success. Cosmic Reach translated that same disciplined framework into a modern, intuitive platform. It gives project leaders clarity, control, and professional-grade reporting without unnecessary complexity.&rdquo;
               </p>
               <footer className="text-sm text-copper font-display font-medium">
-                &mdash; Licensed PMO, Texas
+                &mdash; Certified PMO, Texas
               </footer>
             </blockquote>
           </div>
         </div>
       </section>
-
       {/* ── Who Cosmic Reach Is For ── */}
       <section className="py-16 sm:py-24" aria-labelledby="fit-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
