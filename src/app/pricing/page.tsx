@@ -2,12 +2,12 @@ import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import Image from "next/image";
 import { Icon } from "@/components/Icon";
-import { CTAButton } from "@/components/CTAButton";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Pricing",
+  title: "Pricing | Business Clarity Audit & Sprints",
   description:
-    "Cosmic Reach is designed to be clear, scoped, and decision-ready from the start. Structured engagements with fixed outcomes.",
+    "Structured engagements with fixed outcomes. Every engagement starts with a diagnostic. From there, you choose how far to go.",
   alternates: { canonical: `${siteConfig.domain}/pricing` },
 };
 
@@ -18,6 +18,7 @@ const sprintTiers = [
     description:
       "Focused implementation of the highest-impact improvements identified in the audit.",
     icon: "compass",
+    coverage: ["Signal", "Thrust"],
   },
   {
     name: "60 Day Alignment Sprint",
@@ -25,6 +26,7 @@ const sprintTiers = [
     description:
       "A deeper sprint to align messaging, customer journey, and execution.",
     icon: "orbit",
+    coverage: ["Signal", "Gravity", "Orbit"],
   },
   {
     name: "90 Day Systems Sprint",
@@ -32,6 +34,7 @@ const sprintTiers = [
     description:
       "A full systems build designed to create repeatable, sustainable progress.",
     icon: "gears",
+    coverage: ["Signal", "Gravity", "Orbit", "Thrust"],
   },
 ];
 
@@ -63,14 +66,14 @@ export default function PricingPage() {
           <div className="max-w-2xl mx-auto text-center">
             <h1 id="pricing-hero" className="text-copper">Structured Engagements.<br />Fixed Outcomes.</h1>
             <p className="text-starlight/80 text-lg sm:text-xl mt-3">
-              Every engagement starts with a diagnostic. From there, you choose how far to go.
+              Every engagement starts with a diagnostic. From there, you choose your trajectory.
             </p>
           </div>
         </div>
       </section>
 
       {/* Featured Audit Card */}
-      <section className="pt-10 sm:pt-16 pb-6 sm:pb-8" aria-label="Business Clarity Audit">
+      <section className="pt-12 sm:pt-16 pb-6 sm:pb-8" aria-label="Business Clarity Audit">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
             <div className="flex justify-center mb-3">
@@ -91,7 +94,7 @@ export default function PricingPage() {
               <p className="text-starlight/70 text-base mb-5">
                 A structured diagnostic designed to show where your business is losing momentum and what to fix first.
               </p>
-              <p className="text-xs font-display font-semibold tracking-widest text-starlight/50 uppercase mb-3">
+              <p className="text-xs font-display font-semibold tracking-widest text-starlight/60 uppercase mb-3">
                 Includes
               </p>
               <ul className="space-y-2 mb-6">
@@ -103,25 +106,31 @@ export default function PricingPage() {
                   "Prioritized improvement roadmap",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-sm text-starlight/80">
-                    <span className="text-copper mt-0.5 shrink-0">◆</span>
+                    <span className="text-copper mt-0.5 shrink-0">&#9670;</span>
                     {item}
                   </li>
                 ))}
               </ul>
-              <CTAButton
-                label="Start With a Business Clarity Audit"
-                variant="primary"
-                className="w-full justify-center"
-              />
+              <a
+                href={siteConfig.stripeAuditUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full inline-flex items-center justify-center rounded-[var(--radius-md)] bg-spark-red text-white px-6 py-3 font-display font-semibold text-base transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0"
+              >
+                Start the Clarity Audit
+              </a>
+              <p className="mt-3 text-center text-xs text-starlight/60">
+                3&ndash;5 day turnaround &middot; Structured clarity report included
+              </p>
             </article>
           </div>
         </div>
       </section>
 
       {/* Sprint Cards */}
-      <section className="py-6 sm:py-8" aria-label="Implementation sprints">
+      <section className="py-8 sm:py-10" aria-label="Implementation sprints">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
-          <p className="text-center text-xs font-display font-semibold tracking-widest text-starlight/40 uppercase mb-5">
+          <p className="text-center text-xs font-display font-semibold tracking-widest text-starlight/60 uppercase mb-5">
             Implementation Sprints
           </p>
           <div className="grid gap-4 sm:grid-cols-3">
@@ -131,15 +140,28 @@ export default function PricingPage() {
                 className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-5 flex flex-col transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/30 hover:shadow-subtle"
               >
                 <Icon name={tier.icon} size={24} className="mb-3 opacity-70" />
-                <h2 className="font-display font-semibold text-base mb-1">
+                <h3 className="font-display font-semibold text-base mb-1">
                   {tier.name}
-                </h2>
+                </h3>
                 <p className="text-copper font-display font-semibold text-xl mb-3">
                   {tier.price}
                 </p>
-                <p className="text-sm text-starlight/60 flex-1">
+                <p className="text-sm text-starlight/60 mb-4 flex-1">
                   {tier.description}
                 </p>
+                <div>
+                  <p className="text-xs font-display font-medium tracking-wide text-starlight/60 uppercase mb-2">
+                    Framework coverage
+                  </p>
+                  <ul className="space-y-1">
+                    {tier.coverage.map((item) => (
+                      <li key={item} className="flex items-center gap-2 text-xs text-starlight/60">
+                        <span className="text-copper text-[8px]" aria-hidden="true">&#9670;</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </article>
             ))}
           </div>
@@ -153,9 +175,9 @@ export default function PricingPage() {
             <article className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-5 flex flex-col sm:flex-row sm:items-center gap-4 transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/30 hover:shadow-subtle">
               <Icon name={advisoryTier.icon} size={24} className="opacity-70 shrink-0" />
               <div className="flex-1 min-w-0">
-                <h2 className="font-display font-semibold text-base mb-0.5">
+                <h3 className="font-display font-semibold text-base mb-0.5">
                   {advisoryTier.name}
-                </h2>
+                </h3>
                 <p className="text-sm text-starlight/60">{advisoryTier.description}</p>
               </div>
               <p className="text-copper font-display font-semibold text-xl shrink-0">
@@ -166,10 +188,26 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* De-emphasized Free Intro Call */}
-      <section className="pb-10 sm:pb-16" aria-label="Free intro call">
+      {/* Testimonial */}
+      <section className="py-10 sm:py-14 bg-navy/20" aria-label="What operators say">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
-          <p className="text-center text-sm text-starlight/40">
+          <div className="max-w-2xl mx-auto">
+            <blockquote className="rounded-2xl border border-starlight/8 bg-navy/60 p-6 sm:p-8">
+              <p className="text-starlight/80 text-base italic leading-relaxed mb-4">
+                &ldquo;Cosmic Reach brings a level of imagination and strategic clarity that&apos;s rare to find. Jordan has a way of seeing the system underneath a business and identifying where momentum is breaking down. The result is clarity and direction you wouldn&apos;t arrive at on your own.&rdquo;
+              </p>
+              <footer className="text-sm text-copper font-display font-medium">
+                &mdash; Fractional Sales &amp; Marketing Director, California
+              </footer>
+            </blockquote>
+          </div>
+        </div>
+      </section>
+
+      {/* De-emphasized Free Intro Call */}
+      <section className="pb-12 sm:pb-16" aria-label="Free intro call">
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+          <p className="text-center text-sm text-starlight/60">
             Not sure where to start?{" "}
             <a
               href={siteConfig.calendlySignalCheckUrl}
@@ -179,7 +217,7 @@ export default function PricingPage() {
             >
               Book a free 30-minute intro call
             </a>{" "}
-            first.
+            to check the signal first.
           </p>
         </div>
       </section>

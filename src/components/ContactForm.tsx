@@ -81,7 +81,7 @@ export function ContactForm() {
         </div>
         <div>
           <label htmlFor="company" className="block text-sm font-display font-medium text-starlight/80 mb-1.5">
-            Company <span className="text-starlight/40">(optional)</span>
+            Company <span className="text-starlight/60">(optional)</span>
           </label>
           <input
             id="company"
@@ -123,7 +123,7 @@ export function ContactForm() {
         )}
       </form>
 
-      <p className="mt-8 text-sm text-starlight/40 text-center">
+      <p className="mt-8 text-sm text-starlight/60 text-center">
         Or email directly:{" "}
         <a
           href={`mailto:${siteConfig.contactEmail}`}

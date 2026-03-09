@@ -77,14 +77,14 @@ export default function NextStepsPage() {
                       className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-display font-semibold ${
                         step.active
                           ? "bg-copper text-deep-space"
-                          : "border border-starlight/20 text-starlight/40"
+                          : "border border-starlight/20 text-starlight/60"
                       }`}
                     >
                       {step.number}
                     </div>
                     <span
                       className={`mt-2 text-xs font-display font-medium text-center whitespace-nowrap ${
-                        step.active ? "text-copper" : "text-starlight/40"
+                        step.active ? "text-copper" : "text-starlight/60"
                       }`}
                     >
                       {step.label}
@@ -145,7 +145,7 @@ export default function NextStepsPage() {
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
             <h2 id="step2-heading" className="mb-3">
-              <span className="text-starlight/40">Step 2</span> — Analysis and Review
+              <span className="text-starlight/60">Step 2</span> — Analysis and Review
             </h2>
             <p className="text-starlight/70 mb-6">
               Once the intake form is submitted, we begin the Business Clarity Audit.
@@ -159,7 +159,7 @@ export default function NextStepsPage() {
                 >
                   <Icon name={area.icon} size={22} className="opacity-60 mx-auto mb-2" />
                   <p className="font-display font-semibold text-sm text-copper mb-1">{area.name}</p>
-                  <p className="text-xs text-starlight/50">{area.description}</p>
+                  <p className="text-xs text-starlight/60">{area.description}</p>
                 </div>
               ))}
             </div>
@@ -176,7 +176,7 @@ export default function NextStepsPage() {
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
             <h2 id="step3-heading" className="mb-3">
-              <span className="text-starlight/40">Step 3</span> — Clarity Report Delivery
+              <span className="text-starlight/60">Step 3</span> — Clarity Report Delivery
             </h2>
             <p className="text-starlight/70 mb-4">You will receive a structured report outlining:</p>
             <ul className="space-y-2 mb-5">
@@ -187,7 +187,7 @@ export default function NextStepsPage() {
                 </li>
               ))}
             </ul>
-            <p className="text-sm text-starlight/50">
+            <p className="text-sm text-starlight/60">
               Typical delivery time is{" "}
               <strong className="text-starlight/70 font-semibold">3–5 business days</strong>{" "}
               after the intake form is submitted.
@@ -218,7 +218,7 @@ export default function NextStepsPage() {
                 </li>
               ))}
             </ul>
-            <p className="text-sm text-starlight/50">
+            <p className="text-sm text-starlight/60">
               These sprints focus on implementing the highest-impact improvements identified during the audit.
             </p>
           </div>
@@ -246,7 +246,7 @@ export default function NextStepsPage() {
             >
               jordan@cosmicreachcreative.com
             </a>
-            <p className="mt-6 text-starlight/50 text-sm">
+            <p className="mt-6 text-starlight/60 text-sm">
               We look forward to helping you restore momentum and build a system that supports real progress.
             </p>
           </div>

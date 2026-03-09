@@ -1,124 +1,270 @@
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
-import { MarkdownPage } from "@/components/MarkdownPage";
+import Image from "next/image";
+import { Icon } from "@/components/Icon";
+import { CTAButton } from "@/components/CTAButton";
+import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: `${siteConfig.siteName} | Find Where Your Business Is Losing Momentum`,
+  title: "Find Where Your Business Is Losing Momentum",
   description:
     "Cosmic Reach Creative helps founders identify where growth is getting stuck and build systems that move the business forward.",
   alternates: { canonical: siteConfig.domain },
 };
 
-const content = `# Find Where Your Business Is Losing Momentum
+const diagnosticSignals = [
+  "Marketing activity is happening but revenue doesn\u2019t move the way it should",
+  "Your team works hard but priorities constantly shift",
+  "Customers seem interested but hesitate before buying",
+  "Messaging changes frequently because nothing feels quite right",
+  "Decisions take longer than they should because the real constraint isn\u2019t clear",
+  "Progress depends on heroic effort instead of reliable systems",
+];
 
-Cosmic Reach Creative helps founders identify where growth is getting stuck and build systems that move the business forward.
+const frameworkLayers = [
+  { title: "Signal", description: "Messaging clarity", icon: "compass" },
+  { title: "Gravity", description: "Offer strength", icon: "orbit" },
+  { title: "Orbit", description: "Customer journey", icon: "gears" },
+  { title: "Thrust", description: "Growth opportunities", icon: "signal" },
+];
 
-[Primary CTA: Start With a Business Clarity Audit]
-[Secondary CTA: Explore the Clarity Framework]
+const fitSignals = [
+  "A business that has traction but feels stuck",
+  "A team that\u2019s working hard but lacks structural clarity",
+  "An early-stage founder shaping the right system from the beginning",
+  "A company where marketing, operations, and execution aren\u2019t fully aligned",
+];
 
-IMAGE: 01-home-hero.jpg
-
----
-
-## Where Momentum Breaks Down
-
-Most businesses don't have a marketing problem.
-
-The website exists.
-The services are clear internally.
-The team is working.
-
-But something still isn't converting.
-
-Customers hesitate.
-Leads stall.
-Effort doesn't translate into momentum.
-
-Most businesses don't have a marketing problem.
-They have a clarity problem.
-
-Cosmic Reach identifies exactly where that breakdown happens.
-
-ICON: spark
-
----
-
-## Signals That Your Business Needs a Clarity Audit
-
-If any of these feel familiar, the system underneath your business may be working against you.
-
-• Marketing activity is happening but revenue doesn't move the way it should
-• Your team works hard but priorities constantly shift
-• Customers seem interested but hesitate before buying
-• Messaging changes frequently because nothing feels quite right
-• Decisions take longer than they should because the real constraint isn't clear
-• Progress depends on heroic effort instead of reliable systems
-
-These are not effort problems.
-They are clarity problems.
-
-A Business Clarity Audit identifies exactly where momentum is breaking down and what to fix first.
-
-[CTA: Request a Clarity Audit]
-
----
-
-## The Cosmic Reach Framework
-
-We don't start with tactics.
-We start by fixing the system that makes tactics succeed or fail.
-
-Every engagement moves through four layers.
-
-**Signal** - Messaging clarity
-ICON: compass
-
-**Gravity** - Offer strength
-ICON: orbit
-
-**Orbit** - Customer journey
-ICON: gears
-
-**Thrust** - Growth opportunities
-ICON: signal
-
----
-
-## Who Cosmic Reach Is For
-
-Cosmic Reach works best with founders and teams who know something in their business needs to be clarified before progress can accelerate.
-
-That might mean:
-
-• a business that has traction but feels stuck
-• a team that's working hard but lacks structural clarity
-• an early-stage founder shaping the right system from the beginning
-• a company where marketing, operations, and execution aren't fully aligned
-
-The common thread is the desire to build the right system before scaling effort.
-
-**Not the Right Fit**
-
-Cosmic Reach may not be the right solution if:
-
-• you're looking for quick marketing hacks
-• you're not open to adjusting how the business is structured
-• you're expecting a tactical execution agency
-
-The focus is clarity, structure, and systems so progress becomes repeatable.
-
-[CTA: Start With a Business Clarity Audit]
-
----
-
-## Start With a Business Clarity Audit
-
-The first step is a structured diagnostic of your business — not a sales call.
-
-The Business Clarity Audit identifies exactly where momentum is breaking down and what to fix first.
-
-[CTA: Book a Business Clarity Audit]`;
+const notFitSignals = [
+  "You\u2019re looking for quick marketing hacks",
+  "You\u2019re not open to adjusting how the business is structured",
+  "You\u2019re expecting a tactical execution agency",
+];
 
 export default function HomePage() {
-  return <MarkdownPage content={content} />;
+  return (
+    <main id="main-content">
+      {/* ── Hero ── */}
+      <section className="relative overflow-hidden" aria-labelledby="hero-title">
+        <div className="absolute inset-0">
+          <Image
+            src="/images/01-home-hero.jpg"
+            alt=""
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-deep-space/85 via-deep-space/75 to-deep-space" />
+        </div>
+        <div className="relative mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-24 text-center">
+          <div className="max-w-2xl mx-auto">
+            <h1 id="hero-title" className="mb-4 text-copper" style={{ textWrap: "balance" }}>
+              Find Where Your Business Is Losing Momentum
+            </h1>
+            <p className="text-starlight/80 text-base sm:text-lg mb-6">
+              We diagnose the system underneath your business so you know exactly what to fix first.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <CTAButton label="Start the Clarity Audit" variant="primary" />
+              <CTAButton label="Explore the Clarity Framework" variant="secondary" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Where Momentum Breaks Down ── */}
+      <section className="py-14 sm:py-20" aria-labelledby="momentum-heading">
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-3">
+              <Icon name="spark" size={36} className="opacity-80 mx-auto" />
+            </div>
+            <h2 id="momentum-heading" className="mb-5">Where Momentum Breaks Down</h2>
+            <p className="text-starlight/70 text-base mb-3">Most businesses don&apos;t have a marketing problem.</p>
+            <p className="text-starlight/70 text-base mb-3">
+              The website exists. The services are clear internally. The team is working.
+            </p>
+            <p className="text-starlight/70 text-base mb-3">But something still isn&apos;t converting.</p>
+            <p className="text-starlight/70 text-base mb-3">
+              Customers hesitate. Leads stall. Effort doesn&apos;t translate into momentum.
+            </p>
+            <p className="text-starlight/80 text-base font-display font-semibold mt-6 mb-2">
+              They have a clarity problem.
+            </p>
+            <p className="text-starlight/70 text-base">
+              Cosmic Reach identifies exactly where that breakdown happens.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Mid-page image break ── */}
+      <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+        <div className="relative w-full h-48 sm:h-64 rounded-2xl overflow-hidden">
+          <Image
+            src="/images/07-clarity-section.jpg"
+            alt=""
+            fill
+            className="object-cover"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-deep-space/40" />
+        </div>
+      </div>
+
+      {/* ── Diagnostic Signals ── */}
+      <section className="py-14 sm:py-20 bg-navy/30" aria-labelledby="signals-heading">
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-3">
+              <Icon name="signal" size={36} className="opacity-80 mx-auto" />
+            </div>
+            <h2 id="signals-heading" className="mb-3">Signals That Your Business Needs a Clarity Audit</h2>
+            <p className="text-starlight/70 text-base mb-8">
+              If any of these feel familiar, the system underneath your business may be working against you.
+            </p>
+          </div>
+          <div className="mx-auto max-w-2xl grid gap-3 sm:grid-cols-2">
+            {diagnosticSignals.map((signal, i) => (
+              <div
+                key={i}
+                className="rounded-xl border border-starlight/8 bg-navy/50 px-5 py-4 flex items-start gap-3 transition-all duration-[var(--duration-base)] hover:border-copper/20"
+              >
+                <span className="text-copper mt-1 text-xs shrink-0" aria-hidden="true">&#9670;</span>
+                <span className="text-starlight/70 text-sm">{signal}</span>
+              </div>
+            ))}
+          </div>
+          <div className="mx-auto max-w-3xl text-center mt-8">
+            <p className="text-starlight/80 text-base font-display font-semibold mb-2">
+              These are not effort problems. They are clarity problems.
+            </p>
+            <p className="text-starlight/70 text-sm mb-6">
+              A Business Clarity Audit identifies exactly where momentum is breaking down and what to fix first.
+            </p>
+            <CTAButton label="See the Clarity Audit" variant="primary" />
+          </div>
+        </div>
+      </section>
+
+      {/* ── The Cosmic Reach Framework ── */}
+      <section className="py-14 sm:py-20" aria-labelledby="framework-heading">
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center mb-8">
+            <div className="mb-3">
+              <Icon name="orbit" size={36} className="opacity-80 mx-auto" />
+            </div>
+            <h2 id="framework-heading" className="mb-3">The Cosmic Reach Framework</h2>
+            <p className="text-starlight/70 text-base">
+              We don&apos;t start with tactics. We map the operating system underneath your business.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {frameworkLayers.map((layer) => (
+              <div
+                key={layer.title}
+                className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-5 text-center transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/30 hover:shadow-subtle"
+              >
+                <Icon name={layer.icon} size={26} className="mb-2 opacity-70 mx-auto" />
+                <h3 className="font-display font-semibold text-base mb-1">{layer.title}</h3>
+                <p className="text-sm text-starlight/60">{layer.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Testimonial ── */}
+      <section className="py-14 sm:py-20 bg-navy/30" aria-label="What operators say">
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+          <p className="text-center text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-8">
+            From the Mission Log
+          </p>
+          <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
+            <blockquote className="rounded-2xl border border-starlight/8 bg-navy/60 p-6 sm:p-8">
+              <p className="text-starlight/80 text-base italic leading-relaxed mb-4">
+                &ldquo;Cosmic Reach brings a level of imagination and strategic clarity that&apos;s rare to find. Jordan has a way of seeing the system underneath a business and identifying where momentum is breaking down. The result is clarity and direction you wouldn&apos;t arrive at on your own.&rdquo;
+              </p>
+              <footer className="text-sm text-copper font-display font-medium">
+                &mdash; Fractional Sales &amp; Marketing Director, California
+              </footer>
+            </blockquote>
+            <blockquote className="rounded-2xl border border-starlight/8 bg-navy/60 p-6 sm:p-8">
+              <p className="text-starlight/80 text-base italic leading-relaxed mb-4">
+                &ldquo;I&apos;ve spent decades leading infrastructure and network programs where milestone visibility and structured reporting were critical to success. Cosmic Reach translated that same disciplined framework into a modern, intuitive platform. It gives project leaders clarity, control, and professional-grade reporting without unnecessary complexity.&rdquo;
+              </p>
+              <footer className="text-sm text-copper font-display font-medium">
+                &mdash; Licensed PMO, Texas
+              </footer>
+            </blockquote>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Who Cosmic Reach Is For ── */}
+      <section className="py-14 sm:py-20" aria-labelledby="fit-heading">
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center">
+            <div className="mb-3">
+              <Icon name="compass" size={36} className="opacity-80 mx-auto" />
+            </div>
+            <h2 id="fit-heading" className="mb-3">Who Cosmic Reach Is For</h2>
+            <p className="text-starlight/70 text-base mb-8">
+              Cosmic Reach works best with founders and teams who know something in their business needs to be clarified before progress can accelerate.
+            </p>
+          </div>
+          <div className="grid gap-6 md:grid-cols-2 max-w-3xl mx-auto">
+            <div className="rounded-2xl border border-starlight/10 bg-navy/50 p-6 sm:p-8">
+              <h3 className="font-display font-semibold text-base text-copper mb-4">The Right Trajectory</h3>
+              <ul className="space-y-3">
+                {fitSignals.map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-starlight/70 text-sm">
+                    <span className="text-copper mt-1 text-xs shrink-0" aria-hidden="true">&#9670;</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="rounded-2xl border border-starlight/10 bg-navy/50 p-6 sm:p-8">
+              <h3 className="font-display font-semibold text-base text-starlight/60 mb-4">Not the Right Fit</h3>
+              <ul className="space-y-3">
+                {notFitSignals.map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-starlight/60 text-sm">
+                    <span className="text-starlight/30 mt-1 text-xs shrink-0" aria-hidden="true">&#9670;</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <div className="text-center mt-6">
+            <p className="text-starlight/60 text-sm mb-4">
+              The common thread is the desire to build the right system before scaling effort.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Final CTA ── */}
+      <section className="py-14 sm:py-20 bg-navy/30" aria-labelledby="final-cta-heading">
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <div className="mb-3">
+              <Icon name="rocket" size={36} className="opacity-80 mx-auto" />
+            </div>
+            <h2 id="final-cta-heading" className="mb-3">Map Your Path to Clarity</h2>
+            <p className="text-starlight/70 text-base mb-6">
+              The first step is a structured diagnostic of your business — not a sales call.
+              The Business Clarity Audit identifies exactly where momentum is breaking down and what to fix first.
+            </p>
+            <CTAButton label="Start the Clarity Audit" variant="primary" />
+            <p className="mt-3 text-xs text-starlight/60">
+              3\u20135 day turnaround &middot; Structured clarity report included
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+  );
 }
