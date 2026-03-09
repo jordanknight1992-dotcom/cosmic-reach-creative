@@ -90,7 +90,7 @@ export function CTAButton({
 
   const variantStyles =
     variant === "secondary"
-      ? "border-2 border-white text-white bg-transparent hover:bg-white/10"
+      ? "border-2 border-starlight text-starlight bg-transparent hover:bg-starlight/10"
       : "bg-spark-red text-white hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0";
 
   if (isExternal) {
