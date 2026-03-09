@@ -13,11 +13,11 @@ export const metadata: Metadata = {
 };
 
 const diagnosticSignals = [
-  "Marketing activity is happening but revenue doesn\u2019t move the way it should",
+  "Marketing activity is happening but revenue doesn’t move the way it should",
   "Your team works hard but priorities constantly shift",
   "Customers seem interested but hesitate before buying",
   "Messaging changes frequently because nothing feels quite right",
-  "Decisions take longer than they should because the real constraint isn\u2019t clear",
+  "Decisions take longer than they should because the real constraint isn’t clear",
   "Progress depends on heroic effort instead of reliable systems",
 ];
 
@@ -30,15 +30,15 @@ const frameworkLayers = [
 
 const fitSignals = [
   "A business that has traction but feels stuck",
-  "A team that\u2019s working hard but lacks structural clarity",
+  "A team that’s working hard but lacks structural clarity",
   "An early-stage founder shaping the right system from the beginning",
-  "A company where marketing, operations, and execution aren\u2019t fully aligned",
+  "A company where marketing, operations, and execution aren’t fully aligned",
 ];
 
 const notFitSignals = [
-  "You\u2019re looking for quick marketing hacks",
-  "You\u2019re not open to adjusting how the business is structured",
-  "You\u2019re expecting a tactical execution agency",
+  "You’re looking for quick marketing hacks",
+  "You’re not open to adjusting how the business is structured",
+  "You’re expecting a tactical execution agency",
 ];
 
 export default function HomePage() {
@@ -302,7 +302,7 @@ export default function HomePage() {
             </p>
             <CTAButton label="Start the Clarity Audit" variant="primary" />
             <p className="mt-3 text-xs text-starlight/60">
-              3\u20135 day turnaround &middot; Structured clarity report included
+              3–5 day turnaround &middot; Structured clarity report included
             </p>
           </div>
         </div>
