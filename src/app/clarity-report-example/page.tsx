@@ -137,7 +137,7 @@ function ReportCard({
 }) {
   return (
     <section
-      className={`rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-6 sm:p-8 ${className}`}
+      className={`rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-7 sm:p-9 ${className}`}
       aria-label={label}
     >
       <SectionLabel label={label} />
@@ -221,15 +221,15 @@ export default function ClarityReportExamplePage() {
       </div>
 
       {/* ── Intro explanation (screen only) ── */}
-      <div className="print:hidden py-6 sm:py-8">
+      <div className="print:hidden py-8 sm:py-10 bg-section-light">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
-            <div className="rounded-2xl border border-copper/25 bg-navy/50 px-6 py-5 flex gap-4 items-start">
+            <div className="rounded-2xl border border-copper/30 bg-white shadow-subtle px-6 py-5 flex gap-4 items-start">
               <span className="text-copper text-sm mt-0.5 shrink-0" aria-hidden="true">
                 &#9670;
               </span>
-              <p className="text-starlight/70 text-sm leading-relaxed">
-                <strong className="text-starlight font-display font-semibold">
+              <p className="text-navy/70 text-sm leading-relaxed">
+                <strong className="text-navy font-display font-semibold">
                   This is a sanitized example report
                 </strong>{" "}
                 using a fictional company called AtlasOps. It demonstrates the exact structure,
@@ -242,8 +242,8 @@ export default function ClarityReportExamplePage() {
       </div>
 
       {/* ── Report Body ── */}
-      <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pb-16 sm:pb-24 print:px-0 print:pb-0">
-        <div className="max-w-3xl mx-auto space-y-5 print:space-y-6">
+      <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-10 pb-16 sm:pb-24 print:px-0 print:pb-0">
+        <div className="max-w-3xl mx-auto space-y-6 print:space-y-6">
 
           {/* ── Executive Readout ── */}
           <ReportCard label="Executive Readout">
@@ -529,7 +529,7 @@ export default function ClarityReportExamplePage() {
 
       {/* ── CTA Section (screen only) ── */}
       <section
-        className="print:hidden py-14 sm:py-20 bg-navy/30"
+        className="print:hidden py-16 sm:py-24 bg-navy/60 border-t border-copper/15"
         aria-labelledby="report-cta-heading"
       >
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
@@ -537,9 +537,12 @@ export default function ClarityReportExamplePage() {
             <h2 id="report-cta-heading" className="mb-4">
               Start Your Clarity Audit
             </h2>
-            <p className="text-starlight/70 text-base mb-8" style={{ textWrap: "balance" }}>
-              If your business feels like it should be working better than it is, the Clarity Audit
-              reveals exactly where momentum is being lost and what to fix first.
+            <p className="text-starlight/70 text-base mb-2" style={{ textWrap: "balance" }}>
+              The Clarity Audit is a structured diagnostic that reveals exactly where momentum is
+              breaking down inside your business.
+            </p>
+            <p className="text-starlight/60 text-sm mb-8" style={{ textWrap: "balance" }}>
+              If your business feels like it should be working better than it is, this is where to start.
             </p>
             <CTAButton label="Start the Clarity Audit" variant="primary" />
             <p className="mt-3 text-xs text-starlight/50">

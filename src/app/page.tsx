@@ -74,25 +74,25 @@ export default function HomePage() {
       </section>
 
       {/* ── Where Momentum Breaks Down ── */}
-      <section className="py-14 sm:py-20" aria-labelledby="momentum-heading">
+      <section className="py-16 sm:py-24 bg-section-light" aria-labelledby="momentum-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <div className="mb-3">
               <Icon name="spark" size={36} className="opacity-80 mx-auto" />
             </div>
-            <h2 id="momentum-heading" className="mb-5">Where Momentum Breaks Down</h2>
-            <p className="text-starlight/70 text-base mb-3">Most businesses don&apos;t have a marketing problem.</p>
-            <p className="text-starlight/70 text-base mb-3">
+            <h2 id="momentum-heading" className="mb-5 text-navy">Where Momentum Breaks Down</h2>
+            <p className="text-navy/70 text-base mb-3">Most businesses don&apos;t have a marketing problem.</p>
+            <p className="text-navy/70 text-base mb-3">
               The website exists. The services are clear internally. The team is working.
             </p>
-            <p className="text-starlight/70 text-base mb-3">But something still isn&apos;t converting.</p>
-            <p className="text-starlight/70 text-base mb-3">
+            <p className="text-navy/70 text-base mb-3">But something still isn&apos;t converting.</p>
+            <p className="text-navy/70 text-base mb-3">
               Customers hesitate. Leads stall. Effort doesn&apos;t translate into momentum.
             </p>
-            <p className="text-starlight/80 text-base font-display font-semibold mt-6 mb-2">
+            <p className="text-navy text-base font-display font-semibold mt-6 mb-2">
               They have a clarity problem.
             </p>
-            <p className="text-starlight/70 text-base">
+            <p className="text-navy/70 text-base">
               Cosmic Reach identifies exactly where that breakdown happens.
             </p>
           </div>
@@ -114,7 +114,7 @@ export default function HomePage() {
       </div>
 
       {/* ── Diagnostic Signals ── */}
-      <section className="py-14 sm:py-20 bg-navy/30" aria-labelledby="signals-heading">
+      <section className="py-16 sm:py-24 bg-navy/40" aria-labelledby="signals-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <div className="mb-3">
@@ -149,14 +149,14 @@ export default function HomePage() {
       </section>
 
       {/* ── The Cosmic Reach Framework ── */}
-      <section className="py-14 sm:py-20" aria-labelledby="framework-heading">
+      <section className="py-16 sm:py-24 bg-section-light" aria-labelledby="framework-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center mb-8">
             <div className="mb-3">
               <Icon name="orbit" size={36} className="opacity-80 mx-auto" />
             </div>
-            <h2 id="framework-heading" className="mb-3">The Cosmic Reach Framework</h2>
-            <p className="text-starlight/70 text-base">
+            <h2 id="framework-heading" className="mb-3 text-navy">The Cosmic Reach Framework</h2>
+            <p className="text-navy/70 text-base">
               We don&apos;t start with tactics. We map the operating system underneath your business.
             </p>
           </div>
@@ -164,11 +164,11 @@ export default function HomePage() {
             {frameworkLayers.map((layer) => (
               <div
                 key={layer.title}
-                className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-5 text-center transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/30 hover:shadow-subtle"
+                className="rounded-[var(--radius-lg)] border border-navy/10 bg-white p-5 text-center shadow-subtle transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/40 hover:shadow-soft"
               >
                 <Icon name={layer.icon} size={26} className="mb-2 opacity-70 mx-auto" />
-                <h3 className="font-display font-semibold text-base mb-1">{layer.title}</h3>
-                <p className="text-sm text-starlight/60">{layer.description}</p>
+                <h3 className="font-display font-semibold text-base mb-1 text-navy">{layer.title}</h3>
+                <p className="text-sm text-navy/60">{layer.description}</p>
               </div>
             ))}
           </div>
@@ -176,7 +176,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Inside the Clarity Report ── */}
-      <section className="py-14 sm:py-20 bg-navy/30" aria-labelledby="report-preview-heading">
+      <section className="py-16 sm:py-24 bg-navy/40" aria-labelledby="report-preview-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center mb-8">
             <div className="mb-3">
@@ -218,22 +218,22 @@ export default function HomePage() {
       </section>
 
       {/* ── Testimonial ── */}
-      <section className="py-14 sm:py-20 bg-navy/30" aria-label="What operators say">
+      <section className="py-16 sm:py-24 bg-section-light" aria-label="What operators say">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
-          <p className="text-center text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-8">
+          <p className="text-center text-xs font-display font-semibold tracking-widest text-copper uppercase mb-8">
             From the Mission Log
           </p>
           <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
-            <blockquote className="rounded-2xl border border-starlight/8 bg-navy/60 p-6 sm:p-8">
-              <p className="text-starlight/80 text-base italic leading-relaxed mb-4">
+            <blockquote className="rounded-2xl border border-navy/10 bg-white shadow-subtle p-6 sm:p-8">
+              <p className="text-navy/75 text-base italic leading-relaxed mb-4">
                 &ldquo;Cosmic Reach brings a level of imagination and strategic clarity that&apos;s rare to find. Jordan has a way of seeing the system underneath a business and identifying where momentum is breaking down. The result is clarity and direction you wouldn&apos;t arrive at on your own.&rdquo;
               </p>
               <footer className="text-sm text-copper font-display font-medium">
                 &mdash; Fractional Sales &amp; Marketing Director, California
               </footer>
             </blockquote>
-            <blockquote className="rounded-2xl border border-starlight/8 bg-navy/60 p-6 sm:p-8">
-              <p className="text-starlight/80 text-base italic leading-relaxed mb-4">
+            <blockquote className="rounded-2xl border border-navy/10 bg-white shadow-subtle p-6 sm:p-8">
+              <p className="text-navy/75 text-base italic leading-relaxed mb-4">
                 &ldquo;I&apos;ve spent decades leading infrastructure and network programs where milestone visibility and structured reporting were critical to success. Cosmic Reach translated that same disciplined framework into a modern, intuitive platform. It gives project leaders clarity, control, and professional-grade reporting without unnecessary complexity.&rdquo;
               </p>
               <footer className="text-sm text-copper font-display font-medium">
@@ -245,7 +245,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Who Cosmic Reach Is For ── */}
-      <section className="py-14 sm:py-20" aria-labelledby="fit-heading">
+      <section className="py-16 sm:py-24" aria-labelledby="fit-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <div className="mb-3">
@@ -289,16 +289,15 @@ export default function HomePage() {
       </section>
 
       {/* ── Final CTA ── */}
-      <section className="py-14 sm:py-20 bg-navy/30" aria-labelledby="final-cta-heading">
+      <section className="py-16 sm:py-24 bg-navy/60 border-t border-copper/15" aria-labelledby="final-cta-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <div className="mb-3">
               <Icon name="rocket" size={36} className="opacity-80 mx-auto" />
             </div>
-            <h2 id="final-cta-heading" className="mb-3">Map Your Path to Clarity</h2>
-            <p className="text-starlight/70 text-base mb-6">
-              The first step is a structured diagnostic of your business — not a sales call.
-              The Business Clarity Audit identifies exactly where momentum is breaking down and what to fix first.
+            <h2 id="final-cta-heading" className="mb-4">Map Your Path to Clarity</h2>
+            <p className="text-starlight/70 text-base mb-6" style={{ textWrap: "balance" }}>
+              The Clarity Audit is a structured diagnostic that reveals exactly where momentum is breaking down inside your business.
             </p>
             <CTAButton label="Start the Clarity Audit" variant="primary" />
             <p className="mt-3 text-xs text-starlight/60">
