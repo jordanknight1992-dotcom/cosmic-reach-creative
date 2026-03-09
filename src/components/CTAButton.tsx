@@ -51,9 +51,9 @@ function resolveCtaHref(label: string): string {
     return "/framework";
   }
 
-  // Intake form placeholder
+  // Audit intake form
   if (lower.includes("intake form")) {
-    return "/contact";
+    return "/audit-intake";
   }
 
   // Services
