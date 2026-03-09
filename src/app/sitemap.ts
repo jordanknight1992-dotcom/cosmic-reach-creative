@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/pricing",
     "/faq",
     "/contact",
+    "/next-steps",
     "/clarity",
     "/clarity-session",
     "/privacy",

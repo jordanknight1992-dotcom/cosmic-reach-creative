@@ -6,6 +6,8 @@ export const siteConfig = {
     "https://calendly.com/jordan-cosmicreachcreative/signal-check",
   calendlyClaritySessionUrl:
     "https://calendly.com/jordan-cosmicreachcreative/clarity-session",
+  stripeAuditUrl:
+    "https://buy.stripe.com/28EbITdzT6je8go6i4fbq07",
   ga4MeasurementId: "G-BHD0025QXR",
   nav: [
     { label: "Home", href: "/" },

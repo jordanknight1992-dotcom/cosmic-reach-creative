@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import Image from "next/image";
 import { Icon } from "@/components/Icon";
+import { CTAButton } from "@/components/CTAButton";
 export const metadata: Metadata = {
   title: "Pricing",
   description:
@@ -18,11 +19,12 @@ const tiers = [
     icon: "signal",
   },
   {
-    name: "Clarity Session",
+    name: "Business Clarity Audit",
     price: "$250",
     description:
-      "A 90-minute working session. Includes a Clarity Report delivered within one week.",
+      "A structured analysis of your messaging, offer positioning, customer journey, and growth opportunities using the Cosmic Reach Clarity Framework. Includes: messaging clarity review, offer positioning analysis, customer journey friction diagnosis, growth opportunity insights, and a prioritized improvement roadmap.",
     icon: "map",
+    cta: true,
   },
   {
     name: "30 Day Sprint",
@@ -99,6 +101,11 @@ export default function PricingPage() {
                 <p className="text-sm text-starlight/60 flex-1">
                   {tier.description}
                 </p>
+                {"cta" in tier && tier.cta && (
+                  <div className="mt-4">
+                    <CTAButton label="Start With a Business Clarity Audit" variant="primary" className="w-full text-sm px-4 py-2.5" />
+                  </div>
+                )}
               </article>
             ))}
           </div>
