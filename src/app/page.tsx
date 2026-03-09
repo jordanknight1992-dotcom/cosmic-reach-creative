@@ -74,18 +74,44 @@ export default function HomePage() {
       </section>
 
       {/* ── Where Momentum Breaks Down ── */}
-      <section className="py-16 sm:py-24 bg-section-light" aria-labelledby="momentum-heading">
-        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+      <section
+        className="relative overflow-hidden py-16 sm:py-24 bg-section-light"
+        aria-labelledby="momentum-heading"
+      >
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 opacity-[0.10]"
+          style={{
+            background:
+              "radial-gradient(circle at 50% 30%, rgba(40,49,73,0.12), transparent 42%)",
+          }}
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-navy/10 to-transparent"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-navy/10 to-transparent"
+        />
+
+        <div className="relative z-10 mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <div className="mb-3">
               <Icon name="spark" size={36} className="opacity-80 mx-auto" />
             </div>
-            <h2 id="momentum-heading" className="mb-5 text-navy">Where Momentum Breaks Down</h2>
-            <p className="text-navy/70 text-base mb-3">Most businesses don&apos;t have a marketing problem.</p>
+            <h2 id="momentum-heading" className="mb-5 text-navy">
+              Where Momentum Breaks Down
+            </h2>
+            <p className="text-navy/70 text-base mb-3">
+              Most businesses don&apos;t have a marketing problem.
+            </p>
             <p className="text-navy/70 text-base mb-3">
               The website exists. The services are clear internally. The team is working.
             </p>
-            <p className="text-navy/70 text-base mb-3">But something still isn&apos;t converting.</p>
+            <p className="text-navy/70 text-base mb-3">
+              But something still isn&apos;t converting.
+            </p>
             <p className="text-navy/70 text-base mb-3">
               Customers hesitate. Leads stall. Effort doesn&apos;t translate into momentum.
             </p>
