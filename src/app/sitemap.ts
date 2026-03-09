@@ -15,6 +15,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { route: "/framework", changeFrequency: "monthly", priority: 0.8 },
     { route: "/about", changeFrequency: "monthly", priority: 0.7 },
     { route: "/faq", changeFrequency: "monthly", priority: 0.7 },
+    { route: "/clarity-report-example", changeFrequency: "monthly", priority: 0.8 },
     { route: "/contact", changeFrequency: "monthly", priority: 0.7 },
     { route: "/privacy", changeFrequency: "yearly", priority: 0.3 },
     { route: "/terms", changeFrequency: "yearly", priority: 0.3 },
