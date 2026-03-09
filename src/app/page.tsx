@@ -99,54 +99,60 @@ export default function HomePage() {
         </div>
       </section>
 
-{/* — Mid-page image break — */}
-<div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
-  <div className="relative w-full h-[320px] sm:h-[420px] lg:h-[560px] overflow-hidden">
+{/* ── Diagnostic Signals ── */}
+<section
+  className="relative py-16 sm:py-24 bg-navy/40 overflow-hidden"
+  aria-labelledby="signals-heading"
+>
+  <div className="absolute inset-0 -z-10">
     <Image
       src="/images/07-clarity-section.jpg"
       alt=""
       fill
-      className="object-cover"
+      className="object-cover object-center"
       sizes="100vw"
     />
-    <div className="absolute inset-0 bg-deep-space/40" />
+    <div className="absolute inset-0 bg-deep-space/85" />
   </div>
-</div>
 
-      {/* ── Diagnostic Signals ── */}
-      <section className="py-16 sm:py-24 bg-navy/40" aria-labelledby="signals-heading">
-        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <div className="mb-3">
-              <Icon name="signal" size={36} className="opacity-80 mx-auto" />
-            </div>
-            <h2 id="signals-heading" className="mb-3">Signals That Your Business Needs a Clarity Audit</h2>
-            <p className="text-starlight/70 text-base mb-8">
-              If any of these feel familiar, the system underneath your business may be working against you.
-            </p>
-          </div>
-          <div className="mx-auto max-w-2xl grid gap-3 sm:grid-cols-2">
-            {diagnosticSignals.map((signal, i) => (
-              <div
-                key={i}
-                className="rounded-xl border border-starlight/8 bg-navy/50 px-5 py-4 flex items-start gap-3 transition-all duration-[var(--duration-base)] hover:border-copper/20"
-              >
-                <span className="text-copper mt-1 text-xs shrink-0" aria-hidden="true">&#9670;</span>
-                <span className="text-starlight/70 text-sm">{signal}</span>
-              </div>
-            ))}
-          </div>
-          <div className="mx-auto max-w-3xl text-center mt-8">
-            <p className="text-starlight/80 text-base font-display font-semibold mb-2">
-              These are not effort problems. They are clarity problems.
-            </p>
-            <p className="text-starlight/70 text-sm mb-6">
-              A Business Clarity Audit identifies exactly where momentum is breaking down and what to fix first.
-            </p>
-            <CTAButton label="See the Clarity Audit" variant="primary" />
-          </div>
+  <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-3xl text-center">
+      <div className="mb-3">
+        <Icon name="signal" size={36} className="opacity-80 mx-auto" />
+      </div>
+      <h2 id="signals-heading" className="mb-3">
+        Signals That Your Business Needs a Clarity Audit
+      </h2>
+      <p className="text-starlight/70 text-base mb-8">
+        If any of these feel familiar, the system underneath your business may be working against you.
+      </p>
+    </div>
+
+    <div className="mx-auto max-w-2xl grid gap-3 sm:grid-cols-2">
+      {diagnosticSignals.map((signal, i) => (
+        <div
+          key={i}
+          className="rounded-xl border border-starlight/8 bg-navy/50 px-5 py-4 flex items-start gap-3 transition-all duration-[var(--duration-base)] hover:border-copper/20"
+        >
+          <span className="text-copper mt-1 text-xs shrink-0" aria-hidden="true">
+            &#9670;
+          </span>
+          <span className="text-starlight/70 text-sm">{signal}</span>
         </div>
-      </section>
+      ))}
+    </div>
+
+    <div className="mx-auto max-w-3xl text-center mt-8">
+      <p className="text-starlight/80 text-base font-display font-semibold mb-2">
+        These are not effort problems. They are clarity problems.
+      </p>
+      <p className="text-starlight/70 text-sm mb-6">
+        A Business Clarity Audit identifies exactly where momentum is breaking down and what to fix first.
+      </p>
+      <CTAButton label="See the Clarity Audit" variant="primary" />
+    </div>
+  </div>
+</section>
 
       {/* ── The Cosmic Reach Framework ── */}
       <section className="py-16 sm:py-24 bg-section-light" aria-labelledby="framework-heading">
