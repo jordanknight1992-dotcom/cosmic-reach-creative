@@ -179,3 +179,69 @@ h3 {
 .skip-link:focus {
   top: 16px;
 }
+
+/* ── Print / PDF Export ── */
+@media print {
+  /* Reset page */
+  @page {
+    margin: 1.5cm 2cm;
+  }
+
+  /* Override dark background with white */
+  html,
+  body {
+    background: #ffffff !important;
+    color: #111111 !important;
+    font-size: 11pt;
+  }
+
+  /* Hide site chrome */
+  header,
+  footer,
+  nav,
+  .print\:hidden {
+    display: none !important;
+  }
+
+  /* Report cards: light borders, white background */
+  [class*="bg-navy"],
+  [class*="bg-deep-space"],
+  [class*="bg-dark"] {
+    background: #f8f8f8 !important;
+    border-color: #e0e0e0 !important;
+  }
+
+  /* Ensure text is readable */
+  [class*="text-starlight"] {
+    color: #111111 !important;
+  }
+
+  [class*="text-copper"] {
+    color: #b07d40 !important;
+  }
+
+  [class*="text-starlight\/60"],
+  [class*="text-starlight\/70"],
+  [class*="text-starlight\/80"] {
+    color: #444444 !important;
+  }
+
+  [class*="text-starlight\/40"],
+  [class*="text-starlight\/50"] {
+    color: #777777 !important;
+  }
+
+  /* Score bars: use dark fill */
+  [role="progressbar"] {
+    background-color: #b07d40 !important;
+  }
+
+  /* Page breaks */
+  section {
+    break-inside: avoid;
+  }
+
+  h1, h2, h3 {
+    break-after: avoid;
+  }
+}
