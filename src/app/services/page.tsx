@@ -19,7 +19,7 @@ IMAGE: 03-services-hero.jpg
 
 ## Step One: First Signal
 
-A free 30-minute intro call to understand your environment and confirm whether there is a real operational issue worth solving.
+A free 30-minute intro call to confirm whether the Business Clarity Audit is the right next step for your business.
 
 No pitch. Just signal.
 
@@ -55,7 +55,7 @@ If we decide to move forward, we implement the solution through structured Sprin
 Each Sprint is built on the Cosmic Reach Clarity Framework:
 Signal, Gravity, Orbit, Thrust.
 
-### 30 Day Direction Sprint
+### 30 Day Direction Sprint — $1,000
 
 A focused 30-day engagement designed to address the highest-impact issues identified in the Business Clarity Audit.
 
@@ -71,7 +71,7 @@ A focused 30-day engagement designed to address the highest-impact issues identi
 
 ICON: compass
 
-### 60 Day Alignment Sprint
+### 60 Day Alignment Sprint — $2,000
 
 A structured engagement focused on aligning strategy, messaging, and execution so the business operates as a coordinated system.
 
@@ -88,7 +88,7 @@ A structured engagement focused on aligning strategy, messaging, and execution s
 
 ICON: orbit
 
-### 90 Day Systems Sprint
+### 90 Day Systems Sprint — $3,000
 
 A comprehensive engagement designed to build the operational systems required for sustainable growth.
 
@@ -107,14 +107,14 @@ CTA: Discuss Sprint Options
 
 ---
 
-## Ongoing Operational Strategy
+## Mission Control Advisory — $750/mo
 
 Monthly sessions designed to keep the system functioning and evolving as your environment changes.
 
 **Clients get:**
 - Continued prioritization as conditions shift
-- System maintenance across workflow, roles, and tools
-- Visibility checks so decisions stay anchored to impact
+- System maintenance across workflow, messaging, and tools
+- Ongoing clarity as your business grows and shifts
 
 ICON: network`;
 
