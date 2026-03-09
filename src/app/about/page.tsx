@@ -14,6 +14,10 @@ const content = `# Built From the Operator's Seat
 Cosmic Reach wasn't built from theory.
 It was built from years inside real delivery environments where visibility, structure, and execution determined whether projects succeeded.
 
+Cosmic Reach exists to help founders see what their systems are actually doing.
+Most businesses don't fail because of effort.
+They stall because the structure underneath their work isn't clear.
+
 IMAGE: 05-about-hero.jpg
 
 ---

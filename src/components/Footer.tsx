@@ -55,12 +55,12 @@ export function Footer() {
               {siteConfig.contactEmail}
             </a>
             <a
-              href={siteConfig.calendlyClaritySessionUrl}
+              href={siteConfig.stripeAuditUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center rounded-[var(--radius-md)] bg-spark-red text-white px-5 py-2.5 text-sm font-display font-semibold transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5"
             >
-              Launch with a Clarity Session
+              Start With a Business Clarity Audit
             </a>
           </div>
         </div>

@@ -29,9 +29,9 @@ export default function ContactPage() {
         </div>
         <div className="relative mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-24 text-center">
           <div className="max-w-2xl mx-auto">
-            <h1 className="text-copper">Open a Channel</h1>
+            <h1 className="text-copper">Request a Business Clarity Audit</h1>
             <p className="text-starlight/80 text-base sm:text-lg mt-3">
-              Whether you&apos;re exploring a system redesign or just need clarity, the first step is simple.
+              Tell us a bit about your business and where growth feels stuck. We will follow up within one business day.
             </p>
           </div>
         </div>

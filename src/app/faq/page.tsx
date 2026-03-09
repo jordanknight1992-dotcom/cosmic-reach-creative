@@ -12,18 +12,28 @@ export const metadata: Metadata = {
 
 const faqs = [
   {
+    question: "What is a Business Clarity Audit?",
+    answer:
+      "A structured analysis of your messaging, offer, customer journey, and growth opportunities using the Cosmic Reach Clarity Framework. The audit identifies exactly where momentum is breaking down and what to fix first.",
+  },
+  {
+    question: "Is the audit just advice?",
+    answer:
+      "No. The audit identifies structural issues slowing growth and provides a roadmap for improvement. Many clients implement the improvements internally, while others continue with implementation sprints.",
+  },
+  {
     question: "Is this marketing consulting?",
     answer:
       "No. Marketing is often where operational issues show up first, but the work focuses on the system underneath performance.",
   },
   {
-    question: "Do I need a Sprint after the Clarity Session?",
+    question: "Do I need a Sprint after the Business Clarity Audit?",
     answer:
-      "No. Many clients use the Clarity Session alone and implement internally.",
+      "No. Many clients use the audit alone and implement internally. The audit delivers a prioritized improvement roadmap you can act on immediately.",
   },
   {
     question: "How quickly can we start?",
-    answer: "Intro calls can usually be scheduled within a week.",
+    answer: "The Business Clarity Audit can typically begin within a few days of purchase.",
   },
 ];
 
