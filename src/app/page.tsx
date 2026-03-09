@@ -99,19 +99,19 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Mid-page image break ── */}
-      <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
-        <div className="relative w-full h-48 sm:h-64 rounded-2xl overflow-hidden">
-          <Image
-            src="/images/07-clarity-section.jpg"
-            alt=""
-            fill
-            className="object-cover"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-deep-space/40" />
-        </div>
-      </div>
+{/* — Mid-page image break — */}
+<div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw]">
+  <div className="relative w-full h-[320px] sm:h-[420px] lg:h-[560px] overflow-hidden">
+    <Image
+      src="/images/07-clarity-section.jpg"
+      alt=""
+      fill
+      className="object-cover"
+      sizes="100vw"
+    />
+    <div className="absolute inset-0 bg-deep-space/40" />
+  </div>
+</div>
 
       {/* ── Diagnostic Signals ── */}
       <section className="py-16 sm:py-24 bg-navy/40" aria-labelledby="signals-heading">
