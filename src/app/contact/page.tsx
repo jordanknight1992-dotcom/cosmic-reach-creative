@@ -5,9 +5,9 @@ import { Icon } from "@/components/Icon";
 import { ContactForm } from "@/components/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Contact | Start the Conversation",
   description:
-    "Whether you're exploring a system redesign or just need clarity, the first step is simple.",
+    "Tell us about your business and where growth feels stuck. We respond within one business day.",
   alternates: { canonical: `${siteConfig.domain}/contact` },
 };
 

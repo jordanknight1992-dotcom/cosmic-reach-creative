@@ -10,21 +10,28 @@ interface CTAButtonProps {
 function resolveCtaHref(label: string): string {
   const lower = label.toLowerCase();
 
-  // Business Clarity Audit → Stripe
+  // High-intent: Start the Clarity Audit → Stripe
   if (
-    lower.includes("clarity audit") ||
-    lower.includes("business clarity audit") ||
-    lower.includes("request a clarity") ||
-    lower.includes("start with a business")
+    lower.includes("start the clarity audit") ||
+    lower.includes("start with a business") ||
+    lower.includes("book a business clarity audit")
   ) {
     return siteConfig.stripeAuditUrl;
+  }
+
+  // Mid-intent: See / Request → Pricing page
+  if (
+    lower.includes("see the clarity audit") ||
+    lower.includes("request a clarity audit") ||
+    lower.includes("get clarity")
+  ) {
+    return "/pricing";
   }
 
   // Signal Check / Intro Call
   if (
     lower.includes("intro call") ||
     lower.includes("signal check") ||
-    lower.includes("free") ||
     lower.includes("book intro") ||
     lower.includes("request an intro")
   ) {
@@ -66,8 +73,8 @@ function resolveCtaHref(label: string): string {
     return `mailto:${siteConfig.contactEmail}`;
   }
 
-  // Default to signal check
-  return siteConfig.calendlySignalCheckUrl;
+  // Default to pricing
+  return "/pricing";
 }
 
 export function CTAButton({
@@ -83,7 +90,7 @@ export function CTAButton({
 
   const variantStyles =
     variant === "secondary"
-      ? "border-2 border-copper text-copper hover:bg-copper/10"
+      ? "border-2 border-white text-white bg-transparent hover:bg-white/10"
       : "bg-spark-red text-white hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0";
 
   if (isExternal) {

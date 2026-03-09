@@ -18,7 +18,7 @@ export function Footer() {
               style={{ height: "40px", width: "auto" }}
             />
             <p className="text-sm text-starlight/60 max-w-xs">
-              Operational clarity for teams that need structure, not more activity.
+              Operational clarity for teams that need structure, not more activity. Diagnose the system. Restore momentum.
             </p>
           </div>
 
@@ -60,18 +60,18 @@ export function Footer() {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center rounded-[var(--radius-md)] bg-spark-red text-white px-5 py-2.5 text-sm font-display font-semibold transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5"
             >
-              Start With a Business Clarity Audit
+              Start the Clarity Audit
             </a>
           </div>
         </div>
 
         {/* Bottom bar */}
         <div className="mt-10 pt-6 border-t border-starlight/8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-starlight/40">
+          <p className="text-xs text-starlight/60">
             &copy; {new Date().getFullYear()} {siteConfig.siteName}. All rights
             reserved.
           </p>
-          <div className="flex items-center gap-4 text-xs text-starlight/40">
+          <div className="flex items-center gap-4 text-xs text-starlight/60">
             <Link
               href="/privacy"
               className="hover:text-copper transition-colors"

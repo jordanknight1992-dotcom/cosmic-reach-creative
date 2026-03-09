@@ -235,7 +235,7 @@ export function AuditIntakeForm() {
         <div>
           <label htmlFor="intake-links" className={labelClass}>
             Optional links or supporting materials{" "}
-            <span className="text-starlight/40">(optional)</span>
+            <span className="text-starlight/60">(optional)</span>
           </label>
           <textarea
             id="intake-links"
@@ -265,7 +265,7 @@ export function AuditIntakeForm() {
         )}
       </form>
 
-      <p className="mt-8 text-sm text-starlight/40 text-center">
+      <p className="mt-8 text-sm text-starlight/60 text-center">
         Or email directly:{" "}
         <a
           href={`mailto:${siteConfig.contactEmail}`}
