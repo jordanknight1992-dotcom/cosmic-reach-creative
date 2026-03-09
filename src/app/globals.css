@@ -51,6 +51,7 @@
   --color-starlight: #e8dfcf;
   --color-copper: #d4a574;
   --color-spark-red: #e04747;
+  --color-section-light: #f7f4ee;
 
   --font-display: "Space Grotesk", system-ui, sans-serif;
   --font-body: "Inter", system-ui, sans-serif;
@@ -82,6 +83,7 @@
   --color-copper: #d4a574;
   --color-spark-red: #e04747;
   --color-copper-glow: rgba(212, 165, 116, 0.22);
+  --color-section-light: #f7f4ee;
 
   --font-display: "Space Grotesk", system-ui, sans-serif;
   --font-body: "Inter", system-ui, sans-serif;
@@ -234,6 +236,12 @@ h3 {
   /* Score bars: use dark fill */
   [role="progressbar"] {
     background-color: #b07d40 !important;
+  }
+
+  /* Cover page: break to a new page after */
+  #print-cover {
+    page-break-after: always;
+    break-after: page;
   }
 
   /* Page breaks */
