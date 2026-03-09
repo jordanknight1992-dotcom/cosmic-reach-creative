@@ -10,7 +10,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: number;
   }[] = [
     { route: "/", changeFrequency: "weekly", priority: 1.0 },
-    { route: "/services", changeFrequency: "monthly", priority: 0.9 },
+    { route: "/how-it-works", changeFrequency: "monthly", priority: 0.9 },
+    { route: "/services", changeFrequency: "monthly", priority: 0.8 },
     { route: "/pricing", changeFrequency: "monthly", priority: 0.9 },
     { route: "/framework", changeFrequency: "monthly", priority: 0.8 },
     { route: "/about", changeFrequency: "monthly", priority: 0.7 },

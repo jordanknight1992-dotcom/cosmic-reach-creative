@@ -1,13 +1,35 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { siteConfig } from "@/config/site";
 
+function ChevronDown({ className }: { className?: string }) {
+  return (
+    <svg
+      width="12"
+      height="12"
+      viewBox="0 0 12 12"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M2 4l4 4 4-4" />
+    </svg>
+  );
+}
+
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
+  const dropdownGroupRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -25,6 +47,17 @@ export function Header() {
       document.body.style.overflow = "";
     };
   }, [menuOpen]);
+
+  const handleDropdownBlur = (e: React.FocusEvent) => {
+    if (!dropdownGroupRef.current?.contains(e.relatedTarget as Node)) {
+      setDropdownOpen(false);
+    }
+  };
+
+  const linkClass =
+    "px-3 py-2 text-sm text-starlight/80 hover:text-copper transition-colors duration-[var(--duration-fast)]";
+  const mobileLinkClass =
+    "block px-4 py-3 text-lg text-starlight/80 hover:text-copper transition-colors rounded-[var(--radius-sm)]";
 
   return (
     <>
@@ -57,21 +90,87 @@ export function Header() {
               className="hidden lg:flex items-center gap-1"
               aria-label="Main navigation"
             >
-              {siteConfig.nav.map((item) => (
+              {/* Home */}
+              <Link href="/" className={linkClass}>
+                Home
+              </Link>
+
+              {/* How It Works — with dropdown */}
+              <div
+                ref={dropdownGroupRef}
+                className="relative"
+                onMouseEnter={() => setDropdownOpen(true)}
+                onMouseLeave={() => setDropdownOpen(false)}
+                onBlur={handleDropdownBlur}
+              >
                 <Link
-                  key={item.href}
-                  href={item.href}
-                  className="px-3 py-2 text-sm text-starlight/80 hover:text-copper transition-colors duration-[var(--duration-fast)]"
+                  href="/how-it-works"
+                  className={`${linkClass} flex items-center gap-1`}
+                  onFocus={() => setDropdownOpen(true)}
+                  aria-haspopup="true"
+                  aria-expanded={dropdownOpen}
                 >
-                  {item.label}
+                  How It Works
+                  <ChevronDown
+                    className={`transition-transform duration-[var(--duration-fast)] ${
+                      dropdownOpen ? "rotate-180" : ""
+                    }`}
+                  />
                 </Link>
-              ))}
-              <Link
-                href="/pricing"
+
+                {/* Dropdown panel */}
+                <div
+                  className={`absolute top-full left-1/2 -translate-x-1/2 mt-1.5 w-56 rounded-[var(--radius-md)] border border-starlight/10 bg-navy shadow-soft py-2 transition-all duration-[var(--duration-fast)] ${
+                    dropdownOpen
+                      ? "opacity-100 translate-y-0 pointer-events-auto"
+                      : "opacity-0 -translate-y-1 pointer-events-none"
+                  }`}
+                  role="menu"
+                >
+                  {siteConfig.howItWorksDropdown.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      role="menuitem"
+                      tabIndex={dropdownOpen ? 0 : -1}
+                      onClick={() => setDropdownOpen(false)}
+                      className="block px-4 py-3 hover:bg-white/5 transition-colors"
+                    >
+                      <span className="block text-sm font-display font-semibold text-starlight">
+                        {item.label}
+                      </span>
+                      <span className="block text-xs text-starlight/50 mt-0.5">
+                        {item.detail}
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+
+              {/* Pricing */}
+              <Link href="/pricing" className={linkClass}>
+                Pricing
+              </Link>
+
+              {/* FAQ */}
+              <Link href="/faq" className={linkClass}>
+                FAQ
+              </Link>
+
+              {/* Contact */}
+              <Link href="/contact" className={linkClass}>
+                Contact
+              </Link>
+
+              {/* CTA */}
+              <a
+                href={siteConfig.stripeAuditUrl}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="ml-4 inline-flex items-center justify-center rounded-[var(--radius-md)] bg-spark-red text-white px-5 py-2 text-sm font-display font-semibold transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5"
               >
-                Get Clarity
-              </Link>
+                Get Your Clarity Audit
+              </a>
             </nav>
 
             {/* Mobile menu button */}
@@ -112,8 +211,10 @@ export function Header() {
       {/* Mobile drawer — outside header to avoid backdrop-filter containment */}
       <div
         id="mobile-menu"
-        className={`lg:hidden fixed inset-0 top-16 sm:top-20 z-40 bg-deep-space transition-transform duration-[var(--duration-base)] ease-[var(--ease-out)] ${
-          menuOpen ? "translate-x-0 pointer-events-auto" : "translate-x-full pointer-events-none"
+        className={`lg:hidden fixed inset-0 top-16 sm:top-20 z-40 bg-deep-space overflow-y-auto transition-transform duration-[var(--duration-base)] ease-[var(--ease-out)] ${
+          menuOpen
+            ? "translate-x-0 pointer-events-auto"
+            : "translate-x-full pointer-events-none"
         }`}
         aria-hidden={!menuOpen}
       >
@@ -121,23 +222,99 @@ export function Header() {
           className="flex flex-col px-6 py-8 gap-1"
           aria-label="Mobile navigation"
         >
-          {siteConfig.nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setMenuOpen(false)}
-              className="block px-4 py-3 text-lg text-starlight/80 hover:text-copper transition-colors rounded-[var(--radius-sm)]"
-            >
-              {item.label}
-            </Link>
-          ))}
+          {/* Home */}
+          <Link
+            href="/"
+            onClick={() => setMenuOpen(false)}
+            className={mobileLinkClass}
+          >
+            Home
+          </Link>
+
+          {/* How It Works — accordion */}
+          <div>
+            <div className="flex items-center">
+              <Link
+                href="/how-it-works"
+                onClick={() => setMenuOpen(false)}
+                className={`flex-1 ${mobileLinkClass}`}
+              >
+                How It Works
+              </Link>
+              <button
+                onClick={() => setMobileDropdownOpen(!mobileDropdownOpen)}
+                className="px-3 py-3 text-starlight/60 hover:text-copper transition-colors"
+                aria-label={
+                  mobileDropdownOpen
+                    ? "Collapse How It Works"
+                    : "Expand How It Works"
+                }
+                aria-expanded={mobileDropdownOpen}
+              >
+                <ChevronDown
+                  className={`transition-transform duration-[var(--duration-fast)] ${
+                    mobileDropdownOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+            </div>
+
+            {mobileDropdownOpen && (
+              <div className="pl-4 pb-2 ml-4 border-l border-starlight/10">
+                {siteConfig.howItWorksDropdown.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => {
+                      setMenuOpen(false);
+                      setMobileDropdownOpen(false);
+                    }}
+                    className="block px-4 py-2.5 text-base text-starlight/60 hover:text-copper transition-colors rounded-[var(--radius-sm)]"
+                  >
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Pricing */}
           <Link
             href="/pricing"
+            onClick={() => setMenuOpen(false)}
+            className={mobileLinkClass}
+          >
+            Pricing
+          </Link>
+
+          {/* FAQ */}
+          <Link
+            href="/faq"
+            onClick={() => setMenuOpen(false)}
+            className={mobileLinkClass}
+          >
+            FAQ
+          </Link>
+
+          {/* Contact */}
+          <Link
+            href="/contact"
+            onClick={() => setMenuOpen(false)}
+            className={mobileLinkClass}
+          >
+            Contact
+          </Link>
+
+          {/* CTA */}
+          <a
+            href={siteConfig.stripeAuditUrl}
+            target="_blank"
+            rel="noopener noreferrer"
             className="mt-4 inline-flex items-center justify-center rounded-[var(--radius-md)] bg-spark-red text-white px-5 py-3 font-display font-semibold transition-all duration-[var(--duration-base)]"
             onClick={() => setMenuOpen(false)}
           >
-            Get Clarity
-          </Link>
+            Get Your Clarity Audit
+          </a>
         </nav>
       </div>
     </>

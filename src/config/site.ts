@@ -11,12 +11,27 @@ export const siteConfig = {
   ga4MeasurementId: "G-BHD0025QXR",
   nav: [
     { label: "Home", href: "/" },
-    { label: "About", href: "/about" },
-    { label: "Services", href: "/services" },
-    { label: "Framework", href: "/framework" },
+    { label: "How It Works", href: "/how-it-works" },
     { label: "Pricing", href: "/pricing" },
     { label: "FAQ", href: "/faq" },
     { label: "Contact", href: "/contact" },
+  ],
+  howItWorksDropdown: [
+    {
+      label: "Framework",
+      href: "/framework",
+      detail: "The 4-layer clarity system",
+    },
+    {
+      label: "Services",
+      href: "/services",
+      detail: "Sprints and advisory engagements",
+    },
+    {
+      label: "Example Report",
+      href: "/clarity-report-example",
+      detail: "See a real Clarity Report",
+    },
   ],
   hiddenRoutes: ["/clarity", "/clarity-session"],
 } as const;
