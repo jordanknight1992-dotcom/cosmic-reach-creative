@@ -15,12 +15,12 @@ const faqs = [
   {
     question: "What is a Business Clarity Audit?",
     answer:
-      "A Business Clarity Audit is a structured diagnostic of the system underneath your business. We analyze your messaging, offer positioning, customer journey, and growth signals using the Cosmic Reach Clarity Framework. The goal is to identify exactly where momentum is breaking down and what to fix first.\n\nYou receive a clear diagnosis and a prioritized improvement roadmap. Even if you never work with Cosmic Reach again, you\u2019ll walk away knowing exactly where your business is losing momentum and what to fix first.",
+      "A Business Clarity Audit is a structured diagnostic of the system underneath your business. We analyze your messaging, offer positioning, customer journey, and growth signals using the Cosmic Reach Clarity Framework. The goal is to identify exactly where momentum is breaking down and what to fix first.\n\nYou receive a clear diagnosis and a prioritized improvement roadmap. Even if you never work with Cosmic Reach again, you’ll walk away knowing exactly where your business is losing momentum and what to fix first.",
   },
   {
     question: "How long does the audit take?",
     answer:
-      "Most Business Clarity Audits are completed within 3\u20135 business days after the intake form is submitted. You\u2019ll receive a structured clarity report outlining where momentum is breaking down and the highest-impact improvements to make first.",
+      "Most Business Clarity Audits are completed within 3–5 business days after the intake form is submitted. You’ll receive a structured clarity report outlining where momentum is breaking down and the highest-impact improvements to make first.",
   },
   {
     question: "Is the audit just advice?",
@@ -40,9 +40,9 @@ const faqs = [
   {
     question: "Who is this best for?",
     answer:
-      "Cosmic Reach works best with founders and leadership teams who know something in their business isn\u2019t converting the way it should.",
+      "Cosmic Reach works best with founders and leadership teams who know something in their business isn’t converting the way it should.",
     signals: [
-      "Marketing activity that isn\u2019t producing momentum",
+      "Marketing activity that isn’t producing momentum",
       "Teams working hard but priorities constantly shifting",
       "Customers showing interest but hesitating before buying",
       "Messaging or offers that feel unclear",
