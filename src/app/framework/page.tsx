@@ -14,67 +14,67 @@ const content = `# The Cosmic Reach Framework
 We do not begin with tactics.
 We begin with the system underneath the work.
 
-Cosmic Reach engagements move through four layers designed to restore signal, reduce friction, and make progress repeatable.
+Cosmic Reach engagements move through four layers designed to restore clarity, reduce friction, and make progress repeatable.
 
 IMAGE: 02-framework-hero.jpg
 
 ---
 
-## Direction: Set the Trajectory
+## Signal: Messaging Clarity
 
-We identify what is actually holding progress back and what to fix first.
+We identify where messaging is breaking down and what to clarify first.
 
-We diagnose where marketing and operational friction are slowing the business down, where decisions stall, and where effort is not translating into outcomes so leaders can move forward with clarity.
+We diagnose where positioning is unclear, where value isn't landing with the right audience, and where the story of the business isn't translating into action so founders can move forward with a message that works.
 
 **Clients get:**
-- A clear current-state diagnosis across strategy, structure, and execution
-- A priority map tied to real business outcomes
-- Focused recommendations on what to address first
+- A clear diagnosis of current messaging across channels
+- Positioning refinement tied to the right audience
+- Focused recommendations on what to clarify first
 
 ICON: compass
 
 ---
 
-## Alignment: Pull Into Orbit
+## Gravity: Offer Strength
 
-We make sure strategy, teams, and tools are working toward the same outcome.
+We make sure the offer is structured to create genuine pull.
 
-We bring clarity to positioning, ownership, and expectations so marketing and execution stop feeling fragmented and start operating as a coordinated system.
+We bring clarity to how offers are framed, priced, and perceived so the right customers see clear value and hesitation before buying is reduced.
 
 **Clients get:**
-- Messaging clarity and positioning refinement
-- Defined ownership and decision logic
-- Alignment between strategy, workflows, and supporting tools
+- Offer positioning and framing analysis
+- Value perception insights
+- Recommendations for structuring offers that convert
 
 ICON: orbit
 
 ---
 
-## Execution: Build the Flight System
+## Orbit: Customer Journey
 
-We design the systems that make progress repeatable.
+We design the path from first contact to conversion so it works as a system.
 
-We build the workflows, operating rhythms, and practical structures that allow teams to execute intentionally instead of reactively. When needed, this can include designing or implementing tools that support the system.
+We map the customer journey, identify friction points, and clarify the steps that move prospects toward a decision — intentionally instead of accidentally.
 
 **Clients get:**
-- Workflow and process design
-- Operating cadence and planning structure
-- Practical systems or supporting tools teams can manage themselves
+- Customer journey mapping and friction diagnosis
+- Conversion flow analysis
+- Practical improvements that reduce hesitation and increase momentum
 
 ICON: gears
 
 ---
 
-## Visibility: Restore the Signal
+## Thrust: Growth Opportunities
 
-We give leaders a clear view of what is working, what is not, and what to do next.
+We give founders a clear view of where growth potential exists and what to act on first.
 
-We translate marketing and operational activity into business insight so decisions are driven by impact, not assumptions. This can include reporting structures, dashboards, or tools that make visibility sustainable.
+We translate business activity into actionable insight so decisions about where to invest effort are driven by impact, not assumptions.
 
 **Clients get:**
-- Measurement logic tied to outcomes
-- Executive-level reporting clarity
-- Visibility systems leaders can rely on without constant interpretation
+- Growth opportunity analysis tied to business outcomes
+- Prioritized improvement roadmap
+- Clarity on what to build, fix, or remove to accelerate momentum
 
 ICON: signal`;
 

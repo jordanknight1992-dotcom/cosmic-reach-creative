@@ -10,6 +10,16 @@ interface CTAButtonProps {
 function resolveCtaHref(label: string): string {
   const lower = label.toLowerCase();
 
+  // Business Clarity Audit → Stripe
+  if (
+    lower.includes("clarity audit") ||
+    lower.includes("business clarity audit") ||
+    lower.includes("request a clarity") ||
+    lower.includes("start with a business")
+  ) {
+    return siteConfig.stripeAuditUrl;
+  }
+
   // Signal Check / Intro Call
   if (
     lower.includes("intro call") ||
@@ -21,7 +31,7 @@ function resolveCtaHref(label: string): string {
     return siteConfig.calendlySignalCheckUrl;
   }
 
-  // Clarity Session
+  // Clarity Session (legacy)
   if (
     lower.includes("clarity session") ||
     lower.includes("book clarity") ||
@@ -39,6 +49,11 @@ function resolveCtaHref(label: string): string {
   // Framework
   if (lower.includes("framework") || lower.includes("how it works")) {
     return "/framework";
+  }
+
+  // Audit intake form
+  if (lower.includes("intake form")) {
+    return "/audit-intake";
   }
 
   // Services

@@ -13,15 +13,15 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.siteName}`,
   },
   description:
-    "Cosmic Reach helps organizations diagnose friction, align execution, and build operational systems that make progress sustainable.",
+    "Cosmic Reach Creative helps founders identify where growth is getting stuck and build systems that move the business forward. Start with a Business Clarity Audit.",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: siteConfig.domain,
     siteName: siteConfig.siteName,
-    title: "Cosmic Reach | Operational Clarity for Teams",
+    title: "Cosmic Reach Creative | Find Where Your Business Is Losing Momentum",
     description:
-      "Cosmic Reach helps organizations diagnose friction, align execution, and build operational systems that make progress sustainable.",
+      "Cosmic Reach Creative helps founders identify where growth is getting stuck and build systems that move the business forward. Start with a Business Clarity Audit.",
     images: [
       {
         url: "/images/og-preview.png",
