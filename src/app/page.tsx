@@ -256,7 +256,7 @@ export default function HomePage() {
       >
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute left-[8%] top-[18%] select-none font-serif text-[180px] leading-none text-navy/6"
+          className="pointer-events-none absolute left-1/2 top-6 -translate-x-1/2 select-none font-display text-[180px] sm:text-[240px] leading-none text-navy/[0.06]"
         >
           &ldquo;
         </div>
@@ -265,27 +265,47 @@ export default function HomePage() {
           <p className="text-center text-xs font-display font-semibold tracking-widest text-copper uppercase mb-8">
             From the Mission Log
           </p>
+
           <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
-            <blockquote className="rounded-2xl border border-navy/10 bg-white shadow-subtle p-6 sm:p-8">
-              <p className="text-navy/75 text-base italic leading-relaxed mb-4">
-                &ldquo;Cosmic Reach brings a level of imagination and strategic clarity that&apos;s rare to find. Jordan has a way of seeing the system underneath a business and identifying where momentum is breaking down. The result is clarity and direction you wouldn&apos;t arrive at on your own.&rdquo;
-              </p>
-              <footer className="text-sm text-copper font-display font-medium">
-                &mdash; Fractional Sales &amp; Marketing Director, California
-              </footer>
+            <blockquote className="relative rounded-2xl border border-navy/10 bg-white shadow-subtle p-6 sm:p-8">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute left-4 top-0 select-none font-display text-[96px] sm:text-[120px] leading-none text-copper/20"
+              >
+                &ldquo;
+              </div>
+
+              <div className="relative z-10">
+                <p className="text-navy/75 text-base italic leading-relaxed mb-4">
+                  Cosmic Reach brings a level of imagination and strategic clarity that&apos;s rare to find. Jordan has a way of seeing the system underneath a business and identifying where momentum is breaking down. The result is clarity and direction you wouldn&apos;t arrive at on your own.
+                </p>
+                <footer className="text-sm text-copper font-display font-medium">
+                  &mdash; Fractional Sales &amp; Marketing Director, California
+                </footer>
+              </div>
             </blockquote>
 
-            <blockquote className="rounded-2xl border border-navy/10 bg-white shadow-subtle p-6 sm:p-8">
-              <p className="text-navy/75 text-base italic leading-relaxed mb-4">
-                &ldquo;I&apos;ve spent decades leading infrastructure and network programs where milestone visibility and structured reporting were critical to success. Cosmic Reach translated that same disciplined framework into a modern, intuitive platform. It gives project leaders clarity, control, and professional-grade reporting without unnecessary complexity.&rdquo;
-              </p>
-              <footer className="text-sm text-copper font-display font-medium">
-                &mdash; Certified PMO, Texas
-              </footer>
+            <blockquote className="relative rounded-2xl border border-navy/10 bg-white shadow-subtle p-6 sm:p-8">
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute left-4 top-0 select-none font-display text-[96px] sm:text-[120px] leading-none text-copper/20"
+              >
+                &ldquo;
+              </div>
+
+              <div className="relative z-10">
+                <p className="text-navy/75 text-base italic leading-relaxed mb-4">
+                  I&apos;ve spent decades leading infrastructure and network programs where milestone visibility and structured reporting were critical to success. Cosmic Reach translated that same disciplined framework into a modern, intuitive platform. It gives project leaders clarity, control, and professional-grade reporting without unnecessary complexity.
+                </p>
+                <footer className="text-sm text-copper font-display font-medium">
+                  &mdash; Licensed PMO, Texas
+                </footer>
+              </div>
             </blockquote>
           </div>
         </div>
       </section>
+      
       {/* ── Who Cosmic Reach Is For ── */}
       <section className="py-16 sm:py-24" aria-labelledby="fit-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
