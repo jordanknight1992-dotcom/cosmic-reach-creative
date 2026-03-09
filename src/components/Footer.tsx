@@ -18,7 +18,7 @@ export function Footer() {
               style={{ height: "40px", width: "auto" }}
             />
             <p className="text-sm text-starlight/60 max-w-xs">
-              Operational clarity for teams that need structure, not more activity.
+              Operational clarity for teams that need structure, not more activity. Diagnose the system. Restore momentum.
             </p>
           </div>
 
@@ -60,7 +60,7 @@ export function Footer() {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center rounded-[var(--radius-md)] bg-spark-red text-white px-5 py-2.5 text-sm font-display font-semibold transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5"
             >
-              Start With a Business Clarity Audit
+              Start the Clarity Audit
             </a>
           </div>
         </div>

@@ -66,14 +66,12 @@ export function Header() {
                   {item.label}
                 </Link>
               ))}
-              <a
-                href={siteConfig.calendlySignalCheckUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/pricing"
                 className="ml-4 inline-flex items-center justify-center rounded-[var(--radius-md)] bg-spark-red text-white px-5 py-2 text-sm font-display font-semibold transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5"
               >
-                Start Here
-              </a>
+                Get Clarity
+              </Link>
             </nav>
 
             {/* Mobile menu button */}
@@ -133,15 +131,13 @@ export function Header() {
               {item.label}
             </Link>
           ))}
-          <a
-            href={siteConfig.calendlySignalCheckUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/pricing"
             className="mt-4 inline-flex items-center justify-center rounded-[var(--radius-md)] bg-spark-red text-white px-5 py-3 font-display font-semibold transition-all duration-[var(--duration-base)]"
             onClick={() => setMenuOpen(false)}
           >
-            Start Here
-          </a>
+            Get Clarity
+          </Link>
         </nav>
       </div>
     </>
