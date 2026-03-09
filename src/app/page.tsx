@@ -80,19 +80,31 @@ export default function HomePage() {
       >
         <div
           aria-hidden="true"
-          className="absolute inset-0 opacity-[0.10]"
+          className="absolute inset-0 z-0"
           style={{
-            background:
-              "radial-gradient(circle at 50% 30%, rgba(40,49,73,0.12), transparent 42%)",
+            background: `
+              radial-gradient(circle at 50% 26%, rgba(40,49,73,0.14) 0%, rgba(40,49,73,0.07) 18%, rgba(40,49,73,0.00) 48%),
+              linear-gradient(to bottom, rgba(40,49,73,0.03), rgba(40,49,73,0.00) 18%, rgba(40,49,73,0.00) 82%, rgba(40,49,73,0.03))
+            `,
           }}
         />
+
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-navy/10 to-transparent"
+          className="absolute left-1/2 top-[72px] h-[520px] w-[520px] -translate-x-1/2 rounded-full border border-navy/[0.05] z-0"
         />
         <div
           aria-hidden="true"
-          className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-navy/10 to-transparent"
+          className="absolute left-1/2 top-[110px] h-[380px] w-[380px] -translate-x-1/2 rounded-full border border-navy/[0.04] z-0"
+        />
+
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-navy/10 to-transparent z-0"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-navy/10 to-transparent z-0"
         />
 
         <div className="relative z-10 mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
@@ -254,54 +266,38 @@ export default function HomePage() {
         className="relative overflow-hidden py-16 sm:py-24 bg-section-light"
         aria-label="What operators say"
       >
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute left-1/2 top-6 -translate-x-1/2 select-none font-display text-[180px] sm:text-[240px] leading-none text-navy/[0.06]"
-        >
-          &ldquo;
-        </div>
-
-        <div className="relative z-10 mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <p className="text-center text-xs font-display font-semibold tracking-widest text-copper uppercase mb-8">
             From the Mission Log
           </p>
 
-          <div className="grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
-            <blockquote className="relative rounded-2xl border border-navy/10 bg-white shadow-subtle p-6 sm:p-8">
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute left-4 top-0 select-none font-display text-[96px] sm:text-[120px] leading-none text-copper/20"
-              >
-                &ldquo;
-              </div>
+          <div className="relative max-w-4xl mx-auto">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute -left-10 sm:-left-16 md:-left-24 top-[-56px] sm:top-[-72px] md:top-[-92px] select-none font-display text-[220px] sm:text-[280px] md:text-[360px] leading-none text-copper/[0.10] z-0"
+            >
+              &ldquo;
+            </div>
 
-              <div className="relative z-10">
+            <div className="relative z-10 grid gap-6 md:grid-cols-2">
+              <blockquote className="rounded-2xl border border-navy/10 bg-white shadow-subtle p-6 sm:p-8">
                 <p className="text-navy/75 text-base italic leading-relaxed mb-4">
                   Cosmic Reach brings a level of imagination and strategic clarity that&apos;s rare to find. Jordan has a way of seeing the system underneath a business and identifying where momentum is breaking down. The result is clarity and direction you wouldn&apos;t arrive at on your own.
                 </p>
                 <footer className="text-sm text-copper font-display font-medium">
                   &mdash; Fractional Sales &amp; Marketing Director, California
                 </footer>
-              </div>
-            </blockquote>
+              </blockquote>
 
-            <blockquote className="relative rounded-2xl border border-navy/10 bg-white shadow-subtle p-6 sm:p-8">
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute left-4 top-0 select-none font-display text-[96px] sm:text-[120px] leading-none text-copper/20"
-              >
-                &ldquo;
-              </div>
-
-              <div className="relative z-10">
+              <blockquote className="rounded-2xl border border-navy/10 bg-white shadow-subtle p-6 sm:p-8">
                 <p className="text-navy/75 text-base italic leading-relaxed mb-4">
                   I&apos;ve spent decades leading infrastructure and network programs where milestone visibility and structured reporting were critical to success. Cosmic Reach translated that same disciplined framework into a modern, intuitive platform. It gives project leaders clarity, control, and professional-grade reporting without unnecessary complexity.
                 </p>
                 <footer className="text-sm text-copper font-display font-medium">
                   &mdash; Licensed PMO, Texas
                 </footer>
-              </div>
-            </blockquote>
+              </blockquote>
+            </div>
           </div>
         </div>
       </section>
