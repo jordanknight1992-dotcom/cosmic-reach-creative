@@ -13,11 +13,11 @@ export const metadata: Metadata = {
 };
 
 const diagnosticSignals = [
-  "Marketing activity is happening but revenue doesn\u2019t move the way it should",
+  "Marketing activity is happening but revenue doesn’t move the way it should",
   "Your team works hard but priorities constantly shift",
   "Customers seem interested but hesitate before buying",
   "Messaging changes frequently because nothing feels quite right",
-  "Decisions take longer than they should because the real constraint isn\u2019t clear",
+  "Decisions take longer than they should because the real constraint isn’t clear",
   "Progress depends on heroic effort instead of reliable systems",
 ];
 
@@ -30,15 +30,15 @@ const frameworkLayers = [
 
 const fitSignals = [
   "A business that has traction but feels stuck",
-  "A team that\u2019s working hard but lacks structural clarity",
+  "A team that’s working hard but lacks structural clarity",
   "An early-stage founder shaping the right system from the beginning",
-  "A company where marketing, operations, and execution aren\u2019t fully aligned",
+  "A company where marketing, operations, and execution aren’t fully aligned",
 ];
 
 const notFitSignals = [
-  "You\u2019re looking for quick marketing hacks",
-  "You\u2019re not open to adjusting how the business is structured",
-  "You\u2019re expecting a tactical execution agency",
+  "You’re looking for quick marketing hacks",
+  "You’re not open to adjusting how the business is structured",
+  "You’re expecting a tactical execution agency",
 ];
 
 export default function HomePage() {
@@ -175,6 +175,48 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── Inside the Clarity Report ── */}
+      <section className="py-14 sm:py-20 bg-navy/30" aria-labelledby="report-preview-heading">
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-3xl text-center mb-8">
+            <div className="mb-3">
+              <Icon name="map" size={36} className="opacity-80 mx-auto" />
+            </div>
+            <h2 id="report-preview-heading" className="mb-3">Inside the Clarity Report</h2>
+            <p className="text-starlight/70 text-base">
+              Every Business Clarity Audit delivers a structured written report — not a call, not a deck. Here&apos;s what&apos;s inside.
+            </p>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto mb-8">
+            {[
+              { label: "Executive Readout", detail: "System Momentum Score and highest-leverage shift at a glance." },
+              { label: "System Map", detail: "How the four framework forces interact in your specific business." },
+              { label: "Layer-by-Layer Scorecard", detail: "Scored analysis of Signal, Gravity, Orbit, and Thrust." },
+              { label: "Deep Friction Analysis", detail: "What's creating drag in each layer and exactly why it matters." },
+              { label: "Recommended Shifts", detail: "Specific, prioritized actions to restore momentum." },
+              { label: "Implementation Path", detail: "A clear sequence for what to address first." },
+            ].map((item) => (
+              <div
+                key={item.label}
+                className="rounded-xl border border-starlight/8 bg-navy/50 px-5 py-4 transition-all duration-[var(--duration-base)] hover:border-copper/20"
+              >
+                <p className="font-display font-semibold text-sm text-copper mb-1">{item.label}</p>
+                <p className="text-starlight/60 text-xs leading-relaxed">{item.detail}</p>
+              </div>
+            ))}
+          </div>
+          <div className="text-center">
+            <Link
+              href="/clarity-report-example"
+              className="inline-flex items-center gap-2 font-display font-semibold text-sm text-starlight/70 hover:text-starlight transition-colors underline underline-offset-2"
+            >
+              View an example report
+              <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ── Testimonial ── */}
       <section className="py-14 sm:py-20 bg-navy/30" aria-label="What operators say">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
@@ -260,7 +302,7 @@ export default function HomePage() {
             </p>
             <CTAButton label="Start the Clarity Audit" variant="primary" />
             <p className="mt-3 text-xs text-starlight/60">
-              3\u20135 day turnaround &middot; Structured clarity report included
+              3–5 day turnaround &middot; Structured clarity report included
             </p>
           </div>
         </div>

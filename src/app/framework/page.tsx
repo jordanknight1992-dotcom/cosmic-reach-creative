@@ -17,7 +17,7 @@ const layers = [
     subtitle: "Messaging Clarity",
     icon: "compass",
     description:
-      "We identify where messaging is breaking down and what to clarify first. We diagnose where positioning is unclear, where value isn\u2019t landing with the right audience, and where the story of the business isn\u2019t translating into action.",
+      "We identify where messaging is breaking down and what to clarify first. We diagnose where positioning is unclear, where value isn’t landing with the right audience, and where the story of the business isn’t translating into action.",
     deliverables: [
       "A clear diagnosis of current messaging across channels",
       "Positioning refinement tied to the right audience",
