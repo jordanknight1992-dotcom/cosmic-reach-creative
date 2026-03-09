@@ -5,7 +5,7 @@ import { Icon } from "@/components/Icon";
 import { CTAButton } from "@/components/CTAButton";
 
 export const metadata: Metadata = {
-  title: "Framework",
+  title: "The Clarity Framework | 4-Layer Business System",
   description:
     "The Cosmic Reach Framework moves through four layers designed to restore signal, reduce friction, and make progress repeatable.",
   alternates: { canonical: `${siteConfig.domain}/framework` },
@@ -163,7 +163,7 @@ export default function FrameworkPage() {
               The Business Clarity Audit applies the full framework to your business and delivers a prioritized roadmap for improvement.
             </p>
             <CTAButton label="Start the Clarity Audit" variant="primary" />
-            <p className="mt-3 text-xs text-starlight/40">
+            <p className="mt-3 text-xs text-starlight/60">
               3&ndash;5 day turnaround &middot; Structured clarity report included
             </p>
           </div>

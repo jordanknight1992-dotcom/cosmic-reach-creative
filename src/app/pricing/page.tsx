@@ -5,7 +5,7 @@ import { Icon } from "@/components/Icon";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Pricing",
+  title: "Pricing | Business Clarity Audit & Sprints",
   description:
     "Structured engagements with fixed outcomes. Every engagement starts with a diagnostic. From there, you choose how far to go.",
   alternates: { canonical: `${siteConfig.domain}/pricing` },
@@ -94,7 +94,7 @@ export default function PricingPage() {
               <p className="text-starlight/70 text-base mb-5">
                 A structured diagnostic designed to show where your business is losing momentum and what to fix first.
               </p>
-              <p className="text-xs font-display font-semibold tracking-widest text-starlight/50 uppercase mb-3">
+              <p className="text-xs font-display font-semibold tracking-widest text-starlight/60 uppercase mb-3">
                 Includes
               </p>
               <ul className="space-y-2 mb-6">
@@ -119,7 +119,7 @@ export default function PricingPage() {
               >
                 Start the Clarity Audit
               </a>
-              <p className="mt-3 text-center text-xs text-starlight/40">
+              <p className="mt-3 text-center text-xs text-starlight/60">
                 3&ndash;5 day turnaround &middot; Structured clarity report included
               </p>
             </article>
@@ -130,7 +130,7 @@ export default function PricingPage() {
       {/* Sprint Cards */}
       <section className="py-8 sm:py-10" aria-label="Implementation sprints">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
-          <p className="text-center text-xs font-display font-semibold tracking-widest text-starlight/40 uppercase mb-5">
+          <p className="text-center text-xs font-display font-semibold tracking-widest text-starlight/60 uppercase mb-5">
             Implementation Sprints
           </p>
           <div className="grid gap-4 sm:grid-cols-3">
@@ -140,9 +140,9 @@ export default function PricingPage() {
                 className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-5 flex flex-col transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/30 hover:shadow-subtle"
               >
                 <Icon name={tier.icon} size={24} className="mb-3 opacity-70" />
-                <h2 className="font-display font-semibold text-base mb-1">
+                <h3 className="font-display font-semibold text-base mb-1">
                   {tier.name}
-                </h2>
+                </h3>
                 <p className="text-copper font-display font-semibold text-xl mb-3">
                   {tier.price}
                 </p>
@@ -150,7 +150,7 @@ export default function PricingPage() {
                   {tier.description}
                 </p>
                 <div>
-                  <p className="text-xs font-display font-medium tracking-wide text-starlight/40 uppercase mb-2">
+                  <p className="text-xs font-display font-medium tracking-wide text-starlight/60 uppercase mb-2">
                     Framework coverage
                   </p>
                   <ul className="space-y-1">
@@ -175,9 +175,9 @@ export default function PricingPage() {
             <article className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-5 flex flex-col sm:flex-row sm:items-center gap-4 transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/30 hover:shadow-subtle">
               <Icon name={advisoryTier.icon} size={24} className="opacity-70 shrink-0" />
               <div className="flex-1 min-w-0">
-                <h2 className="font-display font-semibold text-base mb-0.5">
+                <h3 className="font-display font-semibold text-base mb-0.5">
                   {advisoryTier.name}
-                </h2>
+                </h3>
                 <p className="text-sm text-starlight/60">{advisoryTier.description}</p>
               </div>
               <p className="text-copper font-display font-semibold text-xl shrink-0">
@@ -207,7 +207,7 @@ export default function PricingPage() {
       {/* De-emphasized Free Intro Call */}
       <section className="pb-12 sm:pb-16" aria-label="Free intro call">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
-          <p className="text-center text-sm text-starlight/40">
+          <p className="text-center text-sm text-starlight/60">
             Not sure where to start?{" "}
             <a
               href={siteConfig.calendlySignalCheckUrl}

@@ -50,6 +50,52 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ProfessionalService",
+      "@id": `${siteConfig.domain}/#organization`,
+      name: siteConfig.siteName,
+      url: siteConfig.domain,
+      logo: `${siteConfig.domain}/favicon/favicon.svg`,
+      description:
+        "Cosmic Reach Creative helps founders identify where growth is getting stuck and build systems that move the business forward.",
+      email: siteConfig.contactEmail,
+      priceRange: "$150–$3,000",
+      areaServed: "US",
+      serviceType: "Business Consulting",
+      knowsAbout: [
+        "Business Strategy",
+        "Operational Clarity",
+        "Messaging Strategy",
+        "Customer Journey Optimization",
+        "Growth Systems",
+      ],
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${siteConfig.domain}/#website`,
+      url: siteConfig.domain,
+      name: siteConfig.siteName,
+      publisher: { "@id": `${siteConfig.domain}/#organization` },
+    },
+    {
+      "@type": "Service",
+      name: "Business Clarity Audit",
+      provider: { "@id": `${siteConfig.domain}/#organization` },
+      description:
+        "A structured diagnostic of the system underneath your business. Identifies where momentum is breaking down and what to fix first.",
+      offers: {
+        "@type": "Offer",
+        price: "150",
+        priceCurrency: "USD",
+        url: `${siteConfig.domain}/pricing`,
+      },
+    },
+  ],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -57,6 +103,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className="font-body antialiased">
         <a href="#main-content" className="skip-link">
           Skip to content

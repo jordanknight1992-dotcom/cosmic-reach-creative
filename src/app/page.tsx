@@ -6,7 +6,7 @@ import { CTAButton } from "@/components/CTAButton";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: `${siteConfig.siteName} | Find Where Your Business Is Losing Momentum`,
+  title: "Find Where Your Business Is Losing Momentum",
   description:
     "Cosmic Reach Creative helps founders identify where growth is getting stuck and build systems that move the business forward.",
   alternates: { canonical: siteConfig.domain },
@@ -227,10 +227,10 @@ export default function HomePage() {
               </ul>
             </div>
             <div className="rounded-2xl border border-starlight/10 bg-navy/50 p-6 sm:p-8">
-              <h3 className="font-display font-semibold text-base text-starlight/50 mb-4">Not the Right Fit</h3>
+              <h3 className="font-display font-semibold text-base text-starlight/60 mb-4">Not the Right Fit</h3>
               <ul className="space-y-3">
                 {notFitSignals.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-starlight/50 text-sm">
+                  <li key={i} className="flex items-start gap-3 text-starlight/60 text-sm">
                     <span className="text-starlight/30 mt-1 text-xs shrink-0" aria-hidden="true">&#9670;</span>
                     {item}
                   </li>
@@ -259,7 +259,7 @@ export default function HomePage() {
               The Business Clarity Audit identifies exactly where momentum is breaking down and what to fix first.
             </p>
             <CTAButton label="Start the Clarity Audit" variant="primary" />
-            <p className="mt-3 text-xs text-starlight/40">
+            <p className="mt-3 text-xs text-starlight/60">
               3\u20135 day turnaround &middot; Structured clarity report included
             </p>
           </div>

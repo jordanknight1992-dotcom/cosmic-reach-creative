@@ -67,11 +67,11 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-10 pt-6 border-t border-starlight/8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-starlight/40">
+          <p className="text-xs text-starlight/60">
             &copy; {new Date().getFullYear()} {siteConfig.siteName}. All rights
             reserved.
           </p>
-          <div className="flex items-center gap-4 text-xs text-starlight/40">
+          <div className="flex items-center gap-4 text-xs text-starlight/60">
             <Link
               href="/privacy"
               className="hover:text-copper transition-colors"
