@@ -211,13 +211,149 @@ export default function ClarityReportExamplePage() {
         </div>
       </section>
 
-      {/* ── Print-only header ── */}
-      <div className="hidden print:block print:px-0 print:pt-8 print:pb-4 print:border-b print:border-gray-200">
-        <p className="text-xs font-semibold tracking-widest uppercase text-gray-400 mb-1">
-          Cosmic Reach Creative
-        </p>
-        <h1 className="text-2xl font-bold text-gray-900">Business Clarity Report — AtlasOps</h1>
-        <p className="text-sm text-gray-500 mt-1">cosmicreachcreative.com</p>
+      {/* ── Print Cover Page ── */}
+      <div className="hidden print:block" id="print-cover">
+        {/* Full-bleed wrapper — takes up one full print page */}
+        <div
+          style={{
+            position: "relative",
+            width: "100%",
+            height: "100vh",
+            overflow: "hidden",
+          }}
+        >
+          {/* Background: telescope hero image */}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/images/01-home-hero.jpg"
+            alt=""
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          />
+
+          {/* Dark overlay */}
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: "rgba(11, 17, 32, 0.82)",
+            }}
+          />
+
+          {/* Centered content */}
+          <div
+            style={{
+              position: "relative",
+              height: "100%",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+              padding: "60px 48px",
+            }}
+          >
+            {/* Logo */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/logo/logo-primary-dark.svg"
+              alt="Cosmic Reach Creative"
+              style={{ width: "220px", marginBottom: "56px" }}
+            />
+
+            {/* Title block */}
+            <div style={{ marginBottom: "32px" }}>
+              <p
+                style={{
+                  color: "rgba(232, 223, 207, 0.55)",
+                  fontSize: "0.6875rem",
+                  fontFamily: '"Space Grotesk", system-ui, sans-serif',
+                  fontWeight: 600,
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  marginBottom: "14px",
+                }}
+              >
+                Business Clarity Audit
+              </p>
+              <h1
+                style={{
+                  color: "#d4a574",
+                  fontFamily: '"Space Grotesk", system-ui, sans-serif',
+                  fontSize: "2.75rem",
+                  fontWeight: 700,
+                  lineHeight: 1.1,
+                  letterSpacing: "-0.02em",
+                  margin: "0 0 10px 0",
+                }}
+              >
+                Business Clarity Report
+              </h1>
+              <p
+                style={{
+                  color: "#e8dfcf",
+                  fontFamily: '"Space Grotesk", system-ui, sans-serif',
+                  fontSize: "1.25rem",
+                  fontWeight: 600,
+                  margin: 0,
+                }}
+              >
+                AtlasOps
+              </p>
+            </div>
+
+            {/* Divider */}
+            <div
+              style={{
+                width: "64px",
+                height: "1px",
+                backgroundColor: "rgba(212, 165, 116, 0.45)",
+                marginBottom: "32px",
+              }}
+            />
+
+            {/* Prepared by + date */}
+            <div>
+              <p
+                style={{
+                  color: "rgba(232, 223, 207, 0.70)",
+                  fontFamily: '"Space Grotesk", system-ui, sans-serif',
+                  fontSize: "0.875rem",
+                  fontWeight: 600,
+                  letterSpacing: "0.06em",
+                  marginBottom: "6px",
+                }}
+              >
+                Prepared by Cosmic Reach Creative
+              </p>
+              <p
+                style={{
+                  color: "rgba(232, 223, 207, 0.40)",
+                  fontFamily: '"Space Grotesk", system-ui, sans-serif',
+                  fontSize: "0.8125rem",
+                  margin: 0,
+                }}
+              >
+                {new Date().toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* ── Intro explanation (screen only) ── */}

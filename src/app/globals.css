@@ -238,6 +238,12 @@ h3 {
     background-color: #b07d40 !important;
   }
 
+  /* Cover page: break to a new page after */
+  #print-cover {
+    page-break-after: always;
+    break-after: page;
+  }
+
   /* Page breaks */
   section {
     break-inside: avoid;
