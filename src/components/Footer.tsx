@@ -39,6 +39,17 @@ export function Footer() {
                     </Link>
                   </li>
                 ))}
+                {/* How It Works sub-pages */}
+                {siteConfig.howItWorksDropdown.map((item) => (
+                  <li key={item.href} className="pl-3 border-l border-starlight/10">
+                    <Link
+                      href={item.href}
+                      className="text-sm text-starlight/40 hover:text-copper transition-colors duration-[var(--duration-fast)]"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </nav>
           </div>
