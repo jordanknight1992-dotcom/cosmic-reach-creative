@@ -2,16 +2,16 @@ import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import Image from "next/image";
 import { Icon } from "@/components/Icon";
-import { ContactForm } from "@/components/ContactForm";
+import { AuditIntakeForm } from "@/components/AuditIntakeForm";
 
 export const metadata: Metadata = {
-  title: "Contact",
+  title: "Audit Intake Form",
   description:
-    "Whether you're exploring a system redesign or just need clarity, the first step is simple.",
-  alternates: { canonical: `${siteConfig.domain}/contact` },
+    "Complete the Business Clarity Audit intake form so we can begin your diagnostic.",
+  alternates: { canonical: `${siteConfig.domain}/audit-intake` },
 };
 
-export default function ContactPage() {
+export default function AuditIntakePage() {
   return (
     <main id="main-content">
       {/* Hero */}
@@ -29,26 +29,26 @@ export default function ContactPage() {
         </div>
         <div className="relative mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-24 text-center">
           <div className="max-w-2xl mx-auto">
-            <h1 className="text-copper">Request a Business Clarity Audit</h1>
+            <h1 className="text-copper">Business Clarity Audit Intake</h1>
             <p className="text-starlight/80 text-base sm:text-lg mt-3">
-              Tell us a bit about your business and where growth feels stuck. We will follow up within one business day.
+              Complete this form so we can begin your diagnostic. The more context you provide, the more precise your Clarity Report will be.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Contact form */}
+      {/* Form */}
       <section className="py-10 sm:py-16">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
-          <div className="max-w-lg mx-auto">
+          <div className="max-w-2xl mx-auto">
             <div className="flex items-center justify-center gap-3 mb-3">
-              <Icon name="rocket" size={24} className="opacity-80" />
-              <h2>Start the Conversation</h2>
+              <Icon name="map" size={24} className="opacity-80" />
+              <h2>Tell Us About Your Business</h2>
             </div>
-            <p className="text-starlight/70 text-base text-center mb-8">
-              Tell us a bit about what you&apos;re working through. We&apos;ll follow up within one business day.
+            <p className="text-starlight/70 text-base text-center mb-10">
+              This information is used exclusively to conduct your Business Clarity Audit. We review every submission personally.
             </p>
-            <ContactForm />
+            <AuditIntakeForm />
           </div>
         </div>
       </section>

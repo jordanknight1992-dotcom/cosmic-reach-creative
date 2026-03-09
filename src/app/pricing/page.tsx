@@ -2,6 +2,8 @@ import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import Image from "next/image";
 import { Icon } from "@/components/Icon";
+import { CTAButton } from "@/components/CTAButton";
+
 export const metadata: Metadata = {
   title: "Pricing",
   description:
@@ -9,50 +11,37 @@ export const metadata: Metadata = {
   alternates: { canonical: `${siteConfig.domain}/pricing` },
 };
 
-const tiers = [
+const sprintTiers = [
   {
-    name: "Free Intro Call",
-    price: "Free",
+    name: "30 Day Direction Sprint",
+    price: "$1,000",
     description:
-      "A short call to confirm whether there's a real problem worth solving.",
-    icon: "signal",
-  },
-  {
-    name: "Clarity Session",
-    price: "$250",
-    description:
-      "A 90-minute working session. Includes a Clarity Report delivered within one week.",
-    icon: "map",
-  },
-  {
-    name: "30 Day Sprint",
-    price: "$2,000",
-    description:
-      "Diagnose the system and deliver a clear priority map.",
+      "Focused implementation of the highest-impact improvements identified in the audit.",
     icon: "compass",
   },
   {
-    name: "60 Day Sprint",
-    price: "$4,000",
+    name: "60 Day Alignment Sprint",
+    price: "$2,000",
     description:
-      "Align ownership, messaging, and operating structure.",
+      "A deeper sprint to align messaging, customer journey, and execution.",
     icon: "orbit",
   },
   {
-    name: "90 Day Sprint",
-    price: "$6,000",
+    name: "90 Day Systems Sprint",
+    price: "$3,000",
     description:
-      "Build the full system across direction, alignment, execution, and visibility.",
+      "A full systems build designed to create repeatable, sustainable progress.",
     icon: "gears",
   },
-  {
-    name: "Ongoing Strategy Support",
-    price: "$750/mo",
-    description:
-      "Monthly sessions designed to keep the system functioning and evolving as your environment changes.",
-    icon: "network",
-  },
 ];
+
+const advisoryTier = {
+  name: "Mission Control Advisory",
+  price: "$750/mo",
+  description:
+    "Ongoing strategic support to refine systems, priorities, and growth decisions over time.",
+  icon: "network",
+};
 
 export default function PricingPage() {
   return (
@@ -74,26 +63,78 @@ export default function PricingPage() {
           <div className="max-w-2xl mx-auto text-center">
             <h1 id="pricing-hero" className="text-copper">Structured Engagements.<br />Fixed Outcomes.</h1>
             <p className="text-starlight/80 text-lg sm:text-xl mt-3">
-              Cosmic Reach is designed to be clear, scoped, and decision-ready from the start.
+              Every engagement starts with a diagnostic. From there, you choose how far to go.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Cards */}
-      <section className="py-10 sm:py-16" aria-label="Pricing tiers">
+      {/* Featured Audit Card */}
+      <section className="pt-10 sm:pt-16 pb-6 sm:pb-8" aria-label="Business Clarity Audit">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {tiers.map((tier) => (
+          <div className="max-w-2xl mx-auto">
+            <div className="flex justify-center mb-3">
+              <span className="inline-block text-xs font-display font-semibold tracking-wide text-copper border border-copper/40 rounded-full px-3 py-1">
+                Best Place to Start
+              </span>
+            </div>
+            <article className="rounded-[var(--radius-lg)] border-2 border-copper/40 bg-navy/70 p-6 sm:p-8 flex flex-col transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/60 hover:shadow-soft">
+              <div className="flex items-start gap-4 mb-5">
+                <Icon name="map" size={28} className="opacity-80 shrink-0 mt-0.5" />
+                <div>
+                  <h2 className="font-display font-semibold text-xl text-starlight mb-1">
+                    Business Clarity Audit
+                  </h2>
+                  <p className="text-copper font-display font-semibold text-3xl">$150</p>
+                </div>
+              </div>
+              <p className="text-starlight/70 text-base mb-5">
+                A structured diagnostic designed to show where your business is losing momentum and what to fix first.
+              </p>
+              <p className="text-xs font-display font-semibold tracking-widest text-starlight/50 uppercase mb-3">
+                Includes
+              </p>
+              <ul className="space-y-2 mb-6">
+                {[
+                  "Messaging clarity review",
+                  "Offer positioning analysis",
+                  "Customer journey friction diagnosis",
+                  "Growth opportunity insights",
+                  "Prioritized improvement roadmap",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2.5 text-sm text-starlight/80">
+                    <span className="text-copper mt-0.5 shrink-0">◆</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <CTAButton
+                label="Start With a Business Clarity Audit"
+                variant="primary"
+                className="w-full justify-center"
+              />
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {/* Sprint Cards */}
+      <section className="py-6 sm:py-8" aria-label="Implementation sprints">
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+          <p className="text-center text-xs font-display font-semibold tracking-widest text-starlight/40 uppercase mb-5">
+            Implementation Sprints
+          </p>
+          <div className="grid gap-4 sm:grid-cols-3">
+            {sprintTiers.map((tier) => (
               <article
                 key={tier.name}
                 className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-5 flex flex-col transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/30 hover:shadow-subtle"
               >
-                <Icon name={tier.icon} size={26} className="mb-3 opacity-70" />
-                <h2 className="font-display font-semibold text-lg mb-1">
+                <Icon name={tier.icon} size={24} className="mb-3 opacity-70" />
+                <h2 className="font-display font-semibold text-base mb-1">
                   {tier.name}
                 </h2>
-                <p className="text-copper font-display font-semibold text-xl mb-2">
+                <p className="text-copper font-display font-semibold text-xl mb-3">
                   {tier.price}
                 </p>
                 <p className="text-sm text-starlight/60 flex-1">
@@ -102,6 +143,44 @@ export default function PricingPage() {
               </article>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Advisory Card */}
+      <section className="py-6 sm:py-8" aria-label="Mission Control Advisory">
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+          <div className="max-w-2xl mx-auto">
+            <article className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-5 flex flex-col sm:flex-row sm:items-center gap-4 transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/30 hover:shadow-subtle">
+              <Icon name={advisoryTier.icon} size={24} className="opacity-70 shrink-0" />
+              <div className="flex-1 min-w-0">
+                <h2 className="font-display font-semibold text-base mb-0.5">
+                  {advisoryTier.name}
+                </h2>
+                <p className="text-sm text-starlight/60">{advisoryTier.description}</p>
+              </div>
+              <p className="text-copper font-display font-semibold text-xl shrink-0">
+                {advisoryTier.price}
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {/* De-emphasized Free Intro Call */}
+      <section className="pb-10 sm:pb-16" aria-label="Free intro call">
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+          <p className="text-center text-sm text-starlight/40">
+            Not sure where to start?{" "}
+            <a
+              href={siteConfig.calendlySignalCheckUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-starlight/60 hover:text-copper transition-colors underline underline-offset-2"
+            >
+              Book a free 30-minute intro call
+            </a>{" "}
+            first.
+          </p>
         </div>
       </section>
     </main>
