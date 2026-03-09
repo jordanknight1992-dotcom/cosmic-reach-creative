@@ -241,10 +241,10 @@ export default function NextStepsPage() {
               If you have questions before submitting the intake form, feel free to reach out.
             </p>
             <a
-              href="mailto:hello@cosmicreachcreative.com"
+              href="mailto:jordan@cosmicreachcreative.com"
               className="text-copper hover:underline text-base"
             >
-              hello@cosmicreachcreative.com
+              jordan@cosmicreachcreative.com
             </a>
             <p className="mt-6 text-starlight/50 text-sm">
               We look forward to helping you restore momentum and build a system that supports real progress.
