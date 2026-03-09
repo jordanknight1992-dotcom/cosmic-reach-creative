@@ -73,7 +73,7 @@ const engagementPath = [
   },
   {
     name: "Mission Control Advisory",
-    price: "$500 / mo",
+    price: "$750 / mo",
     description:
       "Ongoing strategic clarity and system optimization as the business grows.",
     isEntry: false,
