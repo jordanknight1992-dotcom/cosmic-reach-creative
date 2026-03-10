@@ -29,7 +29,7 @@ const layers = [
     subtitle: "Offer Strength",
     icon: "orbit",
     description:
-      "Is the offer strong enough to convert on its own? This layer evaluates how offers are framed, priced, and perceived — and identifies where hesitation is outweighing perceived value.",
+      "Is the offer strong enough to convert on its own? This layer evaluates how offers are framed, priced, and perceived, identifying where hesitation is outweighing perceived value.",
     deliverables: [
       "Offer positioning and framing analysis",
       "Value perception insights",
@@ -97,45 +97,47 @@ export default function FrameworkPage() {
             </div>
             <h2 id="framework-intro" className="mb-4">Four Layers. One System.</h2>
             <p className="text-starlight/70 text-base">
-              The Launch Sequence evaluates four forces — sharpening positioning, strengthening offers, streamlining the customer journey, and building performance visibility. Every layer builds on the last.
+              The Launch Sequence evaluates four forces: sharpening positioning, strengthening offers, streamlining the customer journey, and building performance visibility. Every layer builds on the last.
             </p>
           </div>
         </div>
       </section>
 
       {/* Framework Layers */}
-      {layers.map((layer, i) => (
-        <section
-          key={layer.name}
-          className={`py-12 sm:py-16 ${i % 2 === 0 ? "bg-navy/30" : ""}`}
-          aria-labelledby={`layer-${layer.name.toLowerCase()}`}
-        >
-          <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
-            <div className="max-w-3xl mx-auto text-center">
-              <div className="mb-3">
-                <Icon name={layer.icon} size={36} className="opacity-80 mx-auto" />
-              </div>
-              <h2 id={`layer-${layer.name.toLowerCase()}`} className="mb-3">
-                <span className="text-copper">{layer.name}</span> — {layer.subtitle}
-              </h2>
-              <p className="text-starlight/70 text-base mb-6">{layer.description}</p>
-            </div>
-            <div className="max-w-lg mx-auto rounded-2xl border border-starlight/10 bg-navy/50 p-6 sm:p-8 transition-all duration-[var(--duration-base)] hover:border-copper/30">
-              <h3 className="font-display font-semibold text-copper text-sm uppercase tracking-widest mb-4 text-center">
-                Clients get
-              </h3>
-              <ul className="space-y-3">
-                {layer.deliverables.map((item) => (
-                  <li key={item} className="flex items-start gap-3 text-starlight/70 text-sm">
-                    <span className="text-copper mt-1 text-xs shrink-0" aria-hidden="true">&#9670;</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
+      <section className="py-12 sm:py-16 bg-navy/30" aria-label="Framework layers">
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+          <div className="grid gap-6 sm:grid-cols-2 max-w-4xl mx-auto">
+            {layers.map((layer) => (
+              <article
+                key={layer.name}
+                className="rounded-2xl border border-starlight/10 bg-navy/50 p-6 sm:p-8 flex flex-col transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/30 hover:shadow-subtle"
+              >
+                <div className="mb-4">
+                  <Icon name={layer.icon} size={32} className="opacity-80" />
+                </div>
+                <div className="mb-3">
+                  <span className="text-copper font-display font-bold text-lg">{layer.name}</span>
+                  <span className="text-starlight/50 text-sm font-display ml-2">{layer.subtitle}</span>
+                </div>
+                <p className="text-starlight/70 text-sm leading-relaxed mb-5 flex-1">{layer.description}</p>
+                <div>
+                  <p className="text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-3">
+                    Clients get
+                  </p>
+                  <ul className="space-y-2">
+                    {layer.deliverables.map((item) => (
+                      <li key={item} className="flex items-start gap-2.5 text-sm text-starlight/60">
+                        <span className="text-copper mt-1 text-[8px] shrink-0" aria-hidden="true">&#9670;</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </article>
+            ))}
           </div>
-        </section>
-      ))}
+        </div>
+      </section>
 
       {/* Mid-page image break */}
       <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 py-4">

@@ -15,7 +15,7 @@ const sprintTiers = [
     name: "Direction Sprint",
     price: "$2,000",
     description:
-      "Signal and Gravity. Messaging architecture and offer design — the foundation that determines whether attention converts.",
+      "Signal and Gravity. Messaging architecture and offer design: the foundation that determines whether attention converts.",
     icon: "compass",
     coverage: ["Signal", "Gravity"],
     outcome: "Messaging and offer architecture blueprint.",
@@ -33,7 +33,7 @@ const sprintTiers = [
     name: "Execution Sprint",
     price: "$6,000",
     description:
-      "Full framework. Complete system build across all four forces — with Thrust dashboards that make performance visible and the system self-correcting.",
+      "Full framework. Complete system build across all four forces, with Thrust dashboards that make performance visible and the system self-correcting.",
     icon: "gears",
     coverage: ["Signal", "Gravity", "Orbit", "Thrust"],
     outcome: "Complete system build plus Thrust dashboards.",
@@ -97,7 +97,7 @@ export default function PricingPage() {
                 </div>
               </div>
               <p className="text-starlight/70 text-base mb-5">
-                A structural diagnostic that evaluates each layer of the Launch Sequence — then delivers a scored report, a system map, and a prioritized roadmap for what to address first.
+                A structural diagnostic that evaluates each layer of the Launch Sequence, then delivers a scored report, a system map, and a prioritized roadmap for what to address first.
               </p>
               <p className="text-xs font-display font-semibold tracking-widest text-starlight/60 uppercase mb-3">
                 Deliverables
@@ -105,10 +105,10 @@ export default function PricingPage() {
               <ul className="space-y-2 mb-6">
                 {[
                   "Business Clarity Score across all four forces",
-                  "Signal — Messaging and positioning analysis",
-                  "Gravity — Offer structure and conversion strength",
-                  "Orbit — Customer journey and infrastructure review",
-                  "Thrust — KPI visibility and growth lever identification",
+                  "Signal: Messaging and positioning analysis",
+                  "Gravity: Offer structure and conversion strength",
+                  "Orbit: Customer journey and infrastructure review",
+                  "Thrust: KPI visibility and growth lever identification",
                   "System map showing how the forces interact",
                   "Prioritized implementation roadmap",
                 ].map((item) => (
@@ -162,7 +162,7 @@ export default function PricingPage() {
                 ))}
               </div>
               <p className="text-starlight/60 text-xs leading-relaxed">
-                Most organizations operating below a 6.0 in any layer struggle to convert marketing activity into revenue. The Clarity Audit identifies the exact friction points driving those scores — and what to fix first.
+                Most organizations operating below a 6.0 in any layer struggle to convert marketing activity into revenue. The Clarity Audit identifies the exact friction points driving those scores and what to fix first.
               </p>
             </div>
           </div>
@@ -180,7 +180,7 @@ export default function PricingPage() {
               Once the audit identifies the constraint, a Sprint installs the architecture. Each tier is scoped to a specific layer of the Launch Sequence, with a defined outcome and a fixed engagement.
             </p>
           </div>
-          <div className="grid gap-4 sm:grid-cols-3">
+          <div className="grid gap-4 sm:grid-cols-3 max-w-4xl mx-auto">
             {sprintTiers.map((tier) => (
               <article
                 key={tier.name}
@@ -257,7 +257,7 @@ export default function PricingPage() {
                 &ldquo;Cosmic Reach brings a level of imagination and strategic clarity that&apos;s rare to find. Jordan has a way of seeing the system underneath a business and identifying where momentum is breaking down. The result is clarity and direction you wouldn&apos;t arrive at on your own.&rdquo;
               </p>
               <footer className="text-sm text-copper font-display font-medium">
-                &mdash; Fractional Sales &amp; Marketing Director, California
+                Fractional Sales &amp; Marketing Director, California
               </footer>
             </blockquote>
           </div>

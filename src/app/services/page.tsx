@@ -5,7 +5,7 @@ import { MarkdownPage } from "@/components/MarkdownPage";
 export const metadata: Metadata = {
   title: "Services | Signal, Gravity, Orbit & Thrust",
   description:
-    "From messaging and positioning to offer design, customer journey optimization, and performance tracking — see how each layer of the Launch Sequence translates into action.",
+    "From messaging and positioning to offer design, customer journey optimization, and performance tracking: see how each layer of the Launch Sequence translates into action.",
   alternates: { canonical: `${siteConfig.domain}/services` },
 };
 

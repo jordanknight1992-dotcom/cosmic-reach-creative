@@ -8,7 +8,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: `${siteConfig.siteName} | Strategic Marketing Architecture`,
   description:
-    "Cosmic Reach Creative designs the strategic architecture behind scalable marketing. Diagnosis before prescription — for founders and marketing leaders who need structure, not more activity.",
+    "Cosmic Reach Creative designs the strategic architecture behind scalable marketing. Diagnosis before prescription, for founders and marketing leaders who need structure, not more activity.",
   alternates: { canonical: siteConfig.domain },
 };
 
@@ -79,7 +79,7 @@ export default function HomePage() {
               Sharpen the Message. Install the System.
             </h1>
             <p className="text-starlight/80 text-base sm:text-lg mb-2" style={{ textWrap: "balance" }}>
-              We design the strategic architecture behind scalable marketing — the structure that allows messaging, offers, and systems to compound rather than compete.
+              We design the strategic architecture behind scalable marketing: the structure that allows messaging, offers, and systems to compound rather than compete.
             </p>
             <p className="text-starlight/60 text-sm mb-6">
               Diagnosis before prescription.
@@ -127,19 +127,22 @@ export default function HomePage() {
               Symptoms of a Structural Problem
             </h2>
 
-            <ul className="space-y-4 text-left mb-10 max-w-lg mx-auto">
+            <div className="grid grid-cols-2 gap-4 max-w-lg mx-auto mb-10">
               {[
-                "Messaging doesn't land with the right buyers.",
-                "Offers create hesitation instead of urgency.",
-                "Leads stall somewhere in the journey.",
-                "Teams lack visibility into what's actually working.",
-              ].map((symptom, i) => (
-                <li key={i} className="flex items-start gap-4">
-                  <span className="text-copper mt-0.5 shrink-0 font-display font-semibold text-sm">0{i + 1}</span>
-                  <span className="text-navy/80 text-base font-display font-semibold">{symptom}</span>
-                </li>
+                { icon: "compass", text: "Messaging doesn\u2019t land with the right buyers." },
+                { icon: "orbit",   text: "Offers create hesitation instead of urgency." },
+                { icon: "gears",   text: "Leads stall somewhere in the journey." },
+                { icon: "signal",  text: "Teams lack visibility into what\u2019s actually working." },
+              ].map((item) => (
+                <div
+                  key={item.text}
+                  className="rounded-xl border border-navy/10 bg-white p-5 flex flex-col items-center text-center shadow-subtle transition-all duration-[var(--duration-base)] hover:border-copper/20"
+                >
+                  <Icon name={item.icon} size={26} className="mb-3 opacity-70" />
+                  <p className="text-navy/80 text-sm font-display font-semibold leading-snug">{item.text}</p>
+                </div>
               ))}
-            </ul>
+            </div>
 
             <p className="text-navy text-xl sm:text-2xl font-display font-bold mb-2 leading-snug">
               This is not a marketing problem.
@@ -201,7 +204,7 @@ export default function HomePage() {
               These aren&apos;t effort problems. They&apos;re architectural ones.
             </p>
             <p className="text-starlight/70 text-sm mb-6">
-              The Business Clarity Audit is a structural diagnostic that identifies the exact friction points — and what to address first.
+              The Business Clarity Audit is a structural diagnostic that identifies the exact friction points and what to address first.
             </p>
             <CTAButton label="Start the Clarity Audit" variant="primary" />
           </div>
@@ -220,16 +223,16 @@ export default function HomePage() {
               The Launch Sequence operates as a continuous feedback loop.
             </p>
             <p className="text-navy/60 text-sm leading-relaxed max-w-xl mx-auto">
-              Signal shapes what the market sees. Gravity converts attention into demand. Orbit moves prospects through the journey. Thrust provides the performance data that recalibrates Signal — and the cycle compounds.
+              Signal shapes what the market sees. Gravity converts attention into demand. Orbit moves prospects through the journey. Thrust provides the performance data that recalibrates Signal, and the cycle compounds.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {frameworkLayers.map((layer) => (
               <div
                 key={layer.title}
-                className="rounded-[var(--radius-lg)] border border-navy/10 bg-white p-5 shadow-subtle transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/40 hover:shadow-soft"
+                className="rounded-[var(--radius-lg)] border border-navy/10 bg-white p-5 shadow-subtle text-center transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/40 hover:shadow-soft"
               >
-                <Icon name={layer.icon} size={26} className="mb-2 opacity-70" />
+                <Icon name={layer.icon} size={26} className="mb-2 opacity-70 mx-auto" />
                 <h3 className="font-display font-semibold text-base mb-2 text-navy">{layer.title}</h3>
                 <p className="text-sm text-navy/60 leading-relaxed">{layer.description}</p>
               </div>
@@ -252,7 +255,7 @@ export default function HomePage() {
             </div>
             <h2 id="report-preview-heading" className="mb-3">Inside the Clarity Report</h2>
             <p className="text-starlight/70 text-base">
-              Every Business Clarity Audit delivers a structured written report — not a call, not a deck. Here&apos;s what&apos;s inside.
+              Every Business Clarity Audit delivers a structured written report, not a call, not a deck. Here&apos;s what&apos;s inside.
             </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto mb-8">
@@ -309,7 +312,7 @@ export default function HomePage() {
                   Cosmic Reach brings a level of imagination and strategic clarity that&apos;s rare to find. Jordan has a way of seeing the system underneath a business and identifying where momentum is breaking down. The result is clarity and direction you wouldn&apos;t arrive at on your own.
                 </p>
                 <footer className="text-sm text-copper font-display font-medium">
-                  &mdash; Fractional Sales &amp; Marketing Director, California
+                  Fractional Sales &amp; Marketing Director, California
                 </footer>
               </blockquote>
 
@@ -318,7 +321,7 @@ export default function HomePage() {
                   I&apos;ve spent decades leading infrastructure and network programs where milestone visibility and structured reporting were critical to success. Cosmic Reach translated that same disciplined framework into a modern, intuitive platform. It gives project leaders clarity, control, and professional-grade reporting without unnecessary complexity.
                 </p>
                 <footer className="text-sm text-copper font-display font-medium">
-                  &mdash; Licensed PMO, Texas
+                  Licensed PMO, Texas
                 </footer>
               </blockquote>
             </div>
@@ -379,7 +382,7 @@ export default function HomePage() {
             </div>
             <h2 id="final-cta-heading" className="mb-4">See What&apos;s Holding You Back</h2>
             <p className="text-starlight/70 text-base mb-6" style={{ textWrap: "balance" }}>
-              The Business Clarity Audit evaluates your messaging, offers, customer journey, and growth levers — then tells you exactly what to address first.
+              The Business Clarity Audit evaluates your messaging, offers, customer journey, and growth levers, then tells you exactly what to address first.
             </p>
             <CTAButton label="Start The Clarity Audit" variant="primary" />
             <p className="mt-3 text-xs text-starlight/60">

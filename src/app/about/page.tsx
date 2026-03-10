@@ -56,10 +56,10 @@ export default function AboutPage() {
               Cosmic Reach was built to answer one question: why isn&apos;t this working?
             </p>
             <p className="text-starlight/70 text-base mb-3">
-              Most businesses don&apos;t fail from lack of effort. They stall because the forces driving growth — messaging, offer strength, the customer journey, and performance visibility — aren&apos;t working together.
+              Most businesses don&apos;t fail from lack of effort. They stall because the forces driving growth, messaging, offer strength, the customer journey, and performance visibility, aren&apos;t working together.
             </p>
             <p className="text-starlight/70 text-base">
-              Built from years inside real delivery environments where these forces determined whether growth stuck or stalled — Cosmic Reach was designed to bring that same discipline to founders and marketing teams.
+              Built from years inside real delivery environments where these forces determined whether growth stuck or stalled. Cosmic Reach was designed to bring that same discipline to founders and marketing teams.
             </p>
           </div>
         </div>
@@ -148,7 +148,7 @@ export default function AboutPage() {
                 &ldquo;I&apos;ve spent decades leading infrastructure and network programs where milestone visibility and structured reporting were critical to success. Cosmic Reach translated that same disciplined framework into a modern, intuitive platform. It gives project leaders clarity, control, and professional-grade reporting without unnecessary complexity.&rdquo;
               </p>
               <footer className="text-sm text-copper font-display font-medium">
-                &mdash; Licensed PMO, Texas
+                Licensed PMO, Texas
               </footer>
             </blockquote>
           </div>
@@ -182,12 +182,12 @@ export default function AboutPage() {
                 {
                   layer: "Gravity",
                   heading: "Designing the Audit → Sprint Ladder",
-                  body: "The engagement model was structured as a diagnostic-first ladder. The Clarity Audit reduces risk for the client, delivers immediate value, and creates a natural path to Sprint engagement — each tier with a defined scope and outcome.",
+                  body: "The engagement model was structured as a diagnostic-first ladder. The Clarity Audit reduces risk for the client, delivers immediate value, and creates a natural path to Sprint engagement. Each tier has a defined scope and outcome.",
                 },
                 {
                   layer: "Orbit",
                   heading: "Building the Website, Framework, and Workflow",
-                  body: "Every touchpoint — from the website structure to the intake workflow to the report format — was designed as an integrated system. Each piece has a defined role in moving a prospect from awareness to decision.",
+                  body: "Every touchpoint, from the website structure to the intake workflow to the report format, was designed as an integrated system. Each piece has a defined role in moving a prospect from awareness to decision.",
                 },
                 {
                   layer: "Thrust",
@@ -217,7 +217,7 @@ export default function AboutPage() {
           <div className="max-w-2xl mx-auto text-center">
             <h2 id="about-cta" className="mb-3">Ready to Find the Constraint?</h2>
             <p className="text-starlight/70 text-base mb-6">
-              The Business Clarity Audit evaluates the four forces driving your business and delivers a structural diagnostic — so you know exactly where to focus.
+              The Business Clarity Audit evaluates the four forces driving your business and delivers a structural diagnostic, so you know exactly where to focus.
             </p>
             <CTAButton label="Start the Clarity Audit" variant="primary" />
           </div>

@@ -25,14 +25,14 @@ const frameworkLayers = [
     subtitle: "Offer Strength",
     icon: "orbit",
     description:
-      "How offers are structured, framed, and perceived — and whether they create genuine pull.",
+      "How offers are structured, framed, and perceived, and whether they create genuine pull.",
   },
   {
     name: "Orbit",
     subtitle: "Customer Journey",
     icon: "gears",
     description:
-      "The path from first contact to conversion — and what's slowing it down.",
+      "The path from first contact to conversion, and what's slowing it down.",
   },
   {
     name: "Thrust",
@@ -48,21 +48,21 @@ const engagementPath = [
     name: "Business Clarity Audit",
     price: "$150",
     description:
-      "The starting point. A diagnostic that evaluates your messaging, offers, customer journey, and growth levers — then tells you exactly what to address first.",
+      "The starting point. A diagnostic that evaluates your messaging, offers, customer journey, and growth levers, then tells you exactly what to address first.",
     isEntry: true,
   },
   {
     name: "30 Day Direction Sprint",
     price: "$1,000",
     description:
-      "A focused engagement that addresses the highest-impact issues from the Audit — messaging, positioning, and conversion flow.",
+      "A focused engagement that addresses the highest-impact issues from the Audit: messaging, positioning, and conversion flow.",
     isEntry: false,
   },
   {
     name: "60 Day Alignment Sprint",
     price: "$2,000",
     description:
-      "Messaging, offer design, and the customer journey aligned into one coordinated system — so every piece reinforces the rest.",
+      "Messaging, offer design, and the customer journey aligned into one coordinated system, so every piece reinforces the rest.",
     isEntry: false,
   },
   {
@@ -109,7 +109,7 @@ export default function HowItWorksPage() {
               className="text-starlight/70 text-lg sm:text-xl"
               style={{ textWrap: "balance" }}
             >
-              We evaluate the four forces that drive every business — then
+              We evaluate the four forces that drive every business, then
               build a prioritized plan to get growth moving.
             </p>
           </div>
@@ -267,7 +267,7 @@ export default function HowItWorksPage() {
             <div className="grid gap-3 sm:grid-cols-3 text-left max-w-2xl mx-auto mb-8">
               {[
                 { label: "Executive Readout", detail: "System Momentum Score and the single highest-leverage shift." },
-                { label: "Layer Scorecard", detail: "Signal, Gravity, Orbit, and Thrust — each scored and diagnosed." },
+                { label: "Layer Scorecard", detail: "Signal, Gravity, Orbit, and Thrust, each scored and diagnosed." },
                 { label: "Implementation Path", detail: "A prioritized sequence of what to address first." },
               ].map((item) => (
                 <div
