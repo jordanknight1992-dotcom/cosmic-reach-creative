@@ -33,21 +33,36 @@ export async function POST(request: Request) {
     console.log(`Message: ${message}`);
     console.log("===================================");
 
-    // If RESEND_API_KEY is set, send a real email
-    if (process.env.RESEND_API_KEY) {
-      await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          from: "Cosmic Reach <noreply@cosmicreachcreative.com>",
-          to: [NOTIFY_EMAIL],
-          subject: `New inquiry from ${name}`,
-          text: `Name: ${name}\nEmail: ${email}\nCompany: ${company || "N/A"}\n\nMessage:\n${message}`,
-        }),
-      });
+    if (!process.env.RESEND_API_KEY) {
+      console.error("RESEND_API_KEY is not set — email not sent.");
+      return NextResponse.json(
+        { error: "Email service is not configured." },
+        { status: 503 }
+      );
+    }
+
+    const resendRes = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: "Cosmic Reach <noreply@cosmicreachcreative.com>",
+        to: [NOTIFY_EMAIL],
+        reply_to: email,
+        subject: `New inquiry from ${name}`,
+        text: `Name: ${name}\nEmail: ${email}\nCompany: ${company || "N/A"}\n\nMessage:\n${message}`,
+      }),
+    });
+
+    if (!resendRes.ok) {
+      const err = await resendRes.json().catch(() => ({}));
+      console.error("Resend error:", JSON.stringify(err));
+      return NextResponse.json(
+        { error: "Failed to send email." },
+        { status: 502 }
+      );
     }
 
     return NextResponse.json({ success: true });
