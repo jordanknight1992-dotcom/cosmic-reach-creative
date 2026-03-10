@@ -254,7 +254,7 @@ export default function HowItWorksPage() {
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center mb-8">
             <div className="mb-3">
-              <Icon name="map" size={36} className="opacity-80 mx-auto" />
+              <Icon name="document" size={36} className="opacity-80 mx-auto" />
             </div>
             <h2 id="example-report-heading" className="mb-3 text-navy">
               What You Receive

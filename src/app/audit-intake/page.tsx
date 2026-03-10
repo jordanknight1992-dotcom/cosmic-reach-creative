@@ -42,7 +42,7 @@ export default function AuditIntakePage() {
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
             <div className="flex items-center justify-center gap-3 mb-3">
-              <Icon name="map" size={24} className="opacity-80" />
+              <Icon name="document" size={24} className="opacity-80" />
               <h2>Tell Us About Your Business</h2>
             </div>
             <p className="text-starlight/70 text-base text-center mb-10">
