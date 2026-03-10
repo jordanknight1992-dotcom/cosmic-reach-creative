@@ -8,7 +8,7 @@ export const siteConfig = {
     "https://calendly.com/jordan-cosmicreachcreative/clarity-session",
   stripeAuditUrl:
     "https://buy.stripe.com/28EbITdzT6je8go6i4fbq07",
-  ga4MeasurementId: "G-BHD0025QXR",
+  ga4MeasurementId: "G-HX48MQKM94",
   nav: [
     { label: "Home", href: "/" },
     { label: "How It Works", href: "/how-it-works" },
