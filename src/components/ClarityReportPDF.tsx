@@ -72,7 +72,7 @@ const c = {
 /* Returns a semantic colour for a 0-10 score */
 function scoreColor(score: number): string {
   if (score <= 4) return c.scoreRed;
-  if (score <= 6) return c.scoreAmber;
+  if (score <= 7) return c.scoreAmber;
   return c.scoreGreen;
 }
 
@@ -441,8 +441,8 @@ export function ClarityReportDocument({ origin = "" }: { origin?: string }) {
           {/* Score legend */}
           <View style={[s.row, s.mb12, { gap: 16 }]}>
             {[
-              { color: c.scoreGreen, label: "7–10  Good" },
-              { color: c.scoreAmber, label: "5–6  Be Aware" },
+              { color: c.scoreGreen, label: "8–10  Good" },
+              { color: c.scoreAmber, label: "5–7  Be Aware" },
               { color: c.scoreRed,   label: "0–4  Warning" },
             ].map((item) => (
               <View key={item.label} style={{ flexDirection: "row", alignItems: "center" }}>
