@@ -45,6 +45,12 @@ export async function ensureTables() {
       updated_at TIMESTAMPTZ DEFAULT NOW()
     )
   `;
+
+  /* ─── CRM columns (idempotent) ─── */
+  await sql`ALTER TABLE contact_submissions ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'new'`;
+  await sql`ALTER TABLE contact_submissions ADD COLUMN IF NOT EXISTS notes  TEXT DEFAULT ''`;
+  await sql`ALTER TABLE audit_submissions   ADD COLUMN IF NOT EXISTS status TEXT DEFAULT 'new'`;
+  await sql`ALTER TABLE audit_submissions   ADD COLUMN IF NOT EXISTS notes  TEXT DEFAULT ''`;
 }
 
 /* ─── Admin password ─── */
@@ -135,6 +141,81 @@ export async function getAuditSubmissions() {
     SELECT * FROM audit_submissions ORDER BY created_at DESC LIMIT 200
   `;
   return rows;
+}
+
+/* ─── CRM mutations ─── */
+
+export async function updateSubmissionStatus(
+  table: "contact" | "audit",
+  id: number,
+  status: string
+) {
+  await ensureTables();
+  if (table === "contact") {
+    await sql`UPDATE contact_submissions SET status = ${status} WHERE id = ${id}`;
+  } else {
+    await sql`UPDATE audit_submissions SET status = ${status} WHERE id = ${id}`;
+  }
+}
+
+export async function updateSubmissionNotes(
+  table: "contact" | "audit",
+  id: number,
+  notes: string
+) {
+  await ensureTables();
+  if (table === "contact") {
+    await sql`UPDATE contact_submissions SET notes = ${notes} WHERE id = ${id}`;
+  } else {
+    await sql`UPDATE audit_submissions SET notes = ${notes} WHERE id = ${id}`;
+  }
+}
+
+/* ─── Analytics timelines ─── */
+
+export async function getCtaTimeline(): Promise<{ date: string; clicks: number }[]> {
+  await ensureTables();
+  const { rows } = await sql`
+    SELECT
+      TO_CHAR(DATE(created_at), 'YYYY-MM-DD') AS date,
+      COUNT(*)::int AS clicks
+    FROM cta_events
+    WHERE created_at >= NOW() - INTERVAL '30 days'
+    GROUP BY DATE(created_at)
+    ORDER BY DATE(created_at) ASC
+  `;
+  return rows as { date: string; clicks: number }[];
+}
+
+export async function getSubmissionTimeline(): Promise<
+  { date: string; contacts: number; audits: number }[]
+> {
+  await ensureTables();
+  const [{ rows: cRows }, { rows: aRows }] = await Promise.all([
+    sql`
+      SELECT TO_CHAR(DATE(created_at), 'YYYY-MM-DD') AS date, COUNT(*)::int AS cnt
+      FROM contact_submissions
+      WHERE created_at >= NOW() - INTERVAL '30 days'
+      GROUP BY DATE(created_at)
+    `,
+    sql`
+      SELECT TO_CHAR(DATE(created_at), 'YYYY-MM-DD') AS date, COUNT(*)::int AS cnt
+      FROM audit_submissions
+      WHERE created_at >= NOW() - INTERVAL '30 days'
+      GROUP BY DATE(created_at)
+    `,
+  ]);
+
+  /* Build a unified date map */
+  const map: Record<string, { contacts: number; audits: number }> = {};
+  for (const r of cRows) map[r.date as string] = { contacts: r.cnt as number, audits: 0 };
+  for (const r of aRows) {
+    if (!map[r.date as string]) map[r.date as string] = { contacts: 0, audits: 0 };
+    map[r.date as string].audits = r.cnt as number;
+  }
+  return Object.entries(map)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([date, v]) => ({ date, ...v }));
 }
 
 export async function getCtaStats() {

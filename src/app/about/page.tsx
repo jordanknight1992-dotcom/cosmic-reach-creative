@@ -155,13 +155,69 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Mission Log: Building Cosmic Reach */}
+      <section className="py-12 sm:py-16" aria-labelledby="mission-log-heading">
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto">
+            <div className="mb-3">
+              <Icon name="map" size={36} className="opacity-80 mx-auto" />
+            </div>
+            <div className="text-center mb-8">
+              <p className="text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-2">
+                Case Study
+              </p>
+              <h2 id="mission-log-heading" className="mb-3">Mission Log: Building Cosmic Reach</h2>
+              <p className="text-starlight/70 text-base leading-relaxed max-w-2xl mx-auto">
+                Before applying the Launch Sequence to clients, we applied it here. Every layer of Cosmic Reach Creative was built through the same structured process we bring to every engagement.
+              </p>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              {[
+                {
+                  layer: "Signal",
+                  heading: "Defining the Architecture Positioning",
+                  body: "The firm's positioning was built around a single differentiating concept: strategic marketing architecture. Not consulting. Not agency work. The architecture that makes marketing scale without breaking.",
+                },
+                {
+                  layer: "Gravity",
+                  heading: "Designing the Audit → Sprint Ladder",
+                  body: "The engagement model was structured as a diagnostic-first ladder. The Clarity Audit reduces risk for the client, delivers immediate value, and creates a natural path to Sprint engagement — each tier with a defined scope and outcome.",
+                },
+                {
+                  layer: "Orbit",
+                  heading: "Building the Website, Framework, and Workflow",
+                  body: "Every touchpoint — from the website structure to the intake workflow to the report format — was designed as an integrated system. Each piece has a defined role in moving a prospect from awareness to decision.",
+                },
+                {
+                  layer: "Thrust",
+                  heading: "Defining the Metrics That Matter",
+                  body: "Before scaling any channel, the measurement baseline was established: audit conversion rate, sprint pipeline value, and referral cadence. Decisions are made against data, not intuition.",
+                },
+              ].map(({ layer, heading, body }) => (
+                <div
+                  key={layer}
+                  className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-5 transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/30 hover:shadow-subtle"
+                >
+                  <p className="text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-2">
+                    {layer}
+                  </p>
+                  <p className="font-display font-semibold text-starlight text-sm mb-2">{heading}</p>
+                  <p className="text-starlight/60 text-sm leading-relaxed">{body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Final CTA */}
-      <section className="py-12 sm:py-16" aria-labelledby="about-cta">
+      <section className="py-12 sm:py-16 bg-navy/30" aria-labelledby="about-cta">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto text-center">
             <h2 id="about-cta" className="mb-3">Ready to Find the Constraint?</h2>
             <p className="text-starlight/70 text-base mb-6">
-              The Business Clarity Audit evaluates the four forces driving your business and shows you exactly where to focus.
+              The Business Clarity Audit evaluates the four forces driving your business and delivers a structural diagnostic — so you know exactly where to focus.
             </p>
             <CTAButton label="Start the Clarity Audit" variant="primary" />
           </div>

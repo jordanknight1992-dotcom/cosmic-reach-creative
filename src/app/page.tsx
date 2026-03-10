@@ -6,26 +6,42 @@ import { CTAButton } from "@/components/CTAButton";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: `${siteConfig.siteName} | Brand Clarity & Marketing Systems`,
+  title: `${siteConfig.siteName} | Strategic Marketing Architecture`,
   description:
-    "Cosmic Reach Creative helps founders and marketing leaders identify what's holding growth back and install the systems that make it repeatable.",
+    "Cosmic Reach Creative designs the strategic architecture behind scalable marketing. Diagnosis before prescription — for founders and marketing leaders who need structure, not more activity.",
   alternates: { canonical: siteConfig.domain },
 };
 
 const diagnosticSignals = [
-  "Marketing activity is happening but revenue doesn't move the way it should",
-  "Your team works hard but priorities constantly shift",
-  "Customers seem interested but hesitate before buying",
-  "Messaging changes frequently because nothing feels quite right",
-  "Decisions take longer than they should because the real constraint isn't visible",
-  "Growth depends on individual hustle instead of a repeatable process",
+  "Messaging doesn't land with the right buyers",
+  "Offers create hesitation instead of urgency",
+  "Leads stall somewhere in the journey without a clear reason",
+  "Teams lack visibility into what's actually driving results",
+  "Marketing activity increases without producing proportional revenue",
+  "Growth depends on individual effort rather than a repeatable system",
 ];
 
 const frameworkLayers = [
-  { title: "Signal", description: "Is your message reaching the right people with the right words?", icon: "compass" },
-  { title: "Gravity", description: "Does your offer create enough pull to turn interest into action?", icon: "orbit" },
-  { title: "Orbit", description: "Is there a repeatable path from first touch to paying customer?", icon: "gears" },
-  { title: "Thrust", description: "Are you measuring what matters and investing where it counts?", icon: "signal" },
+  {
+    title: "Signal",
+    description: "The clarity of your message. Who it reaches, what it says, and whether it creates immediate recognition in the right buyer.",
+    icon: "compass",
+  },
+  {
+    title: "Gravity",
+    description: "The structural strength of your offer. How well it reduces friction, creates pull, and converts attention into action.",
+    icon: "orbit",
+  },
+  {
+    title: "Orbit",
+    description: "The infrastructure moving prospects from first contact to close. Workflows, touchpoints, and the handoffs between them.",
+    icon: "gears",
+  },
+  {
+    title: "Thrust",
+    description: "The performance data that tells you what's working. KPI visibility that recalibrates Signal and keeps the system compounding.",
+    icon: "signal",
+  },
 ];
 
 const fitSignals = [
@@ -62,8 +78,11 @@ export default function HomePage() {
             <h1 id="hero-title" className="mb-4 text-copper" style={{ textWrap: "balance" }}>
               Sharpen the Message. Install the System.
             </h1>
-            <p className="text-starlight/80 text-base sm:text-lg mb-6">
-              We work with Marketing Directors and Founders to sharpen brand messaging and install the marketing systems that make growth repeatable.
+            <p className="text-starlight/80 text-base sm:text-lg mb-2" style={{ textWrap: "balance" }}>
+              We design the strategic architecture behind scalable marketing — the structure that allows messaging, offers, and systems to compound rather than compete.
+            </p>
+            <p className="text-starlight/60 text-sm mb-6">
+              Diagnosis before prescription.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <CTAButton label="Start The Clarity Audit" variant="primary" />
@@ -73,10 +92,10 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Where Momentum Breaks Down ── */}
+      {/* ── Symptoms of a Structural Problem ── */}
       <section
         className="relative overflow-hidden py-16 sm:py-24 bg-section-light"
-        aria-labelledby="momentum-heading"
+        aria-labelledby="symptoms-heading"
       >
         <div
           aria-hidden="true"
@@ -88,7 +107,6 @@ export default function HomePage() {
             `,
           }}
         />
-
         <div
           aria-hidden="true"
           className="absolute left-1/2 top-[72px] h-[520px] w-[520px] -translate-x-1/2 rounded-full border border-navy/[0.05] z-0"
@@ -97,43 +115,39 @@ export default function HomePage() {
           aria-hidden="true"
           className="absolute left-1/2 top-[110px] h-[380px] w-[380px] -translate-x-1/2 rounded-full border border-navy/[0.04] z-0"
         />
-
-        <div
-          aria-hidden="true"
-          className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-navy/10 to-transparent z-0"
-        />
-        <div
-          aria-hidden="true"
-          className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-navy/10 to-transparent z-0"
-        />
+        <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-navy/10 to-transparent z-0" />
+        <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-navy/10 to-transparent z-0" />
 
         <div className="relative z-10 mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
+          <div className="mx-auto max-w-2xl text-center">
             <div className="mb-3">
               <Icon name="spark" size={36} className="opacity-80 mx-auto" />
             </div>
-            <h2 id="momentum-heading" className="mb-5 text-navy">
-              Where Momentum Breaks Down
+            <h2 id="symptoms-heading" className="mb-8 text-navy">
+              Symptoms of a Structural Problem
             </h2>
-            <p className="text-navy/70 text-base mb-3">
-              Most businesses don&apos;t have a marketing problem.
-            </p>
-            <p className="text-navy/70 text-base mb-3">
-              The website exists. The services are clear internally. The team is working.
-            </p>
-            <p className="text-navy/70 text-base mb-3">
-              But something still isn&apos;t converting.
-            </p>
-            <p className="text-navy/70 text-base mb-3">
-              Customers hesitate. Leads stall. Effort doesn&apos;t translate into momentum.
-            </p>
-            <p className="text-navy text-xl sm:text-2xl font-display font-bold mt-6 mb-2 leading-snug">
+
+            <ul className="space-y-4 text-left mb-10 max-w-lg mx-auto">
+              {[
+                "Messaging doesn't land with the right buyers.",
+                "Offers create hesitation instead of urgency.",
+                "Leads stall somewhere in the journey.",
+                "Teams lack visibility into what's actually working.",
+              ].map((symptom, i) => (
+                <li key={i} className="flex items-start gap-4">
+                  <span className="text-copper mt-0.5 shrink-0 font-display font-semibold text-sm">0{i + 1}</span>
+                  <span className="text-navy/80 text-base font-display font-semibold">{symptom}</span>
+                </li>
+              ))}
+            </ul>
+
+            <p className="text-navy text-xl sm:text-2xl font-display font-bold mb-2 leading-snug">
               This is not a marketing problem.
               <br />
-              They have a clarity problem.
+              It is a systems problem.
             </p>
             <p className="text-navy/70 text-base">
-              Cosmic Reach identifies exactly where that breakdown happens.
+              Cosmic Reach identifies the exact friction points and installs the architecture to resolve them.
             </p>
           </div>
         </div>
@@ -161,10 +175,10 @@ export default function HomePage() {
               <Icon name="signal" size={36} className="opacity-80 mx-auto" />
             </div>
             <h2 id="signals-heading" className="mb-3">
-              Signals That Your Business Needs a Clarity Audit
+              Signs the Architecture Needs Attention
             </h2>
             <p className="text-starlight/70 text-base mb-8">
-              If any of these feel familiar, the system underneath your business may be working against you.
+              If any of these are present, the growth infrastructure may be working against itself.
             </p>
           </div>
 
@@ -184,39 +198,47 @@ export default function HomePage() {
 
           <div className="mx-auto max-w-3xl text-center mt-8">
             <p className="text-starlight/80 text-base font-display font-semibold mb-2">
-              These aren&apos;t effort problems. They&apos;re structural ones.
+              These aren&apos;t effort problems. They&apos;re architectural ones.
             </p>
             <p className="text-starlight/70 text-sm mb-6">
-              The Business Clarity Audit pinpoints what&apos;s holding your business back — and what to address first.
+              The Business Clarity Audit is a structural diagnostic that identifies the exact friction points — and what to address first.
             </p>
-            <CTAButton label="See the Clarity Audit" variant="primary" />
+            <CTAButton label="Start the Clarity Audit" variant="primary" />
           </div>
         </div>
       </section>
 
-      {/* ── The Cosmic Reach Framework ── */}
+      {/* ── The Growth Engine ── */}
       <section className="py-16 sm:py-24 bg-section-light" aria-labelledby="framework-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center mb-8">
+          <div className="mx-auto max-w-3xl text-center mb-10">
             <div className="mb-3">
               <Icon name="orbit" size={36} className="opacity-80 mx-auto" />
             </div>
-            <h2 id="framework-heading" className="mb-3 text-navy">The Launch Sequence</h2>
-            <p className="text-navy/70 text-base">
-              Every business runs on four forces. Before building anything, we evaluate each one.
+            <h2 id="framework-heading" className="mb-3 text-navy">The Growth Engine</h2>
+            <p className="text-navy/70 text-base mb-3" style={{ textWrap: "balance" }}>
+              The Launch Sequence operates as a continuous feedback loop.
+            </p>
+            <p className="text-navy/60 text-sm leading-relaxed max-w-xl mx-auto">
+              Signal shapes what the market sees. Gravity converts attention into demand. Orbit moves prospects through the journey. Thrust provides the performance data that recalibrates Signal — and the cycle compounds.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {frameworkLayers.map((layer) => (
               <div
                 key={layer.title}
-                className="rounded-[var(--radius-lg)] border border-navy/10 bg-white p-5 text-center shadow-subtle transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/40 hover:shadow-soft"
+                className="rounded-[var(--radius-lg)] border border-navy/10 bg-white p-5 shadow-subtle transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/40 hover:shadow-soft"
               >
-                <Icon name={layer.icon} size={26} className="mb-2 opacity-70 mx-auto" />
-                <h3 className="font-display font-semibold text-base mb-1 text-navy">{layer.title}</h3>
-                <p className="text-sm text-navy/60">{layer.description}</p>
+                <Icon name={layer.icon} size={26} className="mb-2 opacity-70" />
+                <h3 className="font-display font-semibold text-base mb-2 text-navy">{layer.title}</h3>
+                <p className="text-sm text-navy/60 leading-relaxed">{layer.description}</p>
               </div>
             ))}
+          </div>
+          <div className="text-center mt-8">
+            <p className="text-navy/50 text-xs tracking-wide">
+              Signal → Gravity → Orbit → Thrust → Signal
+            </p>
           </div>
         </div>
       </section>
