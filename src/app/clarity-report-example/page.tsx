@@ -1,8 +1,15 @@
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
+import Image from "next/image";
 import { CTAButton } from "@/components/CTAButton";
-import { PrintButton } from "@/components/PrintButton";
+import { DownloadReportButton } from "@/components/DownloadReportButton";
 import Link from "next/link";
+import {
+  layerScores,
+  deepAnalyses,
+  priorityActions,
+  implementationPath,
+} from "@/lib/clarity-report-data";
 
 export const metadata: Metadata = {
   title: "Example Business Clarity Report | See What You Receive",
@@ -11,107 +18,7 @@ export const metadata: Metadata = {
   alternates: { canonical: `${siteConfig.domain}/clarity-report-example` },
 };
 
-/* ─── Report data ─── */
-
-const layerScores = [
-  {
-    name: "Signal",
-    score: 6,
-    description: "How clearly the business communicates the problem it solves.",
-    scorecard:
-      "Messaging focuses on operational expertise but does not immediately identify the business problem experienced by SaaS founders and leadership teams.",
-    opportunity: "Lead messaging with the operational confusion experienced during scaling.",
-  },
-  {
-    name: "Gravity",
-    score: 7,
-    description: "How compelling the offer is to the right buyer.",
-    scorecard:
-      "AtlasOps offers valuable consulting but presents it as an open-ended service rather than a defined transformation.",
-    opportunity: "Package consulting into a structured engagement with a clear outcome.",
-  },
-  {
-    name: "Orbit",
-    score: 6,
-    description: "How smoothly prospects move from awareness to engagement.",
-    scorecard:
-      "The website explains services but does not guide visitors toward a single clear next step.",
-    opportunity: "Introduce a diagnostic entry offer.",
-  },
-  {
-    name: "Thrust",
-    score: 8,
-    description: "Where the highest leverage growth opportunities exist.",
-    scorecard:
-      "AtlasOps has strong expertise and significant growth potential if positioning improves.",
-    opportunity: "Turn consulting knowledge into structured engagements.",
-  },
-];
-
-const deepAnalyses = [
-  {
-    layer: "Signal",
-    score: 6,
-    observed:
-      "AtlasOps messaging describes operational consulting capabilities but does not quickly identify the operational pain experienced by scaling SaaS companies.",
-    why: "When messaging leads with expertise instead of the buyer's problem, recognition takes longer and trust builds more slowly.",
-    shift:
-      "Lead messaging with the operational confusion and reporting challenges experienced during SaaS growth, then position AtlasOps as the system that restores clarity.",
-  },
-  {
-    layer: "Gravity",
-    score: 7,
-    observed:
-      "The consulting engagement is described broadly, forcing buyers to imagine the scope and outcomes.",
-    why: "Undefined consulting engagements increase perceived risk.",
-    shift:
-      "Package the consulting service into a defined operational clarity engagement with a clear transformation outcome.",
-  },
-  {
-    layer: "Orbit",
-    score: 6,
-    observed:
-      "The website explains services but does not guide visitors toward a single conversion action.",
-    why: "Multiple navigation paths dilute momentum and reduce conversions.",
-    shift:
-      "Introduce a diagnostic entry offer such as an Operational Clarity Assessment to simplify the buying decision.",
-  },
-  {
-    layer: "Thrust",
-    score: 8,
-    observed:
-      "AtlasOps has strong expertise that can support scalable growth if packaged correctly.",
-    why: "Consulting expertise often remains constrained by time unless it is structured into repeatable engagements.",
-    shift:
-      "Develop a growth system consisting of a diagnostic entry product followed by deeper implementation engagements.",
-  },
-];
-
-const priorityActions = [
-  "Lead messaging with the operational pain experienced by SaaS leadership teams.",
-  "Package consulting services into defined engagements.",
-  "Simplify the website conversion path.",
-  "Introduce a diagnostic entry product.",
-];
-
-const implementationPath = [
-  {
-    name: "30 Day Direction Sprint",
-    focus: "Messaging clarity and offer positioning.",
-  },
-  {
-    name: "60 Day Alignment Sprint",
-    focus: "Improving the customer journey and conversion flow.",
-  },
-  {
-    name: "90 Day Systems Sprint",
-    focus: "Implementing scalable operational systems.",
-  },
-  {
-    name: "Mission Control Advisory",
-    focus: "Ongoing strategic clarity and system optimization as the business grows.",
-  },
-];
+/* Report data imported from @/lib/clarity-report-data */
 
 /* ─── Sub-components ─── */
 
@@ -187,10 +94,20 @@ export default function ClarityReportExamplePage() {
     <main id="main-content">
       {/* ── Hero ── */}
       <section
-        className="relative overflow-hidden bg-deep-space print:hidden"
+        className="relative overflow-hidden print:hidden"
         aria-labelledby="report-hero-title"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-navy/60 via-deep-space to-deep-space" />
+        <div className="absolute inset-0">
+          <Image
+            src="/images/04-work-hero.jpg"
+            alt=""
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-deep-space/85 via-deep-space/75 to-deep-space" />
+        </div>
         <div className="relative mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-20">
           <div className="max-w-2xl mx-auto text-center">
             <span className="inline-block text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-4">
@@ -206,7 +123,7 @@ export default function ClarityReportExamplePage() {
               See how the Cosmic Reach Clarity Framework identifies where growth momentum is being
               lost and what to fix first.
             </p>
-            <PrintButton />
+            <DownloadReportButton />
           </div>
         </div>
       </section>
