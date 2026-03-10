@@ -62,21 +62,21 @@ const engagementPath = [
     name: "60 Day Alignment Sprint",
     price: "$2,000",
     description:
-      "A structured engagement aligning strategy, messaging, and execution so the business operates as a coordinated system.",
+      "A structured engagement aligning messaging, offer design, and the customer journey so the marketing system operates as a coordinated whole.",
     isEntry: false,
   },
   {
     name: "90 Day Systems Sprint",
     price: "$3,000",
     description:
-      "A comprehensive engagement building the operational systems required for sustainable growth.",
+      "A comprehensive engagement that installs the brand messaging and marketing systems required for repeatable growth.",
     isEntry: false,
   },
   {
     name: "Mission Control Advisory",
     price: "$750 / mo",
     description:
-      "Ongoing strategic clarity and system optimization as the business grows.",
+      "Ongoing strategic support to refine brand messaging, strengthen offers, and optimize marketing systems as the business grows.",
     isEntry: false,
   },
 ];

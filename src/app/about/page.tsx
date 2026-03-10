@@ -7,15 +7,15 @@ import { CTAButton } from "@/components/CTAButton";
 export const metadata: Metadata = {
   title: "About Cosmic Reach | Business Clarity Consulting",
   description:
-    "Cosmic Reach was built from years inside real delivery environments where visibility, structure, and execution determined whether projects succeeded.",
+    "Cosmic Reach was built from years inside real delivery environments where message clarity, offer strength, and repeatable systems determined whether growth stuck.",
   alternates: { canonical: `${siteConfig.domain}/about` },
 };
 
 const principles = [
-  { label: "Clear direction beats constant motion", icon: "compass" },
-  { label: "Aligned ownership prevents silent failure", icon: "network" },
-  { label: "Execution needs structure, not pressure", icon: "gears" },
-  { label: "Visibility turns activity into decisions", icon: "eye" },
+  { label: "A clear message is a system advantage", icon: "compass" },
+  { label: "Strong offers reduce friction before the conversation begins", icon: "orbit" },
+  { label: "Repeatable workflows outlast individual effort", icon: "gears" },
+  { label: "Decisions without data are guesses", icon: "signal" },
 ];
 
 export default function AboutPage() {
@@ -59,7 +59,7 @@ export default function AboutPage() {
               Most businesses don&apos;t fail because of effort. They stall because the structure underneath their work isn&apos;t clear.
             </p>
             <p className="text-starlight/70 text-base">
-              Built from years inside real delivery environments where visibility, structure, and execution determined whether projects succeeded — Cosmic Reach was designed to bring that same operational discipline to growing businesses.
+              Built from years inside real delivery environments where message clarity, offer strength, and marketing systems determined whether growth stuck — Cosmic Reach was designed to bring that same discipline to founders and marketing teams.
             </p>
           </div>
         </div>
