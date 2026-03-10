@@ -175,7 +175,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <div className="mb-3">
-              <Icon name="signal" size={36} className="opacity-80 mx-auto" />
+              <Icon name="eye" size={36} className="opacity-80 mx-auto" />
             </div>
             <h2 id="signals-heading" className="mb-3">
               Signs the Architecture Needs Attention
@@ -251,7 +251,7 @@ export default function HomePage() {
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center mb-8">
             <div className="mb-3">
-              <Icon name="map" size={36} className="opacity-80 mx-auto" />
+              <Icon name="document" size={36} className="opacity-80 mx-auto" />
             </div>
             <h2 id="report-preview-heading" className="mb-3">Inside the Clarity Report</h2>
             <p className="text-starlight/70 text-base">

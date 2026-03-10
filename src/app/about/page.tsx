@@ -15,7 +15,7 @@ const principles = [
   { label: "A clear message is a system advantage", icon: "compass" },
   { label: "Strong offers reduce friction before the conversation begins", icon: "orbit" },
   { label: "Repeatable workflows outlast individual effort", icon: "gears" },
-  { label: "Decisions without data are guesses", icon: "signal" },
+  { label: "Decisions without data are guesses", icon: "eye" },
 ];
 
 export default function AboutPage() {
