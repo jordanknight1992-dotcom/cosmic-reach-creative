@@ -30,6 +30,7 @@ export function Header() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [mobileDropdownOpen, setMobileDropdownOpen] = useState(false);
   const dropdownGroupRef = useRef<HTMLDivElement>(null);
+  const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 16);
@@ -99,8 +100,13 @@ export function Header() {
               <div
                 ref={dropdownGroupRef}
                 className="relative"
-                onMouseEnter={() => setDropdownOpen(true)}
-                onMouseLeave={() => setDropdownOpen(false)}
+                onMouseEnter={() => {
+                  if (closeTimeoutRef.current) clearTimeout(closeTimeoutRef.current);
+                  setDropdownOpen(true);
+                }}
+                onMouseLeave={() => {
+                  closeTimeoutRef.current = setTimeout(() => setDropdownOpen(false), 150);
+                }}
                 onBlur={handleDropdownBlur}
               >
                 <Link

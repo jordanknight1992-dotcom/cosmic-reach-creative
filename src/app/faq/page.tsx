@@ -30,7 +30,7 @@ const faqs = [
   {
     question: "Is this marketing consulting?",
     answer:
-      "Not exactly. Marketing issues often appear first when a business is losing momentum, but the real constraint is usually deeper. Messaging, offers, customer journey, execution structure, and decision flow all interact as a system.\n\nCosmic Reach focuses on diagnosing and repairing that system so marketing, operations, and execution work together.",
+      "Not exactly. Marketing issues often surface first, but the real constraint is usually in the structure beneath them. Messaging, offer design, the customer journey, and performance visibility all interact as a system.\n\nCosmic Reach diagnoses where that system is breaking down and identifies what to fix first.",
   },
   {
     question: "Do I need a Sprint after the Business Clarity Audit?",
