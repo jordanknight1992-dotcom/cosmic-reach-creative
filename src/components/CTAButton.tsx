@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { siteConfig } from "@/config/site";
 
 interface CTAButtonProps {
@@ -78,11 +81,20 @@ function resolveCtaHref(label: string): string {
   return "/pricing";
 }
 
+function trackClick(label: string, page: string) {
+  fetch("/api/track", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ label, page }),
+  }).catch(() => {});
+}
+
 export function CTAButton({
   label,
   variant = "primary",
   className = "",
 }: CTAButtonProps) {
+  const pathname = usePathname();
   const href = resolveCtaHref(label);
   const isExternal = href.startsWith("http") || href.startsWith("mailto:");
 
@@ -101,6 +113,7 @@ export function CTAButton({
         target={href.startsWith("mailto:") ? undefined : "_blank"}
         rel={href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
         className={`${baseStyles} ${variantStyles} ${className}`}
+        onClick={() => trackClick(label, pathname)}
       >
         {label}
       </a>
@@ -108,7 +121,11 @@ export function CTAButton({
   }
 
   return (
-    <Link href={href} className={`${baseStyles} ${variantStyles} ${className}`}>
+    <Link
+      href={href}
+      className={`${baseStyles} ${variantStyles} ${className}`}
+      onClick={() => trackClick(label, pathname)}
+    >
       {label}
     </Link>
   );

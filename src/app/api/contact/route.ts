@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { saveContactSubmission } from "@/lib/db";
 
 const NOTIFY_EMAIL = "jordan@cosmicreachcreative.com";
 
@@ -26,12 +27,8 @@ export async function POST(request: Request) {
     // In production, integrate with a transactional email service
     // (Resend, SendGrid, Postmark, etc). For now, we log and return success.
     // The Vercel deployment can be connected to any email provider.
-    console.log("=== NEW CONTACT FORM SUBMISSION ===");
-    console.log(`To: ${NOTIFY_EMAIL}`);
-    console.log(`From: ${name} <${email}>`);
-    console.log(`Company: ${company || "N/A"}`);
-    console.log(`Message: ${message}`);
-    console.log("===================================");
+    /* Save to DB regardless of email status */
+    await saveContactSubmission({ name, email, company, message }).catch(console.error);
 
     if (!process.env.RESEND_API_KEY) {
       console.error("RESEND_API_KEY is not set — email not sent.");

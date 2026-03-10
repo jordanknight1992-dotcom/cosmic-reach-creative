@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { saveAuditSubmission } from "@/lib/db";
 
 const NOTIFY_EMAIL = "jordan@cosmicreachcreative.com";
 
@@ -59,7 +60,17 @@ export async function POST(request: Request) {
       "==========================================",
     ].join("\n");
 
-    console.log(emailText);
+    /* Save to DB regardless of email status */
+    await saveAuditSubmission({
+      name, email, company, website,
+      businessDescription: businessDescription,
+      whatIsStuck: whatIsStuck,
+      primaryGoal: primaryGoal,
+      keyOffers: keyOffers,
+      idealCustomer: idealCustomer,
+      anythingElse: anythingElse,
+      supportingLinks: supportingLinks,
+    }).catch(console.error);
 
     if (!process.env.RESEND_API_KEY) {
       console.error("RESEND_API_KEY is not set — email not sent.");
