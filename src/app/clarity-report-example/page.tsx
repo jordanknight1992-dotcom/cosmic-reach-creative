@@ -15,7 +15,7 @@ import {
 export const metadata: Metadata = {
   title: "Example Business Clarity Report | See What You Receive",
   description:
-    "See a real example of the Business Clarity Audit — scored analysis across Signal, Gravity, Orbit, and Thrust with a prioritized implementation plan.",
+    "See a real example of the Business Clarity Audit: scored analysis across Signal, Gravity, Orbit, and Thrust with a prioritized implementation plan.",
   alternates: { canonical: `${siteConfig.domain}/clarity-report-example` },
 };
 
@@ -287,7 +287,7 @@ export default function ClarityReportExamplePage() {
                   This is a sanitized example report
                 </strong>{" "}
                 using a fictional company called AtlasOps. It demonstrates the exact structure,
-                depth, and format your Business Clarity Audit will deliver — prepared within 3–5
+                depth, and format your Business Clarity Audit will deliver, prepared within 3–5
                 business days of your submission.
               </p>
             </div>

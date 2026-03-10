@@ -105,7 +105,7 @@ export default function NextStepsPage() {
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
             <h2 id="step1-heading" className="mb-3">
-              <span className="text-copper">Step 1</span> — Complete the Intake Form
+              <span className="text-copper">Step 1:</span> Complete the Intake Form
             </h2>
             <p className="text-starlight/70 mb-4">
               To begin the audit, please provide a few details about your business.
@@ -145,7 +145,7 @@ export default function NextStepsPage() {
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
             <h2 id="step2-heading" className="mb-3">
-              <span className="text-starlight/60">Step 2</span> — Analysis and Review
+              <span className="text-starlight/60">Step 2:</span> Analysis and Review
             </h2>
             <p className="text-starlight/70 mb-6">
               Once the intake form is submitted, we begin the Business Clarity Audit.
@@ -176,7 +176,7 @@ export default function NextStepsPage() {
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
             <h2 id="step3-heading" className="mb-3">
-              <span className="text-starlight/60">Step 3</span> — Clarity Report Delivery
+              <span className="text-starlight/60">Step 3:</span> Clarity Report Delivery
             </h2>
             <p className="text-starlight/70 mb-4">You will receive a structured report outlining:</p>
             <ul className="space-y-2 mb-5">
