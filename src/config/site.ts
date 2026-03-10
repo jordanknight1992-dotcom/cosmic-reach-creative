@@ -20,7 +20,7 @@ export const siteConfig = {
     {
       label: "Framework",
       href: "/framework",
-      detail: "The 4-layer clarity system",
+      detail: "The 4-force Launch Sequence",
     },
     {
       label: "Services",

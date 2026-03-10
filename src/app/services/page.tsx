@@ -3,9 +3,9 @@ import { siteConfig } from "@/config/site";
 import { MarkdownPage } from "@/components/MarkdownPage";
 
 export const metadata: Metadata = {
-  title: "Services",
+  title: "Services | Signal, Gravity, Orbit & Thrust",
   description:
-    "Cosmic Reach engagements follow a deliberate progression designed to diagnose problems before building solutions.",
+    "From messaging and positioning to offer design, customer journey optimization, and performance tracking — see how each layer of the Launch Sequence translates into action.",
   alternates: { canonical: `${siteConfig.domain}/services` },
 };
 
@@ -21,7 +21,7 @@ We sharpen your positioning so the right people understand what you do and why i
 
 - Messaging audit and positioning refinement
 - Voice and tone alignment across channels
-- Clarity benchmarking against target audience
+- Audience alignment assessment
 
 ICON: signal
 

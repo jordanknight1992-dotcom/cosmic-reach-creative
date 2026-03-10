@@ -15,7 +15,7 @@ import {
 export const metadata: Metadata = {
   title: "Example Business Clarity Report | See What You Receive",
   description:
-    "See a real example of what the Business Clarity Audit delivers — a structured diagnostic showing where growth momentum is being lost and what to fix first.",
+    "See a real example of the Business Clarity Audit — scored analysis across Signal, Gravity, Orbit, and Thrust with a prioritized implementation plan.",
   alternates: { canonical: `${siteConfig.domain}/clarity-report-example` },
 };
 
