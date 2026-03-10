@@ -193,8 +193,32 @@ The result is a marketing system that compounds over time rather than resetting 
 
 ---
 
+## 8. Implementation Path
+
+**Recommended Sprint: 60 Day Alignment Sprint**
+
+The highest-leverage entry point for Bridgevault is the 60 Day Alignment Sprint. The audit reveals that the most acute friction sits at the intersection of Signal and Gravity — positioning is generic, the offer pathway has gaps, and the messaging does not segment by buyer. These are structural problems that require coordinated work across messaging, conversion logic, and lead capture before any systems or measurement investment will produce reliable returns.
+
+The 30 Day Direction Sprint is appropriate for companies that need to establish strategic direction first. Bridgevault has direction — they know what they sell and who they sell to. The problem is that clarity does not reach the buyer. The 90 Day Systems Sprint is the right endpoint, but not the right starting point. Building workflow infrastructure on an unclear message compounds the problem rather than solving it.
+
+**Weeks 1–2: Signal Foundation**
+Rewrite the homepage hero and product page copy around two buyer segments — legal operations managers and procurement directors. Define a single measurable outcome for each. Establish a documented voice profile and apply it to the website and sales deck.
+
+**Weeks 3–4: Gravity Rebuild**
+Introduce a mid-funnel offer (recommended: contract health assessment). Redesign the demo request form to four fields. Map CTAs to buyer stage across the site. Draft outcome-anchored value proposition language supported by customer data.
+
+**Weeks 5–6: Orbit Foundation**
+Consolidate Mailchimp into HubSpot. Build a five-email nurture sequence for mid-funnel captures. Configure automated lead handoff to sales with context attached. Install UTM tracking across all active channels.
+
+**Weeks 7–8: Thrust Baseline**
+Define the five core KPIs. Build a live HubSpot dashboard. Establish the weekly team review cadence and the monthly leadership reporting structure.
+
+At the end of 60 days, Bridgevault will have a clear message, a functional mid-funnel pathway, an integrated tool stack, and a measurement baseline. That foundation makes a 90 Day Systems Sprint — or ongoing advisory engagement — productive rather than premature.
+
+---
+
 **Next Step:**
-Schedule a 30-minute follow-up call to review these findings and determine whether a Signal Sprint or Gravity Sprint is the appropriate next engagement.
+Schedule a 30-minute follow-up call to review these findings and confirm the 60 Day Alignment Sprint scope and start date.
 
 ---
 
