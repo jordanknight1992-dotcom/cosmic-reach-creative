@@ -2,47 +2,49 @@ import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import Image from "next/image";
 import { Icon } from "@/components/Icon";
-import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Pricing | Business Clarity Audit & Sprints",
+  title: "Engagements | Clarity Audit, Sprints & Mission Control",
   description:
-    "Structured engagements with fixed outcomes. Every engagement starts with a diagnostic. From there, you choose how far to go.",
+    "Every engagement starts with a structural diagnostic. The Clarity Audit identifies the constraint. Sprints install the architecture. Mission Control keeps it compounding.",
   alternates: { canonical: `${siteConfig.domain}/pricing` },
 };
 
 const sprintTiers = [
   {
-    name: "30 Day Direction Sprint",
-    price: "$1,000",
-    description:
-      "Focused implementation of the highest-impact changes from the audit — messaging, positioning, and conversion flow.",
-    icon: "compass",
-    coverage: ["Signal", "Thrust"],
-  },
-  {
-    name: "60 Day Alignment Sprint",
+    name: "Direction Sprint",
     price: "$2,000",
     description:
-      "A deeper sprint aligning messaging, offer design, and the customer journey into one coordinated system.",
-    icon: "orbit",
-    coverage: ["Signal", "Gravity", "Orbit"],
+      "Signal and Gravity. Messaging architecture and offer design — the foundation that determines whether attention converts.",
+    icon: "compass",
+    coverage: ["Signal", "Gravity"],
+    outcome: "Messaging and offer architecture blueprint.",
   },
   {
-    name: "90 Day Systems Sprint",
-    price: "$3,000",
+    name: "Alignment Sprint",
+    price: "$4,000",
     description:
-      "The full build — brand messaging, marketing systems, and performance tracking installed end to end.",
+      "Orbit focus. Customer journey mapping, marketing workflows, and the infrastructure that moves prospects from awareness to close.",
+    icon: "orbit",
+    coverage: ["Signal", "Gravity", "Orbit"],
+    outcome: "Operational workflows and marketing infrastructure installed.",
+  },
+  {
+    name: "Execution Sprint",
+    price: "$6,000",
+    description:
+      "Full framework. Complete system build across all four forces — with Thrust dashboards that make performance visible and the system self-correcting.",
     icon: "gears",
     coverage: ["Signal", "Gravity", "Orbit", "Thrust"],
+    outcome: "Complete system build plus Thrust dashboards.",
   },
 ];
 
 const advisoryTier = {
-  name: "Mission Control Advisory",
+  name: "Mission Control Retainer",
   price: "$750/mo",
   description:
-    "Ongoing advisory to refine positioning, strengthen offers, and optimize systems as the business evolves.",
+    "Flight Support. Ongoing advisory to maintain the system, prevent operational drift, and recalibrate as the business evolves.",
   icon: "network",
 };
 
@@ -66,7 +68,7 @@ export default function PricingPage() {
           <div className="max-w-2xl mx-auto text-center">
             <h1 id="pricing-hero" className="text-copper">Structured Engagements.<br />Fixed Outcomes.</h1>
             <p className="text-starlight/80 text-lg sm:text-xl mt-3">
-              Every engagement starts with a diagnostic. From there, you choose your trajectory.
+              Every engagement starts with a structural diagnostic. From there, you choose how far to build.
             </p>
           </div>
         </div>
@@ -78,7 +80,7 @@ export default function PricingPage() {
           <div className="max-w-2xl mx-auto">
             <div className="flex justify-center mb-3">
               <span className="inline-block text-xs font-display font-semibold tracking-wide text-copper border border-copper/40 rounded-full px-3 py-1">
-                Best Place to Start
+                Diagnosis Before Prescription
               </span>
             </div>
             <article className="rounded-[var(--radius-lg)] border-2 border-copper/40 bg-navy/70 p-6 sm:p-8 flex flex-col transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/60 hover:shadow-soft">
@@ -88,21 +90,26 @@ export default function PricingPage() {
                   <h2 className="font-display font-semibold text-xl text-starlight mb-1">
                     Business Clarity Audit
                   </h2>
-                  <p className="text-copper font-display font-semibold text-3xl">$150</p>
+                  <div className="flex items-baseline gap-2">
+                    <p className="text-copper font-display font-semibold text-3xl">$150</p>
+                    <p className="text-starlight/50 text-xs">credited toward any Sprint engagement</p>
+                  </div>
                 </div>
               </div>
               <p className="text-starlight/70 text-base mb-5">
-                A diagnostic that evaluates your messaging, offers, customer journey, and growth levers — then tells you exactly what to address first.
+                A structural diagnostic that evaluates each layer of the Launch Sequence — then delivers a scored report, a system map, and a prioritized roadmap for what to address first.
               </p>
               <p className="text-xs font-display font-semibold tracking-widest text-starlight/60 uppercase mb-3">
-                Includes
+                Deliverables
               </p>
               <ul className="space-y-2 mb-6">
                 {[
-                  "Messaging & positioning review (Signal)",
-                  "Offer strength analysis (Gravity)",
-                  "Customer journey diagnosis (Orbit)",
-                  "Growth lever identification (Thrust)",
+                  "Business Clarity Score across all four forces",
+                  "Signal — Messaging and positioning analysis",
+                  "Gravity — Offer structure and conversion strength",
+                  "Orbit — Customer journey and infrastructure review",
+                  "Thrust — KPI visibility and growth lever identification",
+                  "System map showing how the forces interact",
                   "Prioritized implementation roadmap",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-sm text-starlight/80">
@@ -127,12 +134,52 @@ export default function PricingPage() {
         </div>
       </section>
 
+      {/* Task 7 — System Health Summary */}
+      <section className="pb-2 sm:pb-4" aria-label="System Health Summary">
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+          <div className="max-w-2xl mx-auto">
+            <div
+              className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/30 px-6 py-5"
+            >
+              <p className="text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-4">
+                Example System Health Summary
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+                {[
+                  { layer: "Signal", score: 6.2, color: "text-amber-400" },
+                  { layer: "Gravity", score: 5.8, color: "text-amber-400" },
+                  { layer: "Orbit", score: 4.9, color: "text-red-400" },
+                  { layer: "Thrust", score: 3.7, color: "text-red-400" },
+                ].map(({ layer, score, color }) => (
+                  <div
+                    key={layer}
+                    className="rounded-lg border border-starlight/8 bg-deep-space/40 px-3 py-3 text-center"
+                  >
+                    <p className="text-xs font-display font-semibold text-starlight/50 uppercase mb-1">{layer}</p>
+                    <p className={`text-xl font-display font-bold ${color}`}>{score}</p>
+                    <p className="text-xs text-starlight/30">/ 10</p>
+                  </div>
+                ))}
+              </div>
+              <p className="text-starlight/60 text-xs leading-relaxed">
+                Most organizations operating below a 6.0 in any layer struggle to convert marketing activity into revenue. The Clarity Audit identifies the exact friction points driving those scores — and what to fix first.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Sprint Cards */}
       <section className="py-8 sm:py-10" aria-label="Implementation sprints">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
-          <p className="text-center text-xs font-display font-semibold tracking-widest text-starlight/60 uppercase mb-5">
-            Implementation Sprints
-          </p>
+          <div className="max-w-3xl mx-auto text-center mb-6">
+            <p className="text-xs font-display font-semibold tracking-widest text-starlight/60 uppercase mb-3">
+              Implementation Sprints
+            </p>
+            <p className="text-starlight/60 text-sm leading-relaxed">
+              Once the audit identifies the constraint, a Sprint installs the architecture. Each tier is scoped to a specific layer of the Launch Sequence, with a defined outcome and a fixed engagement.
+            </p>
+          </div>
           <div className="grid gap-4 sm:grid-cols-3">
             {sprintTiers.map((tier) => (
               <article
@@ -149,18 +196,26 @@ export default function PricingPage() {
                 <p className="text-sm text-starlight/60 mb-4 flex-1">
                   {tier.description}
                 </p>
-                <div>
-                  <p className="text-xs font-display font-medium tracking-wide text-starlight/60 uppercase mb-2">
-                    Framework coverage
-                  </p>
-                  <ul className="space-y-1">
-                    {tier.coverage.map((item) => (
-                      <li key={item} className="flex items-center gap-2 text-xs text-starlight/60">
-                        <span className="text-copper text-[8px]" aria-hidden="true">&#9670;</span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
+                <div className="space-y-3">
+                  <div>
+                    <p className="text-xs font-display font-medium tracking-wide text-starlight/50 uppercase mb-2">
+                      Framework coverage
+                    </p>
+                    <ul className="space-y-1">
+                      {tier.coverage.map((item) => (
+                        <li key={item} className="flex items-center gap-2 text-xs text-starlight/60">
+                          <span className="text-copper text-[8px]" aria-hidden="true">&#9670;</span>
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <div className="pt-2 border-t border-starlight/8">
+                    <p className="text-xs font-display font-medium tracking-wide text-starlight/50 uppercase mb-1">
+                      Outcome
+                    </p>
+                    <p className="text-xs text-copper/80">{tier.outcome}</p>
+                  </div>
                 </div>
               </article>
             ))}
@@ -169,15 +224,20 @@ export default function PricingPage() {
       </section>
 
       {/* Advisory Card */}
-      <section className="py-6 sm:py-8" aria-label="Mission Control Advisory">
+      <section className="py-6 sm:py-8" aria-label="Mission Control Retainer">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
-            <article className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-5 flex flex-col sm:flex-row sm:items-center gap-4 transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/30 hover:shadow-subtle">
-              <Icon name={advisoryTier.icon} size={24} className="opacity-70 shrink-0" />
+            <article className="rounded-[var(--radius-lg)] border border-copper/20 bg-navy/50 p-5 flex flex-col sm:flex-row sm:items-start gap-4 transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/40 hover:shadow-subtle">
+              <Icon name={advisoryTier.icon} size={24} className="opacity-70 shrink-0 mt-0.5" />
               <div className="flex-1 min-w-0">
-                <h3 className="font-display font-semibold text-base mb-0.5">
-                  {advisoryTier.name}
-                </h3>
+                <div className="flex items-center gap-2 mb-0.5">
+                  <h3 className="font-display font-semibold text-base">
+                    {advisoryTier.name}
+                  </h3>
+                  <span className="text-xs font-display font-semibold text-copper/60 border border-copper/20 rounded-full px-2 py-0.5">
+                    Flight Support
+                  </span>
+                </div>
                 <p className="text-sm text-starlight/60">{advisoryTier.description}</p>
               </div>
               <p className="text-copper font-display font-semibold text-xl shrink-0">
