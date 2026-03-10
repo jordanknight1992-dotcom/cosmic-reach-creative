@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { saveAuditSubmission } from "@/lib/db";
 
 const NOTIFY_EMAIL = "jordan@cosmicreachcreative.com";
 
@@ -59,22 +60,48 @@ export async function POST(request: Request) {
       "==========================================",
     ].join("\n");
 
-    console.log(emailText);
+    /* Save to DB regardless of email status */
+    await saveAuditSubmission({
+      name, email, company, website,
+      businessDescription: businessDescription,
+      whatIsStuck: whatIsStuck,
+      primaryGoal: primaryGoal,
+      keyOffers: keyOffers,
+      idealCustomer: idealCustomer,
+      anythingElse: anythingElse,
+      supportingLinks: supportingLinks,
+    }).catch(console.error);
 
-    if (process.env.RESEND_API_KEY) {
-      await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          from: "Cosmic Reach <noreply@cosmicreachcreative.com>",
-          to: [NOTIFY_EMAIL],
-          subject: `New Clarity Audit Intake — ${name}${company ? ` (${company})` : ""}`,
-          text: emailText,
-        }),
-      });
+    if (!process.env.RESEND_API_KEY) {
+      console.error("RESEND_API_KEY is not set — email not sent.");
+      return NextResponse.json(
+        { error: "Email service is not configured." },
+        { status: 503 }
+      );
+    }
+
+    const resendRes = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: "Cosmic Reach <noreply@cosmicreachcreative.com>",
+        to: [NOTIFY_EMAIL],
+        reply_to: email,
+        subject: `New Clarity Audit Intake — ${name}${company ? ` (${company})` : ""}`,
+        text: emailText,
+      }),
+    });
+
+    if (!resendRes.ok) {
+      const err = await resendRes.json().catch(() => ({}));
+      console.error("Resend error:", JSON.stringify(err));
+      return NextResponse.json(
+        { error: "Failed to send email." },
+        { status: 502 }
+      );
     }
 
     return NextResponse.json({ success: true });
