@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
+import Image from "next/image";
 import { Icon } from "@/components/Icon";
 import { CTAButton } from "@/components/CTAButton";
 import Link from "next/link";
@@ -73,7 +74,7 @@ const engagementPath = [
   },
   {
     name: "Mission Control Advisory",
-    price: "$500 / mo",
+    price: "$750 / mo",
     description:
       "Ongoing strategic clarity and system optimization as the business grows.",
     isEntry: false,
@@ -85,10 +86,20 @@ export default function HowItWorksPage() {
     <main id="main-content">
       {/* ── Hero ── */}
       <section
-        className="relative overflow-hidden bg-deep-space"
+        className="relative overflow-hidden"
         aria-labelledby="how-it-works-title"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-navy/60 via-deep-space to-deep-space" />
+        <div className="absolute inset-0">
+          <Image
+            src="/images/07-clarity-section.jpg"
+            alt=""
+            fill
+            className="object-cover"
+            priority
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-deep-space/85 via-deep-space/75 to-deep-space" />
+        </div>
         <div className="relative mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-24 text-center">
           <div className="max-w-2xl mx-auto">
             <h1 id="how-it-works-title" className="text-copper mb-4">
