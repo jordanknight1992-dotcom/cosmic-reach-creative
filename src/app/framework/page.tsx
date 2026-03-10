@@ -5,9 +5,9 @@ import { Icon } from "@/components/Icon";
 import { CTAButton } from "@/components/CTAButton";
 
 export const metadata: Metadata = {
-  title: "The Clarity Framework | 4-Layer Business System",
+  title: "The Launch Sequence | 4-Force Business System",
   description:
-    "The Cosmic Reach Framework moves through four layers designed to restore signal, reduce friction, and make progress repeatable.",
+    "The Launch Sequence evaluates messaging, offer strength, customer journey, and growth levers across one connected system.",
   alternates: { canonical: `${siteConfig.domain}/framework` },
 };
 
@@ -17,7 +17,7 @@ const layers = [
     subtitle: "Messaging Clarity",
     icon: "compass",
     description:
-      "We identify where messaging is breaking down and what to clarify first. We diagnose where positioning is unclear, where value isn’t landing with the right audience, and where the story of the business isn’t translating into action.",
+      "Where is messaging falling short? This layer diagnoses positioning gaps, identifies where value isn’t landing with the right audience, and reveals why the story of the business isn’t translating into action.",
     deliverables: [
       "A clear diagnosis of current messaging across channels",
       "Positioning refinement tied to the right audience",
@@ -29,7 +29,7 @@ const layers = [
     subtitle: "Offer Strength",
     icon: "orbit",
     description:
-      "We make sure the offer is structured to create genuine pull. We bring clarity to how offers are framed, priced, and perceived so the right customers see clear value and hesitation is reduced.",
+      "Is the offer strong enough to convert on its own? This layer evaluates how offers are framed, priced, and perceived — and identifies where hesitation is outweighing perceived value.",
     deliverables: [
       "Offer positioning and framing analysis",
       "Value perception insights",
@@ -41,11 +41,11 @@ const layers = [
     subtitle: "Customer Journey",
     icon: "gears",
     description:
-      "We design the path from first contact to conversion so it works as a system. We map the customer journey, identify friction points, and clarify the steps that move prospects toward a decision.",
+      "What happens between first touch and purchase? This layer maps the customer journey, surfaces drop-off points, and identifies the steps that move prospects toward a decision.",
     deliverables: [
       "Customer journey mapping and friction diagnosis",
       "Conversion flow analysis",
-      "Practical improvements that reduce hesitation and increase momentum",
+      "Practical improvements that reduce hesitation and shorten time to purchase",
     ],
   },
   {
@@ -53,11 +53,11 @@ const layers = [
     subtitle: "Growth Opportunities",
     icon: "signal",
     description:
-      "We give founders a clear view of where growth potential exists and what to act on first. We translate business activity into actionable insight so decisions about where to invest effort are driven by impact, not assumptions.",
+      "Where should you invest next? This layer translates business activity into actionable insight so growth decisions are driven by evidence, not assumptions.",
     deliverables: [
       "Growth opportunity analysis tied to business outcomes",
       "Prioritized improvement roadmap",
-      "Clarity on what to build, fix, or remove to accelerate momentum",
+      "A decision framework for what to build, fix, or deprioritize",
     ],
   },
 ];
@@ -80,9 +80,9 @@ export default function FrameworkPage() {
         </div>
         <div className="relative mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-24 text-center">
           <div className="max-w-2xl mx-auto">
-            <h1 id="framework-hero" className="text-copper">The Operating System Underneath Your Business</h1>
+            <h1 id="framework-hero" className="text-copper">The Four Forces Behind Every Business</h1>
             <p className="text-starlight/80 text-base sm:text-lg mt-3">
-              We don&apos;t begin with tactics. We map the system that makes tactics succeed or fail.
+              We don&apos;t begin with tactics. We evaluate the forces that make tactics succeed or fail.
             </p>
           </div>
         </div>
@@ -97,7 +97,7 @@ export default function FrameworkPage() {
             </div>
             <h2 id="framework-intro" className="mb-4">Four Layers. One System.</h2>
             <p className="text-starlight/70 text-base">
-              Cosmic Reach engagements move through four layers designed to restore clarity, reduce friction, and make progress repeatable. Every layer builds on the last.
+              The Launch Sequence evaluates four forces — sharpening positioning, strengthening offers, streamlining the customer journey, and building performance visibility. Every layer builds on the last.
             </p>
           </div>
         </div>
@@ -158,9 +158,9 @@ export default function FrameworkPage() {
             <div className="mb-3">
               <Icon name="rocket" size={36} className="opacity-80 mx-auto" />
             </div>
-            <h2 id="framework-cta" className="mb-3">Ready to Map the Path?</h2>
+            <h2 id="framework-cta" className="mb-3">Ready to Evaluate the System?</h2>
             <p className="text-starlight/70 text-base mb-6">
-              The Business Clarity Audit applies the full framework to your business and delivers a prioritized roadmap for improvement.
+              The Business Clarity Audit applies all four layers to your business and delivers a prioritized action plan.
             </p>
             <CTAButton label="Start the Clarity Audit" variant="primary" />
             <p className="mt-3 text-xs text-starlight/60">

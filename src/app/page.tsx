@@ -6,9 +6,9 @@ import { CTAButton } from "@/components/CTAButton";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: `${siteConfig.siteName} | Operational Clarity for Teams`,
+  title: `${siteConfig.siteName} | Brand Clarity & Marketing Systems`,
   description:
-    "Cosmic Reach Creative helps founders identify where growth is getting stuck and build systems that move the business forward.",
+    "Cosmic Reach Creative helps founders and marketing leaders identify what's holding growth back and install the systems that make it repeatable.",
   alternates: { canonical: siteConfig.domain },
 };
 
@@ -17,28 +17,28 @@ const diagnosticSignals = [
   "Your team works hard but priorities constantly shift",
   "Customers seem interested but hesitate before buying",
   "Messaging changes frequently because nothing feels quite right",
-  "Decisions take longer than they should because the real constraint isn't clear",
-  "Progress depends on heroic effort instead of reliable systems",
+  "Decisions take longer than they should because the real constraint isn't visible",
+  "Growth depends on individual hustle instead of a repeatable process",
 ];
 
 const frameworkLayers = [
-  { title: "Signal", description: "Messaging clarity", icon: "compass" },
-  { title: "Gravity", description: "Offer strength", icon: "orbit" },
-  { title: "Orbit", description: "Customer journey", icon: "gears" },
-  { title: "Thrust", description: "Growth opportunities", icon: "signal" },
+  { title: "Signal", description: "Is your message reaching the right people with the right words?", icon: "compass" },
+  { title: "Gravity", description: "Does your offer create enough pull to turn interest into action?", icon: "orbit" },
+  { title: "Orbit", description: "Is there a repeatable path from first touch to paying customer?", icon: "gears" },
+  { title: "Thrust", description: "Are you measuring what matters and investing where it counts?", icon: "signal" },
 ];
 
 const fitSignals = [
-  "A business that has traction but feels stuck",
-  "A team that's working hard but lacks structural clarity",
-  "An early-stage founder shaping the right system from the beginning",
-  "A company where marketing, operations, and execution aren't fully aligned",
+  "A business with traction that hasn't translated into predictable growth",
+  "A team that works hard but keeps shifting priorities without clear returns",
+  "A founder building the right foundation before scaling spend",
+  "A company where marketing, offers, and follow-through aren't working together",
 ];
 
 const notFitSignals = [
   "You're looking for quick marketing hacks",
   "You're not open to adjusting how the business is structured",
-  "You're expecting a tactical execution agency",
+  "You're expecting a hands-on production team",
 ];
 
 export default function HomePage() {
@@ -67,7 +67,7 @@ export default function HomePage() {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <CTAButton label="Start The Clarity Audit" variant="primary" />
-              <CTAButton label="Explore the Clarity Framework" variant="secondary" />
+              <CTAButton label="Explore the Launch Sequence" variant="secondary" />
             </div>
           </div>
         </div>
@@ -184,10 +184,10 @@ export default function HomePage() {
 
           <div className="mx-auto max-w-3xl text-center mt-8">
             <p className="text-starlight/80 text-base font-display font-semibold mb-2">
-              These are not effort problems. They are clarity problems.
+              These aren&apos;t effort problems. They&apos;re structural ones.
             </p>
             <p className="text-starlight/70 text-sm mb-6">
-              A Business Clarity Audit identifies exactly where momentum is breaking down and what to fix first.
+              The Business Clarity Audit pinpoints what&apos;s holding your business back — and what to address first.
             </p>
             <CTAButton label="See the Clarity Audit" variant="primary" />
           </div>
@@ -201,9 +201,9 @@ export default function HomePage() {
             <div className="mb-3">
               <Icon name="orbit" size={36} className="opacity-80 mx-auto" />
             </div>
-            <h2 id="framework-heading" className="mb-3 text-navy">The Cosmic Reach Framework</h2>
+            <h2 id="framework-heading" className="mb-3 text-navy">The Launch Sequence</h2>
             <p className="text-navy/70 text-base">
-              We don&apos;t start with tactics. We map the operating system underneath your business.
+              Every business runs on four forces. Before building anything, we evaluate each one.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -238,8 +238,8 @@ export default function HomePage() {
               { label: "Executive Readout", detail: "System Momentum Score and highest-leverage shift at a glance." },
               { label: "System Map", detail: "How the four framework forces interact in your specific business." },
               { label: "Layer-by-Layer Scorecard", detail: "Scored analysis of Signal, Gravity, Orbit, and Thrust." },
-              { label: "Deep Friction Analysis", detail: "What's creating drag in each layer and exactly why it matters." },
-              { label: "Recommended Shifts", detail: "Specific, prioritized actions to restore momentum." },
+              { label: "Deep-Dive Analysis", detail: "What's slowing each layer and exactly why it matters." },
+              { label: "Recommended Shifts", detail: "Specific, prioritized actions to accelerate growth." },
               { label: "Implementation Path", detail: "Sprint recommendation and a sequenced action plan for what to fix first." },
             ].map((item) => (
               <div
@@ -313,7 +313,7 @@ export default function HomePage() {
             </div>
             <h2 id="fit-heading" className="mb-3">Who Cosmic Reach Is For</h2>
             <p className="text-starlight/70 text-base mb-8">
-              Cosmic Reach works best with founders and teams who know something in their business needs to be clarified before progress can accelerate.
+              Cosmic Reach works best with founders and teams who sense something in their business isn&apos;t converting the way it should.
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-2 max-w-3xl mx-auto">
@@ -342,7 +342,7 @@ export default function HomePage() {
           </div>
           <div className="text-center mt-6">
             <p className="text-starlight/60 text-sm mb-4">
-              The common thread is the desire to build the right system before scaling effort.
+              The common thread: a willingness to fix the foundation before scaling the spend.
             </p>
           </div>
         </div>
@@ -355,9 +355,9 @@ export default function HomePage() {
             <div className="mb-3">
               <Icon name="rocket" size={36} className="opacity-80 mx-auto" />
             </div>
-            <h2 id="final-cta-heading" className="mb-4">Map Your Path to Clarity</h2>
+            <h2 id="final-cta-heading" className="mb-4">See What&apos;s Holding You Back</h2>
             <p className="text-starlight/70 text-base mb-6" style={{ textWrap: "balance" }}>
-              The Clarity Audit is a structured diagnostic that reveals exactly where momentum is breaking down inside your business.
+              The Business Clarity Audit evaluates your messaging, offers, customer journey, and growth levers — then tells you exactly what to address first.
             </p>
             <CTAButton label="Start The Clarity Audit" variant="primary" />
             <p className="mt-3 text-xs text-starlight/60">

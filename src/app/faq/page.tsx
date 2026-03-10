@@ -15,22 +15,22 @@ const faqs = [
   {
     question: "What is a Business Clarity Audit?",
     answer:
-      "A Business Clarity Audit is a structured diagnostic of the system underneath your business. We analyze your messaging, offer positioning, customer journey, and growth signals using the Cosmic Reach Clarity Framework. The goal is to identify exactly where momentum is breaking down and what to fix first.\n\nYou receive a clear diagnosis and a prioritized improvement roadmap. Even if you never work with Cosmic Reach again, you’ll walk away knowing exactly where your business is losing momentum and what to fix first.",
+      "A Business Clarity Audit is a structured diagnostic that evaluates your messaging, offer positioning, customer journey, and growth levers using the Launch Sequence framework. The goal is to identify what’s working, what isn’t, and what to address first.\n\nYou receive a scored diagnosis and a prioritized action plan. Even if you never work with Cosmic Reach again, you’ll walk away knowing exactly where your business is getting stuck and what to change.",
   },
   {
     question: "How long does the audit take?",
     answer:
-      "Most Business Clarity Audits are completed within 3–5 business days after the intake form is submitted. You’ll receive a structured clarity report outlining where momentum is breaking down and the highest-impact improvements to make first.",
+      "Most Business Clarity Audits are completed within 3–5 business days after the intake form is submitted. You’ll receive a scored report covering all four layers of the Launch Sequence, with prioritized recommendations you can act on immediately.",
   },
   {
     question: "Is the audit just advice?",
     answer:
-      "No. The audit identifies the structural issues slowing growth and delivers a clear roadmap for improvement.\n\nSome teams implement the recommendations internally. Others choose to move into implementation sprints where Cosmic Reach helps rebuild the underlying systems. Either way, the audit gives you immediate clarity on what to fix first.",
+      "No. The audit identifies the structural issues slowing growth and delivers a prioritized roadmap for improvement.\n\nSome teams implement the recommendations internally. Others move into Sprints where Cosmic Reach helps rebuild the underlying structure. Either way, the audit gives you immediate direction on what to address first.",
   },
   {
     question: "Is this marketing consulting?",
     answer:
-      "Not exactly. Marketing issues often surface first, but the real constraint is usually in the structure beneath them. Messaging, offer design, the customer journey, and performance visibility all interact as a system.\n\nCosmic Reach diagnoses where that system is breaking down and identifies what to fix first.",
+      "Not exactly. Marketing issues often surface first, but the real constraint is usually in the structure beneath them. Messaging, offer design, the customer journey, and performance visibility all interact as connected forces.\n\nCosmic Reach diagnoses which force is weakest and identifies what to address first.",
   },
   {
     question: "Do I need a Sprint after the Business Clarity Audit?",
@@ -42,7 +42,7 @@ const faqs = [
     answer:
       "Cosmic Reach works best with founders and leadership teams who know something in their business isn’t converting the way it should.",
     signals: [
-      "Marketing activity that isn’t producing momentum",
+      "Marketing activity that isn’t producing results",
       "Teams working hard but priorities constantly shifting",
       "Customers showing interest but hesitating before buying",
       "Messaging or offers that feel unclear",

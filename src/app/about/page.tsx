@@ -5,9 +5,9 @@ import { Icon } from "@/components/Icon";
 import { CTAButton } from "@/components/CTAButton";
 
 export const metadata: Metadata = {
-  title: "About Cosmic Reach | Business Clarity Consulting",
+  title: "About Cosmic Reach | Built From the Operator's Seat",
   description:
-    "Cosmic Reach was built from years inside real delivery environments where message clarity, offer strength, and repeatable systems determined whether growth stuck.",
+    "Built from years inside real delivery environments. Cosmic Reach helps founders diagnose what's holding growth back and install the structure to fix it.",
   alternates: { canonical: `${siteConfig.domain}/about` },
 };
 
@@ -53,13 +53,13 @@ export default function AboutPage() {
             </div>
             <h2 id="origin-heading" className="mb-4">The Mission Behind the Work</h2>
             <p className="text-starlight/70 text-base mb-3">
-              Cosmic Reach exists to help founders see what their systems are actually doing.
+              Cosmic Reach was built to answer one question: why isn&apos;t this working?
             </p>
             <p className="text-starlight/70 text-base mb-3">
-              Most businesses don&apos;t fail because of effort. They stall because the structure underneath their work isn&apos;t clear.
+              Most businesses don&apos;t fail from lack of effort. They stall because the forces driving growth — messaging, offer strength, the customer journey, and performance visibility — aren&apos;t working together.
             </p>
             <p className="text-starlight/70 text-base">
-              Built from years inside real delivery environments where message clarity, offer strength, and marketing systems determined whether growth stuck — Cosmic Reach was designed to bring that same discipline to founders and marketing teams.
+              Built from years inside real delivery environments where these forces determined whether growth stuck or stalled — Cosmic Reach was designed to bring that same discipline to founders and marketing teams.
             </p>
           </div>
         </div>
@@ -159,9 +159,9 @@ export default function AboutPage() {
       <section className="py-12 sm:py-16" aria-labelledby="about-cta">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 id="about-cta" className="mb-3">Ready to Restore Momentum?</h2>
+            <h2 id="about-cta" className="mb-3">Ready to Find the Constraint?</h2>
             <p className="text-starlight/70 text-base mb-6">
-              The Business Clarity Audit is the first step toward building a system that works.
+              The Business Clarity Audit evaluates the four forces driving your business and shows you exactly where to focus.
             </p>
             <CTAButton label="Start the Clarity Audit" variant="primary" />
           </div>

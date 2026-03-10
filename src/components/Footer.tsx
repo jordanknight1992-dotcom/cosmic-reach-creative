@@ -18,7 +18,7 @@ export function Footer() {
               style={{ height: "40px", width: "auto" }}
             />
             <p className="text-sm text-starlight/60 max-w-xs">
-              Operational clarity for teams that need structure, not more activity. Diagnose the system. Restore momentum.
+              Brand clarity and marketing systems for founders who need structure, not more activity.
             </p>
           </div>
 

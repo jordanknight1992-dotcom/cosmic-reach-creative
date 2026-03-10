@@ -16,7 +16,7 @@ const sprintTiers = [
     name: "30 Day Direction Sprint",
     price: "$1,000",
     description:
-      "Focused implementation of the highest-impact improvements identified in the audit.",
+      "Focused implementation of the highest-impact changes from the audit — messaging, positioning, and conversion flow.",
     icon: "compass",
     coverage: ["Signal", "Thrust"],
   },
@@ -24,7 +24,7 @@ const sprintTiers = [
     name: "60 Day Alignment Sprint",
     price: "$2,000",
     description:
-      "A deeper sprint to align messaging, customer journey, and execution.",
+      "A deeper sprint aligning messaging, offer design, and the customer journey into one coordinated system.",
     icon: "orbit",
     coverage: ["Signal", "Gravity", "Orbit"],
   },
@@ -32,7 +32,7 @@ const sprintTiers = [
     name: "90 Day Systems Sprint",
     price: "$3,000",
     description:
-      "A full systems build designed to create repeatable, sustainable progress.",
+      "The full build — brand messaging, marketing systems, and performance tracking installed end to end.",
     icon: "gears",
     coverage: ["Signal", "Gravity", "Orbit", "Thrust"],
   },
@@ -42,7 +42,7 @@ const advisoryTier = {
   name: "Mission Control Advisory",
   price: "$750/mo",
   description:
-    "Ongoing strategic support to refine systems, priorities, and growth decisions over time.",
+    "Ongoing advisory to refine positioning, strengthen offers, and optimize systems as the business evolves.",
   icon: "network",
 };
 
@@ -92,18 +92,18 @@ export default function PricingPage() {
                 </div>
               </div>
               <p className="text-starlight/70 text-base mb-5">
-                A structured diagnostic designed to show where your business is losing momentum and what to fix first.
+                A diagnostic that evaluates your messaging, offers, customer journey, and growth levers — then tells you exactly what to address first.
               </p>
               <p className="text-xs font-display font-semibold tracking-widest text-starlight/60 uppercase mb-3">
                 Includes
               </p>
               <ul className="space-y-2 mb-6">
                 {[
-                  "Messaging clarity review",
-                  "Offer positioning analysis",
-                  "Customer journey friction diagnosis",
-                  "Growth opportunity insights",
-                  "Prioritized improvement roadmap",
+                  "Messaging & positioning review (Signal)",
+                  "Offer strength analysis (Gravity)",
+                  "Customer journey diagnosis (Orbit)",
+                  "Growth lever identification (Thrust)",
+                  "Prioritized implementation roadmap",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-sm text-starlight/80">
                     <span className="text-copper mt-0.5 shrink-0">&#9670;</span>

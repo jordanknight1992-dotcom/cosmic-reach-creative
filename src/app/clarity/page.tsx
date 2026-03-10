@@ -5,13 +5,13 @@ import { MarkdownPage } from "@/components/MarkdownPage";
 export const metadata: Metadata = {
   title: "The Clarity Session",
   description:
-    "A structured working session designed to diagnose operational friction and give leaders usable direction immediately.",
+    "A structured working session designed to diagnose what's slowing growth and give leaders usable direction immediately.",
   alternates: { canonical: `${siteConfig.domain}/clarity` },
 };
 
 const content = `# The Clarity Session
 
-A structured working session designed to diagnose operational friction and give leaders usable direction immediately.
+A structured working session designed to diagnose what's slowing growth and give leaders usable direction immediately.
 
 IMAGE: 07-clarity-section.jpg
 
@@ -21,7 +21,7 @@ IMAGE: 07-clarity-section.jpg
 
 We map current priorities, identify decision bottlenecks, and highlight the system gaps affecting progress.
 
-You leave with clarity on what to fix first and why it matters.
+You leave with a prioritized view of what to address first and why it matters.
 
 ICON: map
 
@@ -45,7 +45,7 @@ IMAGE: 08-results-section.jpg
 
 ## Start With Insight
 
-If the system underneath your work feels unclear, the next step is simple.
+If the forces driving your business feel misaligned, the next step is simple.
 
 [CTA: Book Your Clarity Session]`;
 

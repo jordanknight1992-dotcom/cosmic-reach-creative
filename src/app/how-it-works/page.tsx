@@ -8,7 +8,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "How It Works | Cosmic Reach Creative",
   description:
-    "See how the Cosmic Reach Clarity Framework diagnoses your business, identifies where momentum is breaking down, and maps the path forward.",
+    "See how the Launch Sequence evaluates your business across four forces, identifies what's holding growth back, and maps the path forward.",
   alternates: { canonical: `${siteConfig.domain}/how-it-works` },
 };
 
@@ -32,7 +32,7 @@ const frameworkLayers = [
     subtitle: "Customer Journey",
     icon: "gears",
     description:
-      "The path from first contact to conversion, and where friction is slowing it down.",
+      "The path from first contact to conversion — and what's slowing it down.",
   },
   {
     name: "Thrust",
@@ -48,7 +48,7 @@ const engagementPath = [
     name: "Business Clarity Audit",
     price: "$150",
     description:
-      "The starting point. A structured diagnostic that maps the system underneath your business and identifies exactly where momentum is breaking down.",
+      "The starting point. A diagnostic that evaluates your messaging, offers, customer journey, and growth levers — then tells you exactly what to address first.",
     isEntry: true,
   },
   {
@@ -62,21 +62,21 @@ const engagementPath = [
     name: "60 Day Alignment Sprint",
     price: "$2,000",
     description:
-      "A structured engagement aligning messaging, offer design, and the customer journey so the marketing system operates as a coordinated whole.",
+      "Messaging, offer design, and the customer journey aligned into one coordinated system — so every piece reinforces the rest.",
     isEntry: false,
   },
   {
     name: "90 Day Systems Sprint",
     price: "$3,000",
     description:
-      "A comprehensive engagement that installs the brand messaging and marketing systems required for repeatable growth.",
+      "The full build. Brand messaging, marketing systems, and performance tracking installed end to end.",
     isEntry: false,
   },
   {
     name: "Mission Control Advisory",
     price: "$750 / mo",
     description:
-      "Ongoing strategic support to refine brand messaging, strengthen offers, and optimize marketing systems as the business grows.",
+      "Ongoing advisory to refine positioning, strengthen offers, and optimize systems as the business evolves.",
     isEntry: false,
   },
 ];
@@ -109,8 +109,8 @@ export default function HowItWorksPage() {
               className="text-starlight/70 text-lg sm:text-xl"
               style={{ textWrap: "balance" }}
             >
-              We start by diagnosing the system underneath your business — then
-              map a clear path to restore momentum.
+              We evaluate the four forces that drive every business — then
+              build a prioritized plan to get growth moving.
             </p>
           </div>
         </div>
@@ -130,11 +130,11 @@ export default function HowItWorksPage() {
               id="framework-overview-heading"
               className="mb-3 text-navy"
             >
-              The Clarity Framework
+              The Launch Sequence
             </h2>
             <p className="text-navy/70 text-base">
-              Before building solutions, we map the operating system underneath
-              your business across four layers.
+              Every business runs on four forces. We evaluate each one before
+              recommending where to focus.
             </p>
           </div>
 
@@ -260,9 +260,9 @@ export default function HowItWorksPage() {
               What You Receive
             </h2>
             <p className="text-navy/70 text-base mb-6">
-              Every Clarity Audit delivers a structured written report — not a
-              call, not a deck. Scored analysis across all four framework
-              layers, prioritized actions, and a clear implementation path.
+              The audit delivers a written report with scored analysis across
+              all four layers, root-cause findings, and a step-by-step
+              implementation plan.
             </p>
             <div className="grid gap-3 sm:grid-cols-3 text-left max-w-2xl mx-auto mb-8">
               {[
@@ -311,8 +311,8 @@ export default function HowItWorksPage() {
               className="text-starlight/70 text-base mb-6"
               style={{ textWrap: "balance" }}
             >
-              The Clarity Audit is a structured diagnostic that reveals exactly
-              where momentum is breaking down inside your business.
+              The Clarity Audit evaluates the four forces driving your business
+              and delivers a prioritized plan for what to address first.
             </p>
             <CTAButton label="Get Your Clarity Audit" variant="primary" />
             <p className="mt-3 text-xs text-starlight/60">
