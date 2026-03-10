@@ -51,7 +51,7 @@ export default function AdminLogin() {
       } else {
         setError((data.error as string) ?? "Something went wrong.");
       }
-    } catch (err) {
+    } catch {
       setError("Connection failed — check Vercel environment variables.");
     }
     setLoading(false);

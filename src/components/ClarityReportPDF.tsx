@@ -16,7 +16,8 @@ import {
   executiveInsights,
   missionContext,
   priorityActions,
-  implementationPath,
+  implementationPhases,
+  sprintRecommendation,
 } from "@/lib/clarity-report-data";
 
 /* ─── Font Registration ─── */
@@ -623,34 +624,41 @@ export function ClarityReportDocument({ origin = "" }: { origin?: string }) {
           </View>
 
           <SectionDivider label="Implementation Path" />
-          <View style={s.card}>
-            {implementationPath.map((step, i) => (
-              <View
-                key={i}
-                style={[
-                  s.implStep,
-                  i === implementationPath.length - 1
-                    ? { borderBottomWidth: 0, paddingBottom: 0, marginBottom: 0 }
-                    : {},
-                ]}
-              >
-                <View style={s.implDot} />
-                <View style={{ flex: 1 }}>
-                  <Text
-                    style={{
-                      fontFamily: "Space Grotesk",
-                      fontSize: 10,
-                      fontWeight: 700,
-                      color: c.starlight,
-                      marginBottom: 2,
-                    }}
-                  >
-                    {step.name}
-                  </Text>
-                  <Text style={[s.bodyText, { fontSize: 8 }]}>{step.focus}</Text>
+          {implementationPhases.map((phase, i) => (
+            <View key={i} style={[s.card, { marginBottom: 8 }]}>
+              <View style={[s.spaceBetween, s.mb8]}>
+                <Text
+                  style={{
+                    fontFamily: "Space Grotesk",
+                    fontSize: 11,
+                    fontWeight: 700,
+                    color: c.starlight,
+                  }}
+                >
+                  {phase.title}
+                </Text>
+                <View style={[s.badge, { borderColor: c.copperSoft }]}>
+                  <Text style={{ fontSize: 7, color: c.copper }}>{phase.phase}</Text>
                 </View>
               </View>
-            ))}
+              {phase.actions.map((action, j) => (
+                <View key={j} style={{ flexDirection: "row", marginBottom: 5 }}>
+                  <View style={{ width: 4, height: 4, borderRadius: 2, backgroundColor: c.copper, marginRight: 8, marginTop: 4 }} />
+                  <Text style={[s.bodyText, { flex: 1, fontSize: 8 }]}>{action}</Text>
+                </View>
+              ))}
+            </View>
+          ))}
+
+          {/* Recommended Sprint */}
+          <View style={[s.card, { borderColor: c.copper, borderWidth: 1.5, marginTop: 4 }]}>
+            <Text style={[s.smallLabel, s.mb4]}>Recommended Engagement</Text>
+            <Text style={{ fontFamily: "Space Grotesk", fontSize: 12, fontWeight: 700, color: c.copper, marginBottom: 6 }}>
+              {sprintRecommendation.name}
+            </Text>
+            <Text style={[s.bodyText, s.mb8]}>{sprintRecommendation.reasoning}</Text>
+            <Text style={s.subCardAccentLabel}>Next Step</Text>
+            <Text style={{ fontSize: 9, lineHeight: 1.55, color: c.copper }}>{sprintRecommendation.nextStep}</Text>
           </View>
 
           {/* Report end mark */}
