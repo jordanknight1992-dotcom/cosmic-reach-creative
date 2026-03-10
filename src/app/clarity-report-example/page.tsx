@@ -8,7 +8,8 @@ import {
   layerScores,
   deepAnalyses,
   priorityActions,
-  implementationPath,
+  implementationPhases,
+  sprintRecommendation,
 } from "@/lib/clarity-report-data";
 
 export const metadata: Metadata = {
@@ -536,27 +537,55 @@ export default function ClarityReportExamplePage() {
 
           {/* ── Implementation Path ── */}
           <ReportCard label="Implementation Path">
-            <p className="text-starlight/60 text-sm leading-relaxed mb-5">
-              The Clarity Report identifies where momentum is being lost. The next step is
-              implementing the highest-impact improvements revealed in the analysis.
+            <p className="text-starlight/60 text-sm leading-relaxed mb-6">
+              The following plan outlines specific actions your team can begin implementing
+              immediately. Each phase builds on the last and is designed to be executed
+              in sequence over 8 weeks.
             </p>
-            <div className="space-y-3">
-              {implementationPath.map((step) => (
+            <div className="space-y-5">
+              {implementationPhases.map((phase) => (
                 <div
-                  key={step.name}
-                  className="rounded-xl border border-starlight/8 bg-deep-space/40 p-4 flex gap-4 items-start"
+                  key={phase.phase}
+                  className="rounded-xl border border-starlight/8 bg-deep-space/40 p-5"
                 >
-                  <span className="text-copper text-xs mt-0.5 shrink-0" aria-hidden="true">
-                    &#9670;
-                  </span>
-                  <div>
-                    <p className="font-display font-semibold text-starlight text-sm mb-0.5">
-                      {step.name}
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="inline-flex items-center rounded-full bg-copper/15 px-2.5 py-0.5 text-xs font-display font-semibold text-copper">
+                      {phase.phase}
+                    </span>
+                    <p className="font-display font-semibold text-starlight text-sm">
+                      {phase.title}
                     </p>
-                    <p className="text-starlight/60 text-sm">{step.focus}</p>
                   </div>
+                  <ul className="space-y-2 ml-1">
+                    {phase.actions.map((action, i) => (
+                      <li key={i} className="flex items-start gap-3 text-starlight/70 text-sm leading-relaxed">
+                        <span className="text-copper/60 text-xs mt-1 shrink-0" aria-hidden="true">&#9670;</span>
+                        {action}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               ))}
+            </div>
+          </ReportCard>
+
+          {/* ── Sprint Recommendation ── */}
+          <ReportCard label="Recommended Engagement">
+            <div className="rounded-xl border border-copper/25 bg-copper/5 p-5 mb-4">
+              <p className="font-display font-bold text-copper text-lg mb-2">
+                {sprintRecommendation.name}
+              </p>
+              <p className="text-starlight/70 text-sm leading-relaxed">
+                {sprintRecommendation.reasoning}
+              </p>
+            </div>
+            <div className="rounded-xl border border-starlight/8 bg-deep-space/40 p-4">
+              <p className="text-xs font-display font-semibold tracking-widest text-copper/60 uppercase mb-1.5">
+                Next Step
+              </p>
+              <p className="text-starlight/80 text-sm leading-relaxed">
+                {sprintRecommendation.nextStep}
+              </p>
             </div>
           </ReportCard>
 

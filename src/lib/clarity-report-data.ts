@@ -106,22 +106,49 @@ export const priorityActions = [
   "Introduce a diagnostic entry product.",
 ];
 
-export const implementationPath = [
+export const implementationPhases = [
   {
-    name: "30 Day Direction Sprint",
-    focus: "Messaging clarity and offer positioning.",
+    phase: "Weeks 1–2",
+    title: "Rewrite Core Messaging",
+    actions: [
+      "Rewrite the homepage headline to lead with the scaling pain SaaS leaders experience — not AtlasOps capabilities.",
+      "Create a one-sentence positioning statement that names the problem before the solution.",
+      "Audit all website pages and replace inward-facing language ('we help', 'we offer') with buyer-facing language ('you're experiencing', 'the result is').",
+    ],
   },
   {
-    name: "60 Day Alignment Sprint",
-    focus: "Improving the customer journey and conversion flow.",
+    phase: "Weeks 3–4",
+    title: "Restructure the Offer",
+    actions: [
+      "Package the consulting service into a named, defined engagement with a clear scope, timeline, and deliverable.",
+      "Add visible pricing or a 'starting at' indicator to pre-qualify prospects by budget.",
+      "Write a dedicated landing page for the entry offer that addresses the top three objections identified in this audit.",
+    ],
   },
   {
-    name: "90 Day Systems Sprint",
-    focus: "Implementing scalable operational systems.",
+    phase: "Weeks 5–6",
+    title: "Simplify the Conversion Path",
+    actions: [
+      "Reduce the website to one primary CTA per page, mapped to the buyer's stage.",
+      "Add a low-commitment entry point (e.g., a free diagnostic checklist or assessment) for visitors not ready to buy.",
+      "Build a three-email nurture sequence for leads who engage with the entry offer but don't convert immediately.",
+    ],
   },
   {
-    name: "Mission Control Advisory",
-    focus:
-      "Ongoing strategic clarity and system optimization as the business grows.",
+    phase: "Weeks 7–8",
+    title: "Install Measurement Baseline",
+    actions: [
+      "Define three core KPIs: qualified leads per month, lead-to-call conversion rate, and average sales cycle length.",
+      "Set up UTM tracking on all inbound channels and configure a simple dashboard to review weekly.",
+      "Establish a monthly review rhythm where leadership evaluates marketing performance against these KPIs.",
+    ],
   },
 ];
+
+export const sprintRecommendation = {
+  name: "60 Day Alignment Sprint",
+  reasoning:
+    "AtlasOps has strong expertise and a viable market. The constraint is not strategy — it is the gap between what the business delivers and how the market perceives it. A 30 Day Sprint would address messaging alone, but the offer structure and conversion path need coordinated work to produce measurable results. A 90 Day Sprint is premature until the messaging and offer foundation is solid. The 60 Day Alignment Sprint covers Signal and Gravity together, which is where the highest-leverage compound effect exists for this business.",
+  nextStep:
+    "Schedule a 30-minute follow-up call to review these findings, confirm scope, and set a start date for the 60 Day Alignment Sprint.",
+};

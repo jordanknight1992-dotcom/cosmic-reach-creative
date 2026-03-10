@@ -25,22 +25,34 @@ export default function AdminLogin() {
     }
 
     setLoading(true);
-    const endpoint = mode === "login" ? "/api/admin/login" : "/api/admin/setup";
-    const res = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ password }),
-    });
-    const data = await res.json();
+    try {
+      const endpoint = mode === "login" ? "/api/admin/login" : "/api/admin/setup";
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ password }),
+      });
 
-    if (res.ok) {
-      router.push("/admin");
-      router.refresh();
-    } else if (data.setup) {
-      setMode("setup");
-      setError("");
-    } else {
-      setError(data.error ?? "Something went wrong.");
+      let data: Record<string, unknown> = {};
+      try {
+        data = await res.json();
+      } catch {
+        setError("Server error — check that POSTGRES_URL is configured in Vercel.");
+        setLoading(false);
+        return;
+      }
+
+      if (res.ok) {
+        router.push("/admin");
+        router.refresh();
+      } else if (data.setup) {
+        setMode("setup");
+        setError("");
+      } else {
+        setError((data.error as string) ?? "Something went wrong.");
+      }
+    } catch (err) {
+      setError("Connection failed — check Vercel environment variables.");
     }
     setLoading(false);
   }

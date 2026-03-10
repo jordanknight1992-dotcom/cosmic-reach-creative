@@ -127,7 +127,9 @@ export default function HomePage() {
             <p className="text-navy/70 text-base mb-3">
               Customers hesitate. Leads stall. Effort doesn&apos;t translate into momentum.
             </p>
-            <p className="text-navy text-base font-display font-semibold mt-6 mb-2">
+            <p className="text-navy text-xl sm:text-2xl font-display font-bold mt-6 mb-2 leading-snug">
+              This is not a marketing problem.
+              <br />
               They have a clarity problem.
             </p>
             <p className="text-navy/70 text-base">
