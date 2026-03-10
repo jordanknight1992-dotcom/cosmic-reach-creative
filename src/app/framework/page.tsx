@@ -139,19 +139,6 @@ export default function FrameworkPage() {
         </div>
       </section>
 
-      {/* Mid-page image break */}
-      <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 py-4">
-        <div className="relative w-full h-40 sm:h-56 rounded-2xl overflow-hidden">
-          <Image
-            src="/images/08-results-section.jpg"
-            alt=""
-            fill
-            className="object-cover"
-            sizes="100vw"
-          />
-          <div className="absolute inset-0 bg-deep-space/40" />
-        </div>
-      </div>
 
       {/* Final CTA */}
       <section className="py-12 sm:py-16" aria-labelledby="framework-cta">
