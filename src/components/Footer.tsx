@@ -37,17 +37,21 @@ export function Footer() {
                     >
                       {item.label}
                     </Link>
-                  </li>
-                ))}
-                {/* How It Works sub-pages */}
-                {siteConfig.howItWorksDropdown.map((item) => (
-                  <li key={item.href} className="pl-3 border-l border-starlight/10">
-                    <Link
-                      href={item.href}
-                      className="text-sm text-starlight/40 hover:text-copper transition-colors duration-[var(--duration-fast)]"
-                    >
-                      {item.label}
-                    </Link>
+                    {/* Nest How It Works sub-pages directly under their parent */}
+                    {item.href === "/how-it-works" && (
+                      <ul className="mt-2 space-y-2">
+                        {siteConfig.howItWorksDropdown.map((sub) => (
+                          <li key={sub.href} className="pl-3 border-l border-starlight/10">
+                            <Link
+                              href={sub.href}
+                              className="text-sm text-starlight/40 hover:text-copper transition-colors duration-[var(--duration-fast)]"
+                            >
+                              {sub.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </li>
                 ))}
               </ul>

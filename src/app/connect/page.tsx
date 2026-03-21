@@ -17,7 +17,7 @@ export default function ConnectPage() {
   return (
     <main id="main-content">
       <section className="min-h-[80vh] flex items-center justify-center">
-        <div className="mx-auto max-w-md px-5 sm:px-6 py-16 sm:py-24 text-center">
+        <div className="mx-auto max-w-md px-5 sm:px-6 pt-28 sm:pt-32 pb-16 sm:pb-24 text-center">
           {/* Headshot */}
           <div className="relative w-28 h-28 mx-auto mb-6 rounded-full overflow-hidden ring-2 ring-copper/30 ring-offset-4 ring-offset-deep-space">
             <Image
