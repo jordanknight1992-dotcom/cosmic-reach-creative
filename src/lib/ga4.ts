@@ -1,16 +1,22 @@
 /**
- * GA4 Data API v1 — server-side only, zero extra npm packages.
+ * GA4 Data API v1 — server-side, using the same OAuth2 refresh token
+ * as Google Calendar (no service account key needed).
  *
  * Required Vercel env vars:
- *   GA4_PROPERTY_ID      — numeric property ID (Admin → Property Settings)
- *   GOOGLE_CLIENT_EMAIL  — service account email from GCP JSON key
- *   GOOGLE_PRIVATE_KEY   — PEM private key (GCP stores \\n — we normalise it)
+ *   GA4_PROPERTY_ID        — numeric property ID (Admin → Property Settings)
+ *   GOOGLE_CLIENT_ID       — OAuth2 client ID (already set for Calendar)
+ *   GOOGLE_CLIENT_SECRET   — OAuth2 client secret (already set for Calendar)
+ *   GOOGLE_REFRESH_TOKEN   — OAuth2 refresh token (already set for Calendar)
  *
- * When any var is missing the function returns null and the admin dashboard
+ * The refresh token must have been generated with the scope:
+ *   https://www.googleapis.com/auth/analytics.readonly
+ *
+ * If you need to regenerate, visit /api/auth/google and include the
+ * analytics.readonly scope in the consent flow.
+ *
+ * When GA4_PROPERTY_ID is missing, returns null and the admin dashboard
  * renders a "Connect GA4" setup card instead.
  */
-
-import crypto from "crypto";
 
 export interface GA4DailyPoint {
   [key: string]: unknown;
@@ -30,46 +36,30 @@ export interface GA4Metrics {
   dailySessions: GA4DailyPoint[];
 }
 
-/* ─── Internal helpers ─── */
+/* ─── OAuth2 token exchange ─── */
 
-function b64url(buf: Buffer | string): string {
-  const b = typeof buf === "string" ? Buffer.from(buf) : buf;
-  return b.toString("base64url");
-}
+async function getAccessToken(): Promise<string | null> {
+  const clientId     = process.env.GOOGLE_CLIENT_ID;
+  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+  const refreshToken = process.env.GOOGLE_REFRESH_TOKEN;
 
-async function getAccessToken(email: string, privateKey: string): Promise<string> {
-  const now = Math.floor(Date.now() / 1000);
-
-  const header  = b64url(JSON.stringify({ alg: "RS256", typ: "JWT" }));
-  const payload = b64url(
-    JSON.stringify({
-      iss:   email,
-      scope: "https://www.googleapis.com/auth/analytics.readonly",
-      aud:   "https://oauth2.googleapis.com/token",
-      iat:   now,
-      exp:   now + 3600,
-    })
-  );
-
-  const signInput = `${header}.${payload}`;
-  const signer    = crypto.createSign("RSA-SHA256");
-  signer.update(signInput);
-  const signature = signer.sign(privateKey, "base64url");
-
-  const jwt = `${signInput}.${signature}`;
+  if (!clientId || !clientSecret || !refreshToken) return null;
 
   const res = await fetch("https://oauth2.googleapis.com/token", {
-    method:  "POST",
+    method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body:    new URLSearchParams({
-      grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-      assertion:  jwt,
+    body: new URLSearchParams({
+      client_id: clientId,
+      client_secret: clientSecret,
+      refresh_token: refreshToken,
+      grant_type: "refresh_token",
     }),
   });
 
   if (!res.ok) {
     const err = await res.text().catch(() => "unknown");
-    throw new Error(`GA4 token exchange failed: ${err}`);
+    console.error("GA4 OAuth token refresh failed:", err);
+    return null;
   }
 
   const json = (await res.json()) as { access_token: string };
@@ -80,16 +70,12 @@ async function getAccessToken(email: string, privateKey: string): Promise<string
 
 export async function getGA4Data(): Promise<GA4Metrics | null> {
   const propertyId = process.env.GA4_PROPERTY_ID;
-  const email      = process.env.GOOGLE_CLIENT_EMAIL;
-  const rawKey     = process.env.GOOGLE_PRIVATE_KEY;
-
-  if (!propertyId || !email || !rawKey) return null;
-
-  /* GCP JSON keys store the PEM with literal \\n — normalise */
-  const privateKey = rawKey.replace(/\\n/g, "\n");
+  if (!propertyId) return null;
 
   try {
-    const token   = await getAccessToken(email, privateKey);
+    const token = await getAccessToken();
+    if (!token) return null;
+
     const baseUrl = `https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`;
     const headers = {
       Authorization:  `Bearer ${token}`,
@@ -122,7 +108,13 @@ export async function getGA4Data(): Promise<GA4Metrics | null> {
       }),
     ]);
 
-    if (!sessionsRes.ok || !pagesRes.ok) return null;
+    if (!sessionsRes.ok || !pagesRes.ok) {
+      const errText = !sessionsRes.ok
+        ? await sessionsRes.text().catch(() => "")
+        : await pagesRes.text().catch(() => "");
+      console.error("GA4 Data API error:", errText);
+      return null;
+    }
 
     const sessionsData = (await sessionsRes.json()) as {
       rows?: { dimensionValues: { value: string }[]; metricValues: { value: string }[] }[];
@@ -150,7 +142,8 @@ export async function getGA4Data(): Promise<GA4Metrics | null> {
     }));
 
     return { sessions30d: totalSessions, pageViews30d: totalPageViews, topPages, dailySessions };
-  } catch {
+  } catch (err) {
+    console.error("GA4 data fetch error:", err instanceof Error ? err.message : err);
     return null;
   }
 }

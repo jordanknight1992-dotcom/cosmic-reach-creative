@@ -414,7 +414,7 @@ function BookingsTab() {
     await fetch("/api/admin/blackout-dates", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ date: newDate, label: newLabel || null }),
+      body: JSON.stringify({ startDate: newDate, endDate: newDate, label: newLabel || null }),
     });
     setNewDate("");
     setNewLabel("");
@@ -422,7 +422,11 @@ function BookingsTab() {
   };
 
   const removeBlackout = async (id: number) => {
-    await fetch(`/api/admin/blackout-dates?id=${id}`, { method: "DELETE" });
+    await fetch("/api/admin/blackout-dates", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id }),
+    });
     fetchData();
   };
 
@@ -695,16 +699,24 @@ function DashboardTab({
           >
             <p className="text-sm font-semibold mb-3" style={{ color: T.muted }}>Connect GA4 for Site Analytics</p>
             <p className="text-xs mb-4 max-w-md mx-auto leading-relaxed" style={{ color: T.faint }}>
-              Add three Vercel env vars to unlock sessions, page views, and traffic data directly in this dashboard.
+              Uses your existing Google OAuth credentials. Just two steps:
             </p>
-            <div className="inline-block text-left rounded-lg px-4 py-3 space-y-1" style={{ backgroundColor: "#0B1120", border: `1px solid ${T.border}` }}>
-              {["GA4_PROPERTY_ID", "GOOGLE_CLIENT_EMAIL", "GOOGLE_PRIVATE_KEY"].map((v) => (
-                <p key={v} className="text-xs font-mono" style={{ color: T.copper }}>{v}</p>
-              ))}
+            <div className="text-left max-w-sm mx-auto space-y-3 mb-4">
+              <div className="rounded-lg px-4 py-3" style={{ backgroundColor: "#0B1120", border: `1px solid ${T.border}` }}>
+                <p className="text-xs font-semibold mb-1" style={{ color: T.copper }}>1. Add GA4 Property ID</p>
+                <p className="text-xs" style={{ color: T.faint }}>
+                  Add <span className="font-mono" style={{ color: T.muted }}>GA4_PROPERTY_ID</span> to Vercel env vars.
+                  Find it in GA4 → Admin → Property Settings.
+                </p>
+              </div>
+              <div className="rounded-lg px-4 py-3" style={{ backgroundColor: "#0B1120", border: `1px solid ${T.border}` }}>
+                <p className="text-xs font-semibold mb-1" style={{ color: T.copper }}>2. Re-authorize Google OAuth</p>
+                <p className="text-xs" style={{ color: T.faint }}>
+                  Visit <span className="font-mono" style={{ color: T.muted }}>/api/auth/google</span> to
+                  regenerate your refresh token with the analytics scope included.
+                </p>
+              </div>
             </div>
-            <p className="text-xs mt-3" style={{ color: T.faint }}>
-              See <span className="font-mono" style={{ color: T.muted }}>src/lib/ga4.ts</span> for setup instructions.
-            </p>
           </div>
         )}
       </div>
@@ -950,16 +962,23 @@ export function AdminDashboard({
     []
   );
 
+  const navItems: { key: typeof tab; label: string; icon: string }[] = [
+    { key: "dashboard", label: "Dashboard",  icon: "◈" },
+    { key: "pipeline",  label: "Pipeline",   icon: "◇" },
+    { key: "bookings",  label: "Bookings",   icon: "◆" },
+  ];
+
   return (
-    <div className="min-h-screen" style={{ backgroundColor: T.page, color: T.starlight }}>
-      {/* ── Sticky header ── */}
-      <div
-        className="sticky top-0 z-10 flex items-center justify-between px-6 py-4 gap-6"
-        style={{ backgroundColor: T.page, borderBottom: `1px solid ${T.border}` }}
+    <div className="min-h-screen flex" style={{ backgroundColor: T.page, color: T.starlight }}>
+      {/* ── Sidebar ── */}
+      <aside
+        className="sticky top-0 h-screen w-56 shrink-0 flex flex-col overflow-y-auto"
+        style={{ backgroundColor: T.card, borderRight: `1px solid ${T.border}` }}
       >
-        <div className="flex items-center gap-3 shrink-0">
+        {/* Brand */}
+        <div className="flex items-center gap-2.5 px-5 py-5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo/logo-mark-light.svg" alt="" className="w-7 h-7" />
+          <img src="/logo/logo-mark-light.svg" alt="" className="w-6 h-6" />
           <span
             className="font-bold text-sm tracking-wide"
             style={{ fontFamily: "var(--font-space-grotesk)", color: T.starlight }}
@@ -968,56 +987,62 @@ export function AdminDashboard({
           </span>
         </div>
 
-        {/* Tab nav */}
-        <nav className="flex gap-1" role="tablist">
-          {(["dashboard", "pipeline", "bookings"] as const).map((t) => (
+        {/* Nav */}
+        <nav className="flex-1 px-3 space-y-1" role="tablist">
+          {navItems.map((item) => (
             <button
-              key={t}
+              key={item.key}
               role="tab"
-              aria-selected={tab === t}
-              onClick={() => setTab(t)}
-              className="px-4 py-1.5 rounded-lg text-xs font-semibold capitalize transition-colors"
+              aria-selected={tab === item.key}
+              onClick={() => setTab(item.key)}
+              className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-semibold transition-all"
               style={{
-                backgroundColor: tab === t ? T.border : "transparent",
-                color:           tab === t ? T.starlight : T.muted,
+                backgroundColor: tab === item.key ? T.border : "transparent",
+                color:           tab === item.key ? T.starlight : T.muted,
                 fontFamily:      "var(--font-space-grotesk)",
               }}
             >
-              {t === "dashboard" ? "Dashboard" : t === "pipeline" ? "Pipeline" : "Bookings"}
+              <span className="text-sm" style={{ color: tab === item.key ? T.copper : T.faint }}>
+                {item.icon}
+              </span>
+              {item.label}
             </button>
           ))}
         </nav>
 
-        {/* Logout — imported LogoutButton can't be used directly here since it needs a router;
-            inline the same behaviour with a simple form action */}
-        <LogoutButtonInline />
-      </div>
+        {/* Logout at bottom */}
+        <div className="px-3 py-4 mt-auto" style={{ borderTop: `1px solid ${T.border}` }}>
+          <LogoutButtonInline />
+        </div>
+      </aside>
 
-      {/* ── Content ── */}
-      <div className="max-w-5xl mx-auto px-6 py-8">
-        {tab === "dashboard" ? (
-          <DashboardTab
-            stripe={stripe}
-            ctaStats={ctaStats}
-            ctaTimeline={ctaTimeline}
-            submissionTimeline={submissionTimeline}
-            ga4={ga4}
-            totalSubmissions={totalSubmissions}
-            auditCount={auditCount}
-            contactCount={contactCount}
-            convRate={convRate}
-            totalCtaClicks={totalCtaClicks}
-          />
-        ) : tab === "pipeline" ? (
-          <PipelineTab
-            submissions={submissions}
-            onStatusChange={handleStatusChange}
-            onNotesSave={handleNotesSave}
-          />
-        ) : (
-          <BookingsTab />
-        )}
-      </div>
+      {/* ── Main content ── */}
+      <main className="flex-1 min-w-0 overflow-y-auto">
+        <div className="max-w-5xl mx-auto px-6 py-8">
+          {tab === "dashboard" ? (
+            <DashboardTab
+              stripe={stripe}
+              ctaStats={ctaStats}
+              ctaTimeline={ctaTimeline}
+              submissionTimeline={submissionTimeline}
+              ga4={ga4}
+              totalSubmissions={totalSubmissions}
+              auditCount={auditCount}
+              contactCount={contactCount}
+              convRate={convRate}
+              totalCtaClicks={totalCtaClicks}
+            />
+          ) : tab === "pipeline" ? (
+            <PipelineTab
+              submissions={submissions}
+              onStatusChange={handleStatusChange}
+              onNotesSave={handleNotesSave}
+            />
+          ) : (
+            <BookingsTab />
+          )}
+        </div>
+      </main>
     </div>
   );
 }
@@ -1034,7 +1059,7 @@ function LogoutButtonInline() {
   return (
     <button
       onClick={handleLogout}
-      className="shrink-0 text-xs font-semibold tracking-wider uppercase px-3 py-1.5 rounded-lg transition-colors"
+      className="w-full text-xs font-semibold tracking-wider uppercase px-3 py-2 rounded-lg transition-colors text-center"
       style={{ color: T.muted, border: `1px solid ${T.border}`, fontFamily: "var(--font-space-grotesk)" }}
     >
       Log out

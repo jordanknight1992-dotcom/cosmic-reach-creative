@@ -4,7 +4,9 @@ import { google } from "googleapis";
 /**
  * GET /api/auth/google
  *
- * One-time OAuth consent flow to get a Google Calendar refresh token.
+ * One-time OAuth consent flow to get a refresh token for
+ * Google Calendar + GA4 Analytics.
+ *
  * After authorizing, copy the refresh token from the callback response
  * and add it to your .env.local as GOOGLE_REFRESH_TOKEN.
  */
@@ -21,7 +23,10 @@ export async function GET(request: NextRequest) {
   const authUrl = oauth2.generateAuthUrl({
     access_type: "offline",
     prompt: "consent",
-    scope: ["https://www.googleapis.com/auth/calendar"],
+    scope: [
+      "https://www.googleapis.com/auth/calendar",
+      "https://www.googleapis.com/auth/analytics.readonly",
+    ],
   });
 
   return NextResponse.redirect(authUrl);

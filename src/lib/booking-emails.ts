@@ -36,7 +36,7 @@ export async function sendBookingEmails(data: BookingEmailData) {
 
 async function sendClientConfirmation(data: BookingEmailData) {
   const icsContent = generateICS(data);
-  const icsBase64 = btoa(icsContent);
+  const icsBase64 = Buffer.from(icsContent, "utf-8").toString("base64");
 
   const dateStr = data.startTime.toLocaleDateString("en-US", {
     weekday: "long",
@@ -337,6 +337,10 @@ async function resendSend(payload: {
 
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
-    console.error("Resend error:", JSON.stringify(err));
+    const errMsg = `Resend error (${res.status}): ${JSON.stringify(err)}`;
+    console.error(errMsg);
+    throw new Error(errMsg);
   }
+  const result = await res.json().catch(() => ({}));
+  console.log("Resend email sent:", result.id, "to:", payload.to);
 }
