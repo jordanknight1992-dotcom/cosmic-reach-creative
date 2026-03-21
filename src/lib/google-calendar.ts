@@ -39,23 +39,28 @@ export async function getBusySlots(
     return [];
   }
 
-  const calendar = getCalendar();
-  const res = await calendar.freebusy.query({
-    requestBody: {
-      timeMin: startDate.toISOString(),
-      timeMax: endDate.toISOString(),
-      timeZone: availability.timezone,
-      items: [{ id: "primary" }],
-    },
-  });
+  try {
+    const calendar = getCalendar();
+    const res = await calendar.freebusy.query({
+      requestBody: {
+        timeMin: startDate.toISOString(),
+        timeMax: endDate.toISOString(),
+        timeZone: availability.timezone,
+        items: [{ id: "primary" }],
+      },
+    });
 
-  const busy = res.data.calendars?.primary?.busy ?? [];
-  return busy
-    .filter((b) => b.start && b.end)
-    .map((b) => ({
-      start: new Date(b.start!),
-      end: new Date(b.end!),
-    }));
+    const busy = res.data.calendars?.primary?.busy ?? [];
+    return busy
+      .filter((b) => b.start && b.end)
+      .map((b) => ({
+        start: new Date(b.start!),
+        end: new Date(b.end!),
+      }));
+  } catch (err) {
+    console.error("Google Calendar freebusy error (continuing without):", err instanceof Error ? err.message : err);
+    return [];
+  }
 }
 
 /**
@@ -73,6 +78,7 @@ export async function createCalendarEvent(params: {
     return { eventId: null, meetUrl: null };
   }
 
+  try {
   const calendar = getCalendar();
   const event = await calendar.events.insert({
     calendarId: "primary",
@@ -116,4 +122,8 @@ export async function createCalendarEvent(params: {
     eventId: event.data.id ?? null,
     meetUrl,
   };
+  } catch (err) {
+    console.error("Google Calendar event creation error:", err instanceof Error ? err.message : err);
+    return { eventId: null, meetUrl: null };
+  }
 }
