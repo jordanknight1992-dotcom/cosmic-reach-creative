@@ -67,9 +67,10 @@ export async function GET(request: NextRequest) {
       })),
     });
   } catch (err) {
-    console.error("Error fetching slots:", err);
+    const message = err instanceof Error ? err.message : String(err);
+    console.error("Error fetching slots:", message, err);
     return NextResponse.json(
-      { error: "Failed to fetch available slots" },
+      { error: "Failed to fetch available slots", detail: message },
       { status: 500 }
     );
   }

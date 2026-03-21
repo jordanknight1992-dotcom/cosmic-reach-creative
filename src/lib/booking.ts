@@ -58,6 +58,7 @@ export async function getAvailableSlots(
   date: Date,
   bookingType: BookingType
 ): Promise<{ start: Date; end: Date }[]> {
+  await ensureBookingTables();
   const { timezone, bufferMinutes, windows } = availability;
 
   // Find the availability window for this day of week
