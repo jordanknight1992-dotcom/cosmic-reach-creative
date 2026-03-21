@@ -2,10 +2,8 @@ export const siteConfig = {
   siteName: "Cosmic Reach Creative",
   domain: "https://cosmicreachcreative.com",
   contactEmail: "jordan@cosmicreachcreative.com",
-  calendlySignalCheckUrl:
-    "https://calendly.com/jordan-cosmicreachcreative/signal-check",
-  calendlyClaritySessionUrl:
-    "https://calendly.com/jordan-cosmicreachcreative/clarity-session",
+  signalCheckUrl: "/book/signal-check",
+  claritySessionUrl: "/book/clarity-session",
   stripeAuditUrl:
     "https://buy.stripe.com/28EbITdzT6je8go6i4fbq07",
   ga4MeasurementId: "G-HX48MQKM94",

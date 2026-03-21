@@ -31,7 +31,7 @@ export default function PrivacyPage() {
 
             <h2 className="text-xl mt-8">Third-Party Services</h2>
             <p>
-              Our site links to Calendly for scheduling. When you use Calendly, their own privacy policy applies. We do not control or store information submitted through Calendly on our website.
+              Our site uses a built-in scheduling system. When you book a session, we collect your name, email, and any notes you provide. This data is stored securely and used solely to manage your booking and send confirmation emails.
             </p>
 
             <h2 className="text-xl mt-8">Contact</h2>

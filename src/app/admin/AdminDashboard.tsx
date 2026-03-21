@@ -385,6 +385,124 @@ function SectionHeader({
   );
 }
 
+/* ─── Bookings Tab ─── */
+function BookingsTab() {
+  const [bookings, setBookings] = useState<Array<{
+    id: string; type: string; name: string; email: string; start_time: string;
+    end_time: string; notes: string | null; google_meet_url: string | null;
+  }>>([]);
+  const [blackoutDates, setBlackoutDates] = useState<Array<{ id: number; date: string; label: string | null }>>([]);
+  const [newDate, setNewDate] = useState("");
+  const [newLabel, setNewLabel] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    const [bRes, dRes] = await Promise.all([
+      fetch("/api/admin/bookings").then((r) => r.json()),
+      fetch("/api/admin/blackout-dates").then((r) => r.json()),
+    ]);
+    setBookings(bRes.bookings || []);
+    setBlackoutDates(dRes.dates || []);
+    setLoading(false);
+  }, []);
+
+  useState(() => { fetchData(); });
+
+  const addBlackout = async () => {
+    if (!newDate) return;
+    await fetch("/api/admin/blackout-dates", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ date: newDate, label: newLabel || null }),
+    });
+    setNewDate("");
+    setNewLabel("");
+    fetchData();
+  };
+
+  const removeBlackout = async (id: number) => {
+    await fetch(`/api/admin/blackout-dates?id=${id}`, { method: "DELETE" });
+    fetchData();
+  };
+
+  if (loading) return <p style={{ color: T.muted }}>Loading…</p>;
+
+  return (
+    <div className="space-y-8">
+      <div>
+        <SectionHeader title="Upcoming Bookings" count={bookings.length} />
+        {bookings.length === 0 ? (
+          <p style={{ color: T.muted }} className="text-sm">No upcoming bookings.</p>
+        ) : (
+          <div className="space-y-3">
+            {bookings.map((b) => (
+              <div key={b.id} className="rounded-lg p-4" style={{ backgroundColor: T.card, border: `1px solid ${T.border}` }}>
+                <div className="flex justify-between items-start mb-1">
+                  <span className="font-semibold text-sm" style={{ color: T.starlight }}>{b.name}</span>
+                  <span className="text-xs px-2 py-0.5 rounded" style={{ backgroundColor: T.copper + "22", color: T.copper }}>{b.type}</span>
+                </div>
+                <p className="text-xs" style={{ color: T.muted }}>{b.email}</p>
+                <p className="text-xs mt-1" style={{ color: T.muted }}>
+                  {new Date(b.start_time).toLocaleString()} — {new Date(b.end_time).toLocaleTimeString()}
+                </p>
+                {b.google_meet_url && (
+                  <a href={b.google_meet_url} target="_blank" rel="noopener noreferrer" className="text-xs mt-1 inline-block" style={{ color: T.copper }}>
+                    Join Google Meet →
+                  </a>
+                )}
+                {b.notes && <p className="text-xs mt-1" style={{ color: T.muted }}>Notes: {b.notes}</p>}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
+      <div>
+        <SectionHeader title="PTO / Blackout Dates" />
+        <div className="flex gap-2 mb-4 flex-wrap">
+          <input
+            type="date"
+            value={newDate}
+            onChange={(e) => setNewDate(e.target.value)}
+            className="rounded px-3 py-1.5 text-sm"
+            style={{ backgroundColor: T.card, border: `1px solid ${T.border}`, color: T.starlight }}
+          />
+          <input
+            type="text"
+            value={newLabel}
+            onChange={(e) => setNewLabel(e.target.value)}
+            placeholder="Label (optional)"
+            className="rounded px-3 py-1.5 text-sm"
+            style={{ backgroundColor: T.card, border: `1px solid ${T.border}`, color: T.starlight }}
+          />
+          <button
+            onClick={addBlackout}
+            className="rounded px-4 py-1.5 text-sm font-semibold"
+            style={{ backgroundColor: T.copper, color: T.page }}
+          >
+            Add
+          </button>
+        </div>
+        {blackoutDates.length === 0 ? (
+          <p style={{ color: T.muted }} className="text-sm">No blackout dates set.</p>
+        ) : (
+          <div className="space-y-2">
+            {blackoutDates.map((d) => (
+              <div key={d.id} className="flex items-center justify-between rounded-lg px-4 py-2" style={{ backgroundColor: T.card, border: `1px solid ${T.border}` }}>
+                <span className="text-sm" style={{ color: T.starlight }}>
+                  {d.date}{d.label ? ` — ${d.label}` : ""}
+                </span>
+                <button onClick={() => removeBlackout(d.id)} className="text-xs" style={{ color: T.red }}>Remove</button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 /* ─── Dashboard Tab ─── */
 function DashboardTab({
   stripe,
@@ -796,7 +914,7 @@ export function AdminDashboard({
   submissionTimeline,
   ga4,
 }: AdminDashboardProps) {
-  const [tab, setTab] = useState<"dashboard" | "pipeline">("dashboard");
+  const [tab, setTab] = useState<"dashboard" | "pipeline" | "bookings">("dashboard");
   const [submissions, setSubmissions] = useState<Submission[]>(initialSubmissions);
   const [, startTransition] = useTransition();
 
@@ -852,7 +970,7 @@ export function AdminDashboard({
 
         {/* Tab nav */}
         <nav className="flex gap-1" role="tablist">
-          {(["dashboard", "pipeline"] as const).map((t) => (
+          {(["dashboard", "pipeline", "bookings"] as const).map((t) => (
             <button
               key={t}
               role="tab"
@@ -865,7 +983,7 @@ export function AdminDashboard({
                 fontFamily:      "var(--font-space-grotesk)",
               }}
             >
-              {t === "dashboard" ? "Dashboard" : "Pipeline"}
+              {t === "dashboard" ? "Dashboard" : t === "pipeline" ? "Pipeline" : "Bookings"}
             </button>
           ))}
         </nav>
@@ -890,12 +1008,14 @@ export function AdminDashboard({
             convRate={convRate}
             totalCtaClicks={totalCtaClicks}
           />
-        ) : (
+        ) : tab === "pipeline" ? (
           <PipelineTab
             submissions={submissions}
             onStatusChange={handleStatusChange}
             onNotesSave={handleNotesSave}
           />
+        ) : (
+          <BookingsTab />
         )}
       </div>
     </div>

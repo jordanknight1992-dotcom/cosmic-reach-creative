@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getAdminPasswordHash, setAdminPasswordHash } from "@/lib/db";
 import { createHash } from "crypto";
-import { createHmac } from "crypto";
 
 export async function POST(request: Request) {
   const { password, setupToken } = await request.json();
@@ -33,7 +32,6 @@ export async function POST(request: Request) {
 
   /* Auto-login after setup */
   const secret = process.env.SESSION_SECRET ?? "fallback-secret-change-me";
-  const sessionToken = createHmac("sha256", secret).update("session").digest("hex");
   const sessionCookieValue = createHash("sha256").update(secret).digest("hex");
 
   const response = NextResponse.json({ success: true });

@@ -270,9 +270,7 @@ export default function PricingPage() {
           <p className="text-center text-sm text-starlight/60">
             Not sure where to start?{" "}
             <a
-              href={siteConfig.calendlySignalCheckUrl}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={siteConfig.signalCheckUrl}
               className="text-starlight/60 hover:text-copper transition-colors underline underline-offset-2"
             >
               Book a free 30-minute intro call

@@ -39,7 +39,7 @@ function resolveCtaHref(label: string): string {
     lower.includes("book intro") ||
     lower.includes("request an intro")
   ) {
-    return siteConfig.calendlySignalCheckUrl;
+    return siteConfig.signalCheckUrl;
   }
 
   // Clarity Session (legacy)
@@ -49,12 +49,12 @@ function resolveCtaHref(label: string): string {
     lower.includes("book your clarity") ||
     lower.includes("book the clarity")
   ) {
-    return siteConfig.calendlyClaritySessionUrl;
+    return siteConfig.claritySessionUrl;
   }
 
   // Sprint / Monthly
   if (lower.includes("sprint") || lower.includes("monthly support")) {
-    return siteConfig.calendlySignalCheckUrl;
+    return siteConfig.signalCheckUrl;
   }
 
   // Framework

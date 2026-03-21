@@ -31,7 +31,7 @@ export default function TermsPage() {
 
             <h2 className="text-xl mt-8">External Links</h2>
             <p>
-              This site links to third-party services like Calendly. We are not responsible for the content or practices of external sites.
+              This site links to third-party services such as Google Calendar and Stripe. We are not responsible for the content or practices of external sites.
             </p>
 
             <h2 className="text-xl mt-8">Limitation of Liability</h2>

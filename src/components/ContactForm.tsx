@@ -36,9 +36,7 @@ export function ContactForm() {
         <p className="text-starlight/70 text-base">
           We&apos;ll be in touch soon. In the meantime, feel free to{" "}
           <a
-            href={siteConfig.calendlySignalCheckUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={siteConfig.signalCheckUrl}
             className="text-copper hover:underline"
           >
             book an intro call
