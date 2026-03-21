@@ -169,14 +169,12 @@ export function Header() {
               </Link>
 
               {/* CTA */}
-              <a
-                href={siteConfig.stripeAuditUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/connect"
                 className="ml-4 inline-flex items-center justify-center rounded-[var(--radius-md)] bg-spark-red text-white px-5 py-2 text-sm font-display font-semibold transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5"
               >
-                Get Your Clarity Audit
-              </a>
+                Book a Call
+              </Link>
             </nav>
 
             {/* Mobile menu button */}
@@ -312,15 +310,13 @@ export function Header() {
           </Link>
 
           {/* CTA */}
-          <a
-            href={siteConfig.stripeAuditUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href="/connect"
             className="mt-4 inline-flex items-center justify-center rounded-[var(--radius-md)] bg-spark-red text-white px-5 py-3 font-display font-semibold transition-all duration-[var(--duration-base)]"
             onClick={() => setMenuOpen(false)}
           >
-            Get Your Clarity Audit
-          </a>
+            Book a Call
+          </Link>
         </nav>
       </div>
     </>

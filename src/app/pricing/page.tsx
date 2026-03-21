@@ -119,12 +119,10 @@ export default function PricingPage() {
                 ))}
               </ul>
               <a
-                href={siteConfig.stripeAuditUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={siteConfig.signalCheckUrl}
                 className="w-full inline-flex items-center justify-center rounded-[var(--radius-md)] bg-spark-red text-white px-6 py-3 font-display font-semibold text-base transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0"
               >
-                Start the Clarity Audit
+                Book a Call to Get Started
               </a>
               <p className="mt-3 text-center text-xs text-starlight/60">
                 3&ndash;5 day turnaround &middot; Structured clarity report included

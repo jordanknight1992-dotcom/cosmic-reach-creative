@@ -13,23 +13,17 @@ interface CTAButtonProps {
 function resolveCtaHref(label: string): string {
   const lower = label.toLowerCase();
 
-  // High-intent: Start / Get the Clarity Audit → Stripe
+  // High-intent: Audit / Clarity → Book a conversation first
   if (
     lower.includes("start the clarity audit") ||
     lower.includes("get your clarity audit") ||
     lower.includes("start with a business") ||
-    lower.includes("book a business clarity audit")
-  ) {
-    return siteConfig.stripeAuditUrl;
-  }
-
-  // Mid-intent: See / Request → Pricing page
-  if (
+    lower.includes("book a business clarity audit") ||
     lower.includes("see the clarity audit") ||
     lower.includes("request a clarity audit") ||
     lower.includes("get clarity")
   ) {
-    return "/pricing";
+    return siteConfig.signalCheckUrl;
   }
 
   // Signal Check / Intro Call

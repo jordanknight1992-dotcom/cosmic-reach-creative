@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import Image from "next/image";
+import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { ContactForm } from "@/components/ContactForm";
 
@@ -29,9 +30,9 @@ export default function ContactPage() {
         </div>
         <div className="relative mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-24 text-center">
           <div className="max-w-2xl mx-auto">
-            <h1 className="text-copper">Request a Business Clarity Audit</h1>
+            <h1 className="text-copper">Let&apos;s Talk</h1>
             <p className="text-starlight/80 text-base sm:text-lg mt-3">
-              Tell us a bit about your business and where growth feels stuck. We will follow up within one business day.
+              Tell us where you are and what you&apos;re working through. We&apos;ll follow up within one business day.
             </p>
           </div>
         </div>
@@ -45,8 +46,14 @@ export default function ContactPage() {
               <Icon name="rocket" size={24} className="opacity-80" />
               <h2>Start the Conversation</h2>
             </div>
-            <p className="text-starlight/70 text-base text-center mb-8">
+            <p className="text-starlight/70 text-base text-center mb-6">
               Tell us a bit about what you&apos;re working through. We&apos;ll follow up within one business day.
+            </p>
+            <p className="text-center mb-8">
+              <span className="text-starlight/50 text-sm">Prefer to talk live? </span>
+              <Link href="/connect" className="text-copper text-sm font-semibold hover:underline">
+                Book a meeting →
+              </Link>
             </p>
             <ContactForm />
           </div>
