@@ -88,8 +88,10 @@ export async function POST(request: NextRequest) {
     );
 
     // Create Google Calendar event with Google Meet
-    const { eventId: googleEventId, meetUrl: googleMeetUrl } =
-      await createCalendarEvent({
+    let googleEventId: string | null = null;
+    let googleMeetUrl: string | null = null;
+    try {
+      const calResult = await createCalendarEvent({
         title: `${bookingType.title} — ${name}`,
         description: [
           `Booking type: ${bookingType.title}`,
@@ -103,6 +105,12 @@ export async function POST(request: NextRequest) {
         attendeeEmail: email,
         attendeeName: name,
       });
+      googleEventId = calResult.eventId;
+      googleMeetUrl = calResult.meetUrl;
+      console.log("Google Calendar result:", { googleEventId, googleMeetUrl });
+    } catch (calErr) {
+      console.error("Google Calendar failed (booking will proceed without Meet link):", calErr);
+    }
 
     // Save to database
     const booking = await createBooking({

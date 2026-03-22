@@ -79,6 +79,7 @@ export async function createCalendarEvent(params: {
   }
 
   try {
+  console.log("Creating Google Calendar event. Client ID starts:", process.env.GOOGLE_CLIENT_ID?.substring(0, 15), "Refresh token length:", process.env.GOOGLE_REFRESH_TOKEN?.length);
   const calendar = getCalendar();
   const event = await calendar.events.insert({
     calendarId: "primary",

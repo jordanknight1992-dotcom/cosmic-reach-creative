@@ -44,9 +44,6 @@ export async function sendBookingEmails(data: BookingEmailData) {
 /* ─── Client Confirmation ─── */
 
 async function sendClientConfirmation(data: BookingEmailData) {
-  const icsContent = generateICS(data);
-  const icsBase64 = Buffer.from(icsContent, "utf-8").toString("base64");
-
   const dateStr = data.startTime.toLocaleDateString("en-US", {
     weekday: "long",
     month: "long",
@@ -56,19 +53,36 @@ async function sendClientConfirmation(data: BookingEmailData) {
   });
   const timeStr = `${fmtTime(data.startTime)} – ${fmtTime(data.endTime)} CT`;
 
-  await resendSend({
-    from: FROM,
-    to: [data.clientEmail],
-    reply_to: OWNER_EMAIL,
-    subject: `Confirmed: ${data.bookingTitle} on ${dateStr}`,
-    html: clientEmailHTML(data, dateStr, timeStr),
-    attachments: [
-      {
-        filename: "booking.ics",
-        content: icsBase64,
-      },
-    ],
-  });
+  // Try with ICS attachment first, fall back to without if it fails
+  const icsContent = generateICS(data);
+  const icsBase64 = Buffer.from(icsContent, "utf-8").toString("base64");
+
+  try {
+    await resendSend({
+      from: FROM,
+      to: [data.clientEmail],
+      reply_to: OWNER_EMAIL,
+      subject: `Confirmed: ${data.bookingTitle} on ${dateStr}`,
+      html: clientEmailHTML(data, dateStr, timeStr),
+      attachments: [
+        {
+          filename: "booking.ics",
+          content: icsBase64,
+          content_type: "text/calendar",
+        },
+      ],
+    });
+  } catch (err) {
+    console.error("Client email with attachment failed, retrying without:", err);
+    // Retry without attachment — ensures client always gets the email
+    await resendSend({
+      from: FROM,
+      to: [data.clientEmail],
+      reply_to: OWNER_EMAIL,
+      subject: `Confirmed: ${data.bookingTitle} on ${dateStr}`,
+      html: clientEmailHTML(data, dateStr, timeStr),
+    });
+  }
 }
 
 /* ─── Owner Alert ─── */
@@ -332,7 +346,7 @@ async function resendSend(payload: {
   reply_to?: string;
   subject: string;
   html: string;
-  attachments?: { filename: string; content: string }[];
+  attachments?: { filename: string; content: string; content_type?: string }[];
 }) {
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
