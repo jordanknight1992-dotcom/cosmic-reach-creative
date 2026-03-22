@@ -157,8 +157,10 @@ export async function POST(
     for (const person of people) {
       if (imported.length >= 10) break;
 
-      const email = (person.work_email || person.recommended_personal_email || "") as string;
-      const fullName = (person.full_name || "") as string;
+      const rawEmail = person.work_email || person.recommended_personal_email || "";
+      const email = typeof rawEmail === "string" ? rawEmail : Array.isArray(rawEmail) ? rawEmail[0] || "" : String(rawEmail);
+      const rawName = person.full_name || "";
+      const fullName = typeof rawName === "string" ? rawName : String(rawName);
 
       if (!email || !fullName) { skipped.push({ name: fullName || "Unknown", reason: "Missing email or name" }); continue; }
       if (existingEmails.has(email.toLowerCase())) { skipped.push({ name: fullName, reason: "Already in CRM" }); continue; }
