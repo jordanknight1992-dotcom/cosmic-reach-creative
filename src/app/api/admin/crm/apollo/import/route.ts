@@ -146,7 +146,7 @@ export async function POST(request: NextRequest) {
     if (!companyRecord) {
       companyRecord = await createCompany({
         ...company,
-        source: "apollo",
+        source: "prospecting",
       });
     }
 
@@ -154,7 +154,7 @@ export async function POST(request: NextRequest) {
     const contactRecord = await createContact({
       ...contact,
       company_id: companyRecord.id as number,
-      source: "apollo",
+      source: "prospecting",
     });
 
     // Score the lead
@@ -201,7 +201,7 @@ export async function POST(request: NextRequest) {
       contact_id: contactRecord.id as number,
       company_id: companyRecord.id as number,
       type: "lead_imported",
-      body_preview: `Imported from Apollo: ${contact.full_name} at ${company.name} (score: ${score})`,
+      body_preview: `Imported from PDL: ${contact.full_name} at ${company.name} (score: ${score})`,
       metadata: { source: "apollo", score, reasons },
     });
 

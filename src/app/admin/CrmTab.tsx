@@ -222,7 +222,7 @@ function activityIcon(type: string): string {
 
 /* ─────────────────────────── Apollo Rate Limiting ─────────────────────── */
 
-const APOLLO_DAILY_LIMIT = 10;
+const APOLLO_DAILY_LIMIT = 100;
 
 function getApolloUsageKey(): string {
   const today = new Date().toISOString().slice(0, 10);
@@ -670,7 +670,7 @@ function ApolloSearchBar({ onImported }: { onImported: () => void }) {
           location: location || undefined,
           industry: industry || undefined,
           title_keywords: titleArr.length > 0 ? titleArr : undefined,
-          per_page: 5,
+          per_page: 10,
         }),
       });
       const data = await res.json();
@@ -728,7 +728,7 @@ function ApolloSearchBar({ onImported }: { onImported: () => void }) {
       >
         <div className="flex items-center justify-between">
           <div className="text-xs font-medium" style={{ color: T.muted, ...FONT_HEADING }}>
-            Apollo Search &mdash; API key not configured
+            Prospect Search &mdash; API key not configured
           </div>
         </div>
       </div>
@@ -748,7 +748,7 @@ function ApolloSearchBar({ onImported }: { onImported: () => void }) {
       >
         <div className="flex items-center gap-3">
           <div className="text-xs font-medium" style={{ color: T.copper, ...FONT_HEADING }}>
-            Apollo Prospecting
+            Prospect Search
           </div>
           <span
             className="text-xs px-2 py-0.5 rounded"
@@ -827,7 +827,7 @@ function ApolloSearchBar({ onImported }: { onImported: () => void }) {
               }}
             >
               {searching ? <Spinner size={14} /> : null}
-              {limitReached ? "Daily Limit Reached" : "Search Apollo"}
+              {limitReached ? "Daily Limit Reached" : "Search Prospects"}
             </button>
           </div>
 
@@ -1797,7 +1797,7 @@ export function CrmTab() {
       {/* KPI Bar */}
       <KpiBar stats={stats} />
 
-      {/* Apollo Prospecting Search */}
+      {/* Prospect Search Search */}
       <ApolloSearchBar onImported={handleMutated} />
 
       {/* Filter Bar */}
