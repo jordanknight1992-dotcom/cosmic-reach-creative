@@ -127,7 +127,9 @@ function scoreLead(
 /**
  * POST /api/admin/crm/generate-leads
  *
- * Auto-generates up to 25 scored leads from PDL based on ICP criteria.
+ * Auto-generates scored leads from PDL based on ICP criteria.
+ * PDL free tier: 100 matches/month, 10/minute.
+ * Makes ONE API call with 10 results to stay within limits.
  * Deduplicates against existing contacts by email.
  */
 export async function POST() {
@@ -147,38 +149,50 @@ export async function POST() {
     const imported: { name: string; company: string; score: number }[] = [];
     const skipped: { name: string; reason: string }[] = [];
     const errors: string[] = [];
-    const targetCount = 25;
 
-    for (const icpQuery of ICP_QUERIES) {
-      if (imported.length >= targetCount) break;
+    // Rotate through ICP queries — pick one based on day of month
+    const queryIndex = new Date().getDate() % ICP_QUERIES.length;
+    const icpQuery = ICP_QUERIES[queryIndex];
 
-      const remaining = targetCount - imported.length;
+    // ONE API call, 10 results — respects PDL free tier (100/mo, 10/min)
+    try {
+      const pdlRes = await fetch("https://api.peopledatalabs.com/v5/person/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Api-Key": apiKey,
+        },
+        body: JSON.stringify({
+          query: icpQuery.query,
+          size: 10,
+        }),
+      });
 
-      try {
-        const pdlRes = await fetch("https://api.peopledatalabs.com/v5/person/search", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "X-Api-Key": apiKey,
-          },
-          body: JSON.stringify({
-            query: icpQuery.query,
-            size: Math.min(remaining * 2, 50), // Fetch extra to account for dedup
-          }),
-        });
-
-        if (!pdlRes.ok) {
-          if (pdlRes.status === 404) continue; // No results for this query
-          const errData = await pdlRes.json().catch(() => ({}));
-          errors.push(`${icpQuery.label}: ${errData?.error?.message || pdlRes.status}`);
-          continue;
+      if (!pdlRes.ok) {
+        const errData = await pdlRes.json().catch(() => ({}));
+        const msg = errData?.error?.message || `PDL error (${pdlRes.status})`;
+        if (pdlRes.status === 402) {
+          return NextResponse.json({
+            error: "Monthly PDL quota exhausted (100 matches/month). Resets next month.",
+            imported: 0, leads: [], skipped: 0, skippedDetails: [], errors: [msg],
+          });
         }
+        if (pdlRes.status === 404) {
+          return NextResponse.json({
+            success: true, imported: 0, leads: [],
+            skipped: 0, skippedDetails: [],
+            errors: [],
+            message: `No results for "${icpQuery.label}" — try again tomorrow for a different ICP.`,
+          });
+        }
+        return NextResponse.json({ error: msg }, { status: 500 });
+      }
 
-        const pdlData = await pdlRes.json();
-        const people = pdlData.data || [];
+      const pdlData = await pdlRes.json();
+      const people = pdlData.data || [];
 
         for (const person of people) {
-          if (imported.length >= targetCount) break;
+          if (imported.length >= 10) break;
 
           const email = (person.work_email || person.recommended_personal_email || "") as string;
           const fullName = (person.full_name || "") as string;
@@ -263,10 +277,9 @@ export async function POST() {
             skipped.push({ name: fullName, reason: msg });
           }
         }
-      } catch (queryErr) {
-        const msg = queryErr instanceof Error ? queryErr.message : "Query failed";
-        errors.push(`${icpQuery.label}: ${msg}`);
-      }
+    } catch (queryErr) {
+      const msg = queryErr instanceof Error ? queryErr.message : "Query failed";
+      errors.push(`${icpQuery.label}: ${msg}`);
     }
 
     return NextResponse.json({

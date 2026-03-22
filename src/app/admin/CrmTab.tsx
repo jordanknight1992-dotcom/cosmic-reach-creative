@@ -675,7 +675,7 @@ function GenerateLeadsButton({ onGenerated }: { onGenerated: () => void }) {
             AI Lead Generation
           </div>
           <span className="text-xs" style={{ color: T.muted }}>
-            Auto-finds and scores 25 leads matching your ICP
+            Pulls 10 scored leads per click · 100/month limit
           </span>
         </div>
         <button
