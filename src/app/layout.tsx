@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import { siteConfig } from "@/config/site";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -182,6 +183,8 @@ export default function RootLayout({
             });
           `}
         </Script>
+
+        <SpeedInsights />
       </body>
     </html>
   );
