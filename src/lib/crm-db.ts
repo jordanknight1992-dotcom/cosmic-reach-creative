@@ -753,6 +753,22 @@ export async function getPipelineStats(): Promise<
   return rows as unknown as { stage: string; count: number }[];
 }
 
+/* ─── Clear All CRM Data ─── */
+
+export async function clearAllCrmData() {
+  await ensureCrmTables();
+  const sql = getSQL();
+  // Delete in dependency order (children first)
+  await sql`DELETE FROM notes`;
+  await sql`DELETE FROM email_drafts`;
+  await sql`DELETE FROM suppressions`;
+  await sql`DELETE FROM activities`;
+  await sql`DELETE FROM leads`;
+  await sql`DELETE FROM contacts`;
+  await sql`DELETE FROM companies`;
+  return { message: "All CRM data cleared" };
+}
+
 /* ─── Seed Data ─── */
 
 export async function seedTestData() {
