@@ -37,7 +37,8 @@ export async function POST(request: NextRequest) {
       location,
       industry,
       title_keywords,
-      per_page = 5,
+      per_page = 10,
+      page = 1,
     } = body;
 
     // Build Elasticsearch bool query for PDL
@@ -99,7 +100,8 @@ export async function POST(request: NextRequest) {
         },
         body: JSON.stringify({
           query: { bool: { must: mustClauses } },
-          size: Math.min(per_page, 10),
+          size: Math.min(per_page, 25),
+          from: ((page as number) - 1) * Math.min(per_page, 25),
         }),
       }
     );
@@ -151,7 +153,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       results,
       total: pdlData.total || results.length,
-      page: 1,
+      page: page as number,
+      per_page: Math.min(per_page, 25),
     });
   } catch (err) {
     console.error("Error searching PDL:", err);
