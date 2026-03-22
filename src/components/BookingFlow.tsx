@@ -23,6 +23,7 @@ export function BookingFlow({ bookingType }: BookingFlowProps) {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [bookingId, setBookingId] = useState<number | null>(null);
+  const [meetUrl, setMeetUrl] = useState<string | null>(null);
   const [calendarMonth, setCalendarMonth] = useState(() => {
     const now = new Date();
     return { year: now.getFullYear(), month: now.getMonth() };
@@ -88,6 +89,7 @@ export function BookingFlow({ bookingType }: BookingFlowProps) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Booking failed");
       setBookingId(data.booking.id);
+      setMeetUrl(data.booking.meetUrl || null);
       setStep("confirmed");
     } catch (err) {
       setError(err instanceof Error ? err.message : "Booking failed");
@@ -194,6 +196,7 @@ export function BookingFlow({ bookingType }: BookingFlowProps) {
           name={name}
           email={email}
           bookingId={bookingId}
+          meetUrl={meetUrl}
         />
       )}
     </div>
@@ -554,6 +557,7 @@ function Confirmation({
   name,
   email,
   bookingId,
+  meetUrl,
 }: {
   slot: Slot;
   duration: number;
@@ -561,6 +565,7 @@ function Confirmation({
   name: string;
   email: string;
   bookingId: number | null;
+  meetUrl: string | null;
 }) {
   const dateLabel = new Date(slot.start).toLocaleDateString("en-US", {
     weekday: "long",
@@ -588,7 +593,8 @@ function Confirmation({
 
       <h2 className="text-copper font-display text-xl mb-2">You&apos;re booked!</h2>
       <p className="text-starlight/70 text-sm mb-6">
-        A calendar invite has been sent to <span className="text-starlight">{email}</span>
+        A confirmation email with your meeting details has been sent to{" "}
+        <span className="text-starlight">{email}</span>
       </p>
 
       <div className="bg-deep-space/60 rounded-[var(--radius-sm)] p-5 text-left space-y-3 mb-6">
@@ -601,6 +607,22 @@ function Confirmation({
           <p className="text-starlight">{dateLabel}</p>
           <p className="text-starlight/70 text-sm">{timeLabel} ({duration} min)</p>
         </div>
+        {meetUrl && (
+          <div>
+            <p className="text-starlight/40 text-xs font-display uppercase tracking-wider">Meeting Link</p>
+            <a
+              href={meetUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-copper hover:text-copper/80 text-sm font-display inline-flex items-center gap-1.5 transition-colors"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M15 10l5-5m0 0h-4m4 0v4M9 14l-5 5m0 0h4m-4 0v-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Join Google Meet
+            </a>
+          </div>
+        )}
         <div>
           <p className="text-starlight/40 text-xs font-display uppercase tracking-wider">Name</p>
           <p className="text-starlight">{name}</p>
@@ -611,6 +633,21 @@ function Confirmation({
             <p className="text-starlight/50 text-sm">#{bookingId}</p>
           </div>
         )}
+      </div>
+
+      {/* Junk mail notice */}
+      <div className="bg-copper/5 border border-copper/15 rounded-[var(--radius-sm)] p-4 mb-6 text-left">
+        <p className="text-starlight/60 text-sm leading-relaxed">
+          Don&apos;t see the confirmation email? Check your junk or spam folder.
+          If you still don&apos;t receive it, email{" "}
+          <a
+            href="mailto:jordan@cosmicreachcreative.com"
+            className="text-copper hover:text-copper/80 transition-colors"
+          >
+            jordan@cosmicreachcreative.com
+          </a>{" "}
+          and we&apos;ll get you sorted.
+        </p>
       </div>
 
       <Link

@@ -26,10 +26,19 @@ export async function sendBookingEmails(data: BookingEmailData) {
     return;
   }
 
-  await Promise.allSettled([
+  const results = await Promise.allSettled([
     sendClientConfirmation(data),
     sendOwnerAlert(data),
   ]);
+
+  results.forEach((r, i) => {
+    const label = i === 0 ? "client confirmation" : "owner alert";
+    if (r.status === "rejected") {
+      console.error(`Failed to send ${label} email:`, r.reason);
+    } else {
+      console.log(`Successfully sent ${label} email`);
+    }
+  });
 }
 
 /* ─── Client Confirmation ─── */
@@ -57,7 +66,6 @@ async function sendClientConfirmation(data: BookingEmailData) {
       {
         filename: "booking.ics",
         content: icsBase64,
-        type: "text/calendar",
       },
     ],
   });
@@ -324,7 +332,7 @@ async function resendSend(payload: {
   reply_to?: string;
   subject: string;
   html: string;
-  attachments?: { filename: string; content: string; type: string }[];
+  attachments?: { filename: string; content: string }[];
 }) {
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",

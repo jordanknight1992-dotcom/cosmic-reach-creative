@@ -138,6 +138,7 @@ export async function POST(request: NextRequest) {
         endTime: booking.end_time,
         name: booking.client_name,
         email: booking.client_email,
+        meetUrl: googleMeetUrl,
       },
     });
   } catch (err) {
