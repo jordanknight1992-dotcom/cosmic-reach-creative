@@ -207,31 +207,29 @@ export default function PricingPage() {
                 <p className="text-copper font-display font-semibold text-xl mb-3">
                   {tier.price}
                 </p>
-                <p className="text-sm text-starlight/60 mb-4">
+                <p className="text-sm text-starlight/60 mb-4 min-h-[5.5rem]">
                   {tier.description}
                 </p>
-                <div className="space-y-3">
-                  <div>
-                    <p className="text-xs font-display font-medium tracking-wide text-starlight/50 uppercase mb-2">
-                      Framework coverage
-                    </p>
-                    <ul className="space-y-1">
-                      {tier.coverage.map((item) => (
-                        <li key={item} className="flex items-center gap-2 text-xs text-starlight/60">
-                          <span className="text-copper text-[8px]" aria-hidden="true">&#9670;</span>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="pt-2 border-t border-starlight/8">
-                    <p className="text-xs font-display font-medium tracking-wide text-starlight/50 uppercase mb-1">
-                      Outcome
-                    </p>
-                    <p className="text-xs text-copper/80">{tier.outcome}</p>
-                  </div>
+                <div>
+                  <p className="text-xs font-display font-medium tracking-wide text-starlight/50 uppercase mb-2">
+                    Framework coverage
+                  </p>
+                  <ul className="space-y-1 min-h-[5.5rem]">
+                    {tier.coverage.map((item) => (
+                      <li key={item} className="flex items-center gap-2 text-xs text-starlight/60">
+                        <span className="text-copper text-[8px]" aria-hidden="true">&#9670;</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <div className="mt-auto pt-4">
+                <div className="pt-2 border-t border-starlight/8">
+                  <p className="text-xs font-display font-medium tracking-wide text-starlight/50 uppercase mb-1">
+                    Outcome
+                  </p>
+                  <p className="text-xs text-copper/80 min-h-[2rem]">{tier.outcome}</p>
+                </div>
+                <div className="pt-4">
                   <StripeBuyButton buyButtonId={tier.buyButtonId} label={`Start ${tier.name}`} />
                 </div>
               </article>
