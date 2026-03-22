@@ -1,8 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 
+// Diagnostic: check if key is available at runtime
+export async function GET() {
+  const hasKey = !!process.env.APOLLO_API_KEY;
+  const keyLen = (process.env.APOLLO_API_KEY || "").length;
+  return NextResponse.json({ configured: hasKey, keyLength: keyLen });
+}
+
 export async function POST(request: NextRequest) {
   try {
-    if (!process.env.APOLLO_API_KEY) {
+    const rawKey = process.env.APOLLO_API_KEY || "";
+    console.log("Apollo key check — length:", rawKey.length, "hasNewline:", rawKey.includes("\n"), "lastChar:", rawKey.charCodeAt(rawKey.length - 1));
+    if (!rawKey.trim()) {
       return NextResponse.json({
         error: "Apollo API key not configured",
         fallback: true,
@@ -36,7 +45,7 @@ export async function POST(request: NextRequest) {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": process.env.APOLLO_API_KEY,
+          "x-api-key": process.env.APOLLO_API_KEY?.trim() || "",
         },
         body: JSON.stringify(searchPayload),
       }
