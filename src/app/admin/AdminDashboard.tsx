@@ -391,8 +391,9 @@ function BookingsTab() {
     id: string; type: string; name: string; email: string; start_time: string;
     end_time: string; notes: string | null; google_meet_url: string | null;
   }>>([]);
-  const [blackoutDates, setBlackoutDates] = useState<Array<{ id: number; date: string; label: string | null }>>([]);
-  const [newDate, setNewDate] = useState("");
+  const [blackoutDates, setBlackoutDates] = useState<Array<{ id: number; start_date: string; end_date: string; label: string | null }>>([]);
+  const [newStartDate, setNewStartDate] = useState("");
+  const [newEndDate, setNewEndDate] = useState("");
   const [newLabel, setNewLabel] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -410,13 +411,15 @@ function BookingsTab() {
   useState(() => { fetchData(); });
 
   const addBlackout = async () => {
-    if (!newDate) return;
+    if (!newStartDate) return;
+    const endDate = newEndDate || newStartDate;
     await fetch("/api/admin/blackout-dates", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ startDate: newDate, endDate: newDate, label: newLabel || null }),
+      body: JSON.stringify({ startDate: newStartDate, endDate, label: newLabel || null }),
     });
-    setNewDate("");
+    setNewStartDate("");
+    setNewEndDate("");
     setNewLabel("");
     fetchData();
   };
@@ -464,22 +467,42 @@ function BookingsTab() {
 
       <div>
         <SectionHeader title="PTO / Blackout Dates" />
-        <div className="flex gap-2 mb-4 flex-wrap">
-          <input
-            type="date"
-            value={newDate}
-            onChange={(e) => setNewDate(e.target.value)}
-            className="rounded px-3 py-1.5 text-sm"
-            style={{ backgroundColor: T.card, border: `1px solid ${T.border}`, color: T.starlight }}
-          />
-          <input
-            type="text"
-            value={newLabel}
-            onChange={(e) => setNewLabel(e.target.value)}
-            placeholder="Label (optional)"
-            className="rounded px-3 py-1.5 text-sm"
-            style={{ backgroundColor: T.card, border: `1px solid ${T.border}`, color: T.starlight }}
-          />
+        <div className="flex gap-2 mb-4 flex-wrap items-end">
+          <div>
+            <label className="block text-xs mb-1" style={{ color: T.muted }}>Start Date</label>
+            <input
+              type="date"
+              value={newStartDate}
+              onChange={(e) => {
+                setNewStartDate(e.target.value);
+                if (!newEndDate || e.target.value > newEndDate) setNewEndDate(e.target.value);
+              }}
+              className="rounded px-3 py-1.5 text-sm"
+              style={{ backgroundColor: T.card, border: `1px solid ${T.border}`, color: T.starlight }}
+            />
+          </div>
+          <div>
+            <label className="block text-xs mb-1" style={{ color: T.muted }}>End Date</label>
+            <input
+              type="date"
+              value={newEndDate}
+              min={newStartDate}
+              onChange={(e) => setNewEndDate(e.target.value)}
+              className="rounded px-3 py-1.5 text-sm"
+              style={{ backgroundColor: T.card, border: `1px solid ${T.border}`, color: T.starlight }}
+            />
+          </div>
+          <div>
+            <label className="block text-xs mb-1" style={{ color: T.muted }}>Label</label>
+            <input
+              type="text"
+              value={newLabel}
+              onChange={(e) => setNewLabel(e.target.value)}
+              placeholder="e.g. Vacation"
+              className="rounded px-3 py-1.5 text-sm"
+              style={{ backgroundColor: T.card, border: `1px solid ${T.border}`, color: T.starlight }}
+            />
+          </div>
           <button
             onClick={addBlackout}
             className="rounded px-4 py-1.5 text-sm font-semibold"
@@ -492,14 +515,19 @@ function BookingsTab() {
           <p style={{ color: T.muted }} className="text-sm">No blackout dates set.</p>
         ) : (
           <div className="space-y-2">
-            {blackoutDates.map((d) => (
-              <div key={d.id} className="flex items-center justify-between rounded-lg px-4 py-2" style={{ backgroundColor: T.card, border: `1px solid ${T.border}` }}>
-                <span className="text-sm" style={{ color: T.starlight }}>
-                  {d.date}{d.label ? ` — ${d.label}` : ""}
-                </span>
-                <button onClick={() => removeBlackout(d.id)} className="text-xs" style={{ color: T.red }}>Remove</button>
-              </div>
-            ))}
+            {blackoutDates.map((d) => {
+              const dateDisplay = d.start_date === d.end_date
+                ? d.start_date
+                : `${d.start_date} → ${d.end_date}`;
+              return (
+                <div key={d.id} className="flex items-center justify-between rounded-lg px-4 py-2" style={{ backgroundColor: T.card, border: `1px solid ${T.border}` }}>
+                  <span className="text-sm" style={{ color: T.starlight }}>
+                    {dateDisplay}{d.label ? ` — ${d.label}` : ""}
+                  </span>
+                  <button onClick={() => removeBlackout(d.id)} className="text-xs" style={{ color: T.red }}>Remove</button>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
