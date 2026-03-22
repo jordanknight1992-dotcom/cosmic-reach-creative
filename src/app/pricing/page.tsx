@@ -267,7 +267,7 @@ export default function PricingPage() {
       <section className="py-6 sm:py-8" aria-label="Mission Control">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
-            <article className="rounded-[var(--radius-lg)] border border-copper/20 bg-navy/50 p-5 flex flex-col sm:flex-row sm:items-start gap-4 transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/40 hover:shadow-subtle">
+            <article className="rounded-[var(--radius-lg)] border border-copper/20 bg-navy/50 p-5 flex flex-col sm:flex-row sm:items-start gap-4 transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/40 hover:shadow-subtle hover:-translate-y-0.5">
               <Icon name={missionControlTier.icon} size={24} className="opacity-70 shrink-0 mt-0.5" />
               <div className="flex-1 min-w-0">
                 <h3 className="font-display font-semibold text-base mb-0.5">
