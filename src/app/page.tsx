@@ -75,10 +75,10 @@ export default function HomePage() {
         </div>
         <div className="relative mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-24 text-center">
           <div className="max-w-2xl mx-auto">
-            <h1 id="hero-title" className="mb-4 text-copper" style={{ textWrap: "balance" }}>
+            <h1 id="hero-title" className="mb-4 text-copper" style={{ textWrap: "pretty" }}>
               Sharpen the Message. Install the System.
             </h1>
-            <p className="text-starlight/80 text-base sm:text-lg mb-2" style={{ textWrap: "balance" }}>
+            <p className="text-starlight/80 text-base sm:text-lg mb-2" style={{ textWrap: "pretty" }}>
               We design the strategic architecture behind scalable marketing: the structure that allows messaging, offers, and systems to compound rather than compete.
             </p>
             <p className="text-starlight/60 text-sm mb-6">
@@ -145,9 +145,7 @@ export default function HomePage() {
             </div>
 
             <p className="text-navy text-xl sm:text-2xl font-display font-bold mb-2 leading-snug">
-              This is not a marketing problem.
-              <br />
-              It is a systems problem.
+              Growth stalls when the system breaks down.
             </p>
             <p className="text-navy/70 text-base">
               Cosmic Reach identifies the exact friction points and installs the architecture to resolve them.
@@ -219,7 +217,7 @@ export default function HomePage() {
               <Icon name="orbit" size={36} className="opacity-80 mx-auto" />
             </div>
             <h2 id="framework-heading" className="mb-3 text-navy">The Growth Engine</h2>
-            <p className="text-navy/70 text-base mb-3" style={{ textWrap: "balance" }}>
+            <p className="text-navy/70 text-base mb-3" style={{ textWrap: "pretty" }}>
               The Launch Sequence operates as a continuous feedback loop.
             </p>
             <p className="text-navy/60 text-sm leading-relaxed max-w-xl mx-auto">
@@ -255,7 +253,7 @@ export default function HomePage() {
             </div>
             <h2 id="report-preview-heading" className="mb-3">Inside the Clarity Report</h2>
             <p className="text-starlight/70 text-base">
-              Every Business Clarity Audit delivers a structured written report, not a call, not a deck. Here&apos;s what&apos;s inside.
+              Every Business Clarity Audit delivers a structured written report. Here&apos;s what&apos;s inside.
             </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto mb-8">
@@ -342,7 +340,7 @@ export default function HomePage() {
             <h2 id="mc-cta-heading" className="mb-3">
               Strategy Becomes Daily Action
             </h2>
-            <p className="text-starlight/70 text-base" style={{ textWrap: "balance" }}>
+            <p className="text-starlight/70 text-base" style={{ textWrap: "pretty" }}>
               The operating system that turns your Clarity Audit into daily execution.
               Pipeline visibility, prioritized targets, AI-powered outreach, all driven by your strategy.
             </p>
@@ -436,7 +434,7 @@ export default function HomePage() {
               <Icon name="rocket" size={36} className="opacity-80 mx-auto" />
             </div>
             <h2 id="final-cta-heading" className="mb-4">See What&apos;s Holding You Back</h2>
-            <p className="text-starlight/70 text-base mb-6" style={{ textWrap: "balance" }}>
+            <p className="text-starlight/70 text-base mb-6" style={{ textWrap: "pretty" }}>
               The Business Clarity Audit evaluates your messaging, offers, customer journey, and growth levers, then tells you exactly what to address first.
             </p>
             <CTAButton label="Start The Clarity Audit" variant="primary" />
@@ -476,7 +474,7 @@ export default function HomePage() {
                 name: "Is Cosmic Reach Creative a marketing agency?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "No. Cosmic Reach Creative is a strategic consultancy, not a traditional marketing agency. We don't run ads, manage social media, or produce content. We design the strategic architecture that makes those activities effective: messaging systems, offer positioning, conversion infrastructure, and growth dashboards."
+                  text: "Cosmic Reach Creative is a strategic consultancy. We design the architecture that makes marketing effective: messaging systems, offer positioning, conversion infrastructure, and growth dashboards."
                 }
               },
               {

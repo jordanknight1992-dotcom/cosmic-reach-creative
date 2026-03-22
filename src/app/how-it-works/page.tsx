@@ -8,7 +8,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "How It Works | The Launch Sequence Framework",
   description:
-    "See how Cosmic Reach Creative evaluates your business across four forces — Signal, Gravity, Orbit, and Thrust — to diagnose what's blocking growth and build the plan to fix it.",
+    "See how Cosmic Reach Creative evaluates your business across four forces: Signal, Gravity, Orbit, and Thrust. We diagnose what's blocking growth and build the plan to fix it.",
   alternates: { canonical: `${siteConfig.domain}/how-it-works` },
 };
 
@@ -115,7 +115,7 @@ export default function HowItWorksPage() {
             </h1>
             <p
               className="text-starlight/70 text-lg sm:text-xl"
-              style={{ textWrap: "balance" }}
+              style={{ textWrap: "pretty" }}
             >
               We evaluate the four forces that drive every business, then
               build a prioritized plan to get growth moving.
@@ -317,7 +317,7 @@ export default function HowItWorksPage() {
             </h2>
             <p
               className="text-starlight/70 text-base mb-6"
-              style={{ textWrap: "balance" }}
+              style={{ textWrap: "pretty" }}
             >
               The Clarity Audit evaluates the four forces driving your business
               and delivers a prioritized plan for what to address first.

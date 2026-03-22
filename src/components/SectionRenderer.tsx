@@ -71,7 +71,7 @@ function HeroSection({ section }: { section: MarkdownSection }) {
       <div className="relative mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-24 text-center">
         <div className="max-w-2xl mx-auto">
           {heading?.text && (
-            <h1 id="hero-title" className="mb-3 text-copper" style={{ textWrap: "balance" }}>
+            <h1 id="hero-title" className="mb-3 text-copper" style={{ textWrap: "pretty" }}>
               {heading.text}
             </h1>
           )}

@@ -119,7 +119,7 @@ export default function ClarityReportExamplePage() {
             </h1>
             <p
               className="text-starlight/70 text-lg sm:text-xl mb-8"
-              style={{ textWrap: "balance" }}
+              style={{ textWrap: "pretty" }}
             >
               See how the Cosmic Reach Clarity Framework identifies where growth momentum is being
               lost and what to fix first.
@@ -619,11 +619,11 @@ export default function ClarityReportExamplePage() {
             <h2 id="report-cta-heading" className="mb-4">
               Start Your Clarity Audit
             </h2>
-            <p className="text-starlight/70 text-base mb-2" style={{ textWrap: "balance" }}>
+            <p className="text-starlight/70 text-base mb-2" style={{ textWrap: "pretty" }}>
               The Clarity Audit is a structured diagnostic that reveals exactly where momentum is
               breaking down inside your business.
             </p>
-            <p className="text-starlight/60 text-sm mb-8" style={{ textWrap: "balance" }}>
+            <p className="text-starlight/60 text-sm mb-8" style={{ textWrap: "pretty" }}>
               If your business feels like it should be working better than it is, this is where to start.
             </p>
             <CTAButton label="Start the Clarity Audit" variant="primary" />
