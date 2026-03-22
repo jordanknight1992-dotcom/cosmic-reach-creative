@@ -21,6 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { route: "/book/signal-check", changeFrequency: "monthly", priority: 0.8 },
     { route: "/book/clarity-session", changeFrequency: "monthly", priority: 0.8 },
     { route: "/connect", changeFrequency: "monthly", priority: 0.8 },
+    { route: "/mission-control", changeFrequency: "monthly", priority: 0.8 },
     { route: "/privacy", changeFrequency: "yearly", priority: 0.3 },
     { route: "/terms", changeFrequency: "yearly", priority: 0.3 },
     { route: "/accessibility", changeFrequency: "yearly", priority: 0.3 },
