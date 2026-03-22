@@ -3,6 +3,14 @@ import { bookingTypes } from "@/config/booking";
 import { createBooking, getAvailableSlots } from "@/lib/booking";
 import { createCalendarEvent } from "@/lib/google-calendar";
 import { sendBookingEmails } from "@/lib/booking-emails";
+import {
+  ensureCrmTables,
+  createCompany,
+  createContact,
+  createLead,
+  createActivity,
+  updateLeadStage,
+} from "@/lib/crm-db";
 
 /**
  * POST /api/booking/create
@@ -139,6 +147,62 @@ export async function POST(request: NextRequest) {
       console.log("Booking emails sent successfully");
     } catch (emailErr) {
       console.error("Email send error (booking still created):", emailErr);
+    }
+
+    // Auto-create CRM lead from booking (non-fatal if it fails)
+    try {
+      await ensureCrmTables();
+      const nameParts = name.trim().split(/\s+/);
+      const firstName = nameParts[0] || name;
+      const lastName = nameParts.slice(1).join(" ") || "";
+      const emailDomain = email.split("@")[1] || "";
+
+      // Create company from email domain (or use "Unknown" for free email providers)
+      const freeProviders = ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "icloud.com", "aol.com", "me.com", "live.com"];
+      const companyName = freeProviders.includes(emailDomain.toLowerCase())
+        ? `${firstName} ${lastName}`.trim()
+        : emailDomain.replace(/\.\w+$/, "").replace(/^\w/, (c) => c.toUpperCase());
+
+      const company = await createCompany({
+        name: companyName,
+        domain: freeProviders.includes(emailDomain.toLowerCase()) ? undefined : emailDomain,
+        source: "booking",
+      });
+
+      const contact = await createContact({
+        company_id: company.id,
+        full_name: name,
+        first_name: firstName,
+        last_name: lastName || undefined,
+        email,
+        source: "booking",
+        persona_type: "other",
+      });
+
+      const lead = await createLead({
+        company_id: company.id,
+        contact_id: contact.id,
+        fit_score: 80, // High — they booked a meeting
+        fit_reason: `Booked a ${bookingType.title} — shows active interest`,
+        stage: "meeting_booked",
+        next_action: `${bookingType.title} on ${start.toLocaleDateString("en-US", { month: "short", day: "numeric" })}`,
+        next_action_at: start.toISOString(),
+        last_contacted_at: new Date().toISOString(),
+      });
+
+      await createActivity({
+        lead_id: lead.id,
+        contact_id: contact.id,
+        company_id: company.id,
+        type: "stage_change",
+        channel: "booking",
+        body_preview: `Booked ${bookingType.title} for ${start.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })}`,
+      });
+
+      console.log("CRM lead created from booking:", { leadId: lead.id, contactId: contact.id });
+    } catch (crmErr) {
+      // Don't block booking if CRM insert fails (e.g. duplicate email)
+      console.error("CRM lead creation from booking failed (non-fatal):", crmErr);
     }
 
     return NextResponse.json({

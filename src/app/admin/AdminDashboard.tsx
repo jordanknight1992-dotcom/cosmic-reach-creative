@@ -134,6 +134,10 @@ const T = {
   red:         "#E04747",
 };
 
+const FONT_HEADING: React.CSSProperties = {
+  fontFamily: "var(--font-space-grotesk)",
+};
+
 /* ─────────────────────────── Sub-components ─────────────────── */
 
 function StatCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
@@ -443,25 +447,53 @@ function BookingsTab() {
         {bookings.length === 0 ? (
           <p style={{ color: T.muted }} className="text-sm">No upcoming bookings.</p>
         ) : (
-          <div className="space-y-3">
-            {bookings.map((b) => (
-              <div key={b.id} className="rounded-lg p-4" style={{ backgroundColor: T.card, border: `1px solid ${T.border}` }}>
-                <div className="flex justify-between items-start mb-1">
-                  <span className="font-semibold text-sm" style={{ color: T.starlight }}>{b.name}</span>
-                  <span className="text-xs px-2 py-0.5 rounded" style={{ backgroundColor: T.copper + "22", color: T.copper }}>{b.type}</span>
-                </div>
-                <p className="text-xs" style={{ color: T.muted }}>{b.email}</p>
-                <p className="text-xs mt-1" style={{ color: T.muted }}>
-                  {new Date(b.start_time).toLocaleString()} — {new Date(b.end_time).toLocaleTimeString()}
-                </p>
-                {b.google_meet_url && (
-                  <a href={b.google_meet_url} target="_blank" rel="noopener noreferrer" className="text-xs mt-1 inline-block" style={{ color: T.copper }}>
-                    Join Google Meet →
-                  </a>
-                )}
-                {b.notes && <p className="text-xs mt-1" style={{ color: T.muted }}>Notes: {b.notes}</p>}
-              </div>
-            ))}
+          <div className="rounded-xl overflow-hidden" style={{ border: `1px solid ${T.border}` }}>
+            <table className="w-full text-sm">
+              <thead>
+                <tr style={{ backgroundColor: T.card }}>
+                  {["Date & Time", "Session", "Contact", "Email", "Meet Link", "Notes"].map((h) => (
+                    <th key={h} className="text-left px-4 py-3 text-xs font-semibold tracking-wider uppercase" style={{ color: T.muted, ...FONT_HEADING }}>{h}</th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {bookings.map((b) => {
+                  const startDate = new Date(b.start_time);
+                  const endDate = new Date(b.end_time);
+                  const dateStr = startDate.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+                  const timeStr = `${startDate.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })} – ${endDate.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}`;
+                  return (
+                    <tr key={b.id} style={{ borderTop: `1px solid ${T.border}` }}>
+                      <td className="px-4 py-3">
+                        <div className="font-semibold text-sm" style={{ color: T.starlight, ...FONT_HEADING }}>{dateStr}</div>
+                        <div className="text-xs" style={{ color: T.muted }}>{timeStr}</div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="text-xs px-2 py-0.5 rounded" style={{ backgroundColor: T.copper + "22", color: T.copper, ...FONT_HEADING }}>{b.type}</span>
+                      </td>
+                      <td className="px-4 py-3">
+                        <div className="font-semibold text-sm" style={{ color: T.starlight }}>{b.name}</div>
+                      </td>
+                      <td className="px-4 py-3">
+                        <a href={`mailto:${b.email}`} className="text-xs hover:underline" style={{ color: T.copper }}>{b.email}</a>
+                      </td>
+                      <td className="px-4 py-3">
+                        {b.google_meet_url ? (
+                          <a href={b.google_meet_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded font-semibold" style={{ backgroundColor: T.green + "18", color: T.green, ...FONT_HEADING }}>
+                            ● Join Meet
+                          </a>
+                        ) : (
+                          <span className="text-xs" style={{ color: T.faint }}>—</span>
+                        )}
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="text-xs" style={{ color: T.muted }}>{b.notes || "—"}</span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         )}
       </div>
@@ -997,11 +1029,61 @@ export function AdminDashboard({
     { key: "meetings", label: "Meetings",         icon: "◆" },
   ];
 
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
+
   return (
-    <div className="min-h-screen flex" style={{ backgroundColor: T.page, color: T.starlight }}>
-      {/* ── Sidebar ── */}
+    <div className="min-h-screen flex flex-col md:flex-row" style={{ backgroundColor: T.page, color: T.starlight }}>
+      {/* ── Mobile Top Bar ── */}
+      <div
+        className="md:hidden flex items-center justify-between px-4 py-3 sticky top-0 z-30"
+        style={{ backgroundColor: T.card, borderBottom: `1px solid ${T.border}` }}
+      >
+        <div className="flex items-center gap-2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo/logo-mark-light.svg" alt="" className="w-5 h-5" />
+          <span className="font-bold text-sm" style={{ ...FONT_HEADING, color: T.starlight }}>
+            Mission Control
+          </span>
+        </div>
+        <button
+          onClick={() => setMobileNavOpen(!mobileNavOpen)}
+          className="w-8 h-8 flex items-center justify-center rounded"
+          style={{ color: T.muted }}
+        >
+          {mobileNavOpen ? "✕" : "☰"}
+        </button>
+      </div>
+
+      {/* ── Mobile Nav Dropdown ── */}
+      {mobileNavOpen && (
+        <div
+          className="md:hidden flex flex-col gap-1 px-3 py-3 z-20"
+          style={{ backgroundColor: T.card, borderBottom: `1px solid ${T.border}` }}
+        >
+          {navItems.map((item) => (
+            <button
+              key={item.key}
+              onClick={() => { setTab(item.key); setMobileNavOpen(false); }}
+              className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm font-semibold"
+              style={{
+                backgroundColor: tab === item.key ? T.border : "transparent",
+                color: tab === item.key ? T.starlight : T.muted,
+                ...FONT_HEADING,
+              }}
+            >
+              <span style={{ color: tab === item.key ? T.copper : T.faint }}>{item.icon}</span>
+              {item.label}
+            </button>
+          ))}
+          <div className="pt-2 mt-1" style={{ borderTop: `1px solid ${T.border}` }}>
+            <LogoutButtonInline />
+          </div>
+        </div>
+      )}
+
+      {/* ── Desktop Sidebar ── */}
       <aside
-        className="sticky top-0 h-screen w-56 shrink-0 flex flex-col overflow-y-auto"
+        className="hidden md:flex sticky top-0 h-screen w-56 shrink-0 flex-col overflow-y-auto"
         style={{ backgroundColor: T.card, borderRight: `1px solid ${T.border}` }}
       >
         {/* Brand */}
@@ -1010,7 +1092,7 @@ export function AdminDashboard({
           <img src="/logo/logo-mark-light.svg" alt="" className="w-6 h-6" />
           <span
             className="font-bold text-sm tracking-wide"
-            style={{ fontFamily: "var(--font-space-grotesk)", color: T.starlight }}
+            style={{ ...FONT_HEADING, color: T.starlight }}
           >
             Mission Control
           </span>
@@ -1028,7 +1110,7 @@ export function AdminDashboard({
               style={{
                 backgroundColor: tab === item.key ? T.border : "transparent",
                 color:           tab === item.key ? T.starlight : T.muted,
-                fontFamily:      "var(--font-space-grotesk)",
+                ...FONT_HEADING,
               }}
             >
               <span className="text-sm" style={{ color: tab === item.key ? T.copper : T.faint }}>
@@ -1047,7 +1129,7 @@ export function AdminDashboard({
 
       {/* ── Main content ── */}
       <main className="flex-1 min-w-0 overflow-y-auto">
-        <div className="max-w-5xl mx-auto px-6 py-8">
+        <div className="max-w-5xl mx-auto px-4 py-6 md:px-6 md:py-8">
           {tab === "crm" ? (
             <CrmTab />
           ) : tab === "signals" ? (
