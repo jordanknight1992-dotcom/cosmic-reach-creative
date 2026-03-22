@@ -1,6 +1,6 @@
 import { availability } from "@/config/booking";
 
-const FROM = "Cosmic Reach <noreply@cosmicreachcreative.com>";
+const FROM = "Jordan at Cosmic Reach <jordan@cosmicreachcreative.com>";
 const OWNER_EMAIL = "jordan@cosmicreachcreative.com";
 const DOMAIN = "https://cosmicreachcreative.com";
 const LOGO_URL = `${DOMAIN}/logo/logo-primary-dark.png`;
@@ -15,6 +15,8 @@ interface BookingEmailData {
   notes?: string;
   bookingId: number;
   googleMeetUrl?: string | null;
+  priceCents?: number | null;
+  stripePaymentLink?: string;
 }
 
 /**
@@ -199,13 +201,32 @@ function clientEmailHTML(
                       ${meetSection}
                       <tr>
                         <td style="padding:12px 20px 16px;">
-                          <p style="font-size:11px; text-transform:uppercase; letter-spacing:1.5px; color:rgba(232,223,207,0.35); margin:0 0 4px; font-weight:600;">Booking ID</p>
-                          <p style="font-size:13px; color:rgba(232,223,207,0.4); margin:0;">#${data.bookingId}</p>
+                          <p style="font-size:11px; text-transform:uppercase; letter-spacing:1.5px; color:rgba(232,223,207,0.35); margin:0 0 4px; font-weight:600;">Reference</p>
+                          <p style="font-size:13px; color:rgba(232,223,207,0.4); margin:0;">CR-${String(data.bookingId + 1000).padStart(5, "0")}</p>
                         </td>
                       </tr>
                     </table>
                   </td>
                 </tr>
+                ${data.priceCents && data.stripePaymentLink ? `
+                <tr>
+                  <td style="padding:8px 24px 0;">
+                    <table width="100%" cellpadding="0" cellspacing="0" role="presentation" style="background-color:rgba(212,165,116,0.08); border-radius:8px; border:1px solid rgba(212,165,116,0.2);">
+                      <tr>
+                        <td style="padding:20px 24px; text-align:center;">
+                          <p style="font-size:11px; text-transform:uppercase; letter-spacing:2px; color:#d4a574; margin:0 0 8px; font-weight:700;">PAYMENT REQUIRED</p>
+                          <p style="font-size:14px; color:#e8dfcf; margin:0 0 16px; line-height:1.5;">
+                            Complete your $${(data.priceCents / 100).toFixed(0)} payment to confirm your session.
+                          </p>
+                          <a href="${data.stripePaymentLink}" style="display:inline-block; background-color:#d4a574; color:#0b1120; font-size:15px; font-weight:700; padding:12px 32px; border-radius:8px; text-decoration:none; letter-spacing:0.3px;">
+                            Complete Payment — $${(data.priceCents / 100).toFixed(0)}
+                          </a>
+                          <p style="font-size:11px; color:rgba(232,223,207,0.3); margin:12px 0 0;">Secure payment powered by Stripe</p>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>` : ""}
                 <tr>
                   <td style="padding:16px 24px 28px;">
                     <p style="font-size:13px; color:rgba(232,223,207,0.4); text-align:center; margin:0; line-height:1.6;">

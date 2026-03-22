@@ -143,6 +143,8 @@ export async function POST(request: NextRequest) {
         notes,
         bookingId: booking.id as number,
         googleMeetUrl,
+        priceCents: bookingType.priceCents,
+        stripePaymentLink: bookingType.stripePaymentLink,
       });
       console.log("Booking emails sent successfully");
     } catch (emailErr) {

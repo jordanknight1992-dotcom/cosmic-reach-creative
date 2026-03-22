@@ -197,6 +197,8 @@ export function BookingFlow({ bookingType }: BookingFlowProps) {
           email={email}
           bookingId={bookingId}
           meetUrl={meetUrl}
+          priceCents={bookingType.priceCents}
+          stripePaymentLink={bookingType.stripePaymentLink}
         />
       )}
     </div>
@@ -558,6 +560,8 @@ function Confirmation({
   email,
   bookingId,
   meetUrl,
+  priceCents,
+  stripePaymentLink,
 }: {
   slot: Slot;
   duration: number;
@@ -566,6 +570,8 @@ function Confirmation({
   email: string;
   bookingId: number | null;
   meetUrl: string | null;
+  priceCents: number | null;
+  stripePaymentLink?: string;
 }) {
   const dateLabel = new Date(slot.start).toLocaleDateString("en-US", {
     weekday: "long",
@@ -629,11 +635,41 @@ function Confirmation({
         </div>
         {bookingId && (
           <div>
-            <p className="text-starlight/40 text-xs font-display uppercase tracking-wider">Booking ID</p>
-            <p className="text-starlight/50 text-sm">#{bookingId}</p>
+            <p className="text-starlight/40 text-xs font-display uppercase tracking-wider">Reference</p>
+            <p className="text-starlight/50 text-sm">CR-{String(bookingId + 1000).padStart(5, "0")}</p>
           </div>
         )}
       </div>
+
+      {/* Stripe payment prompt for paid sessions */}
+      {priceCents && stripePaymentLink && (
+        <div className="bg-copper/10 border border-copper/30 rounded-[var(--radius-md)] p-5 mb-6 text-center">
+          <p className="text-starlight/40 text-xs font-display uppercase tracking-wider mb-2">
+            Payment Required
+          </p>
+          <p className="text-starlight/80 text-sm mb-4">
+            Complete your ${(priceCents / 100).toFixed(0)} payment to confirm your {title}.
+          </p>
+          <a
+            href={stripePaymentLink}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 rounded-[var(--radius-md)] px-8 py-3
+              font-display font-semibold text-base text-white
+              bg-spark-red hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0
+              transition-all duration-[var(--duration-base)] ease-[var(--ease-out)]"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M21 4H3a2 2 0 00-2 2v12a2 2 0 002 2h18a2 2 0 002-2V6a2 2 0 00-2-2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M1 10h22" stroke="currentColor" strokeWidth="2"/>
+            </svg>
+            Complete Payment — ${(priceCents / 100).toFixed(0)}
+          </a>
+          <p className="text-starlight/40 text-xs mt-3">
+            Secure payment powered by Stripe
+          </p>
+        </div>
+      )}
 
       {/* Junk mail notice */}
       <div className="bg-copper/5 border border-copper/15 rounded-[var(--radius-sm)] p-4 mb-6 text-left">

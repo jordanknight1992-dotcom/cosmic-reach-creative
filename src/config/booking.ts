@@ -5,6 +5,8 @@ export type BookingType = {
   description: string;
   /** Price in cents, or null for free */
   priceCents: number | null;
+  /** Stripe payment link URL (for paid sessions) */
+  stripePaymentLink?: string;
 };
 
 export const bookingTypes: Record<string, BookingType> = {
@@ -18,11 +20,12 @@ export const bookingTypes: Record<string, BookingType> = {
   },
   "clarity-session": {
     slug: "clarity-session",
-    title: "Clarity Session",
+    title: "Business Clarity Audit",
     durationMinutes: 90,
     description:
       "A deep 90-minute working session to map your positioning, messaging, and launch strategy.",
-    priceCents: null,
+    priceCents: 15000, // $150
+    stripePaymentLink: "https://buy.stripe.com/28EbITdzT6je8go6i4fbq07",
   },
   "connect-30": {
     slug: "connect-30",
