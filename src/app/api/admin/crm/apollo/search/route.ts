@@ -1,5 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 
+/** US state abbreviation → full name (PDL uses full names) */
+const STATE_MAP: Record<string, string> = {
+  AL:"alabama",AK:"alaska",AZ:"arizona",AR:"arkansas",CA:"california",
+  CO:"colorado",CT:"connecticut",DE:"delaware",FL:"florida",GA:"georgia",
+  HI:"hawaii",ID:"idaho",IL:"illinois",IN:"indiana",IA:"iowa",KS:"kansas",
+  KY:"kentucky",LA:"louisiana",ME:"maine",MD:"maryland",MA:"massachusetts",
+  MI:"michigan",MN:"minnesota",MS:"mississippi",MO:"missouri",MT:"montana",
+  NE:"nebraska",NV:"nevada",NH:"new hampshire",NJ:"new jersey",NM:"new mexico",
+  NY:"new york",NC:"north carolina",ND:"north dakota",OH:"ohio",OK:"oklahoma",
+  OR:"oregon",PA:"pennsylvania",RI:"rhode island",SC:"south carolina",
+  SD:"south dakota",TN:"tennessee",TX:"texas",UT:"utah",VT:"vermont",
+  VA:"virginia",WA:"washington",WV:"west virginia",WI:"wisconsin",WY:"wyoming",
+  DC:"district of columbia",
+};
+
 /**
  * POST /api/admin/crm/apollo/search
  *
@@ -36,20 +51,21 @@ export async function POST(request: NextRequest) {
             { match: { job_company_name: query } },
             { match: { full_name: query } },
           ],
-          minimum_should_match: 1,
         },
       });
     }
 
     if (location) {
-      // Parse "City, ST" format
+      // Parse "City, ST" or "City, State" format
       const parts = location.split(",").map((s: string) => s.trim());
       if (parts[0]) {
         mustClauses.push({ match: { location_locality: parts[0].toLowerCase() } });
       }
       if (parts[1]) {
-        // Could be state abbreviation or full name
-        mustClauses.push({ match: { location_region: parts[1].toLowerCase() } });
+        // Convert state abbreviation to full name (PDL requires full names)
+        const stateInput = parts[1].toUpperCase();
+        const fullState = STATE_MAP[stateInput] || parts[1].toLowerCase();
+        mustClauses.push({ match: { location_region: fullState } });
       }
     }
 
@@ -64,7 +80,6 @@ export async function POST(request: NextRequest) {
           should: title_keywords.map((kw: string) => ({
             match: { job_title: kw.toLowerCase() },
           })),
-          minimum_should_match: 1,
         },
       });
     }
