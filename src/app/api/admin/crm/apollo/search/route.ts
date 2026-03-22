@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
       industry,
       title_keywords,
       per_page = 10,
-      page = 1,
+      scroll_token,
     } = body;
 
     // Build Elasticsearch bool query for PDL
@@ -101,7 +101,7 @@ export async function POST(request: NextRequest) {
         body: JSON.stringify({
           query: { bool: { must: mustClauses } },
           size: Math.min(per_page, 25),
-          from: ((page as number) - 1) * Math.min(per_page, 25),
+          ...(scroll_token ? { scroll_token } : {}),
         }),
       }
     );
@@ -119,7 +119,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({
           results: [],
           total: 0,
-          page: 1,
+          scroll_token: null,
           debug: { status: 404, message: "No matching people found", query: builtQuery },
         });
       }
@@ -165,7 +165,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       results,
       total: pdlData.total || results.length,
-      page: page as number,
+      scroll_token: pdlData.scroll_token || null,
       per_page: Math.min(per_page, 25),
     });
   } catch (err) {

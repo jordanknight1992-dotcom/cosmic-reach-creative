@@ -647,8 +647,9 @@ function ApolloSearchBar({ onImported }: { onImported: () => void }) {
   const [expanded, setExpanded] = useState(false);
   const [resultsOpen, setResultsOpen] = useState(true);
   const [usage, setUsage] = useState(0);
-  const [page, setPage] = useState(1);
   const [totalResults, setTotalResults] = useState(0);
+  const [scrollToken, setScrollToken] = useState<string | null>(null);
+  const [pageNum, setPageNum] = useState(1);
   const perPage = 10;
 
   useEffect(() => {
@@ -657,7 +658,7 @@ function ApolloSearchBar({ onImported }: { onImported: () => void }) {
 
   const limitReached = usage >= APOLLO_DAILY_LIMIT;
 
-  async function search(searchPage = 1) {
+  async function search(nextPage = false) {
     if (limitReached) return;
     setSearching(true);
     setError(null);
@@ -677,7 +678,7 @@ function ApolloSearchBar({ onImported }: { onImported: () => void }) {
           industry: industry || undefined,
           title_keywords: titleArr.length > 0 ? titleArr : undefined,
           per_page: perPage,
-          page: searchPage,
+          ...(nextPage && scrollToken ? { scroll_token: scrollToken } : {}),
         }),
       });
       const data = await res.json();
@@ -693,7 +694,8 @@ function ApolloSearchBar({ onImported }: { onImported: () => void }) {
 
       setResults(data.results || []);
       setTotalResults(data.total || 0);
-      setPage(searchPage);
+      setScrollToken(data.scroll_token || null);
+      setPageNum(nextPage ? pageNum + 1 : 1);
       setResultsOpen(true);
       setHasSearched(true);
 
@@ -839,7 +841,7 @@ function ApolloSearchBar({ onImported }: { onImported: () => void }) {
               />
             </div>
             <button
-              onClick={() => search(1)}
+              onClick={() => search(false)}
               disabled={searching || limitReached || (!query.trim() && !industry.trim() && !titleKeywords.trim())}
               className="px-4 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1.5 self-end"
               style={{
@@ -890,7 +892,7 @@ function ApolloSearchBar({ onImported }: { onImported: () => void }) {
                 onClick={() => setResultsOpen((o) => !o)}
               >
                 <div className="text-xs font-medium" style={{ color: T.muted, ...FONT_HEADING }}>
-                  Showing {(page - 1) * perPage + 1}–{Math.min(page * perPage, totalResults)} of {totalResults.toLocaleString()} results
+                  Showing page {pageNum} · {totalResults.toLocaleString()} total results
                 </div>
                 <span className="text-xs" style={{ color: T.muted }}>
                   {resultsOpen ? "\u25B2 Collapse" : "\u25BC Expand"}
@@ -936,40 +938,21 @@ function ApolloSearchBar({ onImported }: { onImported: () => void }) {
                     </div>
                   ))}
                 </div>
-                {totalResults > perPage && (
-                  <div className="flex items-center justify-between mt-3 pt-2" style={{ borderTop: `1px solid ${T.border}` }}>
+                {scrollToken && (
+                  <div className="flex items-center justify-center mt-3 pt-2" style={{ borderTop: `1px solid ${T.border}` }}>
                     <button
-                      onClick={() => search(page - 1)}
-                      disabled={page <= 1 || searching}
-                      className="px-3 py-1 rounded text-xs font-medium"
+                      onClick={() => search(true)}
+                      disabled={searching}
+                      className="px-4 py-1.5 rounded-lg text-xs font-medium flex items-center gap-1.5"
                       style={{
-                        backgroundColor: page <= 1 ? T.faint : T.card,
-                        color: page <= 1 ? T.muted : T.starlight,
+                        backgroundColor: T.card,
+                        color: T.starlight,
                         border: `1px solid ${T.border}`,
-                        opacity: page <= 1 ? 0.4 : 1,
-                        cursor: page <= 1 ? "not-allowed" : "pointer",
                         ...FONT_HEADING,
                       }}
                     >
-                      ← Previous
-                    </button>
-                    <span className="text-xs" style={{ color: T.muted, ...FONT_HEADING }}>
-                      Page {page} of {Math.ceil(totalResults / perPage).toLocaleString()}
-                    </span>
-                    <button
-                      onClick={() => search(page + 1)}
-                      disabled={page * perPage >= totalResults || searching}
-                      className="px-3 py-1 rounded text-xs font-medium"
-                      style={{
-                        backgroundColor: page * perPage >= totalResults ? T.faint : T.card,
-                        color: page * perPage >= totalResults ? T.muted : T.starlight,
-                        border: `1px solid ${T.border}`,
-                        opacity: page * perPage >= totalResults ? 0.4 : 1,
-                        cursor: page * perPage >= totalResults ? "not-allowed" : "pointer",
-                        ...FONT_HEADING,
-                      }}
-                    >
-                      Next →
+                      {searching ? <Spinner size={12} /> : null}
+                      Load More Results →
                     </button>
                   </div>
                 )}
