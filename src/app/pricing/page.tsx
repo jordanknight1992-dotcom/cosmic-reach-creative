@@ -258,7 +258,7 @@ export default function PricingPage() {
                 </h3>
                 <p className="text-sm text-starlight/60">{advisoryTier.description}</p>
               </div>
-              <div className="shrink-0 flex flex-col items-end gap-2">
+              <div className="shrink-0 flex flex-col items-end gap-2 w-40">
                 <p className="text-copper font-display font-semibold text-xl">
                   {advisoryTier.price}
                 </p>
@@ -281,7 +281,7 @@ export default function PricingPage() {
                 </h3>
                 <p className="text-sm text-starlight/60">{missionControlTier.description}</p>
               </div>
-              <div className="shrink-0 flex flex-col items-end gap-2">
+              <div className="shrink-0 flex flex-col items-end gap-2 w-40">
                 <p className="text-copper font-display font-semibold text-xl">
                   {missionControlTier.price}
                 </p>
