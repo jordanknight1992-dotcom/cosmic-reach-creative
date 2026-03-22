@@ -210,7 +210,7 @@ export default function PricingPage() {
                 <p className="text-sm text-starlight/60 mb-4 flex-1">
                   {tier.description}
                 </p>
-                <div className="space-y-3 flex-1">
+                <div className="space-y-3 mt-auto">
                   <div>
                     <p className="text-xs font-display font-medium tracking-wide text-starlight/50 uppercase mb-2">
                       Framework coverage
