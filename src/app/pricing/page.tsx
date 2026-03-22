@@ -139,7 +139,7 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <StripeBuyButton buyButtonId="buy_btn_1TDtGA0vGBLnj72kaNhC423Y" />
+              <StripeBuyButton buyButtonId="buy_btn_1TDtGA0vGBLnj72kaNhC423Y" label="Start the Clarity Audit" />
               <p className="mt-3 text-center text-xs text-starlight/60">
                 3&ndash;5 day turnaround &middot; Structured clarity report included
               </p>
@@ -232,7 +232,7 @@ export default function PricingPage() {
                   </div>
                 </div>
                 <div className="mt-4">
-                  <StripeBuyButton buyButtonId={tier.buyButtonId} />
+                  <StripeBuyButton buyButtonId={tier.buyButtonId} label={`Start ${tier.name}`} />
                 </div>
               </article>
             ))}
@@ -261,7 +261,7 @@ export default function PricingPage() {
                 <p className="text-copper font-display font-semibold text-xl">
                   {advisoryTier.price}
                 </p>
-                <StripeBuyButton buyButtonId="buy_btn_1TDtJg0vGBLnj72k4vWaSa7F" />
+                <StripeBuyButton buyButtonId="buy_btn_1TDtJg0vGBLnj72k4vWaSa7F" label="Subscribe" />
               </div>
             </article>
           </div>
@@ -289,7 +289,7 @@ export default function PricingPage() {
                 <p className="text-copper font-display font-semibold text-xl">
                   {missionControlTier.price}
                 </p>
-                <StripeBuyButton buyButtonId="buy_btn_1TDtF70vGBLnj72k5a2Q3awc" />
+                <StripeBuyButton buyButtonId="buy_btn_1TDtF70vGBLnj72k5a2Q3awc" label="Subscribe" />
                 <Link
                   href="/mission-control"
                   className="inline-flex items-center rounded-[var(--radius-sm)] text-starlight/50 hover:text-copper px-4 py-1 text-xs font-display transition-colors"

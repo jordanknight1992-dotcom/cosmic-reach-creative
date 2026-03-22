@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 interface CrmData {
   leads: Record<string, unknown>[];
@@ -29,6 +30,7 @@ const STAGE_COLORS: Record<string, string> = {
 };
 
 export function CrmView({ tenantSlug, data }: { tenantSlug: string; data: CrmData }) {
+  const isMobile = useIsMobile();
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [selectedLead, setSelectedLead] = useState<Record<string, unknown> | null>(null);
@@ -109,6 +111,16 @@ export function CrmView({ tenantSlug, data }: { tenantSlug: string; data: CrmDat
   const [findResult, setFindResult] = useState<{ imported: number; message?: string } | null>(null);
 
   async function handleFindLeads() {
+    // Demo mode: simulate finding leads
+    if (tenantSlug === "demo") {
+      setFindingLeads(true);
+      setFindResult(null);
+      await new Promise((r) => setTimeout(r, 1200));
+      setFindResult({ imported: data.leads.length, message: `Found ${data.leads.length} leads matching your ICP criteria` });
+      setFindingLeads(false);
+      return;
+    }
+
     setFindingLeads(true);
     setFindResult(null);
     try {
@@ -256,9 +268,9 @@ export function CrmView({ tenantSlug, data }: { tenantSlug: string; data: CrmDat
       </div>
 
       {/* Lead list + detail split */}
-      <div style={{ display: "flex", gap: 16 }}>
+      <div style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: 16 }}>
         {/* Lead list */}
-        <div style={{ flex: selectedLead ? "0 0 50%" : 1, minWidth: 0 }}>
+        <div style={{ flex: selectedLead && !isMobile ? "0 0 50%" : 1, minWidth: 0 }}>
           {filtered.length === 0 ? (
             <div style={{
               background: "#111827", border: "1px solid rgba(232,223,207,0.1)", borderRadius: 12,
@@ -344,16 +356,16 @@ export function CrmView({ tenantSlug, data }: { tenantSlug: string; data: CrmDat
         {/* Lead detail panel */}
         {selectedLead && (
           <div style={{
-            flex: "0 0 50%", background: "#111827", border: "1px solid rgba(232,223,207,0.1)",
-            borderRadius: 12, padding: "24px 20px", alignSelf: "flex-start",
-            position: "sticky", top: 20, maxHeight: "calc(100vh - 120px)", overflowY: "auto",
+            flex: isMobile ? "1 1 auto" : "0 0 50%", background: "#111827", border: "1px solid rgba(232,223,207,0.1)",
+            borderRadius: 12, padding: isMobile ? "20px 16px" : "24px 20px", alignSelf: "flex-start",
+            position: isMobile ? "static" : "sticky", top: 20, maxHeight: isMobile ? "none" : "calc(100vh - 120px)", overflowY: "auto",
           }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
               <h2 style={{ fontSize: 18, fontWeight: 700, margin: 0, fontFamily: 'var(--font-display)' }}>{selectedLead.contact_name as string}</h2>
               <button onClick={() => selectLead(null)} style={{ background: "none", border: "none", color: "rgba(232,223,207,0.35)", cursor: "pointer", fontSize: 18 }}>x</button>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 20 }}>
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 12, marginBottom: 20 }}>
               <DetailItem label="Company" value={selectedLead.company_name as string} />
               <DetailItem label="Title" value={selectedLead.contact_title as string} />
               <DetailItem label="Email" value={selectedLead.contact_email as string} />
@@ -387,7 +399,7 @@ export function CrmView({ tenantSlug, data }: { tenantSlug: string; data: CrmDat
                     onClick={() => handleGenerateDraft(selectedLead)}
                     disabled={draftLoading}
                     style={{
-                      background: "linear-gradient(135deg, #d4a574, #e04747)", color: "#fff", border: "none",
+                      background: "#d4a574", color: "#1a1f2e", border: "none",
                       borderRadius: 8, padding: "7px 16px", fontSize: 12, fontWeight: 600,
                       cursor: draftLoading ? "wait" : "pointer", fontFamily: "var(--font-display)",
                     }}
