@@ -18,7 +18,7 @@ export function Footer() {
               style={{ height: "40px", width: "auto" }}
             />
             <p className="text-sm text-starlight/60 max-w-xs">
-              Brand clarity and marketing systems for founders who need structure, not more activity.
+              Marketing strategy and growth systems for founders who need structure, not more activity. Based in Memphis, TN.
             </p>
           </div>
 

@@ -2,6 +2,8 @@ export const siteConfig = {
   siteName: "Cosmic Reach Creative",
   domain: "https://cosmicreachcreative.com",
   contactEmail: "jordan@cosmicreachcreative.com",
+  founder: "Jordan Knight",
+  location: "Memphis, TN",
   signalCheckUrl: "/book/signal-check",
   claritySessionUrl: "/book/clarity-session",
   stripeAuditUrl:

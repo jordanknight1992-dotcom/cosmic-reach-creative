@@ -6,9 +6,9 @@ import { CTAButton } from "@/components/CTAButton";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "How It Works | Cosmic Reach Creative",
+  title: "How It Works | The Launch Sequence Framework",
   description:
-    "See how the Launch Sequence evaluates your business across four forces, identifies what's holding growth back, and maps the path forward.",
+    "See how Cosmic Reach Creative evaluates your business across four forces — Signal, Gravity, Orbit, and Thrust — to diagnose what's blocking growth and build the plan to fix it.",
   alternates: { canonical: `${siteConfig.domain}/how-it-works` },
 };
 
@@ -84,6 +84,14 @@ const engagementPath = [
 export default function HowItWorksPage() {
   return (
     <main id="main-content">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://cosmicreachcreative.com" },
+          { "@type": "ListItem", position: 2, name: "How It Works", item: "https://cosmicreachcreative.com/how-it-works" },
+        ]
+      })}} />
       {/* ── Hero ── */}
       <section
         className="relative overflow-hidden"

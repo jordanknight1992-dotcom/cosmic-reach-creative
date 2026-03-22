@@ -6,9 +6,9 @@ import { CTAButton } from "@/components/CTAButton";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: `${siteConfig.siteName} | Strategic Marketing Architecture`,
+  title: "Cosmic Reach Creative | Marketing Strategy & Growth Systems for Founders",
   description:
-    "Cosmic Reach Creative designs the strategic architecture behind scalable marketing. Diagnosis before prescription, for founders and marketing leaders who need structure, not more activity.",
+    "Cosmic Reach Creative helps founders and growing businesses sharpen messaging, design stronger offers, and build marketing systems that scale. Strategic consulting founded in Memphis, TN — serving businesses nationwide. Start with a Business Clarity Audit.",
   alternates: { canonical: siteConfig.domain },
 };
 
@@ -65,7 +65,7 @@ export default function HomePage() {
         <div className="absolute inset-0">
           <Image
             src="/images/01-home-hero.jpg"
-            alt=""
+            alt="Cosmic Reach Creative — Marketing strategy consulting for founders"
             fill
             className="object-cover"
             priority
@@ -82,7 +82,7 @@ export default function HomePage() {
               We design the strategic architecture behind scalable marketing: the structure that allows messaging, offers, and systems to compound rather than compete.
             </p>
             <p className="text-starlight/60 text-sm mb-6">
-              Diagnosis before prescription.
+              Diagnosis before prescription. Founded in Memphis, TN — serving founders nationwide.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <CTAButton label="Start The Clarity Audit" variant="primary" />
@@ -388,6 +388,82 @@ export default function HomePage() {
             <p className="mt-3 text-xs text-starlight/60">
               3–5 day turnaround &middot; Structured clarity report included
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Homepage FAQ (SEO + AI Searchability) ── */}
+      <section className="py-16 sm:py-24 bg-section-light" aria-labelledby="home-faq-heading">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "What is Cosmic Reach Creative?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Cosmic Reach Creative is a marketing strategy consultancy founded by Jordan Knight in Memphis, TN. We help founders and growing businesses diagnose what's blocking growth and build the strategic systems to fix it — including messaging, offer design, customer journey optimization, and performance visibility."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "What does a marketing strategist do?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "A marketing strategist evaluates the underlying structure of how a business attracts, converts, and retains customers. At Cosmic Reach, we use the Launch Sequence framework to diagnose messaging clarity, offer strength, customer journey friction, and growth visibility — then build systems to fix what's broken."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Is Cosmic Reach Creative a marketing agency?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "No. Cosmic Reach Creative is a strategic consultancy, not a traditional marketing agency. We don't run ads, manage social media, or produce content. We design the strategic architecture that makes those activities effective — messaging systems, offer positioning, conversion infrastructure, and growth dashboards."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "Do you only work with businesses in Memphis?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "No. Cosmic Reach Creative is headquartered in Memphis, TN, but we work with founders and growing businesses nationwide. All engagements are delivered remotely through structured audits, strategy sprints, and advisory retainers."
+                }
+              },
+              {
+                "@type": "Question",
+                name: "What is a Business Clarity Audit?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "The Business Clarity Audit is a structured diagnostic that evaluates your messaging, offer design, customer journey, and growth levers using the Launch Sequence framework. You receive a scored report with prioritized recommendations. It costs $150, takes 3-5 business days, and the fee is credited toward any Sprint engagement."
+                }
+              },
+            ]
+          })}}
+        />
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center mb-10">
+            <h2 id="home-faq-heading" className="text-navy mb-3">Common Questions</h2>
+            <p className="text-navy/60 text-sm">Quick answers for founders exploring strategic support.</p>
+          </div>
+          <div className="max-w-2xl mx-auto space-y-4">
+            {[
+              { q: "What is Cosmic Reach Creative?", a: "A marketing strategy consultancy founded by Jordan Knight in Memphis, TN. We help founders and growing businesses diagnose what's blocking growth and build the strategic systems to fix it." },
+              { q: "What does a marketing strategist do?", a: "We evaluate the underlying structure of how a business attracts, converts, and retains customers — then build systems to fix what's broken. Messaging, offers, customer journey, and performance visibility." },
+              { q: "Is Cosmic Reach a marketing agency?", a: "No. We're a strategic consultancy. We don't run ads or manage social media. We design the architecture that makes marketing effective — messaging systems, offer positioning, conversion infrastructure, and growth dashboards." },
+              { q: "Do you only work with businesses in Memphis?", a: "We're headquartered in Memphis, TN, but we work with founders and growing businesses nationwide. All engagements are delivered remotely." },
+              { q: "What is a Business Clarity Audit?", a: "A structured diagnostic that evaluates your messaging, offer design, customer journey, and growth levers. You receive a scored report with prioritized recommendations. $150, 3-5 business days, credited toward any Sprint." },
+            ].map((faq) => (
+              <details key={faq.q} className="group rounded-xl border border-navy/10 bg-white shadow-subtle">
+                <summary className="flex items-center justify-between px-5 py-4 cursor-pointer font-display font-semibold text-sm text-navy">
+                  {faq.q}
+                  <span className="text-copper ml-2 group-open:rotate-45 transition-transform text-lg" aria-hidden="true">+</span>
+                </summary>
+                <p className="px-5 pb-4 text-navy/70 text-sm leading-relaxed">{faq.a}</p>
+              </details>
+            ))}
           </div>
         </div>
       </section>

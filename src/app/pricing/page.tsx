@@ -4,9 +4,9 @@ import Image from "next/image";
 import { Icon } from "@/components/Icon";
 
 export const metadata: Metadata = {
-  title: "Engagements | Clarity Audit, Sprints & Mission Control",
+  title: "Pricing | Business Clarity Audit & Strategy Sprints",
   description:
-    "Every engagement starts with a structural diagnostic. The Clarity Audit identifies the constraint. Sprints install the architecture. Mission Control keeps it compounding.",
+    "Start with a $150 Business Clarity Audit. Implementation Sprints from $2,000-$6,000. Ongoing advisory at $750/month. Structured engagements with fixed outcomes for founders and growing businesses.",
   alternates: { canonical: `${siteConfig.domain}/pricing` },
 };
 
@@ -51,6 +51,14 @@ const advisoryTier = {
 export default function PricingPage() {
   return (
     <main id="main-content">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://cosmicreachcreative.com" },
+          { "@type": "ListItem", position: 2, name: "Pricing", item: "https://cosmicreachcreative.com/pricing" },
+        ]
+      })}} />
       {/* Hero */}
       <section className="relative overflow-hidden" aria-labelledby="pricing-hero">
         <div className="absolute inset-0">

@@ -5,9 +5,9 @@ import { Icon } from "@/components/Icon";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "FAQ | Business Clarity Audit Questions",
+  title: "FAQ | Business Clarity Audit & Marketing Strategy Questions",
   description:
-    "Clear expectations make better partnerships. Common questions about Cosmic Reach Creative.",
+    "Answers to common questions about the Business Clarity Audit, implementation sprints, marketing strategy consulting, and how Cosmic Reach Creative works with founders and growing businesses.",
   alternates: { canonical: `${siteConfig.domain}/faq` },
 };
 
@@ -50,11 +50,36 @@ const faqs = [
     closing:
       "If those patterns sound familiar, the Business Clarity Audit is designed to diagnose exactly why.",
   },
+  {
+    question: "Where is Cosmic Reach Creative located?",
+    answer:
+      "Cosmic Reach Creative is headquartered in Memphis, Tennessee. We work with founders and growing businesses nationwide through remote engagements including structured audits, strategy sprints, and ongoing advisory retainers.",
+  },
+  {
+    question: "What's the difference between a marketing consultant and a marketing agency?",
+    answer:
+      "A marketing agency typically executes tactics: running ads, managing social media, creating content. A marketing consultant, like Cosmic Reach Creative, works at the strategic level, designing the systems and architecture that make those tactics effective.\n\nWe focus on messaging clarity, offer design, customer journey optimization, and growth visibility. The goal is to build the foundation that makes every marketing dollar and effort more productive.",
+  },
 ];
 
 export default function FAQPage() {
   return (
     <main id="main-content">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faqs.map(faq => ({
+            "@type": "Question",
+            name: faq.question,
+            acceptedAnswer: {
+              "@type": "Answer",
+              text: faq.answer.replace(/\n\n/g, " "),
+            }
+          }))
+        })}}
+      />
       {/* Hero */}
       <section className="relative overflow-hidden" aria-labelledby="faq-hero">
         <div className="absolute inset-0">

@@ -5,9 +5,9 @@ import { Icon } from "@/components/Icon";
 import { CTAButton } from "@/components/CTAButton";
 
 export const metadata: Metadata = {
-  title: "The Launch Sequence | 4-Force Business System",
+  title: "The Launch Sequence | 4-Force Marketing Strategy Framework",
   description:
-    "The Launch Sequence evaluates messaging, offer strength, customer journey, and growth levers across one connected system.",
+    "The Launch Sequence evaluates four forces driving every business: messaging clarity (Signal), offer strength (Gravity), customer journey (Orbit), and growth opportunities (Thrust). A systematic approach to marketing strategy.",
   alternates: { canonical: `${siteConfig.domain}/framework` },
 };
 
@@ -65,6 +65,14 @@ const layers = [
 export default function FrameworkPage() {
   return (
     <main id="main-content">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://cosmicreachcreative.com" },
+          { "@type": "ListItem", position: 2, name: "Framework", item: "https://cosmicreachcreative.com/framework" },
+        ]
+      })}} />
       {/* Hero */}
       <section className="relative overflow-hidden" aria-labelledby="framework-hero">
         <div className="absolute inset-0">

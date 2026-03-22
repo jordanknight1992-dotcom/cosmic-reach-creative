@@ -5,9 +5,9 @@ import { Icon } from "@/components/Icon";
 import { CTAButton } from "@/components/CTAButton";
 
 export const metadata: Metadata = {
-  title: "About Cosmic Reach | Built From the Operator's Seat",
+  title: "About | Jordan Knight, Founder & Marketing Strategist",
   description:
-    "Built from years inside real delivery environments. Cosmic Reach helps founders diagnose what's holding growth back and install the structure to fix it.",
+    "Cosmic Reach Creative was founded by Jordan Knight in Memphis, TN. Built from years inside real delivery environments, we help founders diagnose what's holding growth back and install the strategic systems to fix it.",
   alternates: { canonical: `${siteConfig.domain}/about` },
 };
 
@@ -21,6 +21,14 @@ const principles = [
 export default function AboutPage() {
   return (
     <main id="main-content">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://cosmicreachcreative.com" },
+          { "@type": "ListItem", position: 2, name: "About", item: "https://cosmicreachcreative.com/about" },
+        ]
+      })}} />
       {/* Hero */}
       <section className="relative overflow-hidden" aria-labelledby="about-hero">
         <div className="absolute inset-0">
@@ -73,7 +81,7 @@ export default function AboutPage() {
               <div className="relative w-full max-w-[240px] sm:max-w-[280px] aspect-[3/4] rounded-2xl overflow-hidden shrink-0">
                 <Image
                   src="/images/founder/jordan-knight-cosmic-reach-operator.jpg"
-                  alt="Jordan Knight"
+                  alt="Jordan Knight, founder of Cosmic Reach Creative in Memphis, TN"
                   fill
                   className="object-cover"
                   sizes="280px"
@@ -82,7 +90,7 @@ export default function AboutPage() {
               <div className="text-center md:text-left">
                 <h2 id="founder-heading" className="mb-4">The Perspective Behind the Work</h2>
                 <p className="text-starlight/70 text-base mb-3">
-                  Jordan Knight has led infrastructure programs, marketing initiatives, and delivery systems where clarity wasn&apos;t optional.
+                  Jordan Knight founded Cosmic Reach Creative in Memphis, Tennessee, after years leading infrastructure programs, marketing initiatives, and delivery systems where clarity wasn&apos;t optional.
                 </p>
                 <p className="text-starlight/70 text-base mb-3">
                   That experience shaped a simple belief:

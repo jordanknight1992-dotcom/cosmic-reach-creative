@@ -12,7 +12,8 @@ export default function AccessibilityPage() {
     <main id="main-content" className="pt-32 pb-20">
       <div className="mx-auto max-w-[var(--container-max)] px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl">
-          <h1 className="mb-8">Accessibility</h1>
+          <h1 className="mb-4">Accessibility</h1>
+          <p className="text-starlight/40 text-sm mb-8">Last updated: March 22, 2026</p>
 
           <div className="space-y-6 text-starlight/70">
             <p>

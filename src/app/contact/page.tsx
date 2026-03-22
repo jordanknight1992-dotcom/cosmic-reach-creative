@@ -6,9 +6,9 @@ import { Icon } from "@/components/Icon";
 import { ContactForm } from "@/components/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Contact | Start the Conversation",
+  title: "Contact Cosmic Reach Creative | Start the Conversation",
   description:
-    "Tell us about your business and where growth feels stuck. We respond within one business day.",
+    "Get in touch with Cosmic Reach Creative. Tell us about your business and where growth feels stuck. We respond within one business day. Based in Memphis, TN — working with founders nationwide.",
   alternates: { canonical: `${siteConfig.domain}/contact` },
 };
 

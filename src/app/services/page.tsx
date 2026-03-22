@@ -3,9 +3,9 @@ import { siteConfig } from "@/config/site";
 import { MarkdownPage } from "@/components/MarkdownPage";
 
 export const metadata: Metadata = {
-  title: "Services | Signal, Gravity, Orbit & Thrust",
+  title: "Services | Marketing Strategy, Messaging & Growth Systems",
   description:
-    "From messaging and positioning to offer design, customer journey optimization, and performance tracking: see how each layer of the Launch Sequence translates into action.",
+    "Cosmic Reach Creative offers marketing strategy services including messaging and positioning, offer design, customer journey optimization, and growth system architecture for founders and growing businesses.",
   alternates: { canonical: `${siteConfig.domain}/services` },
 };
 
@@ -62,5 +62,17 @@ We build the measurement layer that turns activity into decision-ready insight.
 ICON: signal`;
 
 export default function ServicesPage() {
-  return <MarkdownPage content={content} />;
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://cosmicreachcreative.com" },
+          { "@type": "ListItem", position: 2, name: "Services", item: "https://cosmicreachcreative.com/services" },
+        ]
+      })}} />
+      <MarkdownPage content={content} />
+    </>
+  );
 }

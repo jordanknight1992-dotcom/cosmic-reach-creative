@@ -5,9 +5,9 @@ import { siteConfig } from "@/config/site";
 import { bookingTypes, connectTypes } from "@/config/booking";
 
 export const metadata: Metadata = {
-  title: "Connect with Jordan",
+  title: "Book a Call with Jordan Knight | Cosmic Reach Creative",
   description:
-    "Book a time to talk with Jordan Knight, founder of Cosmic Reach Creative. Choose a session length and pick a time that works for you.",
+    "Schedule a conversation with Jordan Knight, founder of Cosmic Reach Creative. Choose a session and pick a time that works. Free Signal Check or paid Business Clarity Session available.",
   alternates: { canonical: `${siteConfig.domain}/connect` },
 };
 
