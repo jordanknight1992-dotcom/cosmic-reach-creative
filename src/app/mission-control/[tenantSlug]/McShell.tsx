@@ -138,20 +138,6 @@ export function McShell({ user, tenant, isImpersonation, children }: McShellProp
 
         {/* Bottom area */}
         <div style={{ padding: "12px 8px", borderTop: "1px solid rgba(232,223,207,0.1)" }}>
-          {/* Plan badge */}
-          {!collapsed && (
-            <div style={{
-              margin: "8px 12px 4px", padding: "4px 8px",
-              background: tenant.plan === "pro" ? "rgba(234,179,8,0.1)" : tenant.plan === "growth" ? "rgba(212,165,116,0.1)" : "rgba(232,223,207,0.05)",
-              color: tenant.plan === "pro" ? "#eab308" : tenant.plan === "growth" ? "#d4a574" : "rgba(232,223,207,0.35)",
-              borderRadius: 6, fontSize: 11, fontWeight: 600, textTransform: "uppercase",
-              letterSpacing: "0.05em", textAlign: "center",
-              fontFamily: 'var(--font-display)',
-            }}>
-              {tenant.plan} plan
-            </div>
-          )}
-
           {/* User + logout */}
           <div style={{
             display: "flex", alignItems: "center", gap: 8,

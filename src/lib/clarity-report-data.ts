@@ -111,7 +111,7 @@ export const implementationPhases = [
     phase: "Weeks 1–2",
     title: "Rewrite Core Messaging",
     actions: [
-      "Rewrite the homepage headline to lead with the scaling pain SaaS leaders experience — not AtlasOps capabilities.",
+      "Rewrite the homepage headline to lead with the scaling pain SaaS leaders experience, not AtlasOps capabilities.",
       "Create a one-sentence positioning statement that names the problem before the solution.",
       "Audit all website pages and replace inward-facing language ('we help', 'we offer') with buyer-facing language ('you're experiencing', 'the result is').",
     ],
@@ -148,7 +148,7 @@ export const implementationPhases = [
 export const sprintRecommendation = {
   name: "60 Day Alignment Sprint",
   reasoning:
-    "AtlasOps has strong expertise and a viable market. The constraint is not strategy — it is the gap between what the business delivers and how the market perceives it. A 30 Day Sprint would address messaging alone, but the offer structure and conversion path need coordinated work to produce measurable results. A 90 Day Sprint is premature until the messaging and offer foundation is solid. The 60 Day Alignment Sprint covers Signal and Gravity together, which is where the highest-leverage compound effect exists for this business.",
+    "AtlasOps has strong expertise and a viable market. The constraint is not strategy. It is the gap between what the business delivers and how the market perceives it. A 30 Day Sprint would address messaging alone, but the offer structure and conversion path need coordinated work to produce measurable results. A 90 Day Sprint is premature until the messaging and offer foundation is solid. The 60 Day Alignment Sprint covers Signal and Gravity together, which is where the highest-leverage compound effect exists for this business.",
   nextStep:
     "Schedule a 30-minute follow-up call to review these findings, confirm scope, and set a start date for the 60 Day Alignment Sprint.",
 };

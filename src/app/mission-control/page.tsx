@@ -154,7 +154,7 @@ export default function MissionControlLanding() {
 
           <div className="text-center mt-8">
             <p className="text-xs text-starlight/30">
-              Includes a guided 90-minute onboarding call. Integrations use your own API keys — you control your costs.
+              Includes a guided 90-minute onboarding call. Integrations use your own API keys, so you control your costs.
             </p>
           </div>
         </div>

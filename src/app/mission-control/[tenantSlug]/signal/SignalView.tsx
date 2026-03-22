@@ -182,7 +182,7 @@ export function SignalView({ tenantSlug, data }: { tenantSlug: string; data: Sig
           {/* Sessions Overlay Chart — current vs previous period */}
           {data.ga4Data.dailySessions.length > 0 && (
             <div style={{ marginBottom: 20 }}>
-              <h3 style={{ fontSize: 13, fontWeight: 600, color: "rgba(232,223,207,0.5)", margin: "0 0 10px 0", fontFamily: 'var(--font-display)' }}>Sessions — Current vs Previous 30 Days</h3>
+              <h3 style={{ fontSize: 13, fontWeight: 600, color: "rgba(232,223,207,0.5)", margin: "0 0 10px 0", fontFamily: 'var(--font-display)' }}>Sessions: Current vs Previous 30 Days</h3>
               <SessionsOverlayChart
                 current={data.ga4Data.dailySessions}
                 previous={data.ga4Data.previousDailySessions}

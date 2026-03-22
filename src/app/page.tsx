@@ -343,8 +343,8 @@ export default function HomePage() {
               Strategy Becomes Daily Action
             </h2>
             <p className="text-starlight/70 text-base" style={{ textWrap: "balance" }}>
-              The operating system that turns your Clarity Audit into daily execution —
-              pipeline visibility, prioritized targets, and AI-powered outreach, all driven by your strategy.
+              The operating system that turns your Clarity Audit into daily execution.
+              Pipeline visibility, prioritized targets, AI-powered outreach, all driven by your strategy.
             </p>
           </div>
 

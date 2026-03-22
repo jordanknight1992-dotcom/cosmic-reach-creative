@@ -226,7 +226,7 @@ export const DEMO_LEADS = [
     fit_score: 83,
     stage: "meeting_requested",
     fit_reason: "E-commerce brand doing $3M/yr. Marketing feels scattered.",
-    pain_point_summary: "Running ads, email, social — none of it connects. No attribution.",
+    pain_point_summary: "Running ads, email, social. None of it connects. No attribution.",
     outreach_angle: "Thrust layer: visibility into what's actually driving revenue.",
     next_action: "Send booking link",
     next_action_at: daysAgo(0),
@@ -283,12 +283,12 @@ export const DEMO_PIPELINE_STATS = [
 
 export const DEMO_ACTIVITIES = [
   { type: "reply_logged", body_preview: "Replied: 'This sounds exactly like what we need. Can we talk this week?'", created_at: daysAgo(1), contact_name: "Marcus Chen", company_name: "Relay Health" },
-  { type: "email_sent", body_preview: "Sent: Personalized outreach — positioning audit for scaling founders", created_at: daysAgo(4), contact_name: "Sarah Kim", company_name: "LearnPath" },
+  { type: "email_sent", body_preview: "Sent: Personalized outreach, positioning audit for scaling founders", created_at: daysAgo(4), contact_name: "Sarah Kim", company_name: "LearnPath" },
   { type: "stage_change", body_preview: "Stage changed: qualified → meeting_booked", created_at: daysAgo(3), contact_name: "Rachel Torres", company_name: "Stackline Analytics" },
   { type: "email_sent", body_preview: "Sent: Follow-up with case study on manufacturing repositioning", created_at: daysAgo(5), contact_name: "Nina Vasquez", company_name: "Clearbridge Consulting" },
   { type: "reply_logged", body_preview: "Replied: 'Interesting but our budget is locked until Q3.'", created_at: daysAgo(10), contact_name: "Alex Rivera", company_name: "NeonGrid" },
   { type: "stage_change", body_preview: "Stage changed: emailed → replied_positive", created_at: daysAgo(1), contact_name: "Marcus Chen", company_name: "Relay Health" },
-  { type: "email_sent", body_preview: "Sent: Intro email — digital pipeline for trade-show-dependent companies", created_at: daysAgo(7), contact_name: "James Whitfield", company_name: "Southern Steel Works" },
+  { type: "email_sent", body_preview: "Sent: Intro email, digital pipeline for trade-show-dependent companies", created_at: daysAgo(7), contact_name: "James Whitfield", company_name: "Southern Steel Works" },
   { type: "stage_change", body_preview: "Stage changed: meeting_requested → meeting_booked", created_at: daysAgo(3), contact_name: "Rachel Torres", company_name: "Stackline Analytics" },
 ];
 
@@ -333,8 +333,8 @@ export const DEMO_GOALS = {
   business_name: "AtlasOps",
   business_description: "Operational consulting for scaling SaaS companies. We help leadership teams improve internal systems, reporting visibility, and cross-functional alignment during periods of rapid growth.",
   target_audience: "SaaS founders and leadership teams at companies doing $1M–$10M ARR struggling with internal coordination, reporting clarity, and scalable processes. They have strong delivery but need operational infrastructure.",
-  brand_voice: "Authoritative, structured, clear. We bring order to operational chaos. No buzzwords — just systems thinking applied to real scaling problems.",
-  key_offers: "Operational Audit ($2,500) — 2-week diagnostic with systems map and recommendations. 60-Day Alignment Sprint ($12,000) — full operational overhaul. Ongoing Advisory ($3,500/mo) — fractional COO support.",
+  brand_voice: "Authoritative, structured, clear. We bring order to operational chaos. No buzzwords. Just systems thinking applied to real scaling problems.",
+  key_offers: "Operational Audit ($2,500): 2-week diagnostic with systems map and recommendations. 60-Day Alignment Sprint ($12,000): full operational overhaul. Ongoing Advisory ($3,500/mo): fractional COO support.",
   goals: [
     { label: "Pipeline", description: "Build a repeatable pipeline that generates 6-10 qualified SaaS leads per month" },
     { label: "Positioning", description: "Establish AtlasOps as the go-to operational consulting firm for scaling SaaS companies" },

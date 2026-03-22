@@ -227,7 +227,7 @@ export function SettingsView({ tenantSlug, tenant, user, connectedProviders, pro
             <div>
               <div style={{ fontSize: 14, fontWeight: 600, color: "#e8dfcf" }}>Two-Factor Authentication</div>
               <div style={{ fontSize: 12, color: "rgba(232,223,207,0.35)", marginTop: 2 }}>
-                {user.totp_enabled ? "Enabled — your account is protected with an authenticator app" : "Add an extra layer of security with Google Authenticator or Authy"}
+                {user.totp_enabled ? "Enabled. Your account is protected with an authenticator app" : "Add an extra layer of security with Google Authenticator or Authy"}
               </div>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -404,7 +404,7 @@ export function SettingsView({ tenantSlug, tenant, user, connectedProviders, pro
                       onClick={() => saveCredential(int.key)}
                       disabled={saving === int.key}
                       style={{
-                        background: "#e04747", color: "#fff", border: "none",
+                        background: "#d4a574", color: "#1a1f2e", border: "none",
                         borderRadius: 6, padding: "6px 12px", fontSize: 12,
                         fontWeight: 600, cursor: "pointer", fontFamily: 'var(--font-display)',
                       }}

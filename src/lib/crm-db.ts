@@ -853,7 +853,7 @@ export async function seedTestData() {
     pain_point_summary:
       "Losing RFPs to flashier competitors despite better track record.",
     outreach_angle:
-      "Position rebrand as a revenue unlock — tie brand perception to win rate on proposals.",
+      "Position rebrand as a revenue unlock. Tie brand perception to win rate on proposals.",
     stage: "candidate",
     next_action: "Research recent RFP wins/losses",
   });
@@ -904,11 +904,11 @@ export async function seedTestData() {
     subject: "Quick thought on the Mainspring launch",
     body_text: `Hi Aisha,
 
-Congrats on the seed round — exciting times at Mainspring Health Tech.
+Congrats on the seed round. Exciting times at Mainspring Health Tech.
 
 I noticed you're gearing up for a product launch but don't have a dedicated brand/design person on the team yet. That's actually really common at your stage.
 
-I run Cosmic Reach Creative here in Memphis — we do brand identity and web design specifically for founders who need to look credible fast. We recently helped a local SaaS company go from zero brand to investor-ready in 3 weeks.
+I run Cosmic Reach Creative here in Memphis. We do brand identity and web design specifically for founders who need to look credible fast. We recently helped a local SaaS company go from zero brand to investor-ready in 3 weeks.
 
 Would a 15-minute call make sense to see if we could support your Q2 launch?
 
@@ -953,7 +953,7 @@ Jordan`,
     pain_point_summary:
       "Small marketing team overwhelmed with seasonal campaigns. Inconsistent brand across channels.",
     outreach_angle:
-      "Pitch fractional creative director model — brand consistency without a full-time hire.",
+      "Pitch fractional creative director model. Brand consistency without a full-time hire.",
     stage: "emailed",
     next_action: "Follow up in 5 days if no reply",
   });
@@ -1003,7 +1003,7 @@ Jordan`,
     company_id: c5.id as number,
     type: "reply_logged",
     body_preview:
-      "Karen replied: 'This is great timing — we've been talking about a rebrand. Let's connect.'",
+      "Karen replied: 'This is great timing. We've been talking about a rebrand. Let's connect.'",
   });
 
   // --- Company 6: Suppressed lead (tests red UI) ---
@@ -1033,8 +1033,8 @@ Jordan`,
     company_id: c6.id as number,
     contact_id: ct6.id as number,
     fit_score: 45,
-    fit_reason: "Low fit — logistics company with minimal brand needs.",
-    pain_point_summary: "N/A — contact opted out before discovery.",
+    fit_reason: "Low fit. Logistics company with minimal brand needs.",
+    pain_point_summary: "N/A. Contact opted out before discovery.",
     outreach_angle: "N/A",
     stage: "candidate",
   });
