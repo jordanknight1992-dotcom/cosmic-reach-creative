@@ -11,7 +11,7 @@ export const metadata: Metadata = {
   alternates: { canonical: `${siteConfig.domain}/faq` },
 };
 
-const faqs = [
+const faqs: { question: string; answer: string; signals?: string[]; closing?: string }[] = [
   {
     question: "What is a Business Clarity Audit?",
     answer:
@@ -23,19 +23,29 @@ const faqs = [
       "Most Business Clarity Audits are completed within 3–5 business days after the intake form is submitted. You’ll receive a scored report covering all four layers of the Launch Sequence, with prioritized recommendations you can act on immediately.",
   },
   {
-    question: "Is the audit just advice?",
+    question: "What are Implementation Sprints?",
     answer:
-      "No. The audit identifies the structural issues slowing growth and delivers a prioritized roadmap for improvement.\n\nSome teams implement the recommendations internally. Others move into Sprints where Cosmic Reach helps rebuild the underlying structure. Either way, the audit gives you immediate direction on what to address first.",
+      "Sprints are fixed-scope engagements that build the architecture identified in your Clarity Audit. There are three tiers:\n\nDirection Sprint ($2,000) — Messaging and offer design. The foundation that determines whether attention converts.\n\nAlignment Sprint ($4,000) — Customer journey mapping, marketing workflows, and infrastructure that moves prospects from awareness to close.\n\nExecution Sprint ($6,000) — Complete system build across all four forces, with dashboards that make performance visible and self-correcting.",
   },
   {
-    question: "Is this marketing consulting?",
+    question: "What is Mission Control?",
     answer:
-      "Not exactly. Marketing issues often surface first, but the real constraint is usually in the structure beneath them. Messaging, offer design, the customer journey, and performance visibility all interact as connected forces.\n\nCosmic Reach diagnoses which force is weakest and identifies what to address first.",
+      "Mission Control is the daily operating system for founders who want pipeline clarity, daily targets, and one clear next move. It includes a daily briefing, operational CRM, AI-powered email drafts in your voice, lead generation with ICP scoring, GA4 analytics, meeting scheduling, and Google Calendar sync.\n\nIt’s $299/month with guided onboarding included. You bring your own API keys so you control your costs.",
+  },
+  {
+    question: "What is the Flight Support Retainer?",
+    answer:
+      "Flight Support ($750/month) is ongoing advisory to maintain the systems built during a Sprint, prevent operational drift, and recalibrate as your business evolves. It’s designed for founders who want a strategic partner keeping the architecture sharp after implementation.",
   },
   {
     question: "Do I need a Sprint after the Business Clarity Audit?",
     answer:
       "No. Many teams use the audit alone and implement the roadmap internally.\n\nIf deeper support is needed, implementation happens through structured Sprints designed to fix the highest-impact issues identified in the audit. You decide whether to move forward after the audit.",
+  },
+  {
+    question: "Is this marketing consulting?",
+    answer:
+      "Not exactly. Marketing issues often surface first, but the real constraint is usually in the structure beneath them. Messaging, offer design, the customer journey, and performance visibility all interact as connected forces.\n\nCosmic Reach diagnoses which force is weakest and identifies what to address first.",
   },
   {
     question: "Who is this best for?",
@@ -51,12 +61,17 @@ const faqs = [
       "If those patterns sound familiar, the Business Clarity Audit is designed to diagnose exactly why.",
   },
   {
-    question: "Where is Cosmic Reach Creative located?",
+    question: "Can I use Mission Control without doing an audit or sprint?",
     answer:
-      "Cosmic Reach Creative is headquartered in Memphis, Tennessee. We work with founders and growing businesses nationwide through remote engagements including structured audits, strategy sprints, and ongoing advisory retainers.",
+      "Yes. Mission Control is a standalone product. It works best when paired with a Clarity Audit so the system is configured around real strategic priorities, but it’s fully functional on its own from day one.",
   },
   {
-    question: "What's the difference between a marketing consultant and a marketing agency?",
+    question: "Where is Cosmic Reach Creative located?",
+    answer:
+      "Cosmic Reach Creative is headquartered in Memphis, Tennessee. We work with founders and growing businesses nationwide through remote engagements including structured audits, strategy sprints, ongoing advisory, and Mission Control.",
+  },
+  {
+    question: "What’s the difference between a marketing consultant and a marketing agency?",
     answer:
       "A marketing agency typically executes tactics: running ads, managing social media, creating content. A marketing consultant, like Cosmic Reach Creative, works at the strategic level, designing the systems and architecture that make those tactics effective.\n\nWe focus on messaging clarity, offer design, customer journey optimization, and growth visibility. The goal is to build the foundation that makes every marketing dollar and effort more productive.",
   },
@@ -155,7 +170,7 @@ export default function FAQPage() {
               <span className="text-starlight/20 hidden sm:inline">|</span>
               <Link
                 href="/pricing"
-                className="inline-flex items-center justify-center rounded-[var(--radius-md)] bg-spark-red text-white px-5 py-2.5 text-sm font-display font-semibold transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center rounded-[var(--radius-md)] bg-copper text-deep-space px-5 py-2.5 text-sm font-display font-semibold transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5"
               >
                 Start the Clarity Audit
               </Link>

@@ -194,42 +194,50 @@ export default function PricingPage() {
               Once the audit identifies the constraint, a Sprint installs the architecture. Each tier is scoped to a specific layer of the Launch Sequence, with a defined outcome and a fixed engagement.
             </p>
           </div>
-          <div className="grid gap-4 sm:grid-cols-3 max-w-4xl mx-auto">
+          <div className="grid gap-4 sm:grid-cols-3 max-w-4xl mx-auto" style={{ gridTemplateRows: "subgrid" }}>
             {sprintTiers.map((tier) => (
               <article
                 key={tier.name}
-                className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-5 flex flex-col transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/30 hover:shadow-subtle"
+                className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-5 grid transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/30 hover:shadow-subtle"
+                style={{ gridTemplateRows: "subgrid", gridRow: "span 7" }}
               >
-                <Icon name={tier.icon} size={24} className="mb-3 opacity-70" />
-                <h3 className="font-display font-semibold text-base mb-1">
-                  {tier.name}
-                </h3>
-                <p className="text-copper font-display font-semibold text-xl mb-3">
+                {/* Row 1: Icon + Title */}
+                <div>
+                  <Icon name={tier.icon} size={24} className="mb-3 opacity-70" />
+                  <h3 className="font-display font-semibold text-base">
+                    {tier.name}
+                  </h3>
+                </div>
+                {/* Row 2: Price */}
+                <p className="text-copper font-display font-semibold text-xl">
                   {tier.price}
                 </p>
-                <p className="text-sm text-starlight/60 mb-4 min-h-[5.5rem]">
+                {/* Row 3: Description */}
+                <p className="text-sm text-starlight/60">
                   {tier.description}
                 </p>
-                <div>
-                  <p className="text-xs font-display font-medium tracking-wide text-starlight/50 uppercase mb-2">
-                    Framework coverage
-                  </p>
-                  <ul className="space-y-1 min-h-[5.5rem]">
-                    {tier.coverage.map((item) => (
-                      <li key={item} className="flex items-center gap-2 text-xs text-starlight/60">
-                        <span className="text-copper text-[8px]" aria-hidden="true">&#9670;</span>
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                {/* Row 4: Framework Coverage Header */}
+                <p className="text-xs font-display font-medium tracking-wide text-starlight/50 uppercase self-end">
+                  Framework coverage
+                </p>
+                {/* Row 5: Coverage List */}
+                <ul className="space-y-1">
+                  {tier.coverage.map((item) => (
+                    <li key={item} className="flex items-center gap-2 text-xs text-starlight/60">
+                      <span className="text-copper text-[8px]" aria-hidden="true">&#9670;</span>
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+                {/* Row 6: Outcome */}
                 <div className="pt-2 border-t border-starlight/8">
                   <p className="text-xs font-display font-medium tracking-wide text-starlight/50 uppercase mb-1">
                     Outcome
                   </p>
-                  <p className="text-xs text-copper/80 min-h-[2rem]">{tier.outcome}</p>
+                  <p className="text-xs text-copper/80">{tier.outcome}</p>
                 </div>
-                <div className="pt-4">
+                {/* Row 7: Button */}
+                <div className="pt-2 self-end">
                   <StripeBuyButton buyButtonId={tier.buyButtonId} label={`Start ${tier.name}`} />
                 </div>
               </article>

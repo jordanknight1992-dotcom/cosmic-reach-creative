@@ -3,7 +3,7 @@ import Script from "next/script";
 import { siteConfig } from "@/config/site";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { FloatingCTA } from "@/components/FloatingCTA";
+
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
         url: "/images/og-preview.png",
         width: 1200,
         height: 627,
-        alt: "Cosmic Reach Creative — Marketing Strategy & Growth Systems for Founders",
+        alt: "Cosmic Reach Creative: Marketing Strategy & Growth Systems for Founders",
       },
     ],
   },
@@ -165,7 +165,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
-        <FloatingCTA />
+
 
         {/* GA4 */}
         <Script

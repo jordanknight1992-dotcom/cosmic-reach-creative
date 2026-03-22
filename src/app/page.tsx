@@ -371,7 +371,7 @@ export default function HomePage() {
           <div className="text-center">
             <Link
               href="/mission-control"
-              className="inline-flex items-center justify-center rounded-[var(--radius-md)] px-6 py-3 font-display font-semibold text-base bg-spark-red text-white transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0"
+              className="inline-flex items-center justify-center rounded-[var(--radius-md)] px-6 py-3 font-display font-semibold text-base bg-copper text-deep-space transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0"
             >
               Explore Mission Control
             </Link>

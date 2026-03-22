@@ -52,31 +52,38 @@ const engagementPath = [
     isEntry: true,
   },
   {
-    name: "30 Day Direction Sprint",
-    price: "$1,000",
+    name: "Direction Sprint",
+    price: "$2,000",
     description:
-      "A focused engagement that addresses the highest-impact issues from the Audit: messaging, positioning, and conversion flow.",
+      "Signal and Gravity. Messaging architecture and offer design: the foundation that determines whether attention converts.",
     isEntry: false,
   },
   {
-    name: "60 Day Alignment Sprint",
-    price: "$2,000",
+    name: "Alignment Sprint",
+    price: "$4,000",
     description:
       "Messaging, offer design, and the customer journey aligned into one coordinated system, so every piece reinforces the rest.",
     isEntry: false,
   },
   {
-    name: "90 Day Systems Sprint",
-    price: "$3,000",
+    name: "Execution Sprint",
+    price: "$6,000",
     description:
       "The full build. Brand messaging, marketing systems, and performance tracking installed end to end.",
     isEntry: false,
   },
   {
-    name: "Flight Support Advisory",
+    name: "Mission Control",
+    price: "$299 / mo",
+    description:
+      "The daily operating system for founders who want pipeline clarity, daily targets, and one clear next move, all in one place.",
+    isEntry: false,
+  },
+  {
+    name: "Flight Support Retainer",
     price: "$750 / mo",
     description:
-      "Ongoing advisory to refine positioning, strengthen offers, and optimize systems as the business evolves.",
+      "Ongoing advisory to maintain the system, prevent operational drift, and recalibrate as the business evolves.",
     isEntry: false,
   },
 ];
@@ -265,7 +272,7 @@ export default function HowItWorksPage() {
               <Icon name="document" size={36} className="opacity-80 mx-auto" />
             </div>
             <h2 id="example-report-heading" className="mb-3 text-navy">
-              What You Receive
+              What You Receive: Business Clarity Audit
             </h2>
             <p className="text-navy/70 text-base mb-6">
               The audit delivers a written report with scored analysis across

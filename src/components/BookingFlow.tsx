@@ -535,7 +535,7 @@ function DetailsForm({
           disabled={submitting || !name || !email}
           className="w-full inline-flex items-center justify-center rounded-[var(--radius-md)] px-6 py-3
             font-display font-semibold text-base text-white
-            bg-spark-red hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0
+            bg-copper text-deep-space hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0
             transition-all duration-[var(--duration-base)] ease-[var(--ease-out)]
             disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
         >
@@ -656,14 +656,14 @@ function Confirmation({
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center gap-2 rounded-[var(--radius-md)] px-8 py-3
               font-display font-semibold text-base text-white
-              bg-spark-red hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0
+              bg-copper text-deep-space hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0
               transition-all duration-[var(--duration-base)] ease-[var(--ease-out)]"
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path d="M21 4H3a2 2 0 00-2 2v12a2 2 0 002 2h18a2 2 0 002-2V6a2 2 0 00-2-2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M1 10h22" stroke="currentColor" strokeWidth="2"/>
             </svg>
-            Complete Payment — ${(priceCents / 100).toFixed(0)}
+            Complete Payment: ${(priceCents / 100).toFixed(0)}
           </a>
           <p className="text-starlight/40 text-xs mt-3">
             Secure payment powered by Stripe
