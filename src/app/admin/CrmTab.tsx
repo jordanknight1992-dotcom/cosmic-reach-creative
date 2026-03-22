@@ -1901,7 +1901,6 @@ export function CrmTab() {
   const [addOpen, setAddOpen] = useState(false);
 
   // Seeding
-  const [seeding, setSeeding] = useState(false);
 
   // Track suppressed companies for red highlighting in the table
   const suppressedCompanyIds = new Set(
@@ -1977,18 +1976,6 @@ export function CrmTab() {
     fetchLeads();
   }, [fetchStats, fetchLeads]);
 
-  async function seedData() {
-    setSeeding(true);
-    try {
-      const res = await fetch("/api/admin/crm/seed", { method: "POST" });
-      if (!res.ok) throw new Error("Seed failed");
-      handleMutated();
-    } catch {
-      setError("Failed to seed data");
-    } finally {
-      setSeeding(false);
-    }
-  }
 
   function toggleSort(col: "fit_score" | "last_contacted_at") {
     if (sortBy === col) {
@@ -2073,22 +2060,14 @@ export function CrmTab() {
         </div>
       )}
 
-      {/* Seed Data Button */}
+      {/* Empty state */}
       {!loading && totalLeads === 0 && (
         <div
           className="flex flex-col items-center gap-3 py-12 rounded-lg"
           style={{ backgroundColor: T.card, border: `1px solid ${T.border}` }}
         >
-          <div className="text-sm" style={{ color: T.muted }}>No leads in the pipeline yet.</div>
-          <button
-            onClick={seedData}
-            disabled={seeding}
-            className="px-6 py-3 rounded-lg text-sm font-semibold flex items-center gap-2"
-            style={{ backgroundColor: T.copper, color: T.page, ...FONT_HEADING }}
-          >
-            {seeding && <Spinner size={16} />}
-            Seed Test Data
-          </button>
+          <div className="text-sm" style={{ color: T.muted, ...FONT_HEADING }}>No leads in the pipeline yet.</div>
+          <div className="text-xs" style={{ color: T.faint }}>Use Generate Daily Leads or Prospect Search above to get started.</div>
         </div>
       )}
 
