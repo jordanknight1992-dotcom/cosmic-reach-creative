@@ -630,6 +630,149 @@ function EmailPreviewModal({
   );
 }
 
+/* ─────────────────────────── Generate Daily Leads ─────────────────────── */
+
+function GenerateLeadsButton({ onGenerated }: { onGenerated: () => void }) {
+  const [generating, setGenerating] = useState(false);
+  const [result, setResult] = useState<{
+    imported: number;
+    skipped: number;
+    leads: { name: string; company: string; score: number }[];
+    skippedDetails: { name: string; reason: string }[];
+    errors: string[];
+  } | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [showDetails, setShowDetails] = useState(false);
+
+  async function generate() {
+    setGenerating(true);
+    setError(null);
+    setResult(null);
+    try {
+      const res = await fetch("/api/admin/crm/generate-leads", { method: "POST" });
+      const data = await res.json();
+      if (data.error) {
+        setError(data.error);
+        return;
+      }
+      setResult(data);
+      if (data.imported > 0) onGenerated();
+    } catch {
+      setError("Failed to generate leads");
+    } finally {
+      setGenerating(false);
+    }
+  }
+
+  return (
+    <div
+      className="rounded-lg overflow-hidden"
+      style={{ backgroundColor: T.card, border: `1px solid ${T.border}` }}
+    >
+      <div className="flex items-center justify-between px-4 py-3">
+        <div className="flex items-center gap-3">
+          <div className="text-xs font-medium" style={{ color: T.copper, ...FONT_HEADING }}>
+            AI Lead Generation
+          </div>
+          <span className="text-xs" style={{ color: T.muted }}>
+            Auto-finds and scores 25 leads matching your ICP
+          </span>
+        </div>
+        <button
+          onClick={generate}
+          disabled={generating}
+          className="px-4 py-1.5 rounded-lg text-sm font-medium flex items-center gap-2"
+          style={{
+            backgroundColor: generating ? T.faint : T.copper,
+            color: generating ? T.muted : T.page,
+            opacity: generating ? 0.7 : 1,
+            ...FONT_HEADING,
+          }}
+        >
+          {generating ? <Spinner size={14} /> : (
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path d="M2 17l10 5 10-5"/>
+              <path d="M2 12l10 5 10-5"/>
+            </svg>
+          )}
+          {generating ? "Generating..." : "Generate Daily Leads"}
+        </button>
+      </div>
+
+      {error && (
+        <div className="px-4 pb-3">
+          <div className="text-xs rounded-lg px-3 py-2" style={{ color: T.red, backgroundColor: "rgba(224,71,71,0.1)" }}>
+            {error}
+          </div>
+        </div>
+      )}
+
+      {result && (
+        <div className="px-4 pb-3">
+          <div className="rounded-lg px-3 py-2.5" style={{ backgroundColor: T.page, border: `1px solid ${T.border}` }}>
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-sm font-medium" style={{ color: T.starlight, ...FONT_HEADING }}>
+                {result.imported > 0 ? `✓ ${result.imported} leads imported` : "No new leads found"}
+              </div>
+              <button
+                onClick={() => setShowDetails((d) => !d)}
+                className="text-xs"
+                style={{ color: T.muted }}
+              >
+                {showDetails ? "▲ Hide" : "▼ Details"}
+              </button>
+            </div>
+            {result.imported > 0 && !showDetails && (
+              <div className="text-xs" style={{ color: T.muted }}>
+                {result.skipped} skipped (duplicates/low score) · {result.errors.length} errors
+              </div>
+            )}
+            {showDetails && (
+              <div className="mt-2 flex flex-col gap-1 max-h-48 overflow-auto">
+                {result.leads.map((l, i) => (
+                  <div key={i} className="flex items-center justify-between text-xs py-0.5">
+                    <span style={{ color: T.starlight }}>{l.name} <span style={{ color: T.muted }}>at {l.company}</span></span>
+                    <span
+                      className="px-1.5 py-0.5 rounded"
+                      style={{
+                        backgroundColor: l.score >= 70 ? "rgba(77,184,113,0.15)" : l.score >= 40 ? "rgba(212,165,116,0.15)" : "rgba(224,71,71,0.15)",
+                        color: l.score >= 70 ? T.green : l.score >= 40 ? T.copper : T.red,
+                        ...FONT_HEADING,
+                      }}
+                    >
+                      {l.score}
+                    </span>
+                  </div>
+                ))}
+                {result.skippedDetails.length > 0 && (
+                  <details className="mt-1">
+                    <summary className="text-xs cursor-pointer" style={{ color: T.muted }}>
+                      {result.skippedDetails.length} skipped
+                    </summary>
+                    {result.skippedDetails.map((s, i) => (
+                      <div key={i} className="text-xs py-0.5 pl-2" style={{ color: T.faint }}>
+                        {s.name}: {s.reason}
+                      </div>
+                    ))}
+                  </details>
+                )}
+                {result.errors.length > 0 && (
+                  <div className="mt-1">
+                    {result.errors.map((e, i) => (
+                      <div key={i} className="text-xs" style={{ color: T.red }}>{e}</div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 /* ─────────────────────────── Apollo Search Section (Top-Level) ─────────────────────── */
 
 function ApolloSearchBar({ onImported }: { onImported: () => void }) {
@@ -1868,7 +2011,10 @@ export function CrmTab() {
       {/* KPI Bar */}
       <KpiBar stats={stats} />
 
-      {/* Prospect Search Search */}
+      {/* Generate Daily Leads */}
+      <GenerateLeadsButton onGenerated={handleMutated} />
+
+      {/* Prospect Search */}
       <ApolloSearchBar onImported={handleMutated} />
 
       {/* Filter Bar */}
