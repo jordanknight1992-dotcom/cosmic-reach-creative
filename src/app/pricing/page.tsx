@@ -3,11 +3,12 @@ import { siteConfig } from "@/config/site";
 import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
+import { StripeBuyButton } from "@/components/StripeBuyButton";
 
 export const metadata: Metadata = {
   title: "Pricing | Business Clarity Audit & Strategy Sprints",
   description:
-    "Start with a $150 Business Clarity Audit. Implementation Sprints from $2,000-$6,000. Ongoing advisory at $750/month. Structured engagements with fixed outcomes for founders and growing businesses.",
+    "Start with a $150 Business Clarity Audit. Implementation Sprints from $2,000-$6,000. Ongoing advisory at $750/month. Mission Control at $299/month. Structured engagements with fixed outcomes for founders and growing businesses.",
   alternates: { canonical: `${siteConfig.domain}/pricing` },
 };
 
@@ -20,6 +21,7 @@ const sprintTiers = [
     icon: "compass",
     coverage: ["Signal", "Gravity"],
     outcome: "Messaging and offer architecture blueprint.",
+    buyButtonId: "buy_btn_1TDtS80vGBLnj72k4YEwjj3R",
   },
   {
     name: "Alignment Sprint",
@@ -29,6 +31,7 @@ const sprintTiers = [
     icon: "orbit",
     coverage: ["Signal", "Gravity", "Orbit"],
     outcome: "Operational workflows and marketing infrastructure installed.",
+    buyButtonId: "buy_btn_1TDtU50vGBLnj72ksYLVCc2v",
   },
   {
     name: "Execution Sprint",
@@ -38,6 +41,7 @@ const sprintTiers = [
     icon: "gears",
     coverage: ["Signal", "Gravity", "Orbit", "Thrust"],
     outcome: "Complete system build plus Thrust dashboards.",
+    buyButtonId: "buy_btn_1TDtXV0vGBLnj72kMJCDBceX",
   },
 ];
 
@@ -51,7 +55,7 @@ const advisoryTier = {
 
 const missionControlTier = {
   name: "Mission Control",
-  price: "From $149/mo",
+  price: "$299/mo",
   description:
     "The daily operating system for founders who want pipeline clarity, daily targets, and one clear next move, all in one place.",
   icon: "compass",
@@ -135,12 +139,7 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <a
-                href={siteConfig.signalCheckUrl}
-                className="w-full inline-flex items-center justify-center rounded-[var(--radius-md)] bg-spark-red text-white px-6 py-3 font-display font-semibold text-base transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0"
-              >
-                Book a Call to Get Started
-              </a>
+              <StripeBuyButton buyButtonId="buy_btn_1TDtGA0vGBLnj72kaNhC423Y" />
               <p className="mt-3 text-center text-xs text-starlight/60">
                 3&ndash;5 day turnaround &middot; Structured clarity report included
               </p>
@@ -211,7 +210,7 @@ export default function PricingPage() {
                 <p className="text-sm text-starlight/60 mb-4 flex-1">
                   {tier.description}
                 </p>
-                <div className="space-y-3">
+                <div className="space-y-3 flex-1">
                   <div>
                     <p className="text-xs font-display font-medium tracking-wide text-starlight/50 uppercase mb-2">
                       Framework coverage
@@ -231,6 +230,9 @@ export default function PricingPage() {
                     </p>
                     <p className="text-xs text-copper/80">{tier.outcome}</p>
                   </div>
+                </div>
+                <div className="mt-4">
+                  <StripeBuyButton buyButtonId={tier.buyButtonId} />
                 </div>
               </article>
             ))}
@@ -255,9 +257,12 @@ export default function PricingPage() {
                 </div>
                 <p className="text-sm text-starlight/60">{advisoryTier.description}</p>
               </div>
-              <p className="text-copper font-display font-semibold text-xl shrink-0">
-                {advisoryTier.price}
-              </p>
+              <div className="shrink-0 flex flex-col items-end gap-2">
+                <p className="text-copper font-display font-semibold text-xl">
+                  {advisoryTier.price}
+                </p>
+                <StripeBuyButton buyButtonId="buy_btn_1TDtJg0vGBLnj72k4vWaSa7F" />
+              </div>
             </article>
           </div>
         </div>
@@ -284,11 +289,12 @@ export default function PricingPage() {
                 <p className="text-copper font-display font-semibold text-xl">
                   {missionControlTier.price}
                 </p>
+                <StripeBuyButton buyButtonId="buy_btn_1TDtF70vGBLnj72k5a2Q3awc" />
                 <Link
                   href="/mission-control"
-                  className="inline-flex items-center rounded-[var(--radius-sm)] border border-copper/30 bg-copper/10 text-copper px-4 py-1.5 text-xs font-display font-semibold transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/50 hover:bg-copper/15"
+                  className="inline-flex items-center rounded-[var(--radius-sm)] text-starlight/50 hover:text-copper px-4 py-1 text-xs font-display transition-colors"
                 >
-                  Try the Demo →
+                  Try the demo first →
                 </Link>
               </div>
             </article>
