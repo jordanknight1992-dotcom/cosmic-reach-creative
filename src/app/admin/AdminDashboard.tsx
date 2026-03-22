@@ -2,7 +2,7 @@
 
 import { useState, useTransition, useCallback, useRef } from "react";
 import { setStatus, setNotes } from "./actions";
-import type { GA4Metrics } from "@/lib/ga4";
+import type { GA4Metrics, GA4DailyPoint } from "@/lib/ga4";
 import { CrmTab } from "./CrmTab";
 
 /* ─────────────────────────── Types ─────────────────────────── */
@@ -201,6 +201,567 @@ function MiniBarChart({
         );
       })}
     </div>
+  );
+}
+
+/* ─────────────────────────── GA4 Dashboard ─────────────────── */
+
+// SiteChecker-inspired source colors for multi-line chart
+const SOURCE_COLORS = [
+  "#3b82f6", "#d4a574", "#22c55e", "#ef4444", "#a78bfa",
+  "#f59e0b", "#06b6d4", "#ec4899", "#84cc16", "#6366f1",
+];
+
+function GA4Dashboard({ ga4 }: { ga4: GA4Metrics }) {
+  const [chartMetric, setChartMetric] = useState<"sessions" | "pageViews">("sessions");
+  const [showPrevious, setShowPrevious] = useState(true);
+  const [activeKPI, setActiveKPI] = useState<string | null>(null);
+
+  const fmtDuration = (s: number) => {
+    if (s < 60) return `${Math.round(s)}s`;
+    const m = Math.floor(s / 60);
+    const sec = Math.round(s % 60);
+    return sec > 0 ? `${m}m ${sec}s` : `${m}m`;
+  };
+
+  const fmtDurationLong = (s: number) => {
+    const m = Math.floor(s / 60);
+    const sec = Math.round(s % 60);
+    return `${String(m).padStart(2, "0")}:${String(sec).padStart(2, "0")}`;
+  };
+
+  // Clean white container style
+  const P = {
+    bg: "#ffffff",
+    bgAlt: "#f8f9fb",
+    border: "#e5e7eb",
+    borderLight: "#f0f1f3",
+    header: "#111827",
+    sub: "#6b7280",
+    value: "#111827",
+    accent: "#d4a574",
+    blue: "#3b82f6",
+    green: "#22c55e",
+    red: "#ef4444",
+    orange: "#f59e0b",
+  };
+
+  const panelStyle: React.CSSProperties = {
+    backgroundColor: P.bg,
+    borderRadius: 12,
+    border: `1px solid ${P.border}`,
+  };
+
+  const comp = ga4.comparison;
+
+  // KPI card definitions — SiteChecker style with current + previous values
+  const kpiCards = [
+    {
+      key: "sessions",
+      label: "Sessions",
+      current: ga4.sessions30d.toLocaleString(),
+      previous: comp.sessions.previous.toLocaleString(),
+      change: comp.sessions.changePercent,
+      color: P.blue,
+      invert: false,
+    },
+    {
+      key: "pageViews",
+      label: "Page Views",
+      current: ga4.pageViews30d.toLocaleString(),
+      previous: comp.pageViews.previous.toLocaleString(),
+      change: comp.pageViews.changePercent,
+      color: P.green,
+      invert: false,
+    },
+    {
+      key: "bounceRate",
+      label: "Bounce Rate",
+      current: `${ga4.bounceRate30d.toFixed(1)}%`,
+      previous: `${comp.bounceRate.previous.toFixed(1)}%`,
+      change: comp.bounceRate.changePercent,
+      color: P.orange,
+      invert: true, // lower is better
+    },
+    {
+      key: "avgDuration",
+      label: "Av. Sess. Duration",
+      current: fmtDurationLong(ga4.avgSessionDuration30d),
+      previous: fmtDurationLong(comp.avgDuration.previous),
+      change: comp.avgDuration.changePercent,
+      color: "#8b5cf6",
+      invert: false,
+    },
+    {
+      key: "engagement",
+      label: "Engagement Rate",
+      current: `${ga4.engagementRate30d.toFixed(1)}%`,
+      previous: comp.engagement.previous > 0 ? `${comp.engagement.previous.toFixed(1)}%` : "—",
+      change: comp.engagement.changePercent,
+      color: "#06b6d4",
+      invert: false,
+    },
+    {
+      key: "newUsers",
+      label: "New Users",
+      current: ga4.newUsers30d.toLocaleString(),
+      previous: comp.newUsers.previous.toLocaleString(),
+      change: comp.newUsers.changePercent,
+      color: P.accent,
+      invert: false,
+    },
+  ];
+
+  return (
+    <div className="space-y-4">
+      {/* ─── KPI Cards Row (SiteChecker style) ─── */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+        {kpiCards.map((kpi) => {
+          const isUp = kpi.change > 0;
+          const isGood = kpi.invert ? !isUp : isUp;
+          const isActive = activeKPI === kpi.key;
+          return (
+            <button
+              key={kpi.key}
+              onClick={() => setActiveKPI(isActive ? null : kpi.key)}
+              className="text-left rounded-xl p-4 transition-all"
+              style={{
+                backgroundColor: P.bg,
+                border: `${isActive ? 2 : 1}px solid ${isActive ? kpi.color : P.border}`,
+                borderRadius: 12,
+              }}
+            >
+              {/* Color indicator + label */}
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: kpi.color }} />
+                <span className="text-[10px] font-semibold tracking-wide uppercase" style={{ color: P.sub }}>
+                  {kpi.label}
+                </span>
+              </div>
+              {/* Current value + change */}
+              <div className="flex items-baseline gap-2">
+                <span className="text-lg font-bold" style={{ ...FONT_HEADING, color: P.value }}>
+                  {kpi.current}
+                </span>
+                {Math.abs(kpi.change) >= 0.5 && (
+                  <span className="text-[11px] font-semibold" style={{ color: isGood ? P.green : P.red }}>
+                    {isUp ? "+" : ""}{kpi.change.toFixed(1)}%
+                  </span>
+                )}
+              </div>
+              {/* Previous period value */}
+              <div className="mt-1">
+                <span className="text-[10px]" style={{ color: P.sub }}>
+                  prev: {kpi.previous}
+                </span>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* ─── Main Chart: Current vs Previous Period (SiteChecker dual-line) ─── */}
+      {ga4.dailySessions.length > 0 && (
+        <div className="rounded-xl p-5" style={panelStyle}>
+          <div className="flex items-center justify-between mb-1">
+            <div className="flex items-center gap-4">
+              <p className="text-sm font-semibold" style={{ ...FONT_HEADING, color: P.header }}>
+                Traffic Overview
+              </p>
+            </div>
+            <div className="flex items-center gap-3">
+              {/* Previous period toggle */}
+              <label className="flex items-center gap-1.5 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={showPrevious}
+                  onChange={(e) => setShowPrevious(e.target.checked)}
+                  className="w-3 h-3 rounded accent-blue-500"
+                />
+                <span className="text-[10px]" style={{ color: P.sub }}>Compare previous</span>
+              </label>
+              {/* Metric toggle */}
+              <div className="flex rounded-lg overflow-hidden" style={{ border: `1px solid ${P.border}` }}>
+                {(["sessions", "pageViews"] as const).map((m) => (
+                  <button
+                    key={m}
+                    onClick={() => setChartMetric(m)}
+                    className="px-3 py-1 text-[11px] font-medium transition-all"
+                    style={{
+                      backgroundColor: chartMetric === m ? P.header : P.bg,
+                      color: chartMetric === m ? "#fff" : P.sub,
+                    }}
+                  >
+                    {m === "sessions" ? "Sessions" : "Page Views"}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Chart legend */}
+          <div className="flex items-center gap-4 mb-3">
+            <div className="flex items-center gap-1.5">
+              <div className="w-4 h-0.5 rounded" style={{ backgroundColor: P.blue }} />
+              <span className="text-[10px]" style={{ color: P.sub }}>Last 30 days</span>
+            </div>
+            {showPrevious && (
+              <div className="flex items-center gap-1.5">
+                <div className="w-4 h-0.5 rounded" style={{ backgroundColor: P.sub, opacity: 0.4 }} />
+                <span className="text-[10px]" style={{ color: P.sub }}>Previous 30 days</span>
+              </div>
+            )}
+          </div>
+
+          {/* Dual-line area chart */}
+          <div className="relative" style={{ height: 180 }}>
+            <DualLineChart
+              current={ga4.dailySessions}
+              previous={showPrevious ? ga4.previousDailySessions : []}
+              metricKey={chartMetric}
+              currentColor={P.blue}
+              previousColor={P.sub}
+            />
+          </div>
+          <div className="flex justify-between mt-2">
+            <span className="text-[10px]" style={{ color: P.sub }}>
+              {fmtShortDate(ga4.dailySessions[0].date)}
+            </span>
+            <span className="text-[10px]" style={{ color: P.sub }}>
+              {fmtShortDate(ga4.dailySessions[ga4.dailySessions.length - 1].date)}
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* ─── Two-column: Traffic Sources + Performance Dynamics ─── */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Traffic Sources (bar breakdown) */}
+        {ga4.topSources.length > 0 && (
+          <div className="rounded-xl p-5" style={panelStyle}>
+            <p className="text-sm font-semibold mb-4" style={{ ...FONT_HEADING, color: P.header }}>Traffic Sources</p>
+            <div className="space-y-3">
+              {ga4.topSources.map((src, i) => (
+                <div key={src.source}>
+                  <div className="flex justify-between items-baseline mb-1">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full" style={{ backgroundColor: SOURCE_COLORS[i % SOURCE_COLORS.length] }} />
+                      <span className="text-xs font-medium" style={{ color: P.value }}>
+                        {src.source}
+                      </span>
+                    </div>
+                    <span className="text-xs tabular-nums font-medium" style={{ color: P.sub }}>
+                      {src.sessions.toLocaleString()} <span className="text-[10px]">({src.percentage.toFixed(1)}%)</span>
+                    </span>
+                  </div>
+                  <div className="w-full rounded-full" style={{ height: 4, backgroundColor: P.borderLight }}>
+                    <div
+                      className="rounded-full transition-all"
+                      style={{
+                        height: 4,
+                        width: `${Math.max(src.percentage, 1)}%`,
+                        backgroundColor: SOURCE_COLORS[i % SOURCE_COLORS.length],
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Performance Dynamics — multi-line source chart (like SiteChecker screenshot 4) */}
+        {ga4.sourceTimeline.length > 0 && (
+          <div className="rounded-xl p-5" style={panelStyle}>
+            <p className="text-sm font-semibold mb-3" style={{ ...FONT_HEADING, color: P.header }}>Performance Dynamics</p>
+            {/* Legend */}
+            <div className="flex flex-wrap gap-x-3 gap-y-1 mb-3">
+              {ga4.topSources.slice(0, 6).map((src, i) => (
+                <div key={src.source} className="flex items-center gap-1">
+                  <div className="w-2.5 h-0.5 rounded" style={{ backgroundColor: SOURCE_COLORS[i % SOURCE_COLORS.length] }} />
+                  <span className="text-[9px]" style={{ color: P.sub }}>{src.source}</span>
+                </div>
+              ))}
+            </div>
+            <div style={{ height: 160 }}>
+              <MultiLineChart
+                data={ga4.sourceTimeline}
+                sources={ga4.topSources.slice(0, 6).map((s) => s.source)}
+                colors={SOURCE_COLORS}
+              />
+            </div>
+            <div className="flex justify-between mt-2">
+              <span className="text-[10px]" style={{ color: P.sub }}>
+                {ga4.sourceTimeline.length > 0 ? fmtShortDate(ga4.sourceTimeline[0].date) : ""}
+              </span>
+              <span className="text-[10px]" style={{ color: P.sub }}>
+                {ga4.sourceTimeline.length > 0 ? fmtShortDate(ga4.sourceTimeline[ga4.sourceTimeline.length - 1].date) : ""}
+              </span>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* ─── Top Pages Table (full-width, SiteChecker style) ─── */}
+      {ga4.topPages.length > 0 && (
+        <div className="rounded-xl overflow-hidden" style={panelStyle}>
+          <div className="flex items-center justify-between px-5 pt-5 pb-3">
+            <p className="text-sm font-semibold" style={{ ...FONT_HEADING, color: P.header }}>Top Pages</p>
+            <span className="text-[10px] font-medium px-2 py-0.5 rounded" style={{ backgroundColor: P.bgAlt, color: P.sub }}>
+              {ga4.topPages.length} pages
+            </span>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead>
+                <tr style={{ backgroundColor: P.bgAlt, borderBottom: `1px solid ${P.border}`, borderTop: `1px solid ${P.border}` }}>
+                  {["Page", "Views", "Sessions", "Bounce Rate", "Avg Duration", "Engagement"].map((h) => (
+                    <th
+                      key={h}
+                      className={`px-4 py-2.5 font-semibold tracking-wider uppercase whitespace-nowrap ${h === "Page" ? "text-left" : "text-right"}`}
+                      style={{ color: P.sub, fontSize: 10 }}
+                    >
+                      {h}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {ga4.topPages.map((p, i) => (
+                  <tr
+                    key={p.page}
+                    style={{
+                      borderBottom: `1px solid ${P.borderLight}`,
+                      backgroundColor: i % 2 === 0 ? P.bg : P.bgAlt,
+                    }}
+                  >
+                    <td className="px-4 py-3 font-mono truncate max-w-[260px]" style={{ color: P.blue, fontSize: 11 }}>
+                      {p.page}
+                    </td>
+                    <td className="px-4 py-3 text-right font-semibold tabular-nums" style={{ color: P.value }}>
+                      {p.views.toLocaleString()}
+                    </td>
+                    <td className="px-4 py-3 text-right tabular-nums" style={{ color: P.value }}>
+                      {p.sessions.toLocaleString()}
+                    </td>
+                    <td className="px-4 py-3 text-right tabular-nums">
+                      <span
+                        className="inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold"
+                        style={{
+                          backgroundColor: p.bounceRate > 70 ? "#fef2f2" : p.bounceRate > 50 ? "#fffbeb" : "#f0fdf4",
+                          color: p.bounceRate > 70 ? P.red : p.bounceRate > 50 ? P.orange : P.green,
+                        }}
+                      >
+                        {p.bounceRate.toFixed(1)}%
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-right tabular-nums" style={{ color: P.value }}>
+                      {fmtDuration(p.avgDuration)}
+                    </td>
+                    <td className="px-4 py-3 text-right tabular-nums">
+                      <span
+                        className="inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold"
+                        style={{
+                          backgroundColor: p.engagementRate > 60 ? "#f0fdf4" : p.engagementRate > 40 ? "#fffbeb" : "#fef2f2",
+                          color: p.engagementRate > 60 ? P.green : p.engagementRate > 40 ? P.orange : P.red,
+                        }}
+                      >
+                        {p.engagementRate.toFixed(1)}%
+                      </span>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* User breakdown */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="rounded-xl p-5" style={panelStyle}>
+          <p className="text-sm font-semibold mb-3" style={{ ...FONT_HEADING, color: P.header }}>User Breakdown</p>
+          <div className="flex items-center gap-4">
+            {/* Mini donut via SVG */}
+            <svg width={80} height={80} viewBox="0 0 36 36">
+              <circle cx="18" cy="18" r="15.9" fill="none" stroke={P.borderLight} strokeWidth="3" />
+              <circle
+                cx="18" cy="18" r="15.9" fill="none"
+                stroke={P.blue} strokeWidth="3"
+                strokeDasharray={`${(ga4.newUsers30d / Math.max(ga4.newUsers30d + ga4.returningUsers30d, 1)) * 100} ${100 - (ga4.newUsers30d / Math.max(ga4.newUsers30d + ga4.returningUsers30d, 1)) * 100}`}
+                strokeDashoffset="25"
+                strokeLinecap="round"
+              />
+            </svg>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: P.blue }} />
+                <span className="text-xs" style={{ color: P.sub }}>New Users</span>
+                <span className="text-xs font-bold" style={{ color: P.value }}>{ga4.newUsers30d.toLocaleString()}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-2.5 h-2.5 rounded-sm" style={{ backgroundColor: P.borderLight }} />
+                <span className="text-xs" style={{ color: P.sub }}>Returning</span>
+                <span className="text-xs font-bold" style={{ color: P.value }}>{ga4.returningUsers30d.toLocaleString()}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Quick stats card */}
+        <div className="rounded-xl p-5" style={panelStyle}>
+          <p className="text-sm font-semibold mb-3" style={{ ...FONT_HEADING, color: P.header }}>30-Day Summary</p>
+          <div className="grid grid-cols-2 gap-3">
+            {[
+              { label: "Sessions/Day", value: (ga4.sessions30d / 30).toFixed(1) },
+              { label: "Views/Session", value: ga4.sessions30d > 0 ? (ga4.pageViews30d / ga4.sessions30d).toFixed(1) : "0" },
+              { label: "Total Users", value: (ga4.newUsers30d + ga4.returningUsers30d).toLocaleString() },
+              { label: "Pages Tracked", value: ga4.topPages.length.toString() },
+            ].map((s) => (
+              <div key={s.label}>
+                <p className="text-[10px] font-medium uppercase" style={{ color: P.sub }}>{s.label}</p>
+                <p className="text-base font-bold" style={{ ...FONT_HEADING, color: P.value }}>{s.value}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─────────────────────────── Dual Line Chart (SVG) ─────────────────── */
+
+function DualLineChart({
+  current,
+  previous,
+  metricKey,
+  currentColor,
+  previousColor,
+}: {
+  current: GA4DailyPoint[];
+  previous: GA4DailyPoint[];
+  metricKey: "sessions" | "pageViews";
+  currentColor: string;
+  previousColor: string;
+}) {
+  const curValues = current.map((d) => d[metricKey] as number);
+  const prevValues = previous.map((d) => d[metricKey] as number);
+  const allValues = [...curValues, ...prevValues];
+  const max = Math.max(...allValues, 1);
+  const w = 200;
+  const h = 100;
+  const pad = 3;
+
+  const toPoints = (values: number[]) =>
+    values.map((v, i) => ({
+      x: pad + (i / Math.max(values.length - 1, 1)) * (w - pad * 2),
+      y: h - pad - ((v / max) * (h - pad * 2)),
+    }));
+
+  const toPath = (pts: { x: number; y: number }[]) =>
+    pts.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+
+  const curPts = toPoints(curValues);
+  const prevPts = toPoints(prevValues);
+  const curPath = toPath(curPts);
+  const curArea = `${curPath} L${curPts[curPts.length - 1].x.toFixed(1)},${h} L${curPts[0].x.toFixed(1)},${h} Z`;
+
+  // Grid lines
+  const gridLines = [0.25, 0.5, 0.75].map((pct) => h - pad - pct * (h - pad * 2));
+
+  return (
+    <svg viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" className="w-full h-full">
+      <defs>
+        <linearGradient id="ga4-dual-grad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={currentColor} stopOpacity={0.15} />
+          <stop offset="100%" stopColor={currentColor} stopOpacity={0.01} />
+        </linearGradient>
+      </defs>
+      {/* Grid lines */}
+      {gridLines.map((y, i) => (
+        <line key={i} x1={pad} x2={w - pad} y1={y} y2={y} stroke="#e5e7eb" strokeWidth={0.2} />
+      ))}
+      {/* Current period area fill */}
+      <path d={curArea} fill="url(#ga4-dual-grad)" />
+      {/* Previous period dashed line */}
+      {prevPts.length > 0 && (
+        <path
+          d={toPath(prevPts)}
+          fill="none"
+          stroke={previousColor}
+          strokeWidth={0.5}
+          strokeDasharray="2,1.5"
+          strokeOpacity={0.35}
+          strokeLinejoin="round"
+        />
+      )}
+      {/* Current period solid line */}
+      <path d={curPath} fill="none" stroke={currentColor} strokeWidth={0.7} strokeLinejoin="round" />
+      {/* Data points */}
+      {curPts.map((p, i) => (
+        <circle key={i} cx={p.x} cy={p.y} r={0.5} fill={currentColor}>
+          <title>{fmtShortDate(current[i].date)}: {curValues[i]}</title>
+        </circle>
+      ))}
+    </svg>
+  );
+}
+
+/* ─────────────────────────── Multi-Line Chart (SVG) ─────────────────── */
+
+function MultiLineChart({
+  data,
+  sources,
+  colors,
+}: {
+  data: { date: string; sources: Record<string, number> }[];
+  sources: string[];
+  colors: string[];
+}) {
+  const w = 200;
+  const h = 100;
+  const pad = 3;
+
+  // Get max across all sources
+  let maxVal = 1;
+  for (const d of data) {
+    for (const src of sources) {
+      const v = d.sources[src] || 0;
+      if (v > maxVal) maxVal = v;
+    }
+  }
+
+  const toPoints = (src: string) =>
+    data.map((d, i) => ({
+      x: pad + (i / Math.max(data.length - 1, 1)) * (w - pad * 2),
+      y: h - pad - (((d.sources[src] || 0) / maxVal) * (h - pad * 2)),
+    }));
+
+  const toPath = (pts: { x: number; y: number }[]) =>
+    pts.map((p, i) => `${i === 0 ? "M" : "L"}${p.x.toFixed(1)},${p.y.toFixed(1)}`).join(" ");
+
+  const gridLines = [0.25, 0.5, 0.75].map((pct) => h - pad - pct * (h - pad * 2));
+
+  return (
+    <svg viewBox={`0 0 ${w} ${h}`} preserveAspectRatio="none" className="w-full h-full">
+      {gridLines.map((y, i) => (
+        <line key={i} x1={pad} x2={w - pad} y1={y} y2={y} stroke="#e5e7eb" strokeWidth={0.2} />
+      ))}
+      {sources.map((src, si) => {
+        const pts = toPoints(src);
+        return (
+          <path
+            key={src}
+            d={toPath(pts)}
+            fill="none"
+            stroke={colors[si % colors.length]}
+            strokeWidth={0.5}
+            strokeLinejoin="round"
+            strokeOpacity={0.8}
+          />
+        );
+      })}
+    </svg>
   );
 }
 
@@ -700,59 +1261,7 @@ function DashboardTab({
       <div className="mb-10">
         <SectionHeader title="Site Analytics" />
         {ga4 ? (
-          <div className="space-y-4">
-            {/* GA4 stats */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="rounded-xl p-5" style={{ backgroundColor: T.card, border: `1px solid ${T.border}` }}>
-                <p className="text-xs font-semibold tracking-widest uppercase mb-2" style={{ color: T.muted }}>Sessions (30d)</p>
-                <p className="text-2xl font-bold" style={{ fontFamily: "var(--font-space-grotesk)", color: T.copper }}>
-                  {ga4.sessions30d.toLocaleString()}
-                </p>
-              </div>
-              <div className="rounded-xl p-5" style={{ backgroundColor: T.card, border: `1px solid ${T.border}` }}>
-                <p className="text-xs font-semibold tracking-widest uppercase mb-2" style={{ color: T.muted }}>Page Views (30d)</p>
-                <p className="text-2xl font-bold" style={{ fontFamily: "var(--font-space-grotesk)", color: T.copper }}>
-                  {ga4.pageViews30d.toLocaleString()}
-                </p>
-              </div>
-            </div>
-            {/* Daily sessions chart */}
-            {ga4.dailySessions.length > 0 && (
-              <div className="rounded-xl p-5" style={{ backgroundColor: T.card, border: `1px solid ${T.border}` }}>
-                <p className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: T.muted }}>Daily Sessions</p>
-                <MiniBarChart data={ga4.dailySessions} labelKey="date" valueKey="sessions" color="#60a5fa" />
-                <div className="flex justify-between mt-1">
-                  <span className="text-xs" style={{ color: T.faint }}>
-                    {ga4.dailySessions.length > 0 ? fmtShortDate(ga4.dailySessions[0].date) : ""}
-                  </span>
-                  <span className="text-xs" style={{ color: T.faint }}>
-                    {ga4.dailySessions.length > 0 ? fmtShortDate(ga4.dailySessions[ga4.dailySessions.length - 1].date) : ""}
-                  </span>
-                </div>
-              </div>
-            )}
-            {/* Top pages */}
-            {ga4.topPages.length > 0 && (
-              <div className="rounded-xl overflow-hidden" style={{ border: `1px solid ${T.border}` }}>
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr style={{ backgroundColor: T.card }}>
-                      <th className="text-left px-4 py-3 text-xs font-semibold tracking-wider uppercase" style={{ color: T.muted }}>Page</th>
-                      <th className="text-right px-4 py-3 text-xs font-semibold tracking-wider uppercase" style={{ color: T.muted }}>Views</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {ga4.topPages.map((p) => (
-                      <tr key={p.page} style={{ borderTop: `1px solid ${T.border}` }}>
-                        <td className="px-4 py-2.5 text-xs font-mono truncate max-w-xs" style={{ color: T.bodyText }}>{p.page}</td>
-                        <td className="px-4 py-2.5 text-right font-semibold" style={{ color: T.copper }}>{p.views.toLocaleString()}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
+          <GA4Dashboard ga4={ga4} />
         ) : (
           <div
             className="rounded-xl p-7 text-center"

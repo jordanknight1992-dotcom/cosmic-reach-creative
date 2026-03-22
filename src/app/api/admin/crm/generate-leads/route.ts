@@ -143,8 +143,17 @@ export async function POST() {
     const sql = getSQL();
 
     // Get existing contact emails for dedup
-    const existingContacts = await sql`SELECT email FROM contacts WHERE email IS NOT NULL`;
-    const existingEmails = new Set(existingContacts.map((c) => (c.email as string).toLowerCase()));
+    let existingContacts: Record<string, unknown>[] = [];
+    try {
+      existingContacts = await sql`SELECT email FROM contacts WHERE email IS NOT NULL`;
+    } catch {
+      // Table may not exist yet — that's fine, no dedup needed
+    }
+    const existingEmails = new Set(
+      existingContacts
+        .filter((c) => typeof c.email === "string" && c.email)
+        .map((c) => (c.email as string).toLowerCase())
+    );
 
     const imported: { name: string; company: string; score: number }[] = [];
     const skipped: { name: string; reason: string }[] = [];
