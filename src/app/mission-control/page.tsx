@@ -64,10 +64,18 @@ export default function MissionControlLanding() {
                 Get Started
               </a>
               <Link
-                href="/mission-control/login"
+                href="/mission-control/demo"
                 className="inline-flex items-center justify-center rounded-[var(--radius-md)] border border-starlight/20 text-starlight/70 px-7 py-3 text-base font-display font-semibold transition-all duration-[var(--duration-base)] hover:border-starlight/40 hover:text-starlight"
               >
-                Sign In
+                Try the Demo
+              </Link>
+            </div>
+            <div className="mt-3 text-center">
+              <Link
+                href="/mission-control/login"
+                className="text-sm text-starlight/40 hover:text-starlight/60 transition-colors underline underline-offset-2"
+              >
+                Already a member? Sign in
               </Link>
             </div>
           </div>
@@ -123,13 +131,14 @@ export default function MissionControlLanding() {
                 Includes guided onboarding. You bring your own API keys.
               </p>
 
-              {/* Coming Soon button */}
-              <button
-                disabled
-                className="w-full py-3.5 rounded-[var(--radius-md)] font-display font-bold text-sm cursor-default mb-6 border border-copper/30 bg-copper/10 text-copper"
+              <a
+                href="https://buy.stripe.com/5kQfZ98fzbDyeEM6i4fbq08"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block w-full py-3.5 rounded-[var(--radius-md)] font-display font-bold text-sm text-center mb-6 bg-copper text-deep-space transition-all duration-[var(--duration-base)] hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0"
               >
-                Coming Soon
-              </button>
+                Get Started
+              </a>
 
               {/* Features in two columns */}
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">

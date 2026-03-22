@@ -14,32 +14,74 @@ async function sha256(text: string): Promise<string> {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (!pathname.startsWith("/admin") && !pathname.startsWith("/api/admin")) {
+  /* ── Legacy /admin routes (still works for backward compat) ── */
+  if (pathname.startsWith("/admin") || pathname.startsWith("/api/admin")) {
+    const publicPaths = ["/admin/login", "/api/admin/login", "/api/admin/setup"];
+    if (publicPaths.some((p) => pathname.startsWith(p))) {
+      return NextResponse.next();
+    }
+
+    const session = request.cookies.get("admin_session")?.value;
+    const secret = process.env.SESSION_SECRET;
+
+    if (!secret || !session) {
+      return NextResponse.redirect(new URL("/admin/login", request.url));
+    }
+
+    const expected = await sha256(secret);
+    if (session !== expected) {
+      return NextResponse.redirect(new URL("/admin/login", request.url));
+    }
+
     return NextResponse.next();
   }
 
-  /* Always allow login + setup endpoints through */
-  const publicPaths = ["/admin/login", "/api/admin/login", "/api/admin/setup"];
-  if (publicPaths.some((p) => pathname.startsWith(p))) {
+  /* ── Mission Control auth routes (public) ── */
+  const mcPublicPaths = [
+    "/mission-control/login",
+    "/mission-control/register",
+    "/mission-control/reset-password",
+    "/mission-control/demo",
+    "/api/mc/auth",
+  ];
+  if (mcPublicPaths.some((p) => pathname.startsWith(p))) {
     return NextResponse.next();
   }
 
-  const session = request.cookies.get("admin_session")?.value;
-  const secret = process.env.SESSION_SECRET;
+  /* ── Mission Control protected routes ── */
+  if (
+    pathname.startsWith("/mission-control") ||
+    pathname.startsWith("/api/mc")
+  ) {
+    const sessionId = request.cookies.get("mc_session")?.value;
 
-  if (!secret || !session) {
-    return NextResponse.redirect(new URL("/admin/login", request.url));
-  }
+    if (!sessionId) {
+      if (pathname.startsWith("/api/mc")) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
+      return NextResponse.redirect(
+        new URL("/mission-control/login", request.url)
+      );
+    }
 
-  /* Session token = sha256(SESSION_SECRET) */
-  const expected = await sha256(secret);
-  if (session !== expected) {
-    return NextResponse.redirect(new URL("/admin/login", request.url));
+    // Session validation happens in the API/page layer (DB access not available in edge middleware)
+    // We just check the cookie exists here — full validation in server components / route handlers
+    const response = NextResponse.next();
+
+    // Pass session ID in header for server components
+    response.headers.set("x-mc-session", sessionId);
+
+    return response;
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/api/admin/:path*"],
+  matcher: [
+    "/admin/:path*",
+    "/api/admin/:path*",
+    "/mission-control/:path*",
+    "/api/mc/:path*",
+  ],
 };
