@@ -17,11 +17,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: siteConfig.domain,
     siteName: siteConfig.siteName,
-    title: "Cosmic Reach Creative | Marketing Strategy & Growth Systems for Founders",
-    description:
-      "Cosmic Reach Creative helps founders diagnose what's blocking growth and build the strategic systems to fix it. Marketing strategy, messaging, offer design, and growth architecture. Based in Memphis, serving founders nationwide.",
     images: [
       {
         url: "/images/og-preview.png",
@@ -33,9 +29,6 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Cosmic Reach Creative | Marketing Strategy & Growth Systems",
-    description:
-      "Strategic marketing consulting for founders. Messaging, offer design, customer journey optimization, and growth systems. Based in Memphis, TN.",
     images: ["/images/og-preview.png"],
   },
   icons: {
