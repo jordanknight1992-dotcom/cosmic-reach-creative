@@ -72,6 +72,30 @@ export async function setAdminPasswordHash(hash: string) {
   `;
 }
 
+/* ─── TOTP secret ─── */
+
+export async function getTotpSecret(): Promise<string | null> {
+  await ensureTables();
+  const { rows } = await sql`
+    SELECT value FROM admin_settings WHERE key = 'totp_secret'
+  `;
+  return rows[0]?.value ?? null;
+}
+
+export async function saveTotpSecret(secret: string) {
+  await ensureTables();
+  await sql`
+    INSERT INTO admin_settings (key, value)
+    VALUES ('totp_secret', ${secret})
+    ON CONFLICT (key) DO UPDATE SET value = ${secret}, updated_at = NOW()
+  `;
+}
+
+export async function isTotpEnabled(): Promise<boolean> {
+  const secret = await getTotpSecret();
+  return secret !== null;
+}
+
 /* ─── Submissions ─── */
 
 export async function saveContactSubmission(data: {
