@@ -247,14 +247,9 @@ export default function PricingPage() {
             <article className="rounded-[var(--radius-lg)] border border-copper/20 bg-navy/50 p-5 flex flex-col sm:flex-row sm:items-start gap-4 transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/40 hover:shadow-subtle">
               <Icon name={advisoryTier.icon} size={24} className="opacity-70 shrink-0 mt-0.5" />
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-0.5">
-                  <h3 className="font-display font-semibold text-base">
-                    {advisoryTier.name}
-                  </h3>
-                  <span className="text-xs font-display font-semibold text-copper/60 border border-copper/20 rounded-full px-2 py-0.5">
-                    Advisory
-                  </span>
-                </div>
+                <h3 className="font-display font-semibold text-base mb-0.5">
+                  {advisoryTier.name}
+                </h3>
                 <p className="text-sm text-starlight/60">{advisoryTier.description}</p>
               </div>
               <div className="shrink-0 flex flex-col items-end gap-2">
@@ -275,14 +270,9 @@ export default function PricingPage() {
             <article className="rounded-[var(--radius-lg)] border border-copper/20 bg-navy/50 p-5 flex flex-col sm:flex-row sm:items-start gap-4 transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/40 hover:shadow-subtle">
               <Icon name={missionControlTier.icon} size={24} className="opacity-70 shrink-0 mt-0.5" />
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-0.5">
-                  <h3 className="font-display font-semibold text-base">
-                    {missionControlTier.name}
-                  </h3>
-                  <span className="text-xs font-display font-semibold text-copper/60 border border-copper/20 rounded-full px-2 py-0.5">
-                    SaaS
-                  </span>
-                </div>
+                <h3 className="font-display font-semibold text-base mb-0.5">
+                  {missionControlTier.name}
+                </h3>
                 <p className="text-sm text-starlight/60">{missionControlTier.description}</p>
               </div>
               <div className="shrink-0 flex flex-col items-end gap-2">
