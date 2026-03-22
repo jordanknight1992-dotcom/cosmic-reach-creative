@@ -3,6 +3,7 @@
 import { useState, useTransition, useCallback, useRef } from "react";
 import { setStatus, setNotes } from "./actions";
 import type { GA4Metrics } from "@/lib/ga4";
+import { CrmTab } from "./CrmTab";
 
 /* ─────────────────────────── Types ─────────────────────────── */
 
@@ -954,7 +955,7 @@ export function AdminDashboard({
   submissionTimeline,
   ga4,
 }: AdminDashboardProps) {
-  const [tab, setTab] = useState<"dashboard" | "pipeline" | "bookings">("dashboard");
+  const [tab, setTab] = useState<"crm" | "signals" | "meetings">("crm");
   const [submissions, setSubmissions] = useState<Submission[]>(initialSubmissions);
   const [, startTransition] = useTransition();
 
@@ -991,9 +992,9 @@ export function AdminDashboard({
   );
 
   const navItems: { key: typeof tab; label: string; icon: string }[] = [
-    { key: "dashboard", label: "Dashboard",  icon: "◈" },
-    { key: "pipeline",  label: "Pipeline",   icon: "◇" },
-    { key: "bookings",  label: "Bookings",   icon: "◆" },
+    { key: "crm",      label: "Mission Control", icon: "◈" },
+    { key: "signals",  label: "Digital Signals",  icon: "◇" },
+    { key: "meetings", label: "Meetings",         icon: "◆" },
   ];
 
   return (
@@ -1047,25 +1048,28 @@ export function AdminDashboard({
       {/* ── Main content ── */}
       <main className="flex-1 min-w-0 overflow-y-auto">
         <div className="max-w-5xl mx-auto px-6 py-8">
-          {tab === "dashboard" ? (
-            <DashboardTab
-              stripe={stripe}
-              ctaStats={ctaStats}
-              ctaTimeline={ctaTimeline}
-              submissionTimeline={submissionTimeline}
-              ga4={ga4}
-              totalSubmissions={totalSubmissions}
-              auditCount={auditCount}
-              contactCount={contactCount}
-              convRate={convRate}
-              totalCtaClicks={totalCtaClicks}
-            />
-          ) : tab === "pipeline" ? (
-            <PipelineTab
-              submissions={submissions}
-              onStatusChange={handleStatusChange}
-              onNotesSave={handleNotesSave}
-            />
+          {tab === "crm" ? (
+            <CrmTab />
+          ) : tab === "signals" ? (
+            <div className="space-y-10">
+              <DashboardTab
+                stripe={stripe}
+                ctaStats={ctaStats}
+                ctaTimeline={ctaTimeline}
+                submissionTimeline={submissionTimeline}
+                ga4={ga4}
+                totalSubmissions={totalSubmissions}
+                auditCount={auditCount}
+                contactCount={contactCount}
+                convRate={convRate}
+                totalCtaClicks={totalCtaClicks}
+              />
+              <PipelineTab
+                submissions={submissions}
+                onStatusChange={handleStatusChange}
+                onNotesSave={handleNotesSave}
+              />
+            </div>
           ) : (
             <BookingsTab />
           )}
