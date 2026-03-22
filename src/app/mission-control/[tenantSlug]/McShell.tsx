@@ -3,6 +3,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 interface McShellProps {
   user: {
@@ -23,13 +24,13 @@ interface McShellProps {
 }
 
 const NAV_ITEMS = [
-  { key: "", label: "Briefing", icon: "◉" },
-  { key: "targets", label: "Targets", icon: "◎" },
-  { key: "crm", label: "CRM", icon: "◈" },
-  { key: "signal", label: "Signal", icon: "◇" },
-  { key: "strategy", label: "Strategy", icon: "◐" },
-  { key: "meetings", label: "Meetings", icon: "◆" },
-  { key: "settings", label: "Settings", icon: "⚙" },
+  { key: "", label: "Briefing", iconSrc: "/icons/compass.svg" },
+  { key: "targets", label: "Targets", iconSrc: "/icons/signal.svg" },
+  { key: "crm", label: "CRM", iconSrc: "/icons/network.svg" },
+  { key: "signal", label: "Signal", iconSrc: "/icons/eye.svg" },
+  { key: "strategy", label: "Strategy", iconSrc: "/icons/map.svg" },
+  { key: "meetings", label: "Meetings", iconSrc: "/icons/orbit.svg" },
+  { key: "settings", label: "Settings", iconSrc: "/icons/gears.svg" },
 ];
 
 export function McShell({ user, tenant, isImpersonation, children }: McShellProps) {
@@ -73,27 +74,38 @@ export function McShell({ user, tenant, isImpersonation, children }: McShellProp
         position: "fixed", top: isImpersonation ? 32 : 0, left: 0, bottom: 0,
         zIndex: 50, overflow: "hidden",
       }}>
-        {/* Logo area (click to collapse/expand) */}
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          style={{
-            display: "block", width: "100%", textAlign: "left",
-            padding: collapsed ? "20px 12px" : "20px 16px",
-            borderBottom: "1px solid rgba(232,223,207,0.1)",
-            background: "transparent", border: "none", borderBottomStyle: "solid",
-            borderBottomWidth: 1, borderBottomColor: "rgba(232,223,207,0.1)",
-            cursor: "pointer",
-          }}
-        >
-          {collapsed ? (
-            <div style={{ fontSize: 18, fontWeight: 800, color: "#d4a574", textAlign: "center", fontFamily: 'var(--font-display)' }}>MC</div>
-          ) : (
-            <>
-              <div style={{ fontSize: 15, fontWeight: 700, color: "#e8dfcf", lineHeight: 1.2, fontFamily: 'var(--font-display)' }}>Mission Control</div>
-              <div style={{ fontSize: 11, color: "rgba(232,223,207,0.25)", marginTop: 2 }}>{tenant.name}</div>
-            </>
-          )}
-        </button>
+        {/* Logo + branding */}
+        <div style={{
+          borderBottom: "1px solid rgba(232,223,207,0.1)",
+          padding: collapsed ? "16px 8px" : "16px 16px",
+        }}>
+          <Link href="/" style={{ display: "block", textDecoration: "none", marginBottom: collapsed ? 0 : 12 }}>
+            <Image
+              src="/logo/logo-primary-dark.svg"
+              alt="Cosmic Reach Creative"
+              width={collapsed ? 32 : 120}
+              height={collapsed ? 32 : 32}
+              style={{ display: "block", margin: collapsed ? "0 auto" : undefined, opacity: 0.7 }}
+            />
+          </Link>
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            style={{
+              display: "block", width: "100%", textAlign: collapsed ? "center" : "left",
+              padding: 0, background: "transparent", border: "none", cursor: "pointer",
+              marginTop: collapsed ? 8 : 0,
+            }}
+          >
+            {collapsed ? (
+              <div style={{ fontSize: 16, fontWeight: 800, color: "#d4a574", fontFamily: "var(--font-display)" }}>MC</div>
+            ) : (
+              <>
+                <div style={{ fontSize: 15, fontWeight: 700, color: "#e8dfcf", lineHeight: 1.2, fontFamily: "var(--font-display)" }}>Mission Control</div>
+                <div style={{ fontSize: 11, color: "rgba(232,223,207,0.25)", marginTop: 2 }}>{tenant.name}</div>
+              </>
+            )}
+          </button>
+        </div>
 
         {/* Nav items */}
         <nav style={{ flex: 1, padding: "12px 8px" }}>
@@ -117,32 +129,12 @@ export function McShell({ user, tenant, isImpersonation, children }: McShellProp
                   marginBottom: 2,
                 }}
               >
-                <span style={{ fontSize: 16, width: 20, textAlign: "center" }}>{item.icon}</span>
+                <Image src={item.iconSrc} alt="" width={16} height={16} style={{ opacity: active ? 1 : 0.5, filter: active ? "brightness(0) saturate(100%) invert(72%) sepia(30%) saturate(500%) hue-rotate(350deg)" : "brightness(0) invert(0.85)" }} />
                 {!collapsed && <span>{item.label}</span>}
               </button>
             );
           })}
         </nav>
-
-        {/* Return to main site */}
-        <div style={{ padding: "4px 8px 0" }}>
-          <Link
-            href="/"
-            style={{
-              display: "flex", alignItems: "center", gap: 10,
-              width: "100%", padding: collapsed ? "10px 0" : "10px 12px",
-              justifyContent: collapsed ? "center" : "flex-start",
-              background: "transparent", borderRadius: 8,
-              color: "rgba(232,223,207,0.25)", fontSize: 13,
-              fontFamily: "var(--font-body)",
-              textDecoration: "none",
-              transition: "color 0.15s",
-            }}
-          >
-            <span style={{ fontSize: 14, width: 20, textAlign: "center" }}>←</span>
-            {!collapsed && <span>Cosmic Reach Creative</span>}
-          </Link>
-        </div>
 
         {/* Bottom area */}
         <div style={{ padding: "12px 8px", borderTop: "1px solid rgba(232,223,207,0.1)" }}>

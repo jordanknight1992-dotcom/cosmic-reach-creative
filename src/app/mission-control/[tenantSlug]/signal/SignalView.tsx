@@ -85,7 +85,7 @@ export function SignalView({ tenantSlug, data }: { tenantSlug: string; data: Sig
           <button
             onClick={() => router.push(`${base}/targets`)}
             style={{
-              background: "#e04747", color: "#fff", border: "none",
+              background: "#d4a574", color: "#1a1f2e", border: "none",
               borderRadius: 8, padding: "8px 16px", fontSize: 13,
               fontWeight: 600, cursor: "pointer", fontFamily: 'var(--font-display)',
             }}
@@ -178,6 +178,35 @@ export function SignalView({ tenantSlug, data }: { tenantSlug: string; data: Sig
               change={data.ga4Data.comparison.engagement.changePercent}
             />
           </div>
+
+          {/* Sessions Overlay Chart — current vs previous period */}
+          {data.ga4Data.dailySessions.length > 0 && (
+            <div style={{ marginBottom: 20 }}>
+              <h3 style={{ fontSize: 13, fontWeight: 600, color: "rgba(232,223,207,0.5)", margin: "0 0 10px 0", fontFamily: 'var(--font-display)' }}>Sessions — Current vs Previous 30 Days</h3>
+              <SessionsOverlayChart
+                current={data.ga4Data.dailySessions}
+                previous={data.ga4Data.previousDailySessions}
+              />
+              <div style={{ display: "flex", gap: 16, marginTop: 8 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <div style={{ width: 16, height: 2, background: "#d4a574" }} />
+                  <span style={{ fontSize: 11, color: "rgba(232,223,207,0.4)" }}>Current</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <div style={{ width: 16, height: 2, background: "rgba(212,165,116,0.3)", borderTop: "1px dashed rgba(212,165,116,0.4)" }} />
+                  <span style={{ fontSize: 11, color: "rgba(232,223,207,0.4)" }}>Previous</span>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Source Performance Over Time */}
+          {data.ga4Data.sourceTimeline.length > 0 && (
+            <div style={{ marginBottom: 20 }}>
+              <h3 style={{ fontSize: 13, fontWeight: 600, color: "rgba(232,223,207,0.5)", margin: "0 0 10px 0", fontFamily: 'var(--font-display)' }}>Traffic Source Performance</h3>
+              <SourceTimelineChart timeline={data.ga4Data.sourceTimeline} />
+            </div>
+          )}
 
           {/* Traffic Sources */}
           {data.ga4Data.topSources.length > 0 && (
@@ -295,6 +324,127 @@ function KpiCard({ label, value, color }: { label: string; value: number; color:
     }}>
       <div style={{ fontSize: 24, fontWeight: 800, color, fontFamily: 'var(--font-display)' }}>{value}</div>
       <div style={{ fontSize: 11, color: "rgba(232,223,207,0.5)", marginTop: 2 }}>{label}</div>
+    </div>
+  );
+}
+
+/* ─── SVG Chart Components ─── */
+
+function SessionsOverlayChart({
+  current,
+  previous,
+}: {
+  current: { date: string; sessions: number }[];
+  previous: { date: string; sessions: number }[];
+}) {
+  const W = 700, H = 160, PX = 40, PY = 20;
+  const allVals = [...current, ...previous].map((d) => d.sessions);
+  const maxVal = Math.max(...allVals, 1);
+
+  function toPath(data: { sessions: number }[]) {
+    if (data.length === 0) return "";
+    const stepX = (W - PX * 2) / Math.max(data.length - 1, 1);
+    return data
+      .map((d, i) => {
+        const x = PX + i * stepX;
+        const y = PY + (H - PY * 2) * (1 - d.sessions / maxVal);
+        return `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
+      })
+      .join(" ");
+  }
+
+  // Y-axis labels
+  const yTicks = [0, Math.round(maxVal / 2), maxVal];
+
+  return (
+    <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", height: "auto" }}>
+      {/* Grid lines */}
+      {yTicks.map((v) => {
+        const y = PY + (H - PY * 2) * (1 - v / maxVal);
+        return (
+          <g key={v}>
+            <line x1={PX} y1={y} x2={W - PX} y2={y} stroke="rgba(232,223,207,0.06)" />
+            <text x={PX - 6} y={y + 3} textAnchor="end" fill="rgba(232,223,207,0.25)" fontSize={9}>{v}</text>
+          </g>
+        );
+      })}
+      {/* Previous period (dashed) */}
+      {previous.length > 0 && (
+        <path d={toPath(previous)} fill="none" stroke="rgba(212,165,116,0.25)" strokeWidth={1.5} strokeDasharray="4 3" />
+      )}
+      {/* Current period (solid) */}
+      <path d={toPath(current)} fill="none" stroke="#d4a574" strokeWidth={2} />
+    </svg>
+  );
+}
+
+const SOURCE_COLORS: Record<string, string> = {
+  google: "#4285f4", direct: "#d4a574", linkedin: "#0a66c2",
+  x: "#e8dfcf", referral: "#22c55e", email: "#eab308",
+  facebook: "#1877f2", bing: "#00809d", "(direct)": "#d4a574",
+};
+
+function SourceTimelineChart({
+  timeline,
+}: {
+  timeline: { date: string; sources: Record<string, number> }[];
+}) {
+  if (timeline.length === 0) return null;
+
+  const W = 700, H = 160, PX = 40, PY = 20;
+
+  // Collect all source names
+  const sourceNames = Array.from(
+    new Set(timeline.flatMap((t) => Object.keys(t.sources)))
+  ).slice(0, 6);
+
+  const maxVal = Math.max(
+    ...timeline.flatMap((t) => Object.values(t.sources)),
+    1
+  );
+
+  function toPath(source: string) {
+    const points = timeline
+      .map((t, i) => {
+        const x = PX + (i * (W - PX * 2)) / Math.max(timeline.length - 1, 1);
+        const y = PY + (H - PY * 2) * (1 - (t.sources[source] || 0) / maxVal);
+        return `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
+      })
+      .join(" ");
+    return points;
+  }
+
+  return (
+    <div>
+      <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", height: "auto" }}>
+        {/* Grid */}
+        {[0, Math.round(maxVal / 2), maxVal].map((v) => {
+          const y = PY + (H - PY * 2) * (1 - v / maxVal);
+          return (
+            <g key={v}>
+              <line x1={PX} y1={y} x2={W - PX} y2={y} stroke="rgba(232,223,207,0.06)" />
+              <text x={PX - 6} y={y + 3} textAnchor="end" fill="rgba(232,223,207,0.25)" fontSize={9}>{v}</text>
+            </g>
+          );
+        })}
+        {sourceNames.map((source) => (
+          <path
+            key={source}
+            d={toPath(source)}
+            fill="none"
+            stroke={SOURCE_COLORS[source] || "rgba(232,223,207,0.3)"}
+            strokeWidth={1.5}
+          />
+        ))}
+      </svg>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 6 }}>
+        {sourceNames.map((source) => (
+          <div key={source} style={{ display: "flex", alignItems: "center", gap: 4 }}>
+            <div style={{ width: 10, height: 2, background: SOURCE_COLORS[source] || "rgba(232,223,207,0.3)" }} />
+            <span style={{ fontSize: 11, color: "rgba(232,223,207,0.4)", textTransform: "capitalize" }}>{source}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

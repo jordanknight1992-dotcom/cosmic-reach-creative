@@ -392,7 +392,7 @@ export function SuperAdminView({ adminName, adminId, tenants, auditLogs }: Props
                 <option value="admin_action">Admin action</option>
               </select>
               <button type="submit" style={{
-                background: "#e04747", color: "#fff", border: "none",
+                background: "#d4a574", color: "#1a1f2e", border: "none",
                 borderRadius: 6, padding: "8px 16px", fontSize: 13,
                 fontWeight: 600, cursor: "pointer", fontFamily: "var(--font-display)",
               }}>

@@ -72,8 +72,7 @@ export default function Error({
           <button
             onClick={reset}
             style={{
-              background: "#e04747",
-              color: "#fff",
+              background: "#d4a574", color: "#1a1f2e",
               border: "none",
               borderRadius: 8,
               padding: "10px 24px",

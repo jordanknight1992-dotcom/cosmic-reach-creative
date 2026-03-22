@@ -195,7 +195,8 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data 
   const base = `/mission-control/${tenantSlug}`;
   const recommendations = generateRecommendations(data);
   const targets = generateDailyTargets(data);
-  const firstName = userName.split(" ")[0];
+  const firstName = (userName || "").trim().split(" ")[0] || "";
+  const greeting = firstName.length > 0 ? `${getGreeting()}, ${firstName}` : getGreeting();
   const topIssue = recommendations[0];
 
   // Onboarding nudge
@@ -204,13 +205,13 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data 
       <div>
         <div style={{ marginBottom: 32 }}>
           <h1 style={{ fontSize: 28, fontWeight: 700, margin: 0, fontFamily: 'var(--font-display)', color: '#d4a574' }}>
-            {getGreeting()}, {firstName}
+            {greeting}
           </h1>
           <p style={{ color: "rgba(232,223,207,0.35)", fontSize: 15, marginTop: 4 }}>{getDateStr()}</p>
         </div>
 
         <div style={{
-          background: "linear-gradient(135deg, rgba(212,165,116,0.08), rgba(224,71,71,0.08))",
+          background: "rgba(212,165,116,0.08)",
           border: "1px solid rgba(212,165,116,0.2)",
           borderRadius: 16, padding: "32px 28px",
         }}>
@@ -223,7 +224,7 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data 
           <button
             onClick={() => router.push(`${base}/onboarding`)}
             style={{
-              background: "#e04747", color: "#fff", border: "none",
+              background: "#d4a574", color: "#1a1f2e", border: "none",
               borderRadius: 10, padding: "12px 24px", fontSize: 14,
               fontWeight: 600, cursor: "pointer", fontFamily: 'var(--font-display)',
             }}
@@ -240,7 +241,7 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data 
       {/* Header */}
       <div style={{ marginBottom: 32 }}>
         <h1 style={{ fontSize: 28, fontWeight: 700, margin: 0, fontFamily: 'var(--font-display)', color: '#d4a574' }}>
-          {getGreeting()}, {firstName}
+          {greeting}
         </h1>
         <p style={{ color: "rgba(232,223,207,0.35)", fontSize: 15, marginTop: 4 }}>{getDateStr()}</p>
       </div>
@@ -248,7 +249,7 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data 
       {/* Top Issue + Next Move */}
       {topIssue && (
         <div style={{
-          background: "linear-gradient(135deg, rgba(212,165,116,0.06), rgba(224,71,71,0.06))",
+          background: "rgba(212,165,116,0.06)",
           border: "1px solid rgba(212,165,116,0.15)",
           borderRadius: 16, padding: "24px 28px", marginBottom: 24,
         }}>
@@ -277,7 +278,7 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data 
               <button
                 onClick={() => router.push(`${base}/${topIssue.link}`)}
                 style={{
-                  background: "#e04747", color: "#fff", border: "none",
+                  background: "#d4a574", color: "#1a1f2e", border: "none",
                   borderRadius: 8, padding: "8px 16px", fontSize: 13,
                   fontWeight: 600, cursor: "pointer", fontFamily: 'var(--font-display)',
                 }}
@@ -303,7 +304,7 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data 
           <button
             onClick={() => router.push(`${base}/crm`)}
             style={{
-              background: "#e04747", color: "#fff", border: "none",
+              background: "#d4a574", color: "#1a1f2e", border: "none",
               borderRadius: 10, padding: "10px 20px", fontSize: 14,
               fontWeight: 600, cursor: "pointer", fontFamily: 'var(--font-display)',
             }}
