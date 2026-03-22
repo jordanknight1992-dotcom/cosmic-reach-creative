@@ -220,6 +220,30 @@ function activityIcon(type: string): string {
   }
 }
 
+/* ─────────────────────────── Apollo Rate Limiting ─────────────────────── */
+
+const APOLLO_DAILY_LIMIT = 10;
+
+function getApolloUsageKey(): string {
+  const today = new Date().toISOString().slice(0, 10);
+  return `apollo_searches_${today}`;
+}
+
+function getApolloUsageToday(): number {
+  if (typeof window === "undefined") return 0;
+  const key = getApolloUsageKey();
+  const val = localStorage.getItem(key);
+  return val ? parseInt(val, 10) : 0;
+}
+
+function incrementApolloUsage(): number {
+  const key = getApolloUsageKey();
+  const current = getApolloUsageToday();
+  const next = current + 1;
+  localStorage.setItem(key, String(next));
+  return next;
+}
+
 /* ─────────────────────────── Sub-Components ─────────────────────── */
 
 function Spinner({ size = 16 }: { size?: number }) {
@@ -606,25 +630,48 @@ function EmailPreviewModal({
   );
 }
 
-/* ─────────────────────────── Apollo Search Section ─────────────────────── */
+/* ─────────────────────────── Apollo Search Section (Top-Level) ─────────────────────── */
 
-function ApolloSection({ onImported }: { onImported: () => void }) {
+function ApolloSearchBar({ onImported }: { onImported: () => void }) {
   const [query, setQuery] = useState("");
-  const [location, setLocation] = useState("");
+  const [industry, setIndustry] = useState("");
+  const [titleKeywords, setTitleKeywords] = useState("");
+  const [location, setLocation] = useState("Memphis, TN");
   const [results, setResults] = useState<ApolloResult[]>([]);
   const [searching, setSearching] = useState(false);
   const [importing, setImporting] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [unavailable, setUnavailable] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [resultsOpen, setResultsOpen] = useState(true);
+  const [usage, setUsage] = useState(0);
+
+  useEffect(() => {
+    setUsage(getApolloUsageToday());
+  }, []);
+
+  const limitReached = usage >= APOLLO_DAILY_LIMIT;
 
   async function search() {
+    if (limitReached) return;
     setSearching(true);
     setError(null);
     try {
+      const titleArr = titleKeywords
+        .split(",")
+        .map((s) => s.trim())
+        .filter(Boolean);
+
       const res = await fetch("/api/admin/crm/apollo/search", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query, location: location || undefined }),
+        body: JSON.stringify({
+          query: query || undefined,
+          location: location || undefined,
+          industry: industry || undefined,
+          title_keywords: titleArr.length > 0 ? titleArr : undefined,
+          per_page: 5,
+        }),
       });
       const data = await res.json();
       if (data.fallback) {
@@ -632,6 +679,9 @@ function ApolloSection({ onImported }: { onImported: () => void }) {
         return;
       }
       setResults(data.results || []);
+      setResultsOpen(true);
+      const newUsage = incrementApolloUsage();
+      setUsage(newUsage);
     } catch {
       setError("Search failed");
     } finally {
@@ -672,75 +722,173 @@ function ApolloSection({ onImported }: { onImported: () => void }) {
 
   if (unavailable) {
     return (
-      <div className="rounded-lg p-4" style={{ backgroundColor: T.page, border: `1px solid ${T.border}` }}>
-        <div className="text-sm" style={{ color: T.muted }}>
-          Apollo search is not available (API key not configured).
+      <div
+        className="rounded-lg px-4 py-3"
+        style={{ backgroundColor: T.card, border: `1px solid ${T.border}` }}
+      >
+        <div className="flex items-center justify-between">
+          <div className="text-xs font-medium" style={{ color: T.muted, ...FONT_HEADING }}>
+            Apollo Search &mdash; API key not configured
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      <div className="flex gap-2 items-end">
-        <div className="flex-1">
-          <input
-            placeholder="Search companies or people..."
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyDown={(e) => e.key === "Enter" && search()}
-            style={{ ...inputStyle, width: "100%" }}
-          />
+    <div
+      className="rounded-lg overflow-hidden"
+      style={{ backgroundColor: T.card, border: `1px solid ${T.border}` }}
+    >
+      {/* Header row */}
+      <div
+        className="flex items-center justify-between px-4 py-2.5 cursor-pointer"
+        onClick={() => setExpanded((e) => !e)}
+        style={{ borderBottom: expanded ? `1px solid ${T.border}` : "none" }}
+      >
+        <div className="flex items-center gap-3">
+          <div className="text-xs font-medium" style={{ color: T.copper, ...FONT_HEADING }}>
+            Apollo Prospecting
+          </div>
+          <span
+            className="text-xs px-2 py-0.5 rounded"
+            style={{
+              backgroundColor: limitReached ? "rgba(224,71,71,0.15)" : "rgba(77,184,113,0.12)",
+              color: limitReached ? T.red : T.green,
+              ...FONT_HEADING,
+            }}
+          >
+            {usage}/{APOLLO_DAILY_LIMIT} searches today
+          </span>
         </div>
-        <div>
-          <input
-            placeholder="Location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            style={{ ...inputStyle, width: 140 }}
-          />
-        </div>
-        <button
-          onClick={search}
-          disabled={searching || !query.trim()}
-          className="px-3 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1.5"
-          style={{ backgroundColor: T.faint, color: T.starlight }}
-        >
-          {searching ? <Spinner size={14} /> : null}
-          Search Apollo
-        </button>
+        <span className="text-xs" style={{ color: T.muted }}>
+          {expanded ? "\u25B2" : "\u25BC"}
+        </span>
       </div>
-      {error && <div className="text-xs" style={{ color: T.red }}>{error}</div>}
-      {results.length > 0 && (
-        <div className="flex flex-col gap-1.5 max-h-64 overflow-auto">
-          {results.map((r) => (
-            <div
-              key={r.contact.email}
-              className="flex items-center justify-between rounded-lg px-3 py-2"
-              style={{ backgroundColor: T.page, border: `1px solid ${T.border}` }}
-            >
-              <div className="flex-1 min-w-0">
-                <div className="text-sm truncate" style={{ color: T.starlight }}>
-                  {r.contact.full_name}
-                  <span className="ml-2 text-xs" style={{ color: T.muted }}>{r.contact.title}</span>
-                </div>
-                <div className="text-xs truncate" style={{ color: T.bodyText }}>
-                  {r.company.name}
-                  {r.company.industry ? ` \u00B7 ${r.company.industry}` : ""}
-                  {r.company.city ? ` \u00B7 ${r.company.city}, ${r.company.state}` : ""}
-                </div>
-              </div>
-              <button
-                onClick={() => importLead(r)}
-                disabled={importing === r.contact.email}
-                className="px-2.5 py-1 rounded text-xs font-medium ml-3 flex items-center gap-1"
-                style={{ backgroundColor: T.copper, color: T.page }}
-              >
-                {importing === r.contact.email ? <Spinner size={12} /> : null}
-                Import
-              </button>
+
+      {/* Expanded search form */}
+      {expanded && (
+        <div className="px-4 py-3 flex flex-col gap-3">
+          <div className="flex flex-wrap gap-2 items-end">
+            <div className="flex-1 min-w-[180px]">
+              <label className="text-xs block mb-1" style={{ color: T.muted, ...FONT_HEADING }}>
+                Keywords
+              </label>
+              <input
+                placeholder="Search companies or people..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && search()}
+                style={{ ...inputStyle, width: "100%" }}
+              />
             </div>
-          ))}
+            <div className="min-w-[140px]">
+              <label className="text-xs block mb-1" style={{ color: T.muted, ...FONT_HEADING }}>
+                Industry
+              </label>
+              <input
+                placeholder="e.g. SaaS, Healthcare"
+                value={industry}
+                onChange={(e) => setIndustry(e.target.value)}
+                style={{ ...inputStyle, width: "100%" }}
+              />
+            </div>
+            <div className="min-w-[160px]">
+              <label className="text-xs block mb-1" style={{ color: T.muted, ...FONT_HEADING }}>
+                Title Keywords
+              </label>
+              <input
+                placeholder="founder, CEO, VP Marketing"
+                value={titleKeywords}
+                onChange={(e) => setTitleKeywords(e.target.value)}
+                style={{ ...inputStyle, width: "100%" }}
+              />
+            </div>
+            <div className="min-w-[130px]">
+              <label className="text-xs block mb-1" style={{ color: T.muted, ...FONT_HEADING }}>
+                Location
+              </label>
+              <input
+                placeholder="Memphis, TN"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                style={{ ...inputStyle, width: "100%" }}
+              />
+            </div>
+            <button
+              onClick={search}
+              disabled={searching || limitReached || (!query.trim() && !industry.trim() && !titleKeywords.trim())}
+              className="px-4 py-1.5 rounded-lg text-sm font-medium flex items-center gap-1.5 self-end"
+              style={{
+                backgroundColor: limitReached ? T.faint : T.copper,
+                color: limitReached ? T.muted : T.page,
+                opacity: searching || limitReached ? 0.6 : 1,
+                ...FONT_HEADING,
+              }}
+            >
+              {searching ? <Spinner size={14} /> : null}
+              {limitReached ? "Daily Limit Reached" : "Search Apollo"}
+            </button>
+          </div>
+
+          {error && <div className="text-xs" style={{ color: T.red }}>{error}</div>}
+
+          {/* Results */}
+          {results.length > 0 && (
+            <div>
+              <div
+                className="flex items-center justify-between mb-2 cursor-pointer"
+                onClick={() => setResultsOpen((o) => !o)}
+              >
+                <div className="text-xs font-medium" style={{ color: T.muted, ...FONT_HEADING }}>
+                  {results.length} result{results.length !== 1 ? "s" : ""} found
+                </div>
+                <span className="text-xs" style={{ color: T.muted }}>
+                  {resultsOpen ? "\u25B2 Collapse" : "\u25BC Expand"}
+                </span>
+              </div>
+              {resultsOpen && (
+                <div className="flex flex-col gap-1.5 max-h-64 overflow-auto">
+                  {results.map((r) => (
+                    <div
+                      key={r.contact.email || `${r.contact.full_name}-${r.company.name}`}
+                      className="flex items-center justify-between rounded-lg px-3 py-2"
+                      style={{ backgroundColor: T.page, border: `1px solid ${T.border}` }}
+                    >
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm truncate" style={{ color: T.starlight }}>
+                          {r.contact.full_name}
+                          <span className="ml-2 text-xs" style={{ color: T.muted }}>{r.contact.title}</span>
+                        </div>
+                        <div className="text-xs truncate" style={{ color: T.bodyText }}>
+                          {r.company.name}
+                          {r.company.industry ? ` \u00B7 ${r.company.industry}` : ""}
+                          {r.company.city ? ` \u00B7 ${r.company.city}, ${r.company.state}` : ""}
+                        </div>
+                        {r.contact.email && (
+                          <div className="text-xs truncate" style={{ color: T.muted }}>
+                            {r.contact.email}
+                            {r.contact.email_status && r.contact.email_status !== "unknown"
+                              ? ` (${r.contact.email_status})`
+                              : ""}
+                          </div>
+                        )}
+                      </div>
+                      <button
+                        onClick={() => importLead(r)}
+                        disabled={importing === r.contact.email}
+                        className="px-2.5 py-1 rounded text-xs font-medium ml-3 flex items-center gap-1"
+                        style={{ backgroundColor: T.copper, color: T.page }}
+                      >
+                        {importing === r.contact.email ? <Spinner size={12} /> : null}
+                        Import
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -753,10 +901,12 @@ function LeadDetailPanel({
   leadId,
   onClose,
   onMutated,
+  allLeads,
 }: {
   leadId: number;
   onClose: () => void;
   onMutated: () => void;
+  allLeads: Lead[];
 }) {
   const [lead, setLead] = useState<Lead | null>(null);
   const [loading, setLoading] = useState(true);
@@ -777,9 +927,13 @@ function LeadDetailPanel({
   // Stage changing
   const [changingStage, setChangingStage] = useState(false);
 
-  // Suppress
+  // Suppress contact
   const [suppressConfirm, setSuppressConfirm] = useState(false);
   const [suppressing, setSuppressing] = useState(false);
+
+  // Suppress company
+  const [suppressCompanyConfirm, setSuppressCompanyConfirm] = useState(false);
+  const [suppressingCompany, setSuppressingCompany] = useState(false);
 
   // Notes
   const [noteText, setNoteText] = useState("");
@@ -938,17 +1092,61 @@ function LeadDetailPanel({
       const res = await fetch(`/api/admin/crm/leads/${leadId}/suppress`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ reason: "manual_suppress" }),
+        body: JSON.stringify({ reason: "manual_opt_out" }),
       });
       if (!res.ok) throw new Error("Suppress failed");
-      flash("Contact suppressed", "ok");
+      flash("Contact opted out", "ok");
       setSuppressConfirm(false);
       onMutated();
       fetchLead();
     } catch {
-      flash("Failed to suppress", "err");
+      flash("Failed to opt out contact", "err");
     } finally {
       setSuppressing(false);
+    }
+  }
+
+  async function suppressCompany() {
+    if (!lead) return;
+    setSuppressingCompany(true);
+    try {
+      // Find all leads with the same company_id
+      const companyLeads = allLeads.filter((l) => l.company_id === lead.company_id);
+
+      // Suppress each one via the existing suppress endpoint
+      const promises = companyLeads.map((l) =>
+        fetch(`/api/admin/crm/leads/${l.id}/suppress`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ reason: "company_suppressed" }),
+        })
+      );
+
+      // If no other leads found, at least suppress the current one
+      if (companyLeads.length === 0) {
+        const res = await fetch(`/api/admin/crm/leads/${leadId}/suppress`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ reason: "company_suppressed" }),
+        });
+        if (!res.ok) throw new Error("Suppress failed");
+      } else {
+        const results = await Promise.all(promises);
+        const failed = results.filter((r) => !r.ok);
+        if (failed.length > 0) throw new Error(`Failed to suppress ${failed.length} contacts`);
+      }
+
+      flash(
+        `Company "${lead.company_name}" suppressed (${Math.max(companyLeads.length, 1)} contact${companyLeads.length !== 1 ? "s" : ""})`,
+        "ok"
+      );
+      setSuppressCompanyConfirm(false);
+      onMutated();
+      fetchLead();
+    } catch (err: unknown) {
+      flash(err instanceof Error ? err.message : "Failed to suppress company", "err");
+    } finally {
+      setSuppressingCompany(false);
     }
   }
 
@@ -1065,18 +1263,19 @@ function LeadDetailPanel({
                 </div>
               </div>
               {!isSuppressed && (
-                <div>
+                <div className="flex flex-col gap-2 items-end">
+                  {/* Opt Out Contact */}
                   {!suppressConfirm ? (
                     <button
                       onClick={() => setSuppressConfirm(true)}
                       className="px-3 py-1.5 rounded-lg text-xs font-medium"
                       style={{ color: T.red, border: `1px solid ${T.red}33` }}
                     >
-                      Suppress
+                      Opt Out Contact
                     </button>
                   ) : (
                     <div className="flex items-center gap-2">
-                      <span className="text-xs" style={{ color: T.red }}>Confirm?</span>
+                      <span className="text-xs" style={{ color: T.red }}>Opt out this contact?</span>
                       <button
                         onClick={suppressLead}
                         disabled={suppressing}
@@ -1084,10 +1283,43 @@ function LeadDetailPanel({
                         style={{ backgroundColor: T.red, color: "#fff" }}
                       >
                         {suppressing && <Spinner size={12} />}
-                        Yes, Suppress
+                        Yes, Opt Out
                       </button>
                       <button
                         onClick={() => setSuppressConfirm(false)}
+                        className="px-2 py-1 rounded text-xs"
+                        style={{ color: T.muted, border: `1px solid ${T.border}` }}
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  )}
+
+                  {/* Suppress Company */}
+                  {!suppressCompanyConfirm ? (
+                    <button
+                      onClick={() => setSuppressCompanyConfirm(true)}
+                      className="px-3 py-1.5 rounded-lg text-xs font-medium"
+                      style={{ color: T.red, border: `1px solid ${T.red}33` }}
+                    >
+                      Suppress Company
+                    </button>
+                  ) : (
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs" style={{ color: T.red }}>
+                        Suppress all contacts at {lead.company_name}?
+                      </span>
+                      <button
+                        onClick={suppressCompany}
+                        disabled={suppressingCompany}
+                        className="px-2.5 py-1 rounded text-xs font-medium flex items-center gap-1"
+                        style={{ backgroundColor: T.red, color: "#fff" }}
+                      >
+                        {suppressingCompany && <Spinner size={12} />}
+                        Yes, Suppress
+                      </button>
+                      <button
+                        onClick={() => setSuppressCompanyConfirm(false)}
                         className="px-2 py-1 rounded text-xs"
                         style={{ color: T.muted, border: `1px solid ${T.border}` }}
                       >
@@ -1416,18 +1648,6 @@ function LeadDetailPanel({
                 </button>
               </div>
             </div>
-
-            {/* ── Apollo Search ── */}
-            <div style={sectionStyle}>
-              <div className="text-xs font-medium mb-3" style={{ color: T.copper, ...FONT_HEADING }}>
-                Apollo Search
-              </div>
-              <ApolloSection
-                onImported={() => {
-                  onMutated();
-                }}
-              />
-            </div>
           </div>
         )}
       </div>
@@ -1468,6 +1688,11 @@ export function CrmTab() {
 
   // Seeding
   const [seeding, setSeeding] = useState(false);
+
+  // Track suppressed companies for red highlighting in the table
+  const suppressedCompanyIds = new Set(
+    leads.filter((l) => l.stage === "suppressed").map((l) => l.company_id)
+  );
 
   const fetchStats = useCallback(async () => {
     try {
@@ -1571,6 +1796,9 @@ export function CrmTab() {
     <div className="flex flex-col gap-4">
       {/* KPI Bar */}
       <KpiBar stats={stats} />
+
+      {/* Apollo Prospecting Search */}
+      <ApolloSearchBar onImported={handleMutated} />
 
       {/* Filter Bar */}
       <div
@@ -1697,6 +1925,7 @@ export function CrmTab() {
               <tbody>
                 {leads.map((lead) => {
                   const suppressed = lead.stage === "suppressed";
+                  const companySuppressed = suppressedCompanyIds.has(lead.company_id);
                   return (
                     <tr
                       key={lead.id}
@@ -1730,7 +1959,11 @@ export function CrmTab() {
                       </td>
                       <td
                         className="px-3 py-2.5 text-sm"
-                        style={{ color: T.bodyText, borderBottom: `1px solid ${T.border}` }}
+                        style={{
+                          color: companySuppressed ? T.red : T.bodyText,
+                          fontWeight: companySuppressed ? 600 : 400,
+                          borderBottom: `1px solid ${T.border}`,
+                        }}
                       >
                         {lead.company_name || "\u2014"}
                       </td>
@@ -1798,6 +2031,7 @@ export function CrmTab() {
           leadId={selectedLeadId}
           onClose={() => setSelectedLeadId(null)}
           onMutated={handleMutated}
+          allLeads={leads}
         />
       )}
 

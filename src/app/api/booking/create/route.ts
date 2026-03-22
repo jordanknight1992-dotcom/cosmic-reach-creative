@@ -123,18 +123,23 @@ export async function POST(request: NextRequest) {
       googleMeetUrl,
     });
 
-    // Send confirmation + alert emails (non-blocking)
-    sendBookingEmails({
-      clientName: name,
-      clientEmail: email,
-      bookingTitle: bookingType.title,
-      durationMinutes: bookingType.durationMinutes,
-      startTime: start,
-      endTime,
-      notes,
-      bookingId: booking.id as number,
-      googleMeetUrl,
-    }).catch((err) => console.error("Email send error:", err));
+    // Send confirmation + alert emails (must await on serverless — function terminates after response)
+    try {
+      await sendBookingEmails({
+        clientName: name,
+        clientEmail: email,
+        bookingTitle: bookingType.title,
+        durationMinutes: bookingType.durationMinutes,
+        startTime: start,
+        endTime,
+        notes,
+        bookingId: booking.id as number,
+        googleMeetUrl,
+      });
+      console.log("Booking emails sent successfully");
+    } catch (emailErr) {
+      console.error("Email send error (booking still created):", emailErr);
+    }
 
     return NextResponse.json({
       success: true,

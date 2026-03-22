@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
       location,
       industry,
       title_keywords,
-      per_page = 25,
+      per_page = 5,
     } = body;
 
     // Build Apollo search payload
