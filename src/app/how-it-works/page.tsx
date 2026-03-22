@@ -73,7 +73,7 @@ const engagementPath = [
     isEntry: false,
   },
   {
-    name: "Mission Control Advisory",
+    name: "Flight Support Advisory",
     price: "$750 / mo",
     description:
       "Ongoing advisory to refine positioning, strengthen offers, and optimize systems as the business evolves.",

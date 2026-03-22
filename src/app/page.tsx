@@ -199,7 +199,7 @@ export default function HomePage() {
 
           <div className="mx-auto max-w-3xl text-center mt-8">
             <p className="text-starlight/80 text-base font-display font-semibold mb-2">
-              These aren&apos;t effort problems. They&apos;re architectural ones.
+              Every one of these is a structural problem with a structural fix.
             </p>
             <p className="text-starlight/70 text-sm mb-6">
               The Business Clarity Audit is a structural diagnostic that identifies the exact friction points and what to address first.

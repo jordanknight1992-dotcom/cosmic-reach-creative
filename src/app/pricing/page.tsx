@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import Image from "next/image";
+import Link from "next/link";
 import { Icon } from "@/components/Icon";
 
 export const metadata: Metadata = {
@@ -41,11 +42,19 @@ const sprintTiers = [
 ];
 
 const advisoryTier = {
-  name: "Mission Control Retainer",
+  name: "Flight Support Retainer",
   price: "$750/mo",
   description:
-    "Flight Support. Ongoing advisory to maintain the system, prevent operational drift, and recalibrate as the business evolves.",
+    "Ongoing advisory to maintain the system, prevent operational drift, and recalibrate as the business evolves.",
   icon: "network",
+};
+
+const missionControlTier = {
+  name: "Mission Control",
+  price: "From $149/mo",
+  description:
+    "The daily operating system for founders who want pipeline clarity, daily targets, and one clear next move, all in one place.",
+  icon: "compass",
 };
 
 export default function PricingPage() {
@@ -230,7 +239,7 @@ export default function PricingPage() {
       </section>
 
       {/* Advisory Card */}
-      <section className="py-6 sm:py-8" aria-label="Mission Control Retainer">
+      <section className="py-6 sm:py-8" aria-label="Flight Support Retainer">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
             <article className="rounded-[var(--radius-lg)] border border-copper/20 bg-navy/50 p-5 flex flex-col sm:flex-row sm:items-start gap-4 transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/40 hover:shadow-subtle">
@@ -241,7 +250,7 @@ export default function PricingPage() {
                     {advisoryTier.name}
                   </h3>
                   <span className="text-xs font-display font-semibold text-copper/60 border border-copper/20 rounded-full px-2 py-0.5">
-                    Flight Support
+                    Advisory
                   </span>
                 </div>
                 <p className="text-sm text-starlight/60">{advisoryTier.description}</p>
@@ -249,6 +258,39 @@ export default function PricingPage() {
               <p className="text-copper font-display font-semibold text-xl shrink-0">
                 {advisoryTier.price}
               </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {/* Mission Control SaaS Card */}
+      <section className="py-6 sm:py-8" aria-label="Mission Control">
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+          <div className="max-w-2xl mx-auto">
+            <article className="rounded-[var(--radius-lg)] border border-copper/20 bg-navy/50 p-5 flex flex-col sm:flex-row sm:items-start gap-4 transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/40 hover:shadow-subtle">
+              <Icon name={missionControlTier.icon} size={24} className="opacity-70 shrink-0 mt-0.5" />
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <h3 className="font-display font-semibold text-base">
+                    {missionControlTier.name}
+                  </h3>
+                  <span className="text-xs font-display font-semibold text-copper/60 border border-copper/20 rounded-full px-2 py-0.5">
+                    SaaS
+                  </span>
+                </div>
+                <p className="text-sm text-starlight/60">{missionControlTier.description}</p>
+              </div>
+              <div className="shrink-0 flex flex-col items-end gap-2">
+                <p className="text-copper font-display font-semibold text-xl">
+                  {missionControlTier.price}
+                </p>
+                <Link
+                  href="/mission-control"
+                  className="inline-flex items-center rounded-[var(--radius-sm)] border border-copper/30 bg-copper/10 text-copper px-4 py-1.5 text-xs font-display font-semibold transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/50 hover:bg-copper/15"
+                >
+                  Try the Demo →
+                </Link>
+              </div>
             </article>
           </div>
         </div>
