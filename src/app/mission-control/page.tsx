@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import { Icon } from "@/components/Icon";
+import { StripeBuyButton } from "@/components/StripeBuyButton";
 
 export const metadata: Metadata = {
   title: "Mission Control | Daily Operating System for Founders",
@@ -131,14 +132,9 @@ export default function MissionControlLanding() {
                 Includes guided onboarding. You bring your own API keys.
               </p>
 
-              <a
-                href="https://buy.stripe.com/5kQfZ98fzbDyeEM6i4fbq08"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block w-full py-3.5 rounded-[var(--radius-md)] font-display font-bold text-sm text-center mb-6 bg-copper text-deep-space transition-all duration-[var(--duration-base)] hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0"
-              >
-                Get Started
-              </a>
+              <div className="mb-6">
+                <StripeBuyButton buyButtonId="buy_btn_1TDtF70vGBLnj72k5a2Q3awc" />
+              </div>
 
               {/* Features in two columns */}
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2">
