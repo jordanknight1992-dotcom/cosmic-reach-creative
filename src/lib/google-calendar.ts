@@ -1,30 +1,34 @@
 import { google } from "googleapis";
 import { availability } from "@/config/booking";
 
+export interface CalendarCredentials {
+  refreshToken?: string;
+  clientId?: string;
+  clientSecret?: string;
+}
+
 /**
  * Returns an authorized Google Calendar client using a service-account-style
  * OAuth2 flow. The refresh token is obtained once via the OAuth consent flow
- * and stored in GOOGLE_REFRESH_TOKEN.
- *
- * For initial setup you need a one-time OAuth consent to get a refresh token.
- * See /api/auth/google/route.ts for the consent flow.
+ * and stored in GOOGLE_REFRESH_TOKEN (or passed via credentials).
  */
-function getAuthClient() {
+function getAuthClient(creds?: CalendarCredentials) {
   const oauth2 = new google.auth.OAuth2(
-    process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET,
+    creds?.clientId || process.env.GOOGLE_CLIENT_ID,
+    creds?.clientSecret || process.env.GOOGLE_CLIENT_SECRET,
     `${process.env.NEXTAUTH_URL}/api/auth/callback/google`
   );
 
-  if (process.env.GOOGLE_REFRESH_TOKEN) {
-    oauth2.setCredentials({ refresh_token: process.env.GOOGLE_REFRESH_TOKEN });
+  const refreshToken = creds?.refreshToken || process.env.GOOGLE_REFRESH_TOKEN;
+  if (refreshToken) {
+    oauth2.setCredentials({ refresh_token: refreshToken });
   }
 
   return oauth2;
 }
 
-function getCalendar() {
-  return google.calendar({ version: "v3", auth: getAuthClient() });
+function getCalendar(creds?: CalendarCredentials) {
+  return google.calendar({ version: "v3", auth: getAuthClient(creds) });
 }
 
 /**
@@ -32,15 +36,16 @@ function getCalendar() {
  */
 export async function getBusySlots(
   startDate: Date,
-  endDate: Date
+  endDate: Date,
+  creds?: CalendarCredentials
 ): Promise<{ start: Date; end: Date }[]> {
-  // If no refresh token yet, return empty (allows dev without Google connected)
-  if (!process.env.GOOGLE_REFRESH_TOKEN) {
+  const refreshToken = creds?.refreshToken || process.env.GOOGLE_REFRESH_TOKEN;
+  if (!refreshToken) {
     return [];
   }
 
   try {
-    const calendar = getCalendar();
+    const calendar = getCalendar(creds);
     const res = await calendar.freebusy.query({
       requestBody: {
         timeMin: startDate.toISOString(),
@@ -73,14 +78,15 @@ export async function createCalendarEvent(params: {
   endTime: Date;
   attendeeEmail: string;
   attendeeName: string;
+  creds?: CalendarCredentials;
 }): Promise<{ eventId: string | null; meetUrl: string | null }> {
-  if (!process.env.GOOGLE_REFRESH_TOKEN) {
+  const refreshToken = params.creds?.refreshToken || process.env.GOOGLE_REFRESH_TOKEN;
+  if (!refreshToken) {
     return { eventId: null, meetUrl: null };
   }
 
   try {
-  console.log("Creating Google Calendar event. Client ID starts:", process.env.GOOGLE_CLIENT_ID?.substring(0, 15), "Refresh token length:", process.env.GOOGLE_REFRESH_TOKEN?.length);
-  const calendar = getCalendar();
+  const calendar = getCalendar(params.creds);
   const event = await calendar.events.insert({
     calendarId: "primary",
     conferenceDataVersion: 1,

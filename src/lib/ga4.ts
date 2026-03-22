@@ -66,10 +66,17 @@ export interface GA4Metrics {
 
 /* ─── OAuth2 token exchange ─── */
 
-async function getAccessToken(): Promise<string | null> {
-  const clientId     = process.env.GOOGLE_CLIENT_ID;
-  const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-  const refreshToken = process.env.GOOGLE_REFRESH_TOKEN;
+export interface GA4Credentials {
+  propertyId: string;
+  refreshToken?: string;
+  clientId?: string;
+  clientSecret?: string;
+}
+
+async function getAccessToken(creds?: Partial<GA4Credentials>): Promise<string | null> {
+  const clientId     = creds?.clientId || process.env.GOOGLE_CLIENT_ID;
+  const clientSecret = creds?.clientSecret || process.env.GOOGLE_CLIENT_SECRET;
+  const refreshToken = creds?.refreshToken || process.env.GOOGLE_REFRESH_TOKEN;
 
   if (!clientId || !clientSecret || !refreshToken) return null;
 
@@ -96,12 +103,12 @@ async function getAccessToken(): Promise<string | null> {
 
 /* ─── Public function ─── */
 
-export async function getGA4Data(): Promise<GA4Metrics | null> {
-  const propertyId = process.env.GA4_PROPERTY_ID;
+export async function getGA4Data(creds?: GA4Credentials): Promise<GA4Metrics | null> {
+  const propertyId = creds?.propertyId || process.env.GA4_PROPERTY_ID;
   if (!propertyId) return null;
 
   try {
-    const token = await getAccessToken();
+    const token = await getAccessToken(creds);
     if (!token) return null;
 
     const baseUrl = `https://analyticsdata.googleapis.com/v1beta/properties/${propertyId}:runReport`;

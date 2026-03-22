@@ -8,7 +8,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Cosmic Reach Creative | Marketing Strategy & Growth Systems for Founders",
   description:
-    "Cosmic Reach Creative helps founders and growing businesses sharpen messaging, design stronger offers, and build marketing systems that scale. Strategic consulting founded in Memphis, TN — serving businesses nationwide. Start with a Business Clarity Audit.",
+    "Cosmic Reach Creative helps founders and growing businesses sharpen messaging, design stronger offers, and build marketing systems that scale. Strategic consulting founded in Memphis, TN, serving businesses nationwide. Start with a Business Clarity Audit.",
   alternates: { canonical: siteConfig.domain },
 };
 
@@ -65,7 +65,7 @@ export default function HomePage() {
         <div className="absolute inset-0">
           <Image
             src="/images/01-home-hero.jpg"
-            alt="Cosmic Reach Creative — Marketing strategy consulting for founders"
+            alt="Cosmic Reach Creative: Marketing strategy consulting for founders"
             fill
             className="object-cover"
             priority
@@ -82,7 +82,7 @@ export default function HomePage() {
               We design the strategic architecture behind scalable marketing: the structure that allows messaging, offers, and systems to compound rather than compete.
             </p>
             <p className="text-starlight/60 text-sm mb-6">
-              Diagnosis before prescription. Founded in Memphis, TN — serving founders nationwide.
+              Diagnosis before prescription. Founded in Memphis, TN, serving founders nationwide.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <CTAButton label="Start The Clarity Audit" variant="primary" />
@@ -329,36 +329,91 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ── Mission Control ── */}
+      <section
+        className="py-16 sm:py-24 bg-deep-space"
+        aria-labelledby="mc-cta-heading"
+      >
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center mb-10">
+            <div className="text-xs font-display font-semibold tracking-[0.14em] uppercase text-copper mb-3">
+              Mission Control
+            </div>
+            <h2 id="mc-cta-heading" className="mb-3">
+              Strategy Becomes Daily Action
+            </h2>
+            <p className="text-starlight/70 text-base" style={{ textWrap: "balance" }}>
+              The operating system that turns your Clarity Audit into daily execution —
+              pipeline visibility, prioritized targets, and AI-powered outreach, all driven by your strategy.
+            </p>
+          </div>
+
+          {/* Features — simple list */}
+          <div className="max-w-xl mx-auto mb-10">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
+              {[
+                "Daily briefing + next move",
+                "5 priority targets each morning",
+                "CRM with pipeline stages",
+                "AI email drafts in your voice",
+                "Lead generation + ICP scoring",
+                "GA4 analytics dashboard",
+                "Google Calendar sync",
+                "Meeting scheduling + booking",
+              ].map((feature) => (
+                <li key={feature} className="flex items-center gap-2.5 text-sm text-starlight/70">
+                  <span className="text-copper text-xs shrink-0" aria-hidden="true">&#9670;</span>
+                  {feature}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* CTA */}
+          <div className="text-center">
+            <Link
+              href="/mission-control"
+              className="inline-flex items-center justify-center rounded-[var(--radius-md)] px-6 py-3 font-display font-semibold text-base bg-spark-red text-white transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0"
+            >
+              Explore Mission Control
+            </Link>
+            <p className="mt-3 text-xs text-starlight/40">
+              $299/mo · Guided onboarding included · BYO API keys
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ── Who Cosmic Reach Is For ── */}
-      <section className="py-16 sm:py-24" aria-labelledby="fit-heading">
+      <section className="py-16 sm:py-24 bg-section-light" aria-labelledby="fit-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <div className="mb-3">
               <Icon name="compass" size={36} className="opacity-80 mx-auto" />
             </div>
-            <h2 id="fit-heading" className="mb-3">Who Cosmic Reach Is For</h2>
-            <p className="text-starlight/70 text-base mb-8">
+            <h2 id="fit-heading" className="mb-3 text-navy">Who Cosmic Reach Is For</h2>
+            <p className="text-navy/70 text-base mb-8">
               Cosmic Reach works best with founders and teams who sense something in their business isn&apos;t converting the way it should.
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-2 max-w-3xl mx-auto">
-            <div className="rounded-2xl border border-starlight/10 bg-navy/50 p-6 sm:p-8">
+            <div className="rounded-2xl border border-navy/10 bg-white p-6 sm:p-8 shadow-subtle">
               <h3 className="font-display font-semibold text-base text-copper mb-4">The Right Trajectory</h3>
               <ul className="space-y-3">
                 {fitSignals.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-starlight/70 text-sm">
+                  <li key={i} className="flex items-start gap-3 text-navy/70 text-sm">
                     <span className="text-copper mt-1 text-xs shrink-0" aria-hidden="true">&#9670;</span>
                     {item}
                   </li>
                 ))}
               </ul>
             </div>
-            <div className="rounded-2xl border border-starlight/10 bg-navy/50 p-6 sm:p-8">
-              <h3 className="font-display font-semibold text-base text-starlight/60 mb-4">Not the Right Fit</h3>
+            <div className="rounded-2xl border border-navy/10 bg-white p-6 sm:p-8 shadow-subtle">
+              <h3 className="font-display font-semibold text-base text-navy/50 mb-4">Not the Right Fit</h3>
               <ul className="space-y-3">
                 {notFitSignals.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-starlight/60 text-sm">
-                    <span className="text-starlight/30 mt-1 text-xs shrink-0" aria-hidden="true">&#9670;</span>
+                  <li key={i} className="flex items-start gap-3 text-navy/50 text-sm">
+                    <span className="text-navy/25 mt-1 text-xs shrink-0" aria-hidden="true">&#9670;</span>
                     {item}
                   </li>
                 ))}
@@ -366,7 +421,7 @@ export default function HomePage() {
             </div>
           </div>
           <div className="text-center mt-6">
-            <p className="text-starlight/60 text-sm mb-4">
+            <p className="text-navy/50 text-sm mb-4">
               The common thread: a willingness to fix the foundation before scaling the spend.
             </p>
           </div>
@@ -405,7 +460,7 @@ export default function HomePage() {
                 name: "What is Cosmic Reach Creative?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Cosmic Reach Creative is a marketing strategy consultancy founded by Jordan Knight in Memphis, TN. We help founders and growing businesses diagnose what's blocking growth and build the strategic systems to fix it — including messaging, offer design, customer journey optimization, and performance visibility."
+                  text: "Cosmic Reach Creative is a marketing strategy consultancy founded by Jordan Knight in Memphis, TN. We help founders and growing businesses diagnose what's blocking growth and build the strategic systems to fix it, including messaging, offer design, customer journey optimization, and performance visibility."
                 }
               },
               {
@@ -413,7 +468,7 @@ export default function HomePage() {
                 name: "What does a marketing strategist do?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "A marketing strategist evaluates the underlying structure of how a business attracts, converts, and retains customers. At Cosmic Reach, we use the Launch Sequence framework to diagnose messaging clarity, offer strength, customer journey friction, and growth visibility — then build systems to fix what's broken."
+                  text: "A marketing strategist evaluates the underlying structure of how a business attracts, converts, and retains customers. At Cosmic Reach, we use the Launch Sequence framework to diagnose messaging clarity, offer strength, customer journey friction, and growth visibility, then build systems to fix what's broken."
                 }
               },
               {
@@ -421,7 +476,7 @@ export default function HomePage() {
                 name: "Is Cosmic Reach Creative a marketing agency?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "No. Cosmic Reach Creative is a strategic consultancy, not a traditional marketing agency. We don't run ads, manage social media, or produce content. We design the strategic architecture that makes those activities effective — messaging systems, offer positioning, conversion infrastructure, and growth dashboards."
+                  text: "No. Cosmic Reach Creative is a strategic consultancy, not a traditional marketing agency. We don't run ads, manage social media, or produce content. We design the strategic architecture that makes those activities effective: messaging systems, offer positioning, conversion infrastructure, and growth dashboards."
                 }
               },
               {
@@ -451,15 +506,15 @@ export default function HomePage() {
           <div className="max-w-2xl mx-auto space-y-4">
             {[
               { q: "What is Cosmic Reach Creative?", a: "A marketing strategy consultancy founded by Jordan Knight in Memphis, TN. We help founders and growing businesses diagnose what's blocking growth and build the strategic systems to fix it." },
-              { q: "What does a marketing strategist do?", a: "We evaluate the underlying structure of how a business attracts, converts, and retains customers — then build systems to fix what's broken. Messaging, offers, customer journey, and performance visibility." },
-              { q: "Is Cosmic Reach a marketing agency?", a: "No. We're a strategic consultancy. We don't run ads or manage social media. We design the architecture that makes marketing effective — messaging systems, offer positioning, conversion infrastructure, and growth dashboards." },
+              { q: "What does a marketing strategist do?", a: "We evaluate the underlying structure of how a business attracts, converts, and retains customers, then build systems to fix what's broken. Messaging, offers, customer journey, and performance visibility." },
+              { q: "Is Cosmic Reach a marketing agency?", a: "No. We're a strategic consultancy. We don't run ads or manage social media. We design the architecture that makes marketing effective: messaging systems, offer positioning, conversion infrastructure, and growth dashboards." },
               { q: "Do you only work with businesses in Memphis?", a: "We're headquartered in Memphis, TN, but we work with founders and growing businesses nationwide. All engagements are delivered remotely." },
               { q: "What is a Business Clarity Audit?", a: "A structured diagnostic that evaluates your messaging, offer design, customer journey, and growth levers. You receive a scored report with prioritized recommendations. $150, 3-5 business days, credited toward any Sprint." },
             ].map((faq) => (
               <details key={faq.q} className="group rounded-xl border border-navy/10 bg-white shadow-subtle">
-                <summary className="flex items-center justify-between px-5 py-4 cursor-pointer font-display font-semibold text-sm text-navy">
+                <summary className="flex items-center justify-between px-5 py-4 cursor-pointer font-display font-semibold text-sm text-navy list-none [&::-webkit-details-marker]:hidden">
                   {faq.q}
-                  <span className="text-copper ml-2 group-open:rotate-45 transition-transform text-lg" aria-hidden="true">+</span>
+                  <span className="text-copper ml-2 group-open:rotate-45 transition-transform text-lg shrink-0" aria-hidden="true">+</span>
                 </summary>
                 <p className="px-5 pb-4 text-navy/70 text-sm leading-relaxed">{faq.a}</p>
               </details>
