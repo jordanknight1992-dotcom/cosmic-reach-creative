@@ -641,7 +641,9 @@ function ApolloSearchBar({ onImported }: { onImported: () => void }) {
   const [searching, setSearching] = useState(false);
   const [importing, setImporting] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [debugInfo, setDebugInfo] = useState<string | null>(null);
   const [unavailable, setUnavailable] = useState(false);
+  const [hasSearched, setHasSearched] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [resultsOpen, setResultsOpen] = useState(true);
   const [usage, setUsage] = useState(0);
@@ -659,6 +661,7 @@ function ApolloSearchBar({ onImported }: { onImported: () => void }) {
     if (limitReached) return;
     setSearching(true);
     setError(null);
+    setDebugInfo(null);
     try {
       const titleArr = titleKeywords
         .split(",")
@@ -678,18 +681,32 @@ function ApolloSearchBar({ onImported }: { onImported: () => void }) {
         }),
       });
       const data = await res.json();
-      if (data.fallback) {
-        setUnavailable(true);
+
+      // API-level error
+      if (data.error) {
+        setError(data.error);
+        if (data.debug) setDebugInfo(JSON.stringify(data.debug, null, 2));
+        if (data.fallback) setUnavailable(true);
+        setHasSearched(true);
         return;
       }
+
       setResults(data.results || []);
       setTotalResults(data.total || 0);
       setPage(searchPage);
       setResultsOpen(true);
+      setHasSearched(true);
+
+      // Show debug context if 0 results
+      if ((data.results || []).length === 0 && data.debug) {
+        setDebugInfo(JSON.stringify(data.debug, null, 2));
+      }
+
       const newUsage = incrementApolloUsage();
       setUsage(newUsage);
-    } catch {
-      setError("Search failed");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Search failed — network error");
+      setHasSearched(true);
     } finally {
       setSearching(false);
     }
@@ -837,7 +854,33 @@ function ApolloSearchBar({ onImported }: { onImported: () => void }) {
             </button>
           </div>
 
-          {error && <div className="text-xs" style={{ color: T.red }}>{error}</div>}
+          {error && (
+            <div className="rounded-lg px-3 py-2" style={{ backgroundColor: "rgba(224,71,71,0.1)", border: `1px solid rgba(224,71,71,0.25)` }}>
+              <div className="text-xs font-medium" style={{ color: T.red }}>{error}</div>
+              {debugInfo && (
+                <details className="mt-1">
+                  <summary className="text-xs cursor-pointer" style={{ color: T.muted }}>Debug details</summary>
+                  <pre className="text-xs mt-1 overflow-auto max-h-32 whitespace-pre-wrap" style={{ color: T.muted }}>{debugInfo}</pre>
+                </details>
+              )}
+            </div>
+          )}
+
+          {/* Empty state */}
+          {hasSearched && !error && results.length === 0 && !searching && (
+            <div className="rounded-lg px-3 py-3 text-center" style={{ backgroundColor: T.page, border: `1px solid ${T.border}` }}>
+              <div className="text-sm" style={{ color: T.muted, ...FONT_HEADING }}>No results found</div>
+              <div className="text-xs mt-1" style={{ color: T.faint }}>
+                Try broadening your search — remove title keywords or use a larger metro area.
+              </div>
+              {debugInfo && (
+                <details className="mt-2 text-left">
+                  <summary className="text-xs cursor-pointer" style={{ color: T.muted }}>Query details</summary>
+                  <pre className="text-xs mt-1 overflow-auto max-h-32 whitespace-pre-wrap" style={{ color: T.muted }}>{debugInfo}</pre>
+                </details>
+              )}
+            </div>
+          )}
 
           {/* Results */}
           {results.length > 0 && (

@@ -106,23 +106,35 @@ export async function POST(request: NextRequest) {
       }
     );
 
+    // Log the query for debugging
+    const builtQuery = { bool: { must: mustClauses } };
+    console.log("PDL search query:", JSON.stringify(builtQuery));
+
     if (!pdlRes.ok) {
       const errData = await pdlRes.json().catch(() => ({}));
-      console.error("PDL API error:", pdlRes.status, errData);
+      console.error("PDL API error:", pdlRes.status, JSON.stringify(errData));
 
       // 404 means no results found (not an error)
       if (pdlRes.status === 404) {
-        return NextResponse.json({ results: [], total: 0, page: 1 });
+        return NextResponse.json({
+          results: [],
+          total: 0,
+          page: 1,
+          debug: { status: 404, message: "No matching people found", query: builtQuery },
+        });
       }
 
+      const errorMessage = errData?.error?.message || `PDL API error (${pdlRes.status})`;
       return NextResponse.json({
-        error: errData?.error?.message || `Search error (${pdlRes.status})`,
+        error: errorMessage,
+        debug: { status: pdlRes.status, raw: errData, query: builtQuery },
         fallback: pdlRes.status === 401 || pdlRes.status === 403,
       });
     }
 
     const pdlData = await pdlRes.json();
     const people = pdlData.data || [];
+    console.log("PDL results:", people.length, "of", pdlData.total, "total");
 
     // Map PDL response to the same shape the CrmTab expects
     const results = people.map((person: Record<string, unknown>) => ({
