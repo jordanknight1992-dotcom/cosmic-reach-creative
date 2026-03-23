@@ -84,7 +84,7 @@ export async function POST(request: NextRequest) {
 
     const headers = rows[0];
     const dataRows = rows.slice(1, 6); // Preview first 5 rows
-    const mappingSuggestions = suggestFieldMappings(headers);
+    const mappingSuggestions = suggestFieldMappings(headers, dataRows);
 
     return NextResponse.json({
       preview: {

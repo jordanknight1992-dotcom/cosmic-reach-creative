@@ -2,8 +2,14 @@
  * Smart Field Mapping Engine
  *
  * Deterministic column-name matching for lead imports.
- * Handles CSV, Excel, CRM exports, Apollo, LinkedIn, and custom spreadsheets.
- * No AI calls. Pure string matching and heuristics.
+ * Handles CSV, Excel, CRM exports (Apollo, LinkedIn, HubSpot, Salesforce,
+ * Pipedrive), event attendee lists, conference lists, and custom spreadsheets.
+ *
+ * No AI calls. Pure string matching, heuristics, and content sniffing.
+ *
+ * Design philosophy: be forgiving. Users shouldn't need exact column names.
+ * The mapper handles dozens of common variations and falls back to
+ * content-based detection when header names don't match.
  */
 
 export type StandardField =
@@ -30,13 +36,36 @@ interface FieldPattern {
   priority: number; // Higher = stronger match
 }
 
+/**
+ * Comprehensive pattern list covering:
+ * - Apollo exports
+ * - LinkedIn Sales Navigator exports
+ * - HubSpot exports
+ * - Salesforce exports
+ * - Pipedrive exports
+ * - Zoho CRM exports
+ * - Eventbrite/conference attendee lists
+ * - Generic spreadsheets
+ */
 const FIELD_PATTERNS: FieldPattern[] = [
   {
     field: "email",
     patterns: [
-      "email", "e-mail", "work email", "business email", "work_email",
+      "email", "e-mail", "e mail", "work email", "business email", "work_email",
       "email address", "email_address", "contact email", "primary email",
-      "recommended_personal_email", "personal_email",
+      "recommended_personal_email", "personal_email", "corporate email",
+      "person email", "lead email", "prospect email", "attendee email",
+      "participant email", "registrant email", "buyer email",
+      // Apollo
+      "email1", "email 1", "contact_email",
+      // HubSpot
+      "hs_email", "email_address_1",
+      // Salesforce
+      "npe01__work_email__c", "npe01__home_email__c",
+      // Pipedrive
+      "person - email", "org - email",
+      // Zoho
+      "email_opt_out",
     ],
     priority: 10,
   },
@@ -44,7 +73,16 @@ const FIELD_PATTERNS: FieldPattern[] = [
     field: "first_name",
     patterns: [
       "first name", "first_name", "firstname", "given name", "given_name",
-      "first", "fname",
+      "first", "fname", "f name", "forename",
+      // Apollo
+      "person first name",
+      // Salesforce
+      "contact first name", "lead first name",
+      // Eventbrite
+      "attendee first name", "registrant first name",
+      "ticket first name", "buyer first name",
+      // HubSpot
+      "hs_firstname",
     ],
     priority: 9,
   },
@@ -52,7 +90,16 @@ const FIELD_PATTERNS: FieldPattern[] = [
     field: "last_name",
     patterns: [
       "last name", "last_name", "lastname", "surname", "family name",
-      "family_name", "last", "lname",
+      "family_name", "last", "lname", "l name",
+      // Apollo
+      "person last name",
+      // Salesforce
+      "contact last name", "lead last name",
+      // Eventbrite
+      "attendee last name", "registrant last name",
+      "ticket last name", "buyer last name",
+      // HubSpot
+      "hs_lastname",
     ],
     priority: 9,
   },
@@ -60,7 +107,13 @@ const FIELD_PATTERNS: FieldPattern[] = [
     field: "full_name",
     patterns: [
       "full name", "full_name", "fullname", "name", "contact name",
-      "contact_name", "person name", "display name",
+      "contact_name", "person name", "display name", "display_name",
+      "lead name", "prospect name", "attendee name", "registrant name",
+      "participant name", "ticket holder", "buyer name",
+      // Salesforce
+      "contact: full name", "lead: name",
+      // Pipedrive
+      "person - name", "person name",
     ],
     priority: 8,
   },
@@ -68,7 +121,18 @@ const FIELD_PATTERNS: FieldPattern[] = [
     field: "title",
     patterns: [
       "title", "job title", "job_title", "jobtitle", "role", "position",
-      "seniority", "job role", "designation", "function",
+      "seniority", "job role", "designation", "function", "job function",
+      "job_function", "occupation", "profession",
+      // Apollo
+      "person title", "person seniority",
+      // HubSpot
+      "jobtitle", "hs_jobtitle",
+      // Salesforce
+      "contact title", "lead title",
+      // Pipedrive
+      "person - job title",
+      // Eventbrite
+      "job title / role", "attendee job title",
     ],
     priority: 7,
   },
@@ -77,7 +141,18 @@ const FIELD_PATTERNS: FieldPattern[] = [
     patterns: [
       "company", "company name", "company_name", "companyname", "organization",
       "organisation", "org", "account", "account name", "account_name",
-      "employer", "firm", "business name",
+      "employer", "firm", "business name", "business", "company/organization",
+      "org name", "org_name", "workplace",
+      // Apollo
+      "company name for current position", "organization name",
+      // HubSpot
+      "associated company", "hs_company",
+      // Salesforce
+      "account: account name", "lead company",
+      // Pipedrive
+      "organization - name", "org - name",
+      // Eventbrite
+      "company / organization", "attendee company",
     ],
     priority: 7,
   },
@@ -85,7 +160,14 @@ const FIELD_PATTERNS: FieldPattern[] = [
     field: "website",
     patterns: [
       "website", "company website", "company_website", "url", "web",
-      "homepage", "site", "company url", "company_url",
+      "homepage", "site", "company url", "company_url", "web url",
+      "web address", "site url", "org website",
+      // Apollo
+      "website url", "company website url",
+      // HubSpot
+      "hs_website",
+      // Pipedrive
+      "organization - website", "org - web",
     ],
     priority: 6,
   },
@@ -93,6 +175,7 @@ const FIELD_PATTERNS: FieldPattern[] = [
     field: "domain",
     patterns: [
       "domain", "company domain", "company_domain", "email domain",
+      "website domain", "org domain",
     ],
     priority: 6,
   },
@@ -101,7 +184,19 @@ const FIELD_PATTERNS: FieldPattern[] = [
     patterns: [
       "phone", "phone number", "phone_number", "mobile", "direct dial",
       "direct_dial", "cell", "telephone", "tel", "work phone", "mobile phone",
-      "direct phone", "contact number",
+      "direct phone", "contact number", "phone direct", "office phone",
+      "cell phone", "mobile number", "contact phone", "primary phone",
+      // Apollo
+      "person phone", "direct phone number", "mobile phone number",
+      "corporate phone",
+      // HubSpot
+      "hs_phone", "phone_number_1",
+      // Salesforce
+      "contact phone", "lead phone",
+      // Pipedrive
+      "person - phone", "org - phone",
+      // Eventbrite
+      "attendee phone", "cell/mobile",
     ],
     priority: 5,
   },
@@ -110,7 +205,14 @@ const FIELD_PATTERNS: FieldPattern[] = [
     patterns: [
       "linkedin", "linkedin url", "linkedin_url", "linkedinurl",
       "profile url", "profile_url", "linkedin profile", "li url",
-      "person linkedin url", "contact linkedin",
+      "person linkedin url", "contact linkedin", "linkedin link",
+      "linkedin page", "social linkedin", "linkedin address",
+      // Apollo
+      "person linkedin", "person linkedin url",
+      // HubSpot
+      "hs_linkedinbio", "linkedin bio",
+      // Salesforce
+      "linkedin_profile__c",
     ],
     priority: 5,
   },
@@ -118,7 +220,16 @@ const FIELD_PATTERNS: FieldPattern[] = [
     field: "industry",
     patterns: [
       "industry", "sector", "vertical", "market", "segment",
-      "company industry", "business type",
+      "company industry", "business type", "industry type",
+      "company sector", "market segment", "business sector",
+      // Apollo
+      "company industry", "organization industry",
+      // HubSpot
+      "hs_industry",
+      // Salesforce
+      "account industry", "lead industry",
+      // Pipedrive
+      "organization - industry",
     ],
     priority: 4,
   },
@@ -126,6 +237,15 @@ const FIELD_PATTERNS: FieldPattern[] = [
     field: "city",
     patterns: [
       "city", "location city", "person city", "company city", "metro",
+      "town", "municipality", "contact city", "lead city",
+      // Apollo
+      "person city", "company city",
+      // HubSpot
+      "hs_city",
+      // Salesforce
+      "mailing city", "billing city",
+      // Eventbrite
+      "attendee city",
     ],
     priority: 4,
   },
@@ -133,7 +253,15 @@ const FIELD_PATTERNS: FieldPattern[] = [
     field: "state",
     patterns: [
       "state", "province", "region", "person state", "company state",
-      "location state",
+      "location state", "state/province", "state/region", "contact state",
+      // Apollo
+      "person state", "company state",
+      // HubSpot
+      "hs_state",
+      // Salesforce
+      "mailing state", "billing state", "mailing state/province",
+      // Eventbrite
+      "attendee state",
     ],
     priority: 4,
   },
@@ -141,7 +269,15 @@ const FIELD_PATTERNS: FieldPattern[] = [
     field: "country",
     patterns: [
       "country", "nation", "person country", "company country",
-      "location country", "country code",
+      "location country", "country code", "country/region",
+      // Apollo
+      "person country", "company country",
+      // HubSpot
+      "hs_country",
+      // Salesforce
+      "mailing country", "billing country",
+      // Eventbrite
+      "attendee country",
     ],
     priority: 4,
   },
@@ -150,7 +286,15 @@ const FIELD_PATTERNS: FieldPattern[] = [
     patterns: [
       "company size", "company_size", "employees", "employee count",
       "employee_count", "headcount", "head count", "num employees",
-      "number of employees", "size", "staff count",
+      "number of employees", "size", "staff count", "team size",
+      "company headcount", "org size", "company employees",
+      "estimated num employees", "# employees", "employee range",
+      // Apollo
+      "company employee count", "estimated number of employees",
+      // HubSpot
+      "numberofemployees", "hs_num_employees",
+      // Salesforce
+      "employees", "numberofemployees",
     ],
     priority: 3,
   },
@@ -191,20 +335,32 @@ function matchScore(header: string, pattern: string): number {
   // Pattern contains header (short header, long pattern)
   if (normalizedPattern.includes(normalizedHeader) && normalizedHeader.length > 2) return 40;
 
+  // Word-level overlap (for multi-word headers)
+  const headerWords = new Set(normalizedHeader.split(/\s+/));
+  const patternWords = normalizedPattern.split(/\s+/);
+  const overlap = patternWords.filter((w) => headerWords.has(w)).length;
+  if (overlap >= 2) return 35;
+  if (overlap === 1 && patternWords.length <= 2) return 25;
+
   return 0;
 }
 
 /**
  * Auto-suggest field mappings for a set of column headers.
  * Returns a map of column header -> suggested StandardField.
+ *
+ * Uses two passes:
+ * 1. Header-name matching against known patterns
+ * 2. Content-sniffing for unmapped columns (email patterns, URLs, etc.)
  */
 export function suggestFieldMappings(
-  headers: string[]
+  headers: string[],
+  sampleRows?: string[][],
 ): Record<string, { field: StandardField; confidence: number }> {
   const suggestions: Record<string, { field: StandardField; confidence: number }> = {};
   const usedFields = new Set<StandardField>();
 
-  // Score all headers against all patterns
+  // === Pass 1: Header-name matching ===
   type ScoredMatch = { header: string; field: StandardField; score: number; priority: number };
   const allMatches: ScoredMatch[] = [];
 
@@ -229,16 +385,40 @@ export function suggestFieldMappings(
   // Sort by score descending
   allMatches.sort((a, b) => b.score - a.score);
 
-  // Assign best match per header (greedy, no double-assignment of fields)
+  // Assign best match per header (greedy, no double-assignment)
   for (const match of allMatches) {
-    if (suggestions[match.header]) continue; // Header already mapped
-    if (usedFields.has(match.field)) continue; // Field already used
+    if (suggestions[match.header]) continue;
+    if (usedFields.has(match.field)) continue;
 
     suggestions[match.header] = {
       field: match.field,
       confidence: Math.min(match.score, 100),
     };
     usedFields.add(match.field);
+  }
+
+  // === Pass 2: Content-sniffing for unmapped columns ===
+  if (sampleRows && sampleRows.length > 0) {
+    for (let idx = 0; idx < headers.length; idx++) {
+      const header = headers[idx];
+      if (suggestions[header]) continue; // Already mapped
+
+      const sampleValues = sampleRows
+        .map((row) => row[idx]?.trim())
+        .filter(Boolean)
+        .slice(0, 5);
+
+      if (sampleValues.length === 0) continue;
+
+      const detected = sniffColumnContent(sampleValues);
+      if (detected && !usedFields.has(detected.field)) {
+        suggestions[header] = {
+          field: detected.field,
+          confidence: detected.confidence,
+        };
+        usedFields.add(detected.field);
+      }
+    }
   }
 
   // Mark unmapped headers as skip
@@ -252,10 +432,78 @@ export function suggestFieldMappings(
 }
 
 /**
- * Parse a CSV string into rows of string arrays.
- * Handles quoted fields, commas in values, newlines in quoted fields.
+ * Content-based field detection for when headers don't match patterns.
+ * Looks at actual cell values to infer what the column contains.
+ */
+function sniffColumnContent(
+  values: string[],
+): { field: StandardField; confidence: number } | null {
+  // Email detection
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (values.filter((v) => emailPattern.test(v)).length >= values.length * 0.6) {
+    return { field: "email", confidence: 85 };
+  }
+
+  // LinkedIn URL detection
+  if (values.filter((v) => v.includes("linkedin.com/")).length >= values.length * 0.5) {
+    return { field: "linkedin_url", confidence: 85 };
+  }
+
+  // Website/URL detection
+  const urlPattern = /^(https?:\/\/|www\.)/i;
+  if (values.filter((v) => urlPattern.test(v)).length >= values.length * 0.5) {
+    return { field: "website", confidence: 70 };
+  }
+
+  // Phone detection (digits, dashes, parens, plus sign)
+  const phonePattern = /^[\d\s\-+().]{7,20}$/;
+  if (values.filter((v) => phonePattern.test(v)).length >= values.length * 0.5) {
+    return { field: "phone", confidence: 65 };
+  }
+
+  // Pure number (could be employee count or company size)
+  const numberPattern = /^\d{1,7}$/;
+  if (values.filter((v) => numberPattern.test(v)).length >= values.length * 0.7) {
+    return { field: "company_size", confidence: 40 };
+  }
+
+  // Two-letter uppercase (likely state or country code)
+  if (values.filter((v) => /^[A-Z]{2}$/.test(v)).length >= values.length * 0.5) {
+    // Check if they look like US states
+    const states = new Set(["AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA","HI","ID","IL","IN","IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO","MT","NE","NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VT","VA","WA","WV","WI","WY","DC"]);
+    const stateMatches = values.filter((v) => states.has(v.toUpperCase())).length;
+    if (stateMatches >= values.length * 0.4) {
+      return { field: "state", confidence: 60 };
+    }
+    return { field: "country", confidence: 50 };
+  }
+
+  return null;
+}
+
+/**
+ * Parse a CSV or TSV string into rows of string arrays.
+ * Handles:
+ * - Quoted fields with commas inside
+ * - Escaped quotes ("" inside quoted fields)
+ * - Newlines inside quoted fields
+ * - Tab-separated values (auto-detected)
+ * - Pasted tabular data from spreadsheets
+ * - BOM markers
+ * - Mixed line endings (CRLF, LF, CR)
  */
 export function parseCSV(text: string): string[][] {
+  // Strip BOM if present
+  if (text.charCodeAt(0) === 0xFEFF) {
+    text = text.slice(1);
+  }
+
+  // Auto-detect delimiter: if first line has more tabs than commas, use tab
+  const firstLine = text.split(/\r?\n/)[0] || "";
+  const tabCount = (firstLine.match(/\t/g) || []).length;
+  const commaCount = (firstLine.match(/,/g) || []).length;
+  const delimiter = tabCount > commaCount ? "\t" : ",";
+
   const rows: string[][] = [];
   let current = "";
   let inQuotes = false;
@@ -277,7 +525,7 @@ export function parseCSV(text: string): string[][] {
     } else {
       if (char === '"') {
         inQuotes = true;
-      } else if (char === ",") {
+      } else if (char === delimiter) {
         row.push(current.trim());
         current = "";
       } else if (char === "\n" || (char === "\r" && next === "\n")) {
@@ -288,6 +536,14 @@ export function parseCSV(text: string): string[][] {
         row = [];
         current = "";
         if (char === "\r") i++; // skip \n after \r
+      } else if (char === "\r") {
+        // Standalone CR (old Mac)
+        row.push(current.trim());
+        if (row.some((cell) => cell.length > 0)) {
+          rows.push(row);
+        }
+        row = [];
+        current = "";
       } else {
         current += char;
       }
@@ -375,11 +631,36 @@ export function normalizeRecord(
     }
   }
 
-  // Normalize LinkedIn URL
-  if (result.linkedin_url && !result.linkedin_url.startsWith("http")) {
-    if (result.linkedin_url.startsWith("linkedin.com") || result.linkedin_url.startsWith("www.linkedin.com")) {
-      result.linkedin_url = `https://${result.linkedin_url}`;
+  // Extract domain from website if no domain
+  if (!result.domain && result.website) {
+    try {
+      const url = result.website.startsWith("http") ? result.website : `https://${result.website}`;
+      const parsed = new URL(url);
+      result.domain = parsed.hostname.replace(/^www\./, "");
+    } catch {
+      // Ignore malformed URLs
     }
+  }
+
+  // Normalize LinkedIn URL
+  if (result.linkedin_url) {
+    if (!result.linkedin_url.startsWith("http")) {
+      if (result.linkedin_url.includes("linkedin.com")) {
+        result.linkedin_url = `https://${result.linkedin_url}`;
+      } else if (result.linkedin_url.startsWith("/in/") || result.linkedin_url.startsWith("in/")) {
+        result.linkedin_url = `https://www.linkedin.com/${result.linkedin_url.replace(/^\//, "")}`;
+      }
+    }
+  }
+
+  // Normalize website URL
+  if (result.website && !result.website.startsWith("http")) {
+    result.website = `https://${result.website}`;
+  }
+
+  // Normalize phone (strip common formatting)
+  if (result.phone) {
+    result.phone = result.phone.replace(/[^\d+\-() ]/g, "").trim();
   }
 
   return result as {
