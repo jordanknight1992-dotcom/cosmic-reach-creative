@@ -104,7 +104,7 @@ export function CrmView({ tenantSlug, data }: { tenantSlug: string; data: CrmDat
         const firstName = ((lead.contact_name as string) || "").split(" ")[0] || "there";
         const company = (lead.company_name as string) || "your company";
         setDraftSubject(`Quick thought on ${company}'s growth`);
-        setDraftBody(`Hi ${firstName},\n\nI took a look at ${company} and noticed a few things that caught my eye — particularly around how your brand shows up in market.\n\n${lead.fit_reason ? `What stood out: ${lead.fit_reason}\n\n` : ""}We help companies like yours turn brand into a measurable revenue lever. Would a 15-minute conversation make sense to see if there's a fit?\n\nBest,\nJordan`);
+        setDraftBody(`Hi ${firstName},\n\nI took a look at ${company} and noticed a few things that caught my eye, particularly around how your brand shows up in market.\n\n${lead.fit_reason ? `What stood out: ${lead.fit_reason}\n\n` : ""}We help companies like yours turn brand into a measurable revenue lever. Would a 15-minute conversation make sense to see if there's a fit?\n\nBest,\nJordan`);
         setDraftGenerated(true);
         setGeneratedLeadIds((prev) => new Set(prev).add(lead.id as number));
         return;

@@ -8,19 +8,19 @@ import { StripeBuyButton } from "@/components/StripeBuyButton";
 export const metadata: Metadata = {
   title: "Mission Control | Daily Operator Intelligence. Decisions That Move Revenue.",
   description:
-    "Mission Control is the decision engine for revenue teams. It directs daily execution — surfacing what's slipping, what's being ignored, and where attention should shift. Not a CRM. A system that tells you what to do next.",
+    "Mission Control is the decision engine for revenue teams. It directs daily execution by surfacing what needs attention and where momentum is dying. A system that tells you what to do next.",
   alternates: { canonical: `${siteConfig.domain}/mission-control` },
 };
 
 const FEATURES = [
-  "Daily Briefing — what matters today, delivered every morning",
-  "Next Move — one clear action, always visible",
-  "5 Key Daily Targets — ranked by urgency, fit, and stage",
-  "ICP scoring — deterministic fit scoring against your ideal profile",
+  "Daily Briefing: what matters today, delivered every morning",
+  "Next Move: one clear action, always visible",
+  "5 Key Daily Targets, ranked by urgency, fit, and stage",
+  "ICP scoring: deterministic fit scoring against your ideal profile",
   "Import from any source (CSV, Apollo, LinkedIn, exports)",
-  "Smart field mapping — messy columns cleaned automatically",
+  "Smart field mapping: messy columns cleaned automatically",
   "AI-powered email drafts (your voice, your strategy)",
-  "Digital Signal — recommendation-first performance view",
+  "Digital Signal: recommendation-first performance view",
   "GA4 website analytics integration",
   "Meeting scheduling + Google Calendar sync",
   "Team workspaces with Owner, Admin & Member roles",
@@ -96,7 +96,7 @@ export default function MissionControlLanding() {
               Leads go cold because nobody noticed. Meetings don&apos;t get booked because priorities aren&apos;t clear. Follow-ups slip because there&apos;s no system tracking what matters.
             </p>
             <p>
-              The information exists across tools and spreadsheets. But connecting it to a decision — what to do first, who needs attention, where momentum is dying — that&apos;s the gap.
+              The information exists across tools and spreadsheets. But connecting it to a decision (what to do first, who needs attention, where momentum is dying) is the gap.
             </p>
             <p className="text-starlight/80 font-display font-medium">
               Revenue teams don&apos;t need another dashboard. They need direction.
@@ -150,7 +150,7 @@ export default function MissionControlLanding() {
                 Next Move
               </h3>
               <p className="text-starlight/60 text-sm leading-relaxed">
-                Every insight leads to an action. The system doesn&apos;t just show you problems — it recommends the move. Work overdue targets. Book a meeting with a warm reply. Advance a high-fit lead stuck in qualification.
+                Every insight leads to an action. The system recommends the move. Work overdue targets. Book a meeting with a warm reply. Advance a high-fit lead stuck in qualification.
               </p>
               <p className="text-starlight/50 text-sm leading-relaxed mt-3">
                 One clear action, always visible. Execution stays consistent because the system directs it.
@@ -168,12 +168,12 @@ export default function MissionControlLanding() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
             {[
-              { icon: "compass", title: "Daily Briefing", desc: "What's slipping, what's being ignored, and where attention should shift. Every morning." },
-              { icon: "signal", title: "Next Move", desc: "Every insight leads to an action. One clear recommendation, always visible and actionable." },
-              { icon: "orbit", title: "5 Key Targets", desc: "The highest-leverage leads to work today — ranked by urgency, fit, and stage." },
-              { icon: "gears", title: "ICP Scoring", desc: "Deterministic fit scoring against your ideal profile. Explainable. Consistent. No guessing." },
+              { icon: "compass", title: "Daily Briefing", desc: "What needs attention and where momentum is dying. Every morning." },
+              { icon: "signal", title: "Next Move", desc: "Every insight leads to an action. One clear recommendation, always visible." },
+              { icon: "orbit", title: "5 Key Targets", desc: "The highest-leverage leads to work today, ranked by urgency and fit." },
+              { icon: "gears", title: "ICP Scoring", desc: "Deterministic fit scoring against your ideal profile. Explainable. No guessing." },
               { icon: "rocket", title: "AI Outreach", desc: "Email drafts in your voice and strategy. The system writes, you review and send." },
-              { icon: "network", title: "Team Workspace", desc: "Shared priorities, role-based access, and meetings. Everyone sees the same direction." },
+              { icon: "network", title: "Team Workspace", desc: "Shared priorities, role-based access, and meetings in one place." },
             ].map((item) => (
               <div
                 key={item.title}

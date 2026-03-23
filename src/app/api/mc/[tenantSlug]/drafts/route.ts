@@ -54,6 +54,11 @@ Writing rules:
 - Include one real observation about the recipient's business
 - Include exactly one clean CTA${ctaCtx ? `: ${ctaCtx}` : ""}
 - The CTA should feel like a natural next step, not a hard sell
+- NEVER use em dashes. Use commas, periods, parentheses, or semicolons instead
+- NEVER use "not just X, it's Y" or "it's not about X, it's about Y" framing
+- NEVER list exactly three items in a row. Use two, four, or five instead
+- NEVER end a paragraph by restating what was just said
+- Vary sentence length. Short sometimes. Longer other times
 
 ${avoidCtx}
 ${toneCtx}

@@ -345,7 +345,7 @@ export const DEMO_GOALS = {
   sender_name: "Alex Chen",
   sender_title: "Founder, AtlasOps",
   avoid_phrases: "synergy, best-in-class, circle back, low-hanging fruit, disruptive, thought leader",
-  example_tone: "Your team is executing well, but the systems underneath aren't scaling with you. That's solvable. Here's where we'd start.",
+  example_tone: "Your team is executing well, but the systems underneath aren't scaling with you. That's solvable. We'd start with the brand.",
 };
 
 /* ── GA4 Analytics ── */

@@ -296,9 +296,9 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
 
         {step.key === "crm" && (
           <>
-            <StepHeader title="Lead Intelligence" subtitle="Your lead system is ready. Here's how it directs your daily execution." />
+            <StepHeader title="Lead Intelligence" subtitle="Your lead system is ready. This is what it does for you every day." />
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <ReadyItem label="Daily Briefing" detail="Every morning surfaces what's slipping, what's being ignored, and where attention should shift" />
+              <ReadyItem label="Daily Briefing" detail="Every morning surfaces what needs attention and where momentum is dying" />
               <ReadyItem label="ICP Scoring" detail="Automatic 0-100 scoring based on role, industry, geography, company size, and email quality" />
               <ReadyItem label="5 Key Daily Targets" detail="The highest-leverage leads to work today, ranked by urgency, fit, and stage" />
               <ReadyItem label="AI Outreach" detail="Email drafts in your voice, personalized to each lead's profile" />

@@ -180,7 +180,7 @@ export function generateBriefing(input: BriefingInput): BriefingOutput {
       id: "no-leads",
       severity: "critical",
       headline: "No active leads",
-      detail: "Mission Control needs lead data to generate direction. Import a CSV from your CRM, Apollo, or LinkedIn Sales Navigator to get started.",
+      detail: "Mission Control needs lead data to generate direction. Import a CSV from any source to get started.",
       action: "Import your first leads",
       link: "crm",
       weight: 0,
@@ -240,7 +240,7 @@ export function generateBriefing(input: BriefingInput): BriefingOutput {
       id: "stuck-high-fit",
       severity: "warning",
       headline: `${stuckHighFit.length} high-fit lead${stuckHighFit.length > 1 ? "s" : ""} stuck early`,
-      detail: `Lead${stuckHighFit.length > 1 ? "s" : ""} scoring 70+ but still in candidate/qualified after 3+ days. These are your best-fit prospects — they should be further along.`,
+      detail: `Lead${stuckHighFit.length > 1 ? "s" : ""} scoring 70+ but still in candidate/qualified after 3+ days. These are your best-fit prospects. They should be further along.`,
       action: "Review and advance top leads",
       link: "crm",
       weight: 3,
@@ -483,7 +483,7 @@ function computeDailyTargets(
     // Factor 2: Stage warmth (warmer stages = higher priority)
     const stageScore = STAGE_PRIORITY[lead.stage] || 0;
     score += stageScore;
-    if (lead.stage === "replied_positive") signals.push("Positive reply — warmest lead");
+    if (lead.stage === "replied_positive") signals.push("Positive reply, warmest lead");
     if (lead.stage === "meeting_requested") signals.push("Meeting interest shown");
     if (lead.stage === "ready_to_email") signals.push("Ready for outreach");
 
@@ -500,10 +500,10 @@ function computeDailyTargets(
         signals.push("Recently engaged");
       } else if (daysSince > 14) {
         score -= 20;
-        signals.push("Going cold — needs re-engagement");
+        signals.push("Going cold, needs re-engagement");
       }
     } else if (lead.fit_score >= 60) {
-      signals.push("Never contacted — fresh opportunity");
+      signals.push("Never contacted, fresh opportunity");
       score += 15; // Slight boost for untouched high-fit
     }
 
@@ -535,7 +535,7 @@ function generateTargetReason(lead: LeadSnapshot, signals: string[], isOverdue: 
     return "Replied positively and overdue for follow-up. Your highest-probability conversion right now.";
   }
   if (isOverdue) {
-    return `Overdue for follow-up. ${lead.fit_score >= 70 ? "High-fit lead — don't let this one slip." : "Keep momentum alive."}`;
+    return `Overdue for follow-up. ${lead.fit_score >= 70 ? "High-fit lead. Don't let this one slip." : "Keep momentum alive."}`;
   }
   if (lead.stage === "replied_positive") {
     return "Responded positively. Book a meeting before interest cools.";
@@ -544,7 +544,7 @@ function generateTargetReason(lead: LeadSnapshot, signals: string[], isOverdue: 
     return "Expressed meeting interest. Confirm timing before it goes stale.";
   }
   if (lead.stage === "ready_to_email") {
-    return `Qualified and ready for outreach. Fit score ${lead.fit_score}${lead.fit_score >= 80 ? " — top-tier prospect." : "."}`;
+    return `Qualified and ready for outreach. Fit score ${lead.fit_score}${lead.fit_score >= 80 ? ". Top-tier prospect." : "."}`;
   }
   if (lead.stage === "qualified" && lead.fit_score >= 70) {
     return `Strong fit (${lead.fit_score}) but hasn't been advanced. Move to outreach or disqualify.`;

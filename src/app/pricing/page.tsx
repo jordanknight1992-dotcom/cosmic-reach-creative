@@ -8,7 +8,7 @@ import { StripeBuyButton } from "@/components/StripeBuyButton";
 export const metadata: Metadata = {
   title: "Pricing | Mission Control, Clarity Audits & Strategy Sprints",
   description:
-    "Mission Control at $149/month — daily operator intelligence, decision engine, revenue-focused prioritization. Business Clarity Audit at $150. Implementation Sprints from $2,000-$6,000. Flight Support advisory at $750/month. Retainer clients get full Mission Control access included.",
+    "Mission Control at $149/month. Daily operator intelligence, decision engine, revenue-focused prioritization. Business Clarity Audit at $150. Implementation Sprints from $2,000-$6,000. Flight Support advisory at $750/month. Retainer clients get full Mission Control access included.",
   alternates: { canonical: `${siteConfig.domain}/pricing` },
 };
 
@@ -57,7 +57,7 @@ const missionControlTier = {
   name: "Mission Control",
   price: "$149/mo",
   description:
-    "Daily operator intelligence that directs execution. Surfaces what's slipping, what's being ignored, and where attention should shift. Not a CRM — a decision engine for revenue teams.",
+    "Daily operator intelligence that directs execution. Surfaces what needs attention and where momentum is dying. A decision engine for revenue teams.",
   icon: "compass",
 };
 
