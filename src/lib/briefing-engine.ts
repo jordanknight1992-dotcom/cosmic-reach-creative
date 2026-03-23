@@ -55,6 +55,18 @@ export interface MeetingRecord {
   notes: string | null;
 }
 
+export interface YesterdaySnapshot {
+  total_active: number;
+  hot_leads: number;
+  overdue_count: number;
+  stale_outreach: number;
+  cooling_replies: number;
+  neglected_count: number;
+  avg_fit_score: number;
+  stage_counts: Record<string, number>;
+  insight_ids: string[];
+}
+
 export interface BriefingInput {
   pipelineStats: StageCount[];
   allLeads: LeadSnapshot[];
@@ -67,6 +79,8 @@ export interface BriefingInput {
   newLeadsToday: number;
   /** Total leads 24h ago (for delta) */
   totalLeadsYesterday: number;
+  /** Yesterday's snapshot for day-over-day drift detection */
+  yesterdaySnapshot?: YesterdaySnapshot | null;
 }
 
 /* ─── Computed Briefing Output ─── */
@@ -98,6 +112,16 @@ export interface MomentumIndicator {
   trend: "up" | "down" | "flat";
 }
 
+export interface DriftAlert {
+  id: string;
+  severity: "critical" | "warning" | "info";
+  metric: string;
+  yesterday: number;
+  today: number;
+  delta: number;
+  message: string;
+}
+
 export interface BriefingOutput {
   /** The single most important thing right now */
   topInsight: Insight | null;
@@ -107,6 +131,8 @@ export interface BriefingOutput {
   targets: DailyTarget[];
   /** Momentum indicators for the health bar */
   momentum: MomentumIndicator[];
+  /** Day-over-day drift alerts (requires yesterday snapshot) */
+  driftAlerts: DriftAlert[];
   /** Natural language summary paragraph */
   narrativeSummary: string;
   /** Quick stats for the header */
@@ -117,6 +143,19 @@ export interface BriefingOutput {
     meetingsThisWeek: number;
     newToday: number;
     stageChangesToday: number;
+  };
+  /** Snapshot data for persistence (caller saves to DB) */
+  snapshotData: {
+    total_active: number;
+    hot_leads: number;
+    overdue_count: number;
+    stale_outreach: number;
+    cooling_replies: number;
+    neglected_count: number;
+    meetings_booked: number;
+    avg_fit_score: number;
+    stage_counts: Record<string, number>;
+    insight_ids: string[];
   };
 }
 
@@ -336,19 +375,78 @@ export function generateBriefing(input: BriefingInput): BriefingOutput {
     (l) => ["replied_positive", "meeting_requested", "meeting_booked"].includes(l.stage)
   ).length;
 
+  const overdueCount = input.overdueFollowUps.length;
+  const staleCount = staleEmailed.length;
+  const coolingCount = coolingReplies.length;
+  const neglectedCount = neglected.length;
+  const avgFitScore = activeLeads.length > 0
+    ? Math.round(activeLeads.reduce((sum, l) => sum + l.fit_score, 0) / activeLeads.length)
+    : 0;
+  const stageCounts: Record<string, number> = {};
+  for (const s of input.pipelineStats) {
+    stageCounts[s.stage] = s.count;
+  }
+
+  // ──────────────────────────────────────
+  // DRIFT DETECTION (day-over-day)
+  // ──────────────────────────────────────
+  const driftAlerts = computeDriftAlerts(input.yesterdaySnapshot || null, {
+    total_active: totalActive,
+    hot_leads: hotLeads,
+    overdue_count: overdueCount,
+    stale_outreach: staleCount,
+    cooling_replies: coolingCount,
+    neglected_count: neglectedCount,
+    avg_fit_score: avgFitScore,
+  });
+
+  // Add drift-based insights to the main insights list
+  for (const alert of driftAlerts) {
+    if (alert.severity === "critical" || alert.severity === "warning") {
+      insights.push({
+        id: `drift-${alert.id}`,
+        severity: alert.severity,
+        headline: alert.message,
+        detail: `Yesterday: ${alert.yesterday}. Today: ${alert.today}. ${alert.delta > 0 ? "+" : ""}${alert.delta} change.`,
+        action: alert.id.includes("overdue") ? "Clear overdue follow-ups" :
+                alert.id.includes("neglect") ? "Re-engage or disqualify stale leads" :
+                alert.id.includes("cooling") ? "Book meetings with warm leads" :
+                "Review pipeline health",
+        link: alert.id.includes("overdue") || alert.id.includes("neglect") ? "crm" : "targets",
+        weight: alert.severity === "critical" ? 1.5 : 4.5,
+      });
+    }
+  }
+
+  // Re-sort insights with drift alerts included
+  insights.sort((a, b) => a.weight - b.weight);
+
   return {
     topInsight: insights[0] || null,
     insights,
     targets,
     momentum,
+    driftAlerts,
     narrativeSummary,
     quickStats: {
       totalActive,
-      overdueCount: input.overdueFollowUps.length,
+      overdueCount,
       hotLeads,
       meetingsThisWeek: input.upcomingMeetings.length,
       newToday: input.newLeadsToday,
       stageChangesToday: input.recentStageChanges.length,
+    },
+    snapshotData: {
+      total_active: totalActive,
+      hot_leads: hotLeads,
+      overdue_count: overdueCount,
+      stale_outreach: staleCount,
+      cooling_replies: coolingCount,
+      neglected_count: neglectedCount,
+      meetings_booked: input.upcomingMeetings.filter((m) => m.status === "confirmed").length,
+      avg_fit_score: avgFitScore,
+      stage_counts: stageCounts,
+      insight_ids: insights.map((i) => i.id),
     },
   };
 }
@@ -537,7 +635,137 @@ function computeMomentum(
     trend: avgEarlyAge <= 3 ? "up" : avgEarlyAge <= 7 ? "flat" : "down",
   });
 
+  // Update momentum with yesterday's snapshot deltas if available
+  if (input.yesterdaySnapshot) {
+    const ys = input.yesterdaySnapshot;
+    // Response rate delta
+    const responseIdx = indicators.findIndex((i) => i.label === "Response rate");
+    if (responseIdx >= 0) {
+      // We don't store response rate directly, but we can estimate from hot_leads change
+    }
+    // Hot leads delta
+    const hotIdx = indicators.findIndex((i) => i.label === "Hot leads");
+    if (hotIdx >= 0) {
+      const hotNow = indicators[hotIdx].value;
+      indicators[hotIdx].change = hotNow - ys.hot_leads;
+      indicators[hotIdx].trend = hotNow > ys.hot_leads ? "up" : hotNow < ys.hot_leads ? "down" : "flat";
+    }
+    // Overdue delta
+    const overdueIdx = indicators.findIndex((i) => i.label === "Overdue");
+    if (overdueIdx >= 0) {
+      const overdueNow = indicators[overdueIdx].value;
+      indicators[overdueIdx].change = ys.overdue_count - overdueNow; // fewer overdue = positive
+      indicators[overdueIdx].trend = overdueNow < ys.overdue_count ? "up" : overdueNow > ys.overdue_count ? "down" : "flat";
+    }
+  }
+
   return indicators;
+}
+
+/* ─── Drift Detection ─── */
+
+interface TodayMetrics {
+  total_active: number;
+  hot_leads: number;
+  overdue_count: number;
+  stale_outreach: number;
+  cooling_replies: number;
+  neglected_count: number;
+  avg_fit_score: number;
+}
+
+function computeDriftAlerts(
+  yesterday: YesterdaySnapshot | null,
+  today: TodayMetrics,
+): DriftAlert[] {
+  if (!yesterday) return [];
+
+  const alerts: DriftAlert[] = [];
+
+  // Overdue count spiking — revenue at risk
+  if (today.overdue_count > yesterday.overdue_count && today.overdue_count >= 3) {
+    const delta = today.overdue_count - yesterday.overdue_count;
+    alerts.push({
+      id: "overdue-spike",
+      severity: delta >= 3 ? "critical" : "warning",
+      metric: "Overdue follow-ups",
+      yesterday: yesterday.overdue_count,
+      today: today.overdue_count,
+      delta,
+      message: `Overdue follow-ups jumped from ${yesterday.overdue_count} to ${today.overdue_count}`,
+    });
+  }
+
+  // Neglected leads growing — decay pattern
+  if (today.neglected_count > yesterday.neglected_count && today.neglected_count >= 2) {
+    const delta = today.neglected_count - yesterday.neglected_count;
+    alerts.push({
+      id: "neglect-growth",
+      severity: delta >= 3 ? "critical" : "warning",
+      metric: "Neglected leads",
+      yesterday: yesterday.neglected_count,
+      today: today.neglected_count,
+      delta,
+      message: `${delta} more lead${delta > 1 ? "s" : ""} went cold since yesterday`,
+    });
+  }
+
+  // Hot leads dropping — losing momentum
+  if (today.hot_leads < yesterday.hot_leads && yesterday.hot_leads >= 2) {
+    const delta = today.hot_leads - yesterday.hot_leads;
+    alerts.push({
+      id: "hot-leads-drop",
+      severity: Math.abs(delta) >= 2 ? "critical" : "warning",
+      metric: "Hot leads",
+      yesterday: yesterday.hot_leads,
+      today: today.hot_leads,
+      delta,
+      message: `Hot leads dropped from ${yesterday.hot_leads} to ${today.hot_leads}`,
+    });
+  }
+
+  // Cooling replies increasing — warm leads going cold
+  if (today.cooling_replies > yesterday.cooling_replies) {
+    const delta = today.cooling_replies - yesterday.cooling_replies;
+    alerts.push({
+      id: "cooling-increase",
+      severity: delta >= 2 ? "critical" : "warning",
+      metric: "Cooling replies",
+      yesterday: yesterday.cooling_replies,
+      today: today.cooling_replies,
+      delta,
+      message: `${today.cooling_replies} warm repl${today.cooling_replies > 1 ? "ies" : "y"} cooling off (was ${yesterday.cooling_replies} yesterday)`,
+    });
+  }
+
+  // Stale outreach growing — outbound not working
+  if (today.stale_outreach > yesterday.stale_outreach + 2) {
+    alerts.push({
+      id: "stale-growth",
+      severity: "warning",
+      metric: "Stale outreach",
+      yesterday: yesterday.stale_outreach,
+      today: today.stale_outreach,
+      delta: today.stale_outreach - yesterday.stale_outreach,
+      message: `Unreplied outreach grew from ${yesterday.stale_outreach} to ${today.stale_outreach}`,
+    });
+  }
+
+  // Pipeline shrinking without wins — leads are draining
+  if (today.total_active < yesterday.total_active - 2 && yesterday.total_active >= 5) {
+    const delta = today.total_active - yesterday.total_active;
+    alerts.push({
+      id: "pipeline-shrink",
+      severity: "warning",
+      metric: "Active pipeline",
+      yesterday: yesterday.total_active,
+      today: today.total_active,
+      delta,
+      message: `Pipeline shrank by ${Math.abs(delta)} lead${Math.abs(delta) > 1 ? "s" : ""} since yesterday`,
+    });
+  }
+
+  return alerts;
 }
 
 /* ─── Narrative Summary ─── */

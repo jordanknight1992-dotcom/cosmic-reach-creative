@@ -1,6 +1,6 @@
 import { requireTenantAccess } from "@/lib/mc-session";
 import { DailyBriefing } from "./DailyBriefing";
-import { getSQL } from "@/lib/mc-db";
+import { getSQL, saveBriefingSnapshot, getYesterdaySnapshot } from "@/lib/mc-db";
 import { generateBriefing, type BriefingInput, type LeadSnapshot, type MeetingRecord, type ActivityRecord } from "@/lib/briefing-engine";
 
 async function getBriefingData(tenantId: number) {
@@ -141,6 +141,9 @@ async function getBriefingData(tenantId: number) {
     };
   });
 
+  // Load yesterday's snapshot for drift detection
+  const yesterdaySnapshot = await getYesterdaySnapshot(tenantId).catch(() => null);
+
   const briefingInput: BriefingInput = {
     pipelineStats: pipelineStats as unknown as { stage: string; count: number }[],
     allLeads: allLeads as unknown as LeadSnapshot[],
@@ -150,10 +153,17 @@ async function getBriefingData(tenantId: number) {
     recentStageChanges: parsedStageChanges,
     newLeadsToday: ((newLeadsToday as Record<string, unknown>[])[0]?.count as number) || 0,
     totalLeadsYesterday: ((totalLeadsYesterday as Record<string, unknown>[])[0]?.count as number) || 0,
+    yesterdaySnapshot,
   };
 
   // Run the briefing engine
   const briefing = generateBriefing(briefingInput);
+
+  // Save today's snapshot (non-blocking, once per day per tenant via UPSERT)
+  saveBriefingSnapshot({
+    tenant_id: tenantId,
+    ...briefing.snapshotData,
+  }).catch(() => { /* non-fatal */ });
 
   return {
     briefing,

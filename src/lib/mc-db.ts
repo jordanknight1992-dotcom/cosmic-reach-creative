@@ -329,6 +329,28 @@ async function _createTables() {
   await sql`CREATE INDEX IF NOT EXISTS idx_leads_tenant ON leads(tenant_id)`;
   await sql`CREATE INDEX IF NOT EXISTS idx_activities_tenant ON activities(tenant_id)`;
   await sql`CREATE INDEX IF NOT EXISTS idx_bookings_tenant ON bookings(tenant_id)`;
+
+  /* ── Briefing Snapshots (daily decay/drift detection) ── */
+  await sql`
+    CREATE TABLE IF NOT EXISTS briefing_snapshots (
+      id          SERIAL PRIMARY KEY,
+      tenant_id   INTEGER REFERENCES tenants(id) NOT NULL,
+      snapshot_date DATE NOT NULL DEFAULT CURRENT_DATE,
+      total_active     INTEGER DEFAULT 0,
+      hot_leads        INTEGER DEFAULT 0,
+      overdue_count    INTEGER DEFAULT 0,
+      stale_outreach   INTEGER DEFAULT 0,
+      cooling_replies  INTEGER DEFAULT 0,
+      neglected_count  INTEGER DEFAULT 0,
+      meetings_booked  INTEGER DEFAULT 0,
+      avg_fit_score    REAL DEFAULT 0,
+      stage_counts     JSONB DEFAULT '{}',
+      insight_ids      JSONB DEFAULT '[]',
+      created_at       TIMESTAMPTZ DEFAULT NOW(),
+      UNIQUE(tenant_id, snapshot_date)
+    )
+  `;
+  await sql`CREATE INDEX IF NOT EXISTS idx_briefing_snapshots_tenant_date ON briefing_snapshots(tenant_id, snapshot_date)`;
 }
 
 /* ─── Types ─── */
@@ -1361,4 +1383,80 @@ export async function upsertTenantGoals(tenantId: number, data: Partial<TenantGo
       example_tone = ${data.example_tone ?? null},
       updated_at = NOW()
   `;
+}
+
+/* ─── Briefing Snapshots ─── */
+
+export interface BriefingSnapshot {
+  id: number;
+  tenant_id: number;
+  snapshot_date: string;
+  total_active: number;
+  hot_leads: number;
+  overdue_count: number;
+  stale_outreach: number;
+  cooling_replies: number;
+  neglected_count: number;
+  meetings_booked: number;
+  avg_fit_score: number;
+  stage_counts: Record<string, number>;
+  insight_ids: string[];
+  created_at: string;
+}
+
+export async function saveBriefingSnapshot(data: {
+  tenant_id: number;
+  total_active: number;
+  hot_leads: number;
+  overdue_count: number;
+  stale_outreach: number;
+  cooling_replies: number;
+  neglected_count: number;
+  meetings_booked: number;
+  avg_fit_score: number;
+  stage_counts: Record<string, number>;
+  insight_ids: string[];
+}) {
+  await ensureMcTables();
+  const sql = getSQL();
+  await sql`
+    INSERT INTO briefing_snapshots (
+      tenant_id, total_active, hot_leads, overdue_count,
+      stale_outreach, cooling_replies, neglected_count,
+      meetings_booked, avg_fit_score, stage_counts, insight_ids
+    ) VALUES (
+      ${data.tenant_id}, ${data.total_active}, ${data.hot_leads}, ${data.overdue_count},
+      ${data.stale_outreach}, ${data.cooling_replies}, ${data.neglected_count},
+      ${data.meetings_booked}, ${data.avg_fit_score},
+      ${JSON.stringify(data.stage_counts)}, ${JSON.stringify(data.insight_ids)}
+    )
+    ON CONFLICT (tenant_id, snapshot_date) DO UPDATE SET
+      total_active = ${data.total_active},
+      hot_leads = ${data.hot_leads},
+      overdue_count = ${data.overdue_count},
+      stale_outreach = ${data.stale_outreach},
+      cooling_replies = ${data.cooling_replies},
+      neglected_count = ${data.neglected_count},
+      meetings_booked = ${data.meetings_booked},
+      avg_fit_score = ${data.avg_fit_score},
+      stage_counts = ${JSON.stringify(data.stage_counts)},
+      insight_ids = ${JSON.stringify(data.insight_ids)}
+  `;
+}
+
+export async function getYesterdaySnapshot(tenantId: number): Promise<BriefingSnapshot | null> {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`
+    SELECT * FROM briefing_snapshots
+    WHERE tenant_id = ${tenantId} AND snapshot_date = CURRENT_DATE - INTERVAL '1 day'
+    LIMIT 1
+  `;
+  if (!rows[0]) return null;
+  const row = rows[0] as Record<string, unknown>;
+  return {
+    ...row,
+    stage_counts: typeof row.stage_counts === "string" ? JSON.parse(row.stage_counts) : row.stage_counts || {},
+    insight_ids: typeof row.insight_ids === "string" ? JSON.parse(row.insight_ids) : row.insight_ids || [],
+  } as unknown as BriefingSnapshot;
 }

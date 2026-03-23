@@ -99,7 +99,7 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, brief
     );
   }
 
-  const { topInsight, insights, targets, momentum, narrativeSummary, quickStats } = briefing;
+  const { topInsight, insights, targets, momentum, driftAlerts, narrativeSummary, quickStats } = briefing;
 
   return (
     <div>
@@ -218,6 +218,39 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, brief
                 <div style={{ fontSize: 11, color: "rgba(232,223,207,0.35)", marginTop: 4 }}>{m.label}</div>
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* Drift Alerts (day-over-day changes) */}
+      {driftAlerts && driftAlerts.length > 0 && (
+        <div style={{ marginBottom: 24 }}>
+          <h2 style={{ fontSize: 14, fontWeight: 600, margin: "0 0 12px 0", color: "rgba(232,223,207,0.5)", fontFamily: 'var(--font-display)', letterSpacing: "0.05em", textTransform: "uppercase" as const }}>
+            Day-over-day changes
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            {driftAlerts.map((alert) => {
+              const isCritical = alert.severity === "critical";
+              const isPositive = alert.delta < 0 && (alert.id.includes("overdue") || alert.id.includes("neglect") || alert.id.includes("stale") || alert.id.includes("cooling"));
+              const color = isPositive ? "#22c55e" : isCritical ? "#f87171" : "#eab308";
+              const bg = isPositive ? "rgba(34,197,94,0.06)" : isCritical ? "rgba(248,113,113,0.06)" : "rgba(234,179,8,0.06)";
+              return (
+                <div key={alert.id} style={{
+                  background: bg, border: `1px solid ${color}20`,
+                  borderLeft: `3px solid ${color}`,
+                  borderRadius: 8, padding: "10px 14px",
+                  display: "flex", alignItems: "center", justifyContent: "space-between",
+                }}>
+                  <span style={{ fontSize: 13, color: "#e8dfcf" }}>{alert.message}</span>
+                  <span style={{
+                    fontSize: 13, fontWeight: 700, fontFamily: 'var(--font-display)',
+                    color, minWidth: 50, textAlign: "right",
+                  }}>
+                    {alert.delta > 0 ? "+" : ""}{alert.delta}
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
       )}
