@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useIsMobile } from "@/hooks/useIsMobile";
 
 interface CrmData {
@@ -29,19 +29,70 @@ const STAGE_COLORS: Record<string, string> = {
   lost: "#6b7280", suppressed: "rgba(232,223,207,0.2)",
 };
 
+const STANDARD_FIELDS = [
+  { value: "skip", label: "Skip" },
+  { value: "first_name", label: "First Name" },
+  { value: "last_name", label: "Last Name" },
+  { value: "full_name", label: "Full Name" },
+  { value: "email", label: "Email" },
+  { value: "title", label: "Title / Role" },
+  { value: "company", label: "Company" },
+  { value: "website", label: "Website" },
+  { value: "domain", label: "Domain" },
+  { value: "phone", label: "Phone" },
+  { value: "linkedin_url", label: "LinkedIn URL" },
+  { value: "industry", label: "Industry" },
+  { value: "city", label: "City" },
+  { value: "state", label: "State" },
+  { value: "country", label: "Country" },
+  { value: "company_size", label: "Company Size" },
+];
+
+/* ─── Import Modal State Machine ─── */
+type ImportStep = "idle" | "uploading" | "mapping" | "importing" | "done";
+
+interface PreviewData {
+  filename: string;
+  totalRows: number;
+  headers: string[];
+  sampleRows: string[][];
+  suggestedMapping: Record<string, { field: string; confidence: number }>;
+}
+
+interface ImportResult {
+  imported: number;
+  duplicates: number;
+  failed: number;
+  total: number;
+  errors: { row: number; reason: string }[];
+}
+
 export function CrmView({ tenantSlug, data }: { tenantSlug: string; data: CrmData }) {
   const isMobile = useIsMobile();
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [selectedLead, setSelectedLead] = useState<Record<string, unknown> | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Draft state -- one per lead, tracked by lead ID
+  // Draft state
   const [draftSubject, setDraftSubject] = useState("");
   const [draftBody, setDraftBody] = useState("");
   const [draftLoading, setDraftLoading] = useState(false);
   const [draftGenerated, setDraftGenerated] = useState(false);
   const [draftError, setDraftError] = useState<string | null>(null);
   const [generatedLeadIds, setGeneratedLeadIds] = useState<Set<number>>(new Set());
+
+  // Send email state
+  const [sending, setSending] = useState(false);
+  const [sendResult, setSendResult] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  // Import state
+  const [importStep, setImportStep] = useState<ImportStep>("idle");
+  const [preview, setPreview] = useState<PreviewData | null>(null);
+  const [mapping, setMapping] = useState<Record<string, string>>({});
+  const [importResult, setImportResult] = useState<ImportResult | null>(null);
+  const [importError, setImportError] = useState<string | null>(null);
+  const [csvRawText, setCsvRawText] = useState<string>("");
 
   async function handleGenerateDraft(lead: Record<string, unknown>) {
     setDraftLoading(true);
@@ -60,7 +111,6 @@ export function CrmView({ tenantSlug, data }: { tenantSlug: string; data: CrmDat
       setDraftSubject(result.draft.subject);
       setDraftBody(result.draft.body);
       setDraftGenerated(true);
-      // Track that this lead has been generated -- no second chances
       setGeneratedLeadIds((prev) => new Set(prev).add(lead.id as number));
     } catch {
       setDraftError("Something went wrong");
@@ -75,13 +125,10 @@ export function CrmView({ tenantSlug, data }: { tenantSlug: string; data: CrmDat
     setDraftBody("");
     setDraftGenerated(false);
     setDraftError(null);
+    setSendResult(null);
   }
 
   const leadAlreadyGenerated = selectedLead ? generatedLeadIds.has(selectedLead.id as number) : false;
-
-  // Send email state
-  const [sending, setSending] = useState(false);
-  const [sendResult, setSendResult] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   async function handleSendEmail(lead: Record<string, unknown>) {
     if (!draftSubject || !draftBody) return;
@@ -106,41 +153,113 @@ export function CrmView({ tenantSlug, data }: { tenantSlug: string; data: CrmDat
     }
   }
 
-  // Find Leads state
-  const [findingLeads, setFindingLeads] = useState(false);
-  const [findResult, setFindResult] = useState<{ imported: number; message?: string } | null>(null);
+  /* ─── CSV Import Flow ─── */
 
-  async function handleFindLeads() {
-    // Demo mode: simulate finding leads
-    if (tenantSlug === "demo") {
-      setFindingLeads(true);
-      setFindResult(null);
-      await new Promise((r) => setTimeout(r, 1200));
-      setFindResult({ imported: data.leads.length, message: `Found ${data.leads.length} leads matching your ICP criteria` });
-      setFindingLeads(false);
+  async function handleFileSelect(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    const ext = file.name.split(".").pop()?.toLowerCase();
+    if (!["csv", "tsv", "txt"].includes(ext || "")) {
+      setImportError("Please upload a CSV or TSV file.");
       return;
     }
 
-    setFindingLeads(true);
-    setFindResult(null);
+    setImportStep("uploading");
+    setImportError(null);
+
     try {
-      const res = await fetch(`/api/mc/${tenantSlug}/leads/generate`, { method: "POST" });
+      // Read file text for later import
+      const text = await file.text();
+      setCsvRawText(text);
+
+      // Send to preview endpoint
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("tenantSlug", tenantSlug);
+
+      const res = await fetch("/api/mc/imports", {
+        method: "POST",
+        body: formData,
+      });
+
       const result = await res.json();
       if (!res.ok) {
-        setFindResult({ imported: 0, message: result.error || "Failed to find leads" });
+        setImportError(result.error || "Failed to parse file");
+        setImportStep("idle");
         return;
       }
-      setFindResult({ imported: result.imported, message: result.imported > 0 ? `Found ${result.imported} new leads from ${result.icp}` : result.message || "No new leads found. Try again tomorrow." });
-      if (result.imported > 0) {
-        // Refresh to show new leads
-        window.location.reload();
+
+      setPreview(result.preview);
+      // Initialize mapping from suggestions
+      const initialMapping: Record<string, string> = {};
+      for (const [header, suggestion] of Object.entries(result.preview.suggestedMapping)) {
+        initialMapping[header] = (suggestion as { field: string }).field;
       }
+      setMapping(initialMapping);
+      setImportStep("mapping");
     } catch {
-      setFindResult({ imported: 0, message: "Something went wrong" });
-    } finally {
-      setFindingLeads(false);
+      setImportError("Failed to read file. Check the format and try again.");
+      setImportStep("idle");
+    }
+
+    // Reset file input
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  }
+
+  async function handleConfirmImport() {
+    if (!preview || !csvRawText) return;
+
+    setImportStep("importing");
+    setImportError(null);
+
+    try {
+      const res = await fetch("/api/mc/imports", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "import",
+          tenantSlug,
+          csvData: csvRawText,
+          mapping,
+          filename: preview.filename,
+        }),
+      });
+
+      const result = await res.json();
+      if (!res.ok) {
+        setImportError(result.error || "Import failed");
+        setImportStep("mapping");
+        return;
+      }
+
+      setImportResult(result.result);
+      setImportStep("done");
+    } catch {
+      setImportError("Import failed. Please try again.");
+      setImportStep("mapping");
     }
   }
+
+  function resetImport() {
+    setImportStep("idle");
+    setPreview(null);
+    setMapping({});
+    setImportResult(null);
+    setImportError(null);
+    setCsvRawText("");
+  }
+
+  function handleMappingChange(header: string, field: string) {
+    setMapping((prev) => ({ ...prev, [header]: field }));
+  }
+
+  // Check if mapping has at least email and a name field
+  const hasEmail = Object.values(mapping).includes("email");
+  const hasName = Object.values(mapping).includes("full_name") ||
+    (Object.values(mapping).includes("first_name") && Object.values(mapping).includes("last_name"));
+  const mappingValid = hasEmail && hasName;
 
   const filtered = data.leads.filter((l) => {
     if (filter !== "all" && l.stage !== filter) return false;
@@ -159,10 +278,13 @@ export function CrmView({ tenantSlug, data }: { tenantSlug: string; data: CrmDat
     .filter((s) => !["suppressed", "lost"].includes(s.stage))
     .reduce((sum, s) => sum + s.count, 0);
 
+  // Show import flow
+  const showImportFlow = importStep !== "idle";
+
   return (
     <div>
       {/* Header */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24, flexWrap: "wrap", gap: 12 }}>
         <div>
           <h1 style={{ fontSize: 24, fontWeight: 700, margin: 0, fontFamily: 'var(--font-display)', color: '#d4a574' }}>Leads</h1>
           <p style={{ color: "rgba(232,223,207,0.35)", fontSize: 14, marginTop: 4 }}>
@@ -170,69 +292,315 @@ export function CrmView({ tenantSlug, data }: { tenantSlug: string; data: CrmDat
           </p>
         </div>
         <div style={{ display: "flex", gap: 8 }}>
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept=".csv,.tsv,.txt"
+            onChange={handleFileSelect}
+            style={{ display: "none" }}
+          />
           <button
-            onClick={handleFindLeads}
-            disabled={findingLeads}
+            onClick={() => fileInputRef.current?.click()}
+            disabled={showImportFlow}
             style={{
               background: "#d4a574", color: "#0b1120", border: "none",
               borderRadius: 10, padding: "10px 20px", fontSize: 14,
-              fontWeight: 700, cursor: findingLeads ? "wait" : "pointer", fontFamily: 'var(--font-display)',
+              fontWeight: 700, cursor: showImportFlow ? "not-allowed" : "pointer",
+              fontFamily: 'var(--font-display)',
+              opacity: showImportFlow ? 0.5 : 1,
             }}
           >
-            {findingLeads ? "Searching..." : "Find Leads"}
+            Import CSV
           </button>
         </div>
       </div>
 
-      {/* Find Leads result banner */}
-      {findResult && (
+      {/* Import Error Banner */}
+      {importError && !showImportFlow && (
         <div style={{
-          background: findResult.imported > 0 ? "rgba(34,197,94,0.1)" : "rgba(212,165,116,0.1)",
-          border: `1px solid ${findResult.imported > 0 ? "rgba(34,197,94,0.2)" : "rgba(212,165,116,0.2)"}`,
-          borderRadius: 10, padding: "10px 16px", fontSize: 13,
-          color: findResult.imported > 0 ? "#22c55e" : "#d4a574",
+          background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)",
+          borderRadius: 10, padding: "10px 16px", fontSize: 13, color: "#f87171",
           marginBottom: 20, display: "flex", justifyContent: "space-between", alignItems: "center",
         }}>
-          <span>{findResult.message}</span>
-          <button onClick={() => setFindResult(null)} style={{ background: "none", border: "none", color: "inherit", cursor: "pointer", fontSize: 16 }}>x</button>
+          <span>{importError}</span>
+          <button onClick={() => setImportError(null)} style={{ background: "none", border: "none", color: "inherit", cursor: "pointer", fontSize: 16 }}>×</button>
+        </div>
+      )}
+
+      {/* ─── Import Flow Overlay ─── */}
+      {showImportFlow && (
+        <div style={{
+          background: "#111827", border: "1px solid rgba(212,165,116,0.2)",
+          borderRadius: 16, padding: isMobile ? "20px 16px" : "28px 28px", marginBottom: 24,
+        }}>
+          {/* Uploading state */}
+          {importStep === "uploading" && (
+            <div style={{ textAlign: "center", padding: "24px 0" }}>
+              <div style={{ fontSize: 16, color: "rgba(232,223,207,0.6)", fontFamily: "var(--font-display)" }}>
+                Parsing file...
+              </div>
+            </div>
+          )}
+
+          {/* Mapping step */}
+          {importStep === "mapping" && preview && (
+            <div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 20 }}>
+                <div>
+                  <h2 style={{ fontSize: 18, fontWeight: 700, margin: 0, fontFamily: "var(--font-display)", color: "#e8dfcf" }}>
+                    Map Your Fields
+                  </h2>
+                  <p style={{ color: "rgba(232,223,207,0.4)", fontSize: 13, marginTop: 4 }}>
+                    {preview.filename} · {preview.totalRows} row{preview.totalRows !== 1 ? "s" : ""} detected
+                  </p>
+                </div>
+                <button
+                  onClick={resetImport}
+                  style={{ background: "none", border: "none", color: "rgba(232,223,207,0.35)", cursor: "pointer", fontSize: 20 }}
+                >
+                  ×
+                </button>
+              </div>
+
+              {/* Auto-mapping confidence note */}
+              <div style={{
+                background: "rgba(212,165,116,0.06)", border: "1px solid rgba(212,165,116,0.12)",
+                borderRadius: 10, padding: "10px 16px", marginBottom: 20, fontSize: 13,
+                color: "rgba(212,165,116,0.7)",
+              }}>
+                Fields auto-mapped from your column headers. Review and adjust before importing.
+              </div>
+
+              {importError && (
+                <div style={{
+                  background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)",
+                  borderRadius: 8, padding: "8px 12px", fontSize: 12, color: "#f87171", marginBottom: 16,
+                }}>
+                  {importError}
+                </div>
+              )}
+
+              {/* Field mapping table */}
+              <div style={{ overflowX: "auto", marginBottom: 20 }}>
+                <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+                  <thead>
+                    <tr style={{ borderBottom: "1px solid rgba(232,223,207,0.1)" }}>
+                      <th style={{ textAlign: "left", padding: "8px 12px", color: "rgba(232,223,207,0.5)", fontWeight: 600, fontFamily: "var(--font-display)", fontSize: 11, letterSpacing: "0.05em", textTransform: "uppercase" as const }}>
+                        CSV Column
+                      </th>
+                      <th style={{ textAlign: "left", padding: "8px 12px", color: "rgba(232,223,207,0.5)", fontWeight: 600, fontFamily: "var(--font-display)", fontSize: 11, letterSpacing: "0.05em", textTransform: "uppercase" as const }}>
+                        Maps To
+                      </th>
+                      <th style={{ textAlign: "left", padding: "8px 12px", color: "rgba(232,223,207,0.5)", fontWeight: 600, fontFamily: "var(--font-display)", fontSize: 11, letterSpacing: "0.05em", textTransform: "uppercase" as const }}>
+                        Sample Data
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {preview.headers.map((header, idx) => {
+                      const sampleValues = preview.sampleRows
+                        .map((row) => row[idx])
+                        .filter(Boolean)
+                        .slice(0, 2);
+                      const confidence = preview.suggestedMapping[header]?.confidence ?? 0;
+
+                      return (
+                        <tr key={header} style={{ borderBottom: "1px solid rgba(232,223,207,0.06)" }}>
+                          <td style={{ padding: "10px 12px", color: "#e8dfcf", fontWeight: 500 }}>
+                            {header}
+                            {confidence > 80 && (
+                              <span style={{ fontSize: 10, color: "#22c55e", marginLeft: 6 }}>✓</span>
+                            )}
+                          </td>
+                          <td style={{ padding: "10px 12px" }}>
+                            <select
+                              value={mapping[header] || "skip"}
+                              onChange={(e) => handleMappingChange(header, e.target.value)}
+                              style={{
+                                background: "#0b1120", border: "1px solid rgba(232,223,207,0.15)",
+                                borderRadius: 6, padding: "6px 10px", color: mapping[header] === "skip" ? "rgba(232,223,207,0.3)" : "#e8dfcf",
+                                fontSize: 12, outline: "none", fontFamily: "var(--font-body)",
+                                cursor: "pointer", minWidth: 130,
+                              }}
+                            >
+                              {STANDARD_FIELDS.map((f) => (
+                                <option key={f.value} value={f.value}>{f.label}</option>
+                              ))}
+                            </select>
+                          </td>
+                          <td style={{ padding: "10px 12px", color: "rgba(232,223,207,0.35)", fontSize: 12, maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                            {sampleValues.join(", ") || "—"}
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Validation status */}
+              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 20 }}>
+                <div style={{
+                  fontSize: 12,
+                  color: hasEmail ? "#22c55e" : "#f87171",
+                  display: "flex", alignItems: "center", gap: 4,
+                }}>
+                  {hasEmail ? "✓" : "✗"} Email field mapped
+                </div>
+                <div style={{
+                  fontSize: 12,
+                  color: hasName ? "#22c55e" : "#f87171",
+                  display: "flex", alignItems: "center", gap: 4,
+                }}>
+                  {hasName ? "✓" : "✗"} Name field mapped
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                <button
+                  onClick={handleConfirmImport}
+                  disabled={!mappingValid}
+                  style={{
+                    background: mappingValid ? "#d4a574" : "rgba(212,165,116,0.3)",
+                    color: "#0b1120", border: "none",
+                    borderRadius: 10, padding: "12px 28px", fontSize: 14,
+                    fontWeight: 700, cursor: mappingValid ? "pointer" : "not-allowed",
+                    fontFamily: "var(--font-display)",
+                  }}
+                >
+                  Import {preview.totalRows} Lead{preview.totalRows !== 1 ? "s" : ""}
+                </button>
+                <button
+                  onClick={resetImport}
+                  style={{
+                    background: "none", border: "1px solid rgba(232,223,207,0.15)",
+                    borderRadius: 10, padding: "12px 20px", fontSize: 14,
+                    color: "rgba(232,223,207,0.5)", cursor: "pointer",
+                    fontFamily: "var(--font-display)",
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Importing state */}
+          {importStep === "importing" && (
+            <div style={{ textAlign: "center", padding: "32px 0" }}>
+              <div style={{ fontSize: 16, color: "#d4a574", fontWeight: 600, fontFamily: "var(--font-display)", marginBottom: 8 }}>
+                Importing leads...
+              </div>
+              <p style={{ color: "rgba(232,223,207,0.35)", fontSize: 13, margin: 0 }}>
+                Deduplicating, creating companies, contacts, and leads. This may take a moment.
+              </p>
+            </div>
+          )}
+
+          {/* Done state */}
+          {importStep === "done" && importResult && (
+            <div>
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
+                <h2 style={{ fontSize: 18, fontWeight: 700, margin: 0, fontFamily: "var(--font-display)", color: "#22c55e" }}>
+                  Import Complete
+                </h2>
+                <button
+                  onClick={() => { resetImport(); window.location.reload(); }}
+                  style={{ background: "none", border: "none", color: "rgba(232,223,207,0.35)", cursor: "pointer", fontSize: 20 }}
+                >
+                  ×
+                </button>
+              </div>
+
+              <div style={{ display: "flex", gap: 16, flexWrap: "wrap", marginBottom: 20 }}>
+                <ResultStat label="Imported" value={importResult.imported} color="#22c55e" />
+                <ResultStat label="Duplicates skipped" value={importResult.duplicates} color="#eab308" />
+                <ResultStat label="Failed" value={importResult.failed} color={importResult.failed > 0 ? "#f87171" : "rgba(232,223,207,0.3)"} />
+                <ResultStat label="Total rows" value={importResult.total} color="rgba(232,223,207,0.5)" />
+              </div>
+
+              {importResult.errors.length > 0 && (
+                <div style={{
+                  background: "rgba(239,68,68,0.06)", border: "1px solid rgba(239,68,68,0.15)",
+                  borderRadius: 10, padding: "12px 16px", marginBottom: 16, maxHeight: 120, overflowY: "auto",
+                }}>
+                  <div style={{ fontSize: 11, fontWeight: 600, color: "#f87171", marginBottom: 6, fontFamily: "var(--font-display)" }}>
+                    Errors
+                  </div>
+                  {importResult.errors.map((err, i) => (
+                    <div key={i} style={{ fontSize: 12, color: "rgba(232,223,207,0.5)", marginBottom: 2 }}>
+                      Row {err.row}: {err.reason}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div style={{ display: "flex", gap: 10 }}>
+                <button
+                  onClick={() => { resetImport(); window.location.reload(); }}
+                  style={{
+                    background: "#d4a574", color: "#0b1120", border: "none",
+                    borderRadius: 10, padding: "12px 24px", fontSize: 14,
+                    fontWeight: 700, cursor: "pointer", fontFamily: "var(--font-display)",
+                  }}
+                >
+                  View Leads
+                </button>
+                <button
+                  onClick={() => { resetImport(); fileInputRef.current?.click(); }}
+                  style={{
+                    background: "none", border: "1px solid rgba(232,223,207,0.15)",
+                    borderRadius: 10, padding: "12px 20px", fontSize: 14,
+                    color: "rgba(232,223,207,0.5)", cursor: "pointer",
+                    fontFamily: "var(--font-display)",
+                  }}
+                >
+                  Import Another File
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       )}
 
       {/* Pipeline KPIs */}
-      <div style={{
-        display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 20,
-        background: "#111827", border: "1px solid rgba(232,223,207,0.1)", borderRadius: 12, padding: "12px 16px",
-      }}>
-        {data.stats
-          .filter((s) => !["suppressed", "lost"].includes(s.stage))
-          .sort((a, b) => {
-            const order = ["candidate", "qualified", "ready_to_email", "emailed", "replied_positive", "meeting_requested", "meeting_booked", "won"];
-            return order.indexOf(a.stage) - order.indexOf(b.stage);
-          })
-          .map((s) => (
-            <button
-              key={s.stage}
-              onClick={() => setFilter(filter === s.stage ? "all" : s.stage)}
-              style={{
-                display: "flex", alignItems: "center", gap: 6,
-                padding: "6px 12px", borderRadius: 8,
-                background: filter === s.stage ? `${STAGE_COLORS[s.stage] ?? "rgba(232,223,207,0.35)"}20` : "transparent",
-                border: "none", cursor: "pointer", transition: "all 0.15s",
-                fontFamily: 'var(--font-body)',
-              }}
-            >
-              <span style={{ fontSize: 15, fontWeight: 700, color: STAGE_COLORS[s.stage] ?? "rgba(232,223,207,0.35)", fontFamily: 'var(--font-display)' }}>
-                {s.count}
-              </span>
-              <span style={{ fontSize: 12, color: "rgba(232,223,207,0.5)" }}>
-                {STAGES.find((st) => st.key === s.stage)?.label ?? String(s.stage)}
-              </span>
-            </button>
-          ))}
-      </div>
+      {data.stats.length > 0 && (
+        <div style={{
+          display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 20,
+          background: "#111827", border: "1px solid rgba(232,223,207,0.1)", borderRadius: 12, padding: "12px 16px",
+        }}>
+          {data.stats
+            .filter((s) => !["suppressed", "lost"].includes(s.stage))
+            .sort((a, b) => {
+              const order = ["candidate", "qualified", "ready_to_email", "emailed", "replied_positive", "meeting_requested", "meeting_booked", "won"];
+              return order.indexOf(a.stage) - order.indexOf(b.stage);
+            })
+            .map((s) => (
+              <button
+                key={s.stage}
+                onClick={() => setFilter(filter === s.stage ? "all" : s.stage)}
+                style={{
+                  display: "flex", alignItems: "center", gap: 6,
+                  padding: "6px 12px", borderRadius: 8,
+                  background: filter === s.stage ? `${STAGE_COLORS[s.stage] ?? "rgba(232,223,207,0.35)"}20` : "transparent",
+                  border: "none", cursor: "pointer", transition: "all 0.15s",
+                  fontFamily: 'var(--font-body)',
+                }}
+              >
+                <span style={{ fontSize: 15, fontWeight: 700, color: STAGE_COLORS[s.stage] ?? "rgba(232,223,207,0.35)", fontFamily: 'var(--font-display)' }}>
+                  {s.count}
+                </span>
+                <span style={{ fontSize: 12, color: "rgba(232,223,207,0.5)" }}>
+                  {STAGES.find((st) => st.key === s.stage)?.label ?? String(s.stage)}
+                </span>
+              </button>
+            ))}
+        </div>
+      )}
 
       {/* Filter bar */}
-      <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+      <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
         <div style={{
           display: "flex", gap: 4, background: "#111827", borderRadius: 8,
           border: "1px solid rgba(232,223,207,0.1)", padding: 4, overflowX: "auto",
@@ -280,19 +648,19 @@ export function CrmView({ tenantSlug, data }: { tenantSlug: string; data: CrmDat
                 <>
                   <div style={{ fontSize: 32, marginBottom: 12, color: "rgba(232,223,207,0.15)" }}>◈</div>
                   <h3 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 8px", fontFamily: "var(--font-display)", color: "#e8dfcf" }}>No leads yet</h3>
-                  <p style={{ color: "rgba(232,223,207,0.35)", fontSize: 14, margin: "0 0 20px", maxWidth: 360, marginLeft: "auto", marginRight: "auto" }}>
-                    Find scored leads matching your ideal customer profile with one click.
+                  <p style={{ color: "rgba(232,223,207,0.35)", fontSize: 14, margin: "0 0 20px", maxWidth: 400, marginLeft: "auto", marginRight: "auto" }}>
+                    Import a CSV from Apollo, LinkedIn Sales Navigator, HubSpot, or any spreadsheet.
+                    Mission Control will map your fields automatically and score every lead against your ICP.
                   </p>
                   <button
-                    onClick={handleFindLeads}
-                    disabled={findingLeads}
+                    onClick={() => fileInputRef.current?.click()}
                     style={{
                       background: "#d4a574", color: "#0b1120", border: "none",
                       borderRadius: 10, padding: "12px 28px", fontSize: 15,
-                      fontWeight: 700, cursor: findingLeads ? "wait" : "pointer", fontFamily: "var(--font-display)",
+                      fontWeight: 700, cursor: "pointer", fontFamily: "var(--font-display)",
                     }}
                   >
-                    {findingLeads ? "Searching..." : "Find Leads"}
+                    Import CSV
                   </button>
                 </>
               ) : (
@@ -318,7 +686,6 @@ export function CrmView({ tenantSlug, data }: { tenantSlug: string; data: CrmDat
                     transition: "background 0.1s",
                   }}
                 >
-                  {/* Score bar */}
                   <div style={{ width: 40, flexShrink: 0 }}>
                     <div style={{
                       fontSize: 15, fontWeight: 700, textAlign: "center", fontFamily: 'var(--font-display)',
@@ -327,8 +694,6 @@ export function CrmView({ tenantSlug, data }: { tenantSlug: string; data: CrmDat
                       {lead.fit_score as number}
                     </div>
                   </div>
-
-                  {/* Info */}
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontSize: 14, fontWeight: 600, color: "#e8dfcf", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                       {lead.contact_name as string || "Unknown"}
@@ -337,8 +702,6 @@ export function CrmView({ tenantSlug, data }: { tenantSlug: string; data: CrmDat
                       {lead.company_name as string}{lead.contact_title ? ` · ${lead.contact_title}` : ""}
                     </div>
                   </div>
-
-                  {/* Stage badge */}
                   <span style={{
                     fontSize: 11, padding: "2px 8px", borderRadius: 4, flexShrink: 0,
                     background: `${STAGE_COLORS[lead.stage as string] ?? "rgba(232,223,207,0.35)"}15`,
@@ -362,7 +725,7 @@ export function CrmView({ tenantSlug, data }: { tenantSlug: string; data: CrmDat
           }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
               <h2 style={{ fontSize: 18, fontWeight: 700, margin: 0, fontFamily: 'var(--font-display)' }}>{selectedLead.contact_name as string}</h2>
-              <button onClick={() => selectLead(null)} style={{ background: "none", border: "none", color: "rgba(232,223,207,0.35)", cursor: "pointer", fontSize: 18 }}>x</button>
+              <button onClick={() => selectLead(null)} style={{ background: "none", border: "none", color: "rgba(232,223,207,0.35)", cursor: "pointer", fontSize: 18 }}>×</button>
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 12, marginBottom: 20 }}>
@@ -548,8 +911,22 @@ function DetailItem({ label, value }: { label: string; value: string | undefined
     <div>
       <div style={{ fontSize: 11, color: "rgba(232,223,207,0.25)", marginBottom: 2, fontFamily: 'var(--font-display)' }}>{label}</div>
       <div style={{ fontSize: 13, color: value ? "rgba(232,223,207,0.85)" : "rgba(232,223,207,0.2)", fontWeight: 500 }}>
-        {value || "-"}
+        {value || "—"}
       </div>
+    </div>
+  );
+}
+
+function ResultStat({ label, value, color }: { label: string; value: number; color: string }) {
+  return (
+    <div style={{
+      background: "rgba(232,223,207,0.03)", borderRadius: 10, padding: "12px 16px",
+      minWidth: 100,
+    }}>
+      <div style={{ fontSize: 24, fontWeight: 800, fontFamily: "var(--font-display)", color }}>
+        {value}
+      </div>
+      <div style={{ fontSize: 11, color: "rgba(232,223,207,0.4)", marginTop: 2 }}>{label}</div>
     </div>
   );
 }
