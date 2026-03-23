@@ -3,6 +3,7 @@ import { bookingTypes } from "@/config/booking";
 import { createBooking, getAvailableSlots } from "@/lib/booking";
 import { createCalendarEvent } from "@/lib/google-calendar";
 import { sendBookingEmails } from "@/lib/booking-emails";
+import { checkRateLimit } from "@/lib/rate-limit";
 import {
   ensureCrmTables,
   createCompany,
@@ -20,6 +21,13 @@ import {
  * Creates a booking, adds a Google Calendar event, and returns the booking.
  */
 export async function POST(request: NextRequest) {
+  const rateLimitResult = checkRateLimit(request, 5, 60 * 60 * 1000);
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { error: "Too many booking attempts. Please try again later." },
+      { status: 429 }
+    );
+  }
   let body: {
     type?: string;
     startTime?: string;
@@ -100,7 +108,7 @@ export async function POST(request: NextRequest) {
     let googleMeetUrl: string | null = null;
     try {
       const calResult = await createCalendarEvent({
-        title: `${bookingType.title} — ${name}`,
+        title: `${bookingType.title} - ${name}`,
         description: [
           `Booking type: ${bookingType.title}`,
           `Client: ${name} (${email})`,
@@ -131,7 +139,7 @@ export async function POST(request: NextRequest) {
       googleMeetUrl,
     });
 
-    // Send confirmation + alert emails (must await on serverless — function terminates after response)
+    // Send confirmation + alert emails (must await on serverless -function terminates after response)
     try {
       await sendBookingEmails({
         clientName: name,
@@ -184,8 +192,8 @@ export async function POST(request: NextRequest) {
       const lead = await createLead({
         company_id: company.id,
         contact_id: contact.id,
-        fit_score: 80, // High — they booked a meeting
-        fit_reason: `Booked a ${bookingType.title} — shows active interest`,
+        fit_score: 80, // High -they booked a meeting
+        fit_reason: `Booked a ${bookingType.title}: shows active interest`,
         stage: "meeting_booked",
         next_action: `${bookingType.title} on ${start.toLocaleDateString("en-US", { month: "short", day: "numeric" })}`,
         next_action_at: start.toISOString(),

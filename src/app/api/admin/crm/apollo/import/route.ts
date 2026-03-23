@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Dedupe company by domain — reuse existing or create new
+    // Dedupe company by domain -reuse existing or create new
     let companyRecord;
     if (company.domain) {
       const existingCompany = await sql`

@@ -7,7 +7,7 @@ export default function DemoStrategyPage() {
   return (
     <StrategyView
       tenantSlug="demo"
-      tenantName="Cosmic Reach Creative"
+      tenantName="AtlasOps"
       initialGoals={DEMO_GOALS}
     />
   );

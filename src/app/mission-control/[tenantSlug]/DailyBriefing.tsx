@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 interface BriefingData {
   pipelineStats: { stage: string; count: number }[];
@@ -41,7 +42,7 @@ function generateRecommendations(data: BriefingData) {
     issues.push({
       priority: 2,
       label: "High-fit leads stalling",
-      detail: `${stuckLeads.length} lead${stuckLeads.length > 1 ? "s" : ""} with 75+ fit score still in early pipeline. Move them forward.`,
+      detail: `${stuckLeads.length} lead${stuckLeads.length > 1 ? "s" : ""} with 75+ fit score still in early stages. These deserve attention now.`,
       action: "Review and advance top leads",
       link: "crm",
     });
@@ -65,8 +66,8 @@ function generateRecommendations(data: BriefingData) {
   if (totalActive === 0) {
     issues.push({
       priority: 1,
-      label: "Empty pipeline",
-      detail: "No active leads in your pipeline. Start generating or adding leads to get moving.",
+      label: "No active leads",
+      detail: "Import leads to start receiving daily direction. Mission Control needs data to generate recommendations.",
       action: "Add your first leads",
       link: "crm",
     });
@@ -192,6 +193,7 @@ const STAGE_COLORS: Record<string, string> = {
 
 export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data }: Props) {
   const router = useRouter();
+  const isMobile = useIsMobile();
   const base = `/mission-control/${tenantSlug}`;
   const recommendations = generateRecommendations(data);
   const targets = generateDailyTargets(data);
@@ -254,7 +256,7 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data 
           borderRadius: 16, padding: "24px 28px", marginBottom: 24,
         }}>
           <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-            <div style={{ flex: 1, minWidth: 280 }}>
+            <div style={{ flex: 1, minWidth: isMobile ? 0 : 280 }}>
               <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "#d4a574", marginBottom: 8, fontFamily: 'var(--font-display)' }}>
                 Biggest issue right now
               </div>
@@ -267,7 +269,7 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data 
             </div>
             <div style={{
               background: "#111827", border: "1px solid rgba(232,223,207,0.1)",
-              borderRadius: 12, padding: "16px 20px", minWidth: 220,
+              borderRadius: 12, padding: "16px 20px", minWidth: isMobile ? 0 : 220,
             }}>
               <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "#22c55e", marginBottom: 6, fontFamily: 'var(--font-display)' }}>
                 Next Move
@@ -299,7 +301,7 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data 
           <div style={{ fontSize: 36, marginBottom: 12 }}>◉</div>
           <h2 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 8px 0", fontFamily: 'var(--font-display)' }}>Your briefing is ready</h2>
           <p style={{ color: "rgba(232,223,207,0.35)", fontSize: 14, margin: "0 0 20px 0" }}>
-            Add leads to your CRM and Mission Control will start generating daily recommendations.
+            Import leads and Mission Control will start generating daily recommendations and direction.
           </p>
           <button
             onClick={() => router.push(`${base}/crm`)}
@@ -309,7 +311,7 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data 
               fontWeight: 600, cursor: "pointer", fontFamily: 'var(--font-display)',
             }}
           >
-            Open CRM
+            Import Leads
           </button>
         </div>
       )}
@@ -405,7 +407,7 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data 
       )}
 
       {/* Bottom row: Meetings + Activity */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+      <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16 }}>
         {/* Upcoming meetings */}
         <div style={{
           background: "#111827", border: "1px solid rgba(232,223,207,0.1)",
@@ -500,7 +502,7 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data 
           background: "#111827", border: "1px solid rgba(232,223,207,0.1)",
           borderRadius: 12, padding: "20px 20px", marginTop: 16,
         }}>
-          <h3 style={{ fontSize: 14, fontWeight: 600, margin: "0 0 14px 0", color: "rgba(232,223,207,0.85)", fontFamily: 'var(--font-display)' }}>Pipeline</h3>
+          <h3 style={{ fontSize: 14, fontWeight: 600, margin: "0 0 14px 0", color: "rgba(232,223,207,0.85)", fontFamily: 'var(--font-display)' }}>Lead Status</h3>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
             {data.pipelineStats
               .filter((s) => !["suppressed", "lost"].includes(s.stage))

@@ -350,7 +350,7 @@ function PageFooterBar({ pageNum }: { pageNum: number }) {
   return (
     <View style={s.pageFooter} fixed>
       <Text style={s.footerText}>cosmicreachcreative.com</Text>
-      <Text style={s.footerText}>Business Clarity Report — {reportMeta.business}</Text>
+      <Text style={s.footerText}>Business Clarity Report: {reportMeta.business}</Text>
       <Text style={s.footerText}>{pageNum}</Text>
     </View>
   );
@@ -380,7 +380,7 @@ export function ClarityReportDocument({ origin = "" }: { origin?: string }) {
 
   return (
     <Document
-      title={`Business Clarity Report — ${reportMeta.business}`}
+      title={`Business Clarity Report: ${reportMeta.business}`}
       author="Cosmic Reach Creative"
       subject="Business Clarity Audit"
     >

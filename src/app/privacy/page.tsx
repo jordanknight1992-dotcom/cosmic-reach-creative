@@ -43,6 +43,18 @@ export default function PrivacyPage() {
                 <span className="text-copper mt-1.5 text-xs" aria-hidden="true">&#9670;</span>
                 <span><strong>CTA tracking:</strong> We track which buttons and calls-to-action are clicked to understand user behavior. This data is aggregated and does not include personal information.</span>
               </li>
+              <li className="flex items-start gap-2">
+                <span className="text-copper mt-1.5 text-xs" aria-hidden="true">&#9670;</span>
+                <span><strong>Mission Control accounts:</strong> If you create a Mission Control workspace, we collect your name, email address, and a hashed password. Passwords are stored using bcrypt encryption and are never stored in plain text. We also store session tokens to keep you signed in.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-copper mt-1.5 text-xs" aria-hidden="true">&#9670;</span>
+                <span><strong>Two-factor authentication:</strong> If you enable two-factor authentication, we store an encrypted TOTP secret used to verify your authenticator app codes. We do not have access to your authenticator app.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-copper mt-1.5 text-xs" aria-hidden="true">&#9670;</span>
+                <span><strong>Third-party API keys:</strong> Mission Control users may provide their own API keys for integrations. These are encrypted using AES-256-GCM with PBKDF2 key derivation and stored securely. Keys are only decrypted server-side when making API calls on your behalf.</span>
+              </li>
             </ul>
 
             <h2 className="text-xl mt-8">How We Use Your Information</h2>
@@ -77,6 +89,9 @@ export default function PrivacyPage() {
             <h2 className="text-xl mt-8">Cookies</h2>
             <p>
               Google Analytics may set cookies to distinguish unique users and sessions. These cookies do not personally identify you. You can control cookie behavior through your browser settings.
+            </p>
+            <p>
+              Mission Control uses a secure, HTTP-only session cookie to keep you signed in. This cookie is set to SameSite Strict, meaning it is not sent with cross-site requests. Session cookies expire after 30 days of inactivity.
             </p>
 
             <h2 className="text-xl mt-8">Third-Party Services</h2>

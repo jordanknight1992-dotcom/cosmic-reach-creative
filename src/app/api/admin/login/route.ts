@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAdminPasswordHash } from "@/lib/db";
 import { createHash } from "crypto";
+import bcrypt from "bcryptjs";
 import {
   isTotpEnabled,
   getTotpSecret,
@@ -8,20 +9,19 @@ import {
   generateTotpSecret,
 } from "@/lib/totp";
 
-async function sha256(text: string): Promise<string> {
-  return createHash("sha256").update(text).digest("hex");
-}
-
 function makeSessionResponse(message: Record<string, unknown> = { success: true }) {
-  const secret = process.env.SESSION_SECRET ?? "fallback-secret-change-me";
+  const secret = process.env.SESSION_SECRET;
+  if (!secret) {
+    throw new Error("SESSION_SECRET environment variable is not set");
+  }
   const sessionToken = createHash("sha256").update(secret).digest("hex");
 
   const response = NextResponse.json(message);
   response.cookies.set("admin_session", sessionToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    maxAge: 60 * 60 * 24 * 30, // 30 days
+    sameSite: "strict",
+    maxAge: 60 * 60 * 24 * 7, // 7 days (was 30)
     path: "/",
   });
   return response;
@@ -42,9 +42,16 @@ export async function POST(request: Request) {
     );
   }
 
-  /* Verify password */
-  const hash = await sha256(password);
-  if (hash !== stored) {
+  /* Verify password (supports both bcrypt and legacy SHA256 hashes) */
+  let passwordValid = false;
+  if (stored.startsWith("$2")) {
+    passwordValid = await bcrypt.compare(password, stored);
+  } else {
+    // Legacy SHA256 fallback
+    const hash = createHash("sha256").update(password).digest("hex");
+    passwordValid = hash === stored;
+  }
+  if (!passwordValid) {
     return NextResponse.json({ error: "Incorrect password." }, { status: 401 });
   }
 
@@ -60,7 +67,7 @@ export async function POST(request: Request) {
         totp: { secret, qrDataUrl },
       });
     }
-    /* totpCode was provided — this shouldn't happen without a secret stored.
+    /* totpCode was provided -this shouldn't happen without a secret stored.
        Fall through to error below. */
     return NextResponse.json(
       { error: "Invalid verification code." },

@@ -13,8 +13,15 @@ import {
   isUserInTenant,
   getTenantBySlug,
   logAudit,
+  createSupportSession,
+  getActiveSupportSession,
+  getActiveSupportSessionForUser,
+  endSupportSession as dbEndSupportSession,
+  expireSupportSessions,
+  getTenantSupportAccess,
   type McUser,
   type Tenant,
+  type SupportSession,
 } from "./mc-db";
 
 const SALT_ROUNDS = 12;
@@ -180,6 +187,8 @@ export interface SessionContext {
   tenantId: number | null;
   isImpersonation: boolean;
   impersonatedBy: number | null;
+  supportSession: SupportSession | null;
+  isSupportMode: boolean;
 }
 
 export async function validateSession(
@@ -197,12 +206,20 @@ export async function validateSession(
     tenant = await getTenantById(session.tenant_id);
   }
 
+  // Check for active support session
+  let supportSession: SupportSession | null = null;
+  if (user.is_super_admin && isSuperUserEmail(user.email)) {
+    supportSession = await getCurrentSupportSession(user.id);
+  }
+
   return {
     user,
     tenant,
     tenantId: session.tenant_id,
     isImpersonation: session.is_impersonation,
     impersonatedBy: session.impersonated_by,
+    supportSession,
+    isSupportMode: !!supportSession,
   };
 }
 
@@ -221,10 +238,30 @@ export async function validateTenantAccess(
   const tenant = await getTenantBySlug(tenantSlug);
   if (!tenant) return { error: "Workspace not found", status: 404 };
 
-  // Super admins can access any tenant
-  if (!sessionCtx.user.is_super_admin) {
-    const hasAccess = await isUserInTenant(sessionCtx.user.id, tenant.id);
-    if (!hasAccess) return { error: "Access denied", status: 403 };
+  // Check if user is a member of this tenant
+  const isMember = await isUserInTenant(sessionCtx.user.id, tenant.id);
+
+  if (!isMember) {
+    // Super admins can access via active support session
+    if (sessionCtx.user.is_super_admin && isSuperUserEmail(sessionCtx.user.email)) {
+      // Check for active support session for this tenant
+      const supportSession = await getCurrentSupportSession(sessionCtx.user.id);
+      if (supportSession && supportSession.tenant_id === tenant.id) {
+        return {
+          ctx: {
+            ...sessionCtx,
+            tenant,
+            tenantId: tenant.id,
+            isImpersonation: true,
+            isSupportMode: true,
+            supportSession,
+          },
+        };
+      }
+      // Super admin without active support session for this tenant
+      return { error: "Support session required. Start a support session from the support console.", status: 403 };
+    }
+    return { error: "Access denied", status: 403 };
   }
 
   return {
@@ -236,34 +273,228 @@ export async function validateTenantAccess(
   };
 }
 
-/* ─── Impersonation ─── */
+/* ─── Super User Constants ─── */
+
+const SUPER_USER_EMAIL = "jordan@cosmicreachcreative.com";
+const SUPPORT_SESSION_DURATION_MINUTES = 30;
+const STEP_UP_WINDOW_SECONDS = 300; // 5 minutes - step-up auth valid for this long
+
+/**
+ * Check if a user is the designated Super User.
+ * Only jordan@cosmicreachcreative.com can hold this role.
+ */
+export function isSuperUserEmail(email: string): boolean {
+  return email.toLowerCase().trim() === SUPER_USER_EMAIL;
+}
+
+/**
+ * Enforce that is_super_admin can only be true for the designated Super User email.
+ * Called server-side to prevent tampering.
+ */
+export async function enforceSuperUserIntegrity(userId: number): Promise<boolean> {
+  const user = await getUserById(userId);
+  if (!user) return false;
+  if (user.is_super_admin && !isSuperUserEmail(user.email)) {
+    // Strip unauthorized super_admin flag
+    const { getSQL } = await import("./mc-db");
+    const sql = getSQL();
+    await sql`UPDATE mc_users SET is_super_admin = FALSE WHERE id = ${userId}`;
+    return false;
+  }
+  return user.is_super_admin;
+}
+
+/* ─── Step-Up Authentication ─── */
+
+// In-memory store for step-up verification timestamps (per user)
+// In production, this should be stored in the session or a short-lived DB record
+const stepUpVerifications = new Map<number, number>();
+
+/**
+ * Verify TOTP code for step-up authentication.
+ * Returns true if the code is valid. Records the verification timestamp.
+ */
+export async function verifyStepUp(userId: number, totpCode: string): Promise<boolean> {
+  const user = await getUserById(userId);
+  if (!user || !user.totp_secret || !user.totp_enabled) return false;
+
+  const { TOTP, Secret } = await import("otpauth");
+  const totp = new TOTP({
+    issuer: "Mission Control",
+    label: user.email,
+    algorithm: "SHA1",
+    digits: 6,
+    period: 30,
+    secret: Secret.fromBase32(user.totp_secret),
+  });
+
+  const delta = totp.validate({ token: totpCode, window: 1 });
+  if (delta === null) return false;
+
+  // Record step-up verification time
+  stepUpVerifications.set(userId, Date.now());
+  return true;
+}
+
+/**
+ * Check if a recent step-up verification exists (within the window).
+ */
+export function hasRecentStepUp(userId: number): boolean {
+  const lastVerified = stepUpVerifications.get(userId);
+  if (!lastVerified) return false;
+  const elapsed = (Date.now() - lastVerified) / 1000;
+  return elapsed < STEP_UP_WINDOW_SECONDS;
+}
+
+/**
+ * Clear step-up verification for a user.
+ */
+export function clearStepUp(userId: number): void {
+  stepUpVerifications.delete(userId);
+}
+
+/* ─── Support Access System ─── */
+
+/**
+ * Validate that a Super User can enter support mode for a tenant.
+ * Checks:
+ * 1. User is the designated Super User
+ * 2. User has is_super_admin flag
+ * 3. User has TOTP enabled (MFA required)
+ * 4. Step-up verification is recent
+ * 5. Tenant has support access enabled
+ */
+export async function validateSupportEntry(
+  userId: number,
+  tenantId: number
+): Promise<{ allowed: true } | { allowed: false; reason: string }> {
+  const user = await getUserById(userId);
+  if (!user) return { allowed: false, reason: "User not found" };
+
+  // Must be the designated Super User email
+  if (!isSuperUserEmail(user.email)) {
+    return { allowed: false, reason: "Only the designated support account can use support access" };
+  }
+
+  // Must have super_admin flag
+  if (!user.is_super_admin) {
+    return { allowed: false, reason: "Super admin privileges required" };
+  }
+
+  // Must have TOTP/MFA enabled
+  if (!user.totp_enabled || !user.totp_secret) {
+    return { allowed: false, reason: "Two-factor authentication must be enabled for support access" };
+  }
+
+  // Must have recent step-up verification
+  if (!hasRecentStepUp(userId)) {
+    return { allowed: false, reason: "step_up_required" };
+  }
+
+  // Tenant must allow support access
+  const supportEnabled = await getTenantSupportAccess(tenantId);
+  if (!supportEnabled) {
+    return { allowed: false, reason: "This workspace has disabled support access" };
+  }
+
+  // Expire any stale sessions
+  await expireSupportSessions();
+
+  return { allowed: true };
+}
+
+/**
+ * Start a support session for a Super User entering a customer workspace.
+ * Creates a time-limited support session and logs the event.
+ */
+export async function startSupportAccess(data: {
+  userId: number;
+  tenantId: number;
+  reason: string;
+  ipAddress?: string;
+  userAgent?: string;
+}): Promise<SupportSession> {
+  const sessionId = generateSessionId();
+  const expiresAt = new Date();
+  expiresAt.setMinutes(expiresAt.getMinutes() + SUPPORT_SESSION_DURATION_MINUTES);
+
+  const session = await createSupportSession({
+    id: sessionId,
+    user_id: data.userId,
+    tenant_id: data.tenantId,
+    reason: data.reason,
+    ip_address: data.ipAddress,
+    user_agent: data.userAgent,
+    expires_at: expiresAt,
+  });
+
+  // Audit log
+  await logAudit({
+    user_id: data.userId,
+    tenant_id: data.tenantId,
+    action: "support_access_start",
+    resource: "support_session",
+    resource_id: sessionId,
+    metadata: { reason: data.reason, expires_at: expiresAt.toISOString() },
+    ip_address: data.ipAddress,
+    user_agent: data.userAgent,
+  });
+
+  // Clear step-up verification after use (one-time use)
+  clearStepUp(data.userId);
+
+  return session;
+}
+
+/**
+ * End an active support session.
+ */
+export async function endSupportAccess(
+  supportSessionId: string,
+  userId: number,
+  ipAddress?: string,
+  userAgent?: string
+): Promise<void> {
+  const session = await getActiveSupportSession(supportSessionId);
+  if (!session) return;
+
+  await dbEndSupportSession(supportSessionId, "manual");
+
+  await logAudit({
+    user_id: userId,
+    tenant_id: session.tenant_id,
+    action: "support_access_end",
+    resource: "support_session",
+    resource_id: supportSessionId,
+    metadata: { reason: session.reason, ended_reason: "manual" },
+    ip_address: ipAddress,
+    user_agent: userAgent,
+  });
+}
+
+/**
+ * Get current active support session for a user, if any.
+ * Also handles expiration of stale sessions.
+ */
+export async function getCurrentSupportSession(userId: number): Promise<SupportSession | null> {
+  await expireSupportSessions();
+  return getActiveSupportSessionForUser(userId);
+}
+
+/* ─── Legacy impersonation (kept for backward compat, delegates to support access) ─── */
 
 export async function startImpersonation(
   adminUserId: number,
   tenantId: number,
   ipAddress?: string
 ): Promise<string> {
-  const sessionId = generateSessionId();
-  const expiresAt = new Date();
-  expiresAt.setHours(expiresAt.getHours() + 2); // 2-hour limit
-
-  await createSession({
-    id: sessionId,
-    user_id: adminUserId,
-    tenant_id: tenantId,
-    is_impersonation: true,
-    impersonated_by: adminUserId,
-    expires_at: expiresAt,
+  const session = await startSupportAccess({
+    userId: adminUserId,
+    tenantId,
+    reason: "Legacy support access",
+    ipAddress,
   });
-
-  await logAudit({
-    user_id: adminUserId,
-    tenant_id: tenantId,
-    action: "impersonation_start",
-    ip_address: ipAddress,
-  });
-
-  return sessionId;
+  return session.id;
 }
 
 export async function endImpersonation(
@@ -272,13 +503,7 @@ export async function endImpersonation(
   tenantId: number,
   ipAddress?: string
 ) {
-  await deleteSession(sessionId);
-  await logAudit({
-    user_id: adminUserId,
-    tenant_id: tenantId,
-    action: "impersonation_end",
-    ip_address: ipAddress,
-  });
+  await endSupportAccess(sessionId, adminUserId, ipAddress);
 }
 
 /* ─── Encryption for tenant credentials ─── */

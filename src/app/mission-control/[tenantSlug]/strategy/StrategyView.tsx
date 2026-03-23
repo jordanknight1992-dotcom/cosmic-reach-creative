@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 interface Goal {
   label: string;
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export function StrategyView({ tenantSlug, tenantName, initialGoals }: Props) {
+  const isMobile = useIsMobile();
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
   const [previewDraft, setPreviewDraft] = useState<{ subject: string; body: string } | null>(null);
@@ -152,7 +154,7 @@ export function StrategyView({ tenantSlug, tenantName, initialGoals }: Props) {
       <form onSubmit={handleSave}>
         {/* Identity */}
         <Section title="Your Business">
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16 }}>
             <Field label="Business name">
               <input value={businessName} onChange={(e) => setBusinessName(e.target.value)} placeholder="Acme Corp" style={inputStyle} required />
             </Field>
@@ -160,7 +162,7 @@ export function StrategyView({ tenantSlug, tenantName, initialGoals }: Props) {
               <input value={senderName} onChange={(e) => setSenderName(e.target.value)} placeholder="Jane Smith" style={inputStyle} />
             </Field>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 16 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "2fr 1fr", gap: 16 }}>
             <Field label="What does your business do?">
               <textarea value={businessDescription} onChange={(e) => setBusinessDescription(e.target.value)} placeholder="We help growing companies clarify their brand and build web experiences that convert." style={{ ...inputStyle, minHeight: 80, resize: "vertical" }} />
             </Field>
@@ -182,7 +184,7 @@ export function StrategyView({ tenantSlug, tenantName, initialGoals }: Props) {
           <Field label="How should your emails sound?">
             <textarea value={brandVoice} onChange={(e) => setBrandVoice(e.target.value)} placeholder="Sharp, calm, credible, observant. Write like a peer, not a vendor. Confident but not pushy. Conversational but not sloppy." style={{ ...inputStyle, minHeight: 80, resize: "vertical" }} />
           </Field>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16 }}>
             <Field label="Phrases to avoid (one per line)">
               <textarea value={avoidPhrases} onChange={(e) => setAvoidPhrases(e.target.value)} placeholder={"just checking in\nwould love to connect\nhope this finds you well"} style={{ ...inputStyle, minHeight: 80, resize: "vertical" }} />
             </Field>
@@ -197,7 +199,7 @@ export function StrategyView({ tenantSlug, tenantName, initialGoals }: Props) {
           <Field label="Key offers / services (one per line)">
             <textarea value={keyOffers} onChange={(e) => setKeyOffers(e.target.value)} placeholder={"Brand strategy & positioning\nWebsite design & development\nConversion optimization\nFractional creative direction"} style={{ ...inputStyle, minHeight: 80, resize: "vertical" }} />
           </Field>
-          <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 16 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "2fr 1fr", gap: 16 }}>
             <Field label="Call-to-action URL">
               <input value={ctaUrl} onChange={(e) => setCtaUrl(e.target.value)} placeholder="https://yoursite.com/book" style={inputStyle} />
             </Field>
@@ -213,8 +215,8 @@ export function StrategyView({ tenantSlug, tenantName, initialGoals }: Props) {
             These goals shape the messaging angle in generated emails. What are you trying to achieve this quarter?
           </p>
           {goals.map((goal, i) => (
-            <div key={i} style={{ display: "flex", gap: 12, marginBottom: 12, alignItems: "flex-start" }}>
-              <div style={{ flex: "0 0 180px" }}>
+            <div key={i} style={{ display: "flex", flexDirection: isMobile ? "column" : "row", gap: 12, marginBottom: 12, alignItems: isMobile ? "stretch" : "flex-start" }}>
+              <div style={{ flex: isMobile ? "1 1 auto" : "0 0 180px" }}>
                 <input
                   value={goal.label}
                   onChange={(e) => updateGoal(i, "label", e.target.value)}
@@ -249,7 +251,7 @@ export function StrategyView({ tenantSlug, tenantName, initialGoals }: Props) {
         {/* Actions */}
         <div style={{ display: "flex", gap: 12, marginTop: 8 }}>
           <button type="submit" disabled={saving} style={{
-            background: "linear-gradient(135deg, #d4a574, #e04747)", color: "#fff", border: "none",
+            background: "#d4a574", color: "#1a1f2e", border: "none",
             borderRadius: 10, padding: "12px 32px", fontSize: 15, fontWeight: 700,
             cursor: saving ? "wait" : "pointer", fontFamily: "var(--font-display)",
           }}>

@@ -14,7 +14,7 @@ export default function NotFound() {
           href="/"
           className="inline-flex items-center justify-center rounded-[var(--radius-md)] bg-copper text-deep-space px-6 py-3 font-display font-semibold transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5"
         >
-          Return to Mission Control
+          Recalibrate &amp; Return Home
         </Link>
       </div>
     </main>

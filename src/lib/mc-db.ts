@@ -34,6 +34,7 @@ async function _createTables() {
       timezone     TEXT DEFAULT 'America/Chicago',
       logo_url     TEXT,
       plan         TEXT DEFAULT 'core',
+      is_retainer_client BOOLEAN DEFAULT FALSE,
       max_users    INTEGER DEFAULT 1,
       status       TEXT DEFAULT 'active',
       onboarding_completed BOOLEAN DEFAULT FALSE,
@@ -170,6 +171,125 @@ async function _createTables() {
     )
   `;
 
+  /* ── Support Sessions (Super User workspace access) ── */
+  await sql`
+    CREATE TABLE IF NOT EXISTS support_sessions (
+      id           TEXT PRIMARY KEY,
+      user_id      INTEGER REFERENCES mc_users(id) NOT NULL,
+      tenant_id    INTEGER REFERENCES tenants(id) NOT NULL,
+      reason       TEXT NOT NULL,
+      ip_address   TEXT,
+      user_agent   TEXT,
+      started_at   TIMESTAMPTZ DEFAULT NOW(),
+      expires_at   TIMESTAMPTZ NOT NULL,
+      ended_at     TIMESTAMPTZ,
+      ended_reason TEXT,
+      status       TEXT DEFAULT 'active'
+    )
+  `;
+
+  /* ── Tenant ICP Configuration ── */
+  await sql`
+    CREATE TABLE IF NOT EXISTS tenant_icp (
+      id              SERIAL PRIMARY KEY,
+      tenant_id       INTEGER REFERENCES tenants(id) NOT NULL UNIQUE,
+      target_roles    JSONB DEFAULT '[]',
+      target_industries JSONB DEFAULT '[]',
+      target_geo      JSONB DEFAULT '[]',
+      company_size_min INTEGER,
+      company_size_max INTEGER,
+      priorities      JSONB DEFAULT '[]',
+      exclusion_rules JSONB DEFAULT '[]',
+      scoring_weights JSONB DEFAULT '{}',
+      updated_at      TIMESTAMPTZ DEFAULT NOW()
+    )
+  `;
+
+  /* ── Team Invitations ── */
+  await sql`
+    CREATE TABLE IF NOT EXISTS team_invitations (
+      id         SERIAL PRIMARY KEY,
+      tenant_id  INTEGER REFERENCES tenants(id) NOT NULL,
+      email      TEXT NOT NULL,
+      role       TEXT DEFAULT 'member',
+      invited_by INTEGER REFERENCES mc_users(id) NOT NULL,
+      token      TEXT NOT NULL UNIQUE,
+      status     TEXT DEFAULT 'pending',
+      expires_at TIMESTAMPTZ NOT NULL,
+      created_at TIMESTAMPTZ DEFAULT NOW()
+    )
+  `;
+
+  /* ── Import Jobs ── */
+  await sql`
+    CREATE TABLE IF NOT EXISTS import_jobs (
+      id           SERIAL PRIMARY KEY,
+      tenant_id    INTEGER REFERENCES tenants(id) NOT NULL,
+      user_id      INTEGER REFERENCES mc_users(id) NOT NULL,
+      filename     TEXT,
+      source_type  TEXT DEFAULT 'csv',
+      row_count    INTEGER DEFAULT 0,
+      imported     INTEGER DEFAULT 0,
+      duplicates   INTEGER DEFAULT 0,
+      failed       INTEGER DEFAULT 0,
+      field_mapping JSONB DEFAULT '{}',
+      status       TEXT DEFAULT 'pending',
+      error_log    JSONB DEFAULT '[]',
+      created_at   TIMESTAMPTZ DEFAULT NOW(),
+      completed_at TIMESTAMPTZ
+    )
+  `;
+
+  /* ── Score Cache ── */
+  await sql`
+    CREATE TABLE IF NOT EXISTS score_cache (
+      id           SERIAL PRIMARY KEY,
+      tenant_id    INTEGER REFERENCES tenants(id) NOT NULL,
+      lead_id      INTEGER REFERENCES leads(id) NOT NULL,
+      data_hash    TEXT NOT NULL,
+      icp_hash     TEXT NOT NULL,
+      score_version TEXT DEFAULT 'v1',
+      fit_score    INTEGER,
+      priority     TEXT,
+      short_reason TEXT,
+      matched_signals JSONB DEFAULT '[]',
+      scored_at    TIMESTAMPTZ DEFAULT NOW(),
+      UNIQUE(lead_id, data_hash, icp_hash, score_version)
+    )
+  `;
+
+  /* ── Usage Tracking ── */
+  await sql`
+    CREATE TABLE IF NOT EXISTS usage_tracking (
+      id           SERIAL PRIMARY KEY,
+      tenant_id    INTEGER REFERENCES tenants(id) NOT NULL,
+      feature      TEXT NOT NULL,
+      tokens_used  INTEGER DEFAULT 0,
+      model        TEXT,
+      tracked_date DATE DEFAULT CURRENT_DATE,
+      created_at   TIMESTAMPTZ DEFAULT NOW()
+    )
+  `;
+
+  /* ── Usage Limits ── */
+  await sql`
+    CREATE TABLE IF NOT EXISTS usage_limits (
+      id             SERIAL PRIMARY KEY,
+      tenant_id      INTEGER REFERENCES tenants(id) NOT NULL UNIQUE,
+      daily_score_limit INTEGER DEFAULT 100,
+      daily_draft_limit INTEGER DEFAULT 20,
+      warn_threshold_pct INTEGER DEFAULT 80,
+      hard_stop      BOOLEAN DEFAULT TRUE,
+      updated_at     TIMESTAMPTZ DEFAULT NOW()
+    )
+  `;
+
+  /* ── Workspace support access setting ── */
+  await sql`ALTER TABLE tenants ADD COLUMN IF NOT EXISTS support_access_enabled BOOLEAN DEFAULT TRUE`;
+
+  /* ── Retainer client flag ── */
+  await sql`ALTER TABLE tenants ADD COLUMN IF NOT EXISTS is_retainer_client BOOLEAN DEFAULT FALSE`;
+
   /* ── Indexes ── */
   await sql`CREATE INDEX IF NOT EXISTS idx_tenant_users_tenant ON tenant_users(tenant_id)`;
   await sql`CREATE INDEX IF NOT EXISTS idx_tenant_users_user ON tenant_users(user_id)`;
@@ -179,6 +299,18 @@ async function _createTables() {
   await sql`CREATE INDEX IF NOT EXISTS idx_audit_logs_tenant ON audit_logs(tenant_id)`;
   await sql`CREATE INDEX IF NOT EXISTS idx_audit_logs_user ON audit_logs(user_id)`;
   await sql`CREATE INDEX IF NOT EXISTS idx_tenants_slug ON tenants(slug)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_support_sessions_tenant ON support_sessions(tenant_id)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_support_sessions_user ON support_sessions(user_id)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_support_sessions_status ON support_sessions(status)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_team_invitations_tenant ON team_invitations(tenant_id)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_team_invitations_token ON team_invitations(token)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_import_jobs_tenant ON import_jobs(tenant_id)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_score_cache_lead ON score_cache(lead_id)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_usage_tracking_tenant_date ON usage_tracking(tenant_id, tracked_date)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_audit_logs_action ON audit_logs(action)`;
+
+  /* ── Add user_agent to audit_logs (idempotent) ── */
+  await sql`ALTER TABLE audit_logs ADD COLUMN IF NOT EXISTS user_agent TEXT`;
 
   /* ── Add tenant_id to existing CRM tables (idempotent) ── */
   await sql`ALTER TABLE companies ADD COLUMN IF NOT EXISTS tenant_id INTEGER REFERENCES tenants(id)`;
@@ -209,6 +341,7 @@ export interface Tenant {
   industry: string | null;
   timezone: string;
   logo_url: string | null;
+  is_retainer_client: boolean;
   status: string;
   onboarding_completed: boolean;
   created_at: string;
@@ -590,11 +723,12 @@ export async function logAudit(data: {
   resource_id?: string;
   metadata?: Record<string, unknown>;
   ip_address?: string;
+  user_agent?: string;
 }) {
   await ensureMcTables();
   const sql = getSQL();
   await sql`
-    INSERT INTO audit_logs (user_id, tenant_id, action, resource, resource_id, metadata, ip_address)
+    INSERT INTO audit_logs (user_id, tenant_id, action, resource, resource_id, metadata, ip_address, user_agent)
     VALUES (
       ${data.user_id},
       ${data.tenant_id ?? null},
@@ -602,7 +736,8 @@ export async function logAudit(data: {
       ${data.resource ?? null},
       ${data.resource_id ?? null},
       ${data.metadata ? JSON.stringify(data.metadata) : null},
-      ${data.ip_address ?? null}
+      ${data.ip_address ?? null},
+      ${data.user_agent ?? null}
     )
   `;
 }
@@ -723,6 +858,475 @@ export async function getTenantGoals(tenantId: number): Promise<TenantGoals | nu
     goals: (typeof row.goals === "string" ? JSON.parse(row.goals) : row.goals) || [],
   } as unknown as TenantGoals;
 }
+
+/* ─── Support Sessions ─── */
+
+export interface SupportSession {
+  id: string;
+  user_id: number;
+  tenant_id: number;
+  reason: string;
+  ip_address: string | null;
+  user_agent: string | null;
+  started_at: string;
+  expires_at: string;
+  ended_at: string | null;
+  ended_reason: string | null;
+  status: string;
+}
+
+export async function createSupportSession(data: {
+  id: string;
+  user_id: number;
+  tenant_id: number;
+  reason: string;
+  ip_address?: string;
+  user_agent?: string;
+  expires_at: Date;
+}): Promise<SupportSession> {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`
+    INSERT INTO support_sessions (id, user_id, tenant_id, reason, ip_address, user_agent, expires_at)
+    VALUES (
+      ${data.id}, ${data.user_id}, ${data.tenant_id}, ${data.reason},
+      ${data.ip_address ?? null}, ${data.user_agent ?? null},
+      ${data.expires_at.toISOString()}
+    )
+    RETURNING *
+  `;
+  return rows[0] as unknown as SupportSession;
+}
+
+export async function getActiveSupportSession(sessionId: string): Promise<SupportSession | null> {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`
+    SELECT * FROM support_sessions
+    WHERE id = ${sessionId} AND status = 'active' AND expires_at > NOW()
+  `;
+  return (rows[0] as unknown as SupportSession) ?? null;
+}
+
+export async function getActiveSupportSessionForUser(userId: number): Promise<SupportSession | null> {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`
+    SELECT * FROM support_sessions
+    WHERE user_id = ${userId} AND status = 'active' AND expires_at > NOW()
+    ORDER BY started_at DESC LIMIT 1
+  `;
+  return (rows[0] as unknown as SupportSession) ?? null;
+}
+
+export async function endSupportSession(sessionId: string, reason: string = "manual") {
+  const sql = getSQL();
+  await sql`
+    UPDATE support_sessions
+    SET status = 'ended', ended_at = NOW(), ended_reason = ${reason}
+    WHERE id = ${sessionId}
+  `;
+}
+
+export async function expireSupportSessions() {
+  const sql = getSQL();
+  await sql`
+    UPDATE support_sessions
+    SET status = 'expired', ended_at = NOW(), ended_reason = 'timeout'
+    WHERE status = 'active' AND expires_at <= NOW()
+  `;
+}
+
+export async function getSupportSessionsForTenant(tenantId: number, limit: number = 20): Promise<SupportSession[]> {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`
+    SELECT ss.*, u.full_name AS user_name, u.email AS user_email
+    FROM support_sessions ss
+    LEFT JOIN mc_users u ON u.id = ss.user_id
+    WHERE ss.tenant_id = ${tenantId}
+    ORDER BY ss.started_at DESC
+    LIMIT ${limit}
+  `;
+  return rows as unknown as SupportSession[];
+}
+
+export async function getRecentSupportSessions(userId: number, limit: number = 20): Promise<(SupportSession & { tenant_name: string })[]> {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`
+    SELECT ss.*, t.name AS tenant_name
+    FROM support_sessions ss
+    LEFT JOIN tenants t ON t.id = ss.tenant_id
+    WHERE ss.user_id = ${userId}
+    ORDER BY ss.started_at DESC
+    LIMIT ${limit}
+  `;
+  return rows as unknown as (SupportSession & { tenant_name: string })[];
+}
+
+/* ─── Tenant ICP ─── */
+
+export interface TenantICP {
+  id: number;
+  tenant_id: number;
+  target_roles: string[];
+  target_industries: string[];
+  target_geo: string[];
+  company_size_min: number | null;
+  company_size_max: number | null;
+  priorities: string[];
+  exclusion_rules: string[];
+  scoring_weights: Record<string, number>;
+  updated_at: string;
+}
+
+export async function getTenantICP(tenantId: number): Promise<TenantICP | null> {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`SELECT * FROM tenant_icp WHERE tenant_id = ${tenantId}`;
+  if (!rows[0]) return null;
+  const row = rows[0] as Record<string, unknown>;
+  return {
+    ...row,
+    target_roles: typeof row.target_roles === "string" ? JSON.parse(row.target_roles) : row.target_roles || [],
+    target_industries: typeof row.target_industries === "string" ? JSON.parse(row.target_industries) : row.target_industries || [],
+    target_geo: typeof row.target_geo === "string" ? JSON.parse(row.target_geo) : row.target_geo || [],
+    priorities: typeof row.priorities === "string" ? JSON.parse(row.priorities) : row.priorities || [],
+    exclusion_rules: typeof row.exclusion_rules === "string" ? JSON.parse(row.exclusion_rules) : row.exclusion_rules || [],
+    scoring_weights: typeof row.scoring_weights === "string" ? JSON.parse(row.scoring_weights) : row.scoring_weights || {},
+  } as unknown as TenantICP;
+}
+
+export async function upsertTenantICP(tenantId: number, data: Partial<Omit<TenantICP, "id" | "tenant_id" | "updated_at">>) {
+  await ensureMcTables();
+  const sql = getSQL();
+  await sql`
+    INSERT INTO tenant_icp (tenant_id, target_roles, target_industries, target_geo,
+      company_size_min, company_size_max, priorities, exclusion_rules, scoring_weights)
+    VALUES (
+      ${tenantId},
+      ${JSON.stringify(data.target_roles ?? [])},
+      ${JSON.stringify(data.target_industries ?? [])},
+      ${JSON.stringify(data.target_geo ?? [])},
+      ${data.company_size_min ?? null},
+      ${data.company_size_max ?? null},
+      ${JSON.stringify(data.priorities ?? [])},
+      ${JSON.stringify(data.exclusion_rules ?? [])},
+      ${JSON.stringify(data.scoring_weights ?? {})}
+    )
+    ON CONFLICT (tenant_id) DO UPDATE SET
+      target_roles = ${JSON.stringify(data.target_roles ?? [])},
+      target_industries = ${JSON.stringify(data.target_industries ?? [])},
+      target_geo = ${JSON.stringify(data.target_geo ?? [])},
+      company_size_min = ${data.company_size_min ?? null},
+      company_size_max = ${data.company_size_max ?? null},
+      priorities = ${JSON.stringify(data.priorities ?? [])},
+      exclusion_rules = ${JSON.stringify(data.exclusion_rules ?? [])},
+      scoring_weights = ${JSON.stringify(data.scoring_weights ?? {})},
+      updated_at = NOW()
+  `;
+}
+
+/* ─── Team Invitations ─── */
+
+export interface TeamInvitation {
+  id: number;
+  tenant_id: number;
+  email: string;
+  role: string;
+  invited_by: number;
+  token: string;
+  status: string;
+  expires_at: string;
+  created_at: string;
+}
+
+export async function createTeamInvitation(data: {
+  tenant_id: number;
+  email: string;
+  role: string;
+  invited_by: number;
+  token: string;
+  expires_at: Date;
+}): Promise<TeamInvitation> {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`
+    INSERT INTO team_invitations (tenant_id, email, role, invited_by, token, expires_at)
+    VALUES (${data.tenant_id}, ${data.email.toLowerCase().trim()}, ${data.role}, ${data.invited_by}, ${data.token}, ${data.expires_at.toISOString()})
+    RETURNING *
+  `;
+  return rows[0] as unknown as TeamInvitation;
+}
+
+export async function getTeamInvitationByToken(token: string): Promise<TeamInvitation | null> {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`
+    SELECT * FROM team_invitations WHERE token = ${token} AND status = 'pending' AND expires_at > NOW()
+  `;
+  return (rows[0] as unknown as TeamInvitation) ?? null;
+}
+
+export async function getPendingInvitations(tenantId: number): Promise<TeamInvitation[]> {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`
+    SELECT * FROM team_invitations
+    WHERE tenant_id = ${tenantId} AND status = 'pending' AND expires_at > NOW()
+    ORDER BY created_at DESC
+  `;
+  return rows as unknown as TeamInvitation[];
+}
+
+export async function acceptInvitation(token: string) {
+  const sql = getSQL();
+  await sql`UPDATE team_invitations SET status = 'accepted' WHERE token = ${token}`;
+}
+
+export async function revokeInvitation(invitationId: number) {
+  const sql = getSQL();
+  await sql`UPDATE team_invitations SET status = 'revoked' WHERE id = ${invitationId}`;
+}
+
+/* ─── Team Members ─── */
+
+export async function getTenantMembers(tenantId: number): Promise<(McUser & { role: string; membership_status: string })[]> {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`
+    SELECT u.id, u.email, u.full_name, u.is_super_admin, u.status, u.last_login_at, u.created_at,
+           tu.role, tu.status AS membership_status
+    FROM mc_users u
+    JOIN tenant_users tu ON tu.user_id = u.id
+    WHERE tu.tenant_id = ${tenantId} AND tu.status = 'active'
+    ORDER BY tu.role ASC, u.full_name ASC
+  `;
+  return rows as unknown as (McUser & { role: string; membership_status: string })[];
+}
+
+export async function updateMemberRole(tenantId: number, userId: number, role: string) {
+  const sql = getSQL();
+  await sql`
+    UPDATE tenant_users SET role = ${role}
+    WHERE tenant_id = ${tenantId} AND user_id = ${userId}
+  `;
+}
+
+export async function removeMember(tenantId: number, userId: number) {
+  const sql = getSQL();
+  await sql`
+    UPDATE tenant_users SET status = 'removed'
+    WHERE tenant_id = ${tenantId} AND user_id = ${userId}
+  `;
+}
+
+/* ─── Import Jobs ─── */
+
+export interface ImportJob {
+  id: number;
+  tenant_id: number;
+  user_id: number;
+  filename: string | null;
+  source_type: string;
+  row_count: number;
+  imported: number;
+  duplicates: number;
+  failed: number;
+  field_mapping: Record<string, string>;
+  status: string;
+  error_log: unknown[];
+  created_at: string;
+  completed_at: string | null;
+}
+
+export async function createImportJob(data: {
+  tenant_id: number;
+  user_id: number;
+  filename?: string;
+  source_type?: string;
+  row_count?: number;
+  field_mapping?: Record<string, string>;
+}): Promise<ImportJob> {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`
+    INSERT INTO import_jobs (tenant_id, user_id, filename, source_type, row_count, field_mapping)
+    VALUES (
+      ${data.tenant_id}, ${data.user_id}, ${data.filename ?? null},
+      ${data.source_type ?? "csv"}, ${data.row_count ?? 0},
+      ${JSON.stringify(data.field_mapping ?? {})}
+    )
+    RETURNING *
+  `;
+  return rows[0] as unknown as ImportJob;
+}
+
+export async function updateImportJob(jobId: number, data: Partial<{
+  imported: number;
+  duplicates: number;
+  failed: number;
+  status: string;
+  error_log: unknown[];
+  completed_at: string;
+}>) {
+  const sql = getSQL();
+  await sql`
+    UPDATE import_jobs SET
+      imported = COALESCE(${data.imported ?? null}, imported),
+      duplicates = COALESCE(${data.duplicates ?? null}, duplicates),
+      failed = COALESCE(${data.failed ?? null}, failed),
+      status = COALESCE(${data.status ?? null}, status),
+      error_log = COALESCE(${data.error_log ? JSON.stringify(data.error_log) : null}::jsonb, error_log),
+      completed_at = COALESCE(${data.completed_at ?? null}::timestamptz, completed_at)
+    WHERE id = ${jobId}
+  `;
+}
+
+export async function getImportJobs(tenantId: number, limit: number = 10): Promise<ImportJob[]> {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`
+    SELECT * FROM import_jobs WHERE tenant_id = ${tenantId}
+    ORDER BY created_at DESC LIMIT ${limit}
+  `;
+  return rows as unknown as ImportJob[];
+}
+
+/* ─── Score Cache ─── */
+
+export async function getCachedScore(leadId: number, dataHash: string, icpHash: string, version: string = "v1") {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`
+    SELECT * FROM score_cache
+    WHERE lead_id = ${leadId} AND data_hash = ${dataHash} AND icp_hash = ${icpHash} AND score_version = ${version}
+    LIMIT 1
+  `;
+  if (!rows[0]) return null;
+  return rows[0] as unknown as {
+    fit_score: number;
+    priority: string;
+    short_reason: string;
+    matched_signals: string[];
+    scored_at: string;
+  };
+}
+
+export async function setCachedScore(data: {
+  tenant_id: number;
+  lead_id: number;
+  data_hash: string;
+  icp_hash: string;
+  score_version?: string;
+  fit_score: number;
+  priority: string;
+  short_reason: string;
+  matched_signals: string[];
+}) {
+  await ensureMcTables();
+  const sql = getSQL();
+  await sql`
+    INSERT INTO score_cache (tenant_id, lead_id, data_hash, icp_hash, score_version,
+      fit_score, priority, short_reason, matched_signals)
+    VALUES (
+      ${data.tenant_id}, ${data.lead_id}, ${data.data_hash}, ${data.icp_hash},
+      ${data.score_version ?? "v1"}, ${data.fit_score}, ${data.priority},
+      ${data.short_reason}, ${JSON.stringify(data.matched_signals)}
+    )
+    ON CONFLICT (lead_id, data_hash, icp_hash, score_version) DO UPDATE SET
+      fit_score = ${data.fit_score},
+      priority = ${data.priority},
+      short_reason = ${data.short_reason},
+      matched_signals = ${JSON.stringify(data.matched_signals)},
+      scored_at = NOW()
+  `;
+}
+
+/* ─── Usage Tracking ─── */
+
+export async function trackUsage(tenantId: number, feature: string, tokensUsed: number, model?: string) {
+  await ensureMcTables();
+  const sql = getSQL();
+  await sql`
+    INSERT INTO usage_tracking (tenant_id, feature, tokens_used, model)
+    VALUES (${tenantId}, ${feature}, ${tokensUsed}, ${model ?? null})
+  `;
+}
+
+export async function getDailyUsageByFeature(tenantId: number, feature: string): Promise<number> {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`
+    SELECT COALESCE(SUM(tokens_used), 0)::int AS total
+    FROM usage_tracking
+    WHERE tenant_id = ${tenantId} AND feature = ${feature} AND tracked_date = CURRENT_DATE
+  `;
+  return (rows[0] as unknown as { total: number })?.total ?? 0;
+}
+
+export async function getUsageLimits(tenantId: number) {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`SELECT * FROM usage_limits WHERE tenant_id = ${tenantId}`;
+  if (!rows[0]) return { daily_score_limit: 100, daily_draft_limit: 20, warn_threshold_pct: 80, hard_stop: true };
+  return rows[0] as unknown as {
+    daily_score_limit: number;
+    daily_draft_limit: number;
+    warn_threshold_pct: number;
+    hard_stop: boolean;
+  };
+}
+
+export async function upsertUsageLimits(tenantId: number, data: {
+  daily_score_limit?: number;
+  daily_draft_limit?: number;
+  warn_threshold_pct?: number;
+  hard_stop?: boolean;
+}) {
+  await ensureMcTables();
+  const sql = getSQL();
+  await sql`
+    INSERT INTO usage_limits (tenant_id, daily_score_limit, daily_draft_limit, warn_threshold_pct, hard_stop)
+    VALUES (${tenantId}, ${data.daily_score_limit ?? 100}, ${data.daily_draft_limit ?? 20}, ${data.warn_threshold_pct ?? 80}, ${data.hard_stop ?? true})
+    ON CONFLICT (tenant_id) DO UPDATE SET
+      daily_score_limit = COALESCE(${data.daily_score_limit ?? null}, usage_limits.daily_score_limit),
+      daily_draft_limit = COALESCE(${data.daily_draft_limit ?? null}, usage_limits.daily_draft_limit),
+      warn_threshold_pct = COALESCE(${data.warn_threshold_pct ?? null}, usage_limits.warn_threshold_pct),
+      hard_stop = COALESCE(${data.hard_stop ?? null}, usage_limits.hard_stop),
+      updated_at = NOW()
+  `;
+}
+
+/* ─── Tenant Support Access Toggle ─── */
+
+export async function getTenantSupportAccess(tenantId: number): Promise<boolean> {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`SELECT support_access_enabled FROM tenants WHERE id = ${tenantId}`;
+  return (rows[0] as unknown as { support_access_enabled: boolean })?.support_access_enabled ?? true;
+}
+
+export async function setTenantSupportAccess(tenantId: number, enabled: boolean) {
+  const sql = getSQL();
+  await sql`UPDATE tenants SET support_access_enabled = ${enabled}, updated_at = NOW() WHERE id = ${tenantId}`;
+}
+
+/* ─── Retainer Client ─── */
+
+export async function isRetainerClient(tenantId: number): Promise<boolean> {
+  const sql = getSQL();
+  const rows = await sql`SELECT is_retainer_client FROM tenants WHERE id = ${tenantId}`;
+  return rows[0]?.is_retainer_client ?? false;
+}
+
+export async function setRetainerClient(tenantId: number, enabled: boolean) {
+  const sql = getSQL();
+  await sql`UPDATE tenants SET is_retainer_client = ${enabled}, updated_at = NOW() WHERE id = ${tenantId}`;
+}
+
+/* ─── Tenant Goals ─── */
 
 export async function upsertTenantGoals(tenantId: number, data: Partial<TenantGoals>) {
   await ensureMcTables();

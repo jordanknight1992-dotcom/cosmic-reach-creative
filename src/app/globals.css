@@ -138,7 +138,7 @@ h5,
 h6 {
   font-family: var(--font-display);
   font-weight: 600;
-  text-wrap: balance;
+  text-wrap: pretty;
 }
 
 h1 {

@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
     const mustClauses: Record<string, unknown>[] = [];
 
     if (query) {
-      // General keyword search — match against company name or person name
+      // General keyword search -match against company name or person name
       mustClauses.push({
         bool: {
           should: [

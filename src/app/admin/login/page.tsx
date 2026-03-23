@@ -50,7 +50,7 @@ export default function AdminLogin() {
       try {
         data = await res.json();
       } catch {
-        setError("Server error — check that POSTGRES_URL is configured in Vercel.");
+        setError("Server error. Check that POSTGRES_URL is configured in Vercel.");
         setLoading(false);
         return;
       }
@@ -82,7 +82,7 @@ export default function AdminLogin() {
         setError((data.error as string) ?? "Something went wrong.");
       }
     } catch {
-      setError("Connection failed — check Vercel environment variables.");
+      setError("Connection failed. Check Vercel environment variables.");
     }
     setLoading(false);
   }
@@ -210,7 +210,7 @@ export default function AdminLogin() {
           <>
             {step === "setup-password" && (
               <p className="text-sm text-center mb-6" style={labelStyle}>
-                First time setup — choose a password to protect this dashboard.
+                First time setup: choose a password to protect this dashboard.
               </p>
             )}
 

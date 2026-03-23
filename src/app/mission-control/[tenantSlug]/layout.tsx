@@ -9,7 +9,8 @@ export default async function TenantLayout({
   params: Promise<{ tenantSlug: string }>;
 }) {
   const { tenantSlug } = await params;
-  const { user, tenant, isImpersonation } = await requireTenantAccess(tenantSlug);
+  const session = await requireTenantAccess(tenantSlug);
+  const { user, tenant, isImpersonation, isSupportMode, supportSession } = session;
 
   return (
     <>
@@ -22,8 +23,15 @@ export default async function TenantLayout({
       `}</style>
     <McShell
       user={{ id: user.id, email: user.email, full_name: user.full_name, is_super_admin: user.is_super_admin }}
-      tenant={{ id: tenant.id, name: tenant.name, slug: tenant.slug, plan: (tenant as unknown as Record<string, unknown>).plan as string ?? "core", onboarding_completed: tenant.onboarding_completed }}
+      tenant={{ id: tenant.id, name: tenant.name, slug: tenant.slug, plan: (tenant as unknown as Record<string, unknown>).plan as string ?? "core", is_retainer_client: tenant.is_retainer_client ?? false, onboarding_completed: tenant.onboarding_completed }}
       isImpersonation={isImpersonation}
+      isSupportMode={isSupportMode}
+      supportSession={supportSession ? {
+        id: supportSession.id,
+        reason: supportSession.reason,
+        started_at: supportSession.started_at,
+        expires_at: supportSession.expires_at,
+      } : null}
     >
       {children}
     </McShell>

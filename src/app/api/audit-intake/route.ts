@@ -1,10 +1,19 @@
 import { NextResponse } from "next/server";
 import { saveAuditSubmission } from "@/lib/db";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const NOTIFY_EMAIL = "jordan@cosmicreachcreative.com";
 
 export async function POST(request: Request) {
   try {
+    const rateLimitResult = checkRateLimit(request, 3, 60 * 60 * 1000);
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { error: "Too many submissions. Please try again later." },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const {
       name,
@@ -73,7 +82,7 @@ export async function POST(request: Request) {
     }).catch(console.error);
 
     if (!process.env.RESEND_API_KEY) {
-      console.error("RESEND_API_KEY is not set — email not sent.");
+      console.error("RESEND_API_KEY is not set - email not sent.");
       return NextResponse.json(
         { error: "Email service is not configured." },
         { status: 503 }
@@ -90,7 +99,7 @@ export async function POST(request: Request) {
         from: "Cosmic Reach <noreply@cosmicreachcreative.com>",
         to: [NOTIFY_EMAIL],
         reply_to: email,
-        subject: `New Clarity Audit Intake — ${name}${company ? ` (${company})` : ""}`,
+        subject: `New Clarity Audit Intake: ${name}${company ? ` (${company})` : ""}`,
         text: emailText,
       }),
     });

@@ -1,14 +1,9 @@
-import { requireAuth } from "@/lib/mc-session";
+import { requireSuperUser } from "@/lib/mc-session";
 import { getAllTenants, getSQL } from "@/lib/mc-db";
-import { redirect } from "next/navigation";
 import { SuperAdminView } from "./SuperAdminView";
 
 export default async function SuperAdminPage() {
-  const session = await requireAuth();
-
-  if (!session.user.is_super_admin) {
-    redirect("/mission-control/login");
-  }
+  const session = await requireSuperUser();
 
   const sql = getSQL();
 
@@ -45,6 +40,7 @@ export default async function SuperAdminPage() {
       adminId={session.user.id}
       tenants={tenantData as unknown as Record<string, unknown>[]}
       auditLogs={recentAudits as unknown as Record<string, unknown>[]}
+      totpEnabled={session.user.totp_enabled}
     />
   );
 }

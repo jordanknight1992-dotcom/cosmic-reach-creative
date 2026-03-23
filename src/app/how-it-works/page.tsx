@@ -74,9 +74,9 @@ const engagementPath = [
   },
   {
     name: "Mission Control",
-    price: "$299 / mo",
+    price: "$149 / mo",
     description:
-      "The daily operating system for founders who want pipeline clarity, daily targets, and one clear next move, all in one place.",
+      "Daily operator intelligence that directs execution. Surfaces what's slipping, recommends the next move, and keeps your team focused on what matters. Included free for retainer clients.",
     isEntry: false,
   },
   {

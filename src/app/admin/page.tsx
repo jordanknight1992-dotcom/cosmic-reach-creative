@@ -38,8 +38,8 @@ async function getStripeData(): Promise<StripeData | null> {
         id:          c.id,
         amount:      (c.amount / 100).toFixed(2),
         currency:    c.currency.toUpperCase(),
-        description: c.description ?? c.statement_descriptor ?? "—",
-        email:       c.billing_details?.email ?? "—",
+        description: c.description ?? c.statement_descriptor ?? "-",
+        email:       c.billing_details?.email ?? "-",
         date:        new Date(c.created * 1000).toLocaleDateString("en-US", {
           month: "short", day: "numeric", year: "numeric",
         }),

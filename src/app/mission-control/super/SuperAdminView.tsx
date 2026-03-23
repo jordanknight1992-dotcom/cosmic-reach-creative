@@ -8,9 +8,10 @@ interface Props {
   adminId: number;
   tenants: Record<string, unknown>[];
   auditLogs: Record<string, unknown>[];
+  totpEnabled: boolean;
 }
 
-type Tab = "workspaces" | "users" | "blocklist" | "activity";
+type Tab = "support" | "workspaces" | "users" | "blocklist" | "activity";
 
 interface UserRecord {
   id: number;
@@ -30,9 +31,28 @@ interface BlocklistEntry {
   created_at: string;
 }
 
-export function SuperAdminView({ adminName, adminId, tenants, auditLogs }: Props) {
+interface SupportSessionRecord {
+  id: string;
+  tenant_name: string;
+  reason: string;
+  started_at: string;
+  expires_at: string;
+  ended_at: string | null;
+  status: string;
+}
+
+interface SupportTenant {
+  id: number;
+  name: string;
+  slug: string;
+  status: string;
+  support_access_enabled: boolean;
+  is_retainer_client: boolean;
+}
+
+export function SuperAdminView({ adminName, adminId, tenants, auditLogs, totpEnabled }: Props) {
   const router = useRouter();
-  const [tab, setTab] = useState<Tab>("workspaces");
+  const [tab, setTab] = useState<Tab>("support");
   const [users, setUsers] = useState<UserRecord[]>([]);
   const [blocklist, setBlocklist] = useState<BlocklistEntry[]>([]);
   const [loadingUsers, setLoadingUsers] = useState(false);
@@ -42,6 +62,148 @@ export function SuperAdminView({ adminName, adminId, tenants, auditLogs }: Props
   const [blockEmail, setBlockEmail] = useState("");
   const [blockReason, setBlockReason] = useState("user_request");
   const [confirmDelete, setConfirmDelete] = useState<number | null>(null);
+  const [retainerToggles, setRetainerToggles] = useState<Record<number, boolean>>({});
+
+  // Support console state
+  const [supportData, setSupportData] = useState<{
+    activeSession: (SupportSessionRecord & { tenant_slug?: string }) | null;
+    recentSessions: SupportSessionRecord[];
+    tenants: SupportTenant[];
+    hasStepUp: boolean;
+  } | null>(null);
+  const [loadingSupport, setLoadingSupport] = useState(false);
+  const [selectedTenant, setSelectedTenant] = useState<number | null>(null);
+  const [accessReason, setAccessReason] = useState("");
+  const [stepUpCode, setStepUpCode] = useState("");
+  const [stepUpMode, setStepUpMode] = useState(false);
+  const [startingSession, setStartingSession] = useState(false);
+  const [tenantSearch, setTenantSearch] = useState("");
+
+  const loadSupportData = useCallback(async () => {
+    setLoadingSupport(true);
+    try {
+      const res = await fetch("/api/mc/support");
+      const data = await res.json();
+      if (res.ok) setSupportData(data);
+    } finally {
+      setLoadingSupport(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (tab === "support") loadSupportData();
+  }, [tab, loadSupportData]);
+
+  async function handleStepUp() {
+    if (!stepUpCode || stepUpCode.length !== 6) return;
+    setStartingSession(true);
+    setMessage(null);
+    try {
+      const res = await fetch("/api/mc/support", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "step_up", code: stepUpCode }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setMessage({ type: "error", text: data.error || "Verification failed" });
+        setStartingSession(false);
+        return;
+      }
+      setStepUpMode(false);
+      setStepUpCode("");
+      // Now start the session
+      await handleStartSession(true);
+    } catch {
+      setMessage({ type: "error", text: "Verification failed" });
+      setStartingSession(false);
+    }
+  }
+
+  async function handleStartSession(skipStepUpCheck?: boolean) {
+    if (!selectedTenant || !accessReason.trim()) return;
+    setStartingSession(true);
+    setMessage(null);
+
+    try {
+      const res = await fetch("/api/mc/support", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "start",
+          tenantId: selectedTenant,
+          reason: accessReason.trim(),
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        if (data.requireStepUp) {
+          setStepUpMode(true);
+          setStartingSession(false);
+          return;
+        }
+        setMessage({ type: "error", text: data.error || "Failed to start session" });
+        setStartingSession(false);
+        return;
+      }
+
+      setMessage({ type: "success", text: `Support session started for ${data.session.tenant_name}` });
+      setAccessReason("");
+      setSelectedTenant(null);
+      await loadSupportData();
+
+      // Navigate to the tenant workspace
+      if (data.session.tenant_slug) {
+        router.push(`/mission-control/${data.session.tenant_slug}`);
+      }
+    } catch {
+      setMessage({ type: "error", text: "Something went wrong" });
+    } finally {
+      setStartingSession(false);
+    }
+  }
+
+  async function handleEndSession() {
+    if (!supportData?.activeSession) return;
+    try {
+      const res = await fetch("/api/mc/support", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "end", supportSessionId: supportData.activeSession.id }),
+      });
+      if (res.ok) {
+        setMessage({ type: "success", text: "Support session ended" });
+        await loadSupportData();
+      }
+    } catch {
+      setMessage({ type: "error", text: "Failed to end session" });
+    }
+  }
+
+  async function handleToggleRetainer(tenantId: number, enabled: boolean) {
+    setRetainerToggles((prev) => ({ ...prev, [tenantId]: true }));
+    try {
+      const res = await fetch("/api/mc/admin/retainer", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tenantId, enabled }),
+      });
+      if (res.ok) {
+        setMessage({ type: "success", text: `Retainer status ${enabled ? "enabled" : "disabled"}` });
+        // Update local tenant data
+        const idx = tenants.findIndex((t) => (t.id as number) === tenantId);
+        if (idx >= 0) {
+          (tenants[idx] as Record<string, unknown>).is_retainer_client = enabled;
+        }
+      } else {
+        setMessage({ type: "error", text: "Failed to update retainer status" });
+      }
+    } catch {
+      setMessage({ type: "error", text: "Failed to update retainer status" });
+    } finally {
+      setRetainerToggles((prev) => ({ ...prev, [tenantId]: false }));
+    }
+  }
 
   const loadUsers = useCallback(async () => {
     setLoadingUsers(true);
@@ -131,11 +293,16 @@ export function SuperAdminView({ adminName, adminId, tenants, auditLogs }: Props
   }
 
   const TABS: { key: Tab; label: string }[] = [
+    { key: "support", label: "Support Access" },
     { key: "workspaces", label: "Workspaces" },
     { key: "users", label: "Users" },
     { key: "blocklist", label: "Blocklist" },
     { key: "activity", label: "Activity" },
   ];
+
+  const filteredTenants = supportData?.tenants.filter((t) =>
+    !tenantSearch || t.name.toLowerCase().includes(tenantSearch.toLowerCase()) || t.slug.includes(tenantSearch.toLowerCase())
+  ) ?? [];
 
   return (
     <div style={{
@@ -146,12 +313,17 @@ export function SuperAdminView({ adminName, adminId, tenants, auditLogs }: Props
         {/* Header */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
           <div>
-            <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "#dc2626", marginBottom: 4, fontFamily: 'var(--font-display)' }}>
-              Super Admin
+            <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.12em", textTransform: "uppercase" as const, color: "#d4a574", marginBottom: 4, fontFamily: 'var(--font-display)' }}>
+              Mission Control
             </div>
-            <h1 style={{ fontSize: 24, fontWeight: 700, margin: 0, fontFamily: 'var(--font-display)', color: '#d4a574' }}>Mission Control Admin</h1>
+            <h1 style={{ fontSize: 24, fontWeight: 700, margin: 0, fontFamily: 'var(--font-display)', color: '#e8dfcf' }}>Support Console</h1>
             <p style={{ color: "rgba(232,223,207,0.35)", fontSize: 14, marginTop: 4 }}>
-              Logged in as {adminName} · Cosmic Reach Creative
+              Logged in as {adminName}
+              {!totpEnabled && (
+                <span style={{ color: "#eab308", marginLeft: 8, fontSize: 12 }}>
+                  2FA required for support access
+                </span>
+              )}
             </p>
           </div>
           <button
@@ -216,6 +388,233 @@ export function SuperAdminView({ adminName, adminId, tenants, auditLogs }: Props
           </div>
         )}
 
+        {/* Support Access Tab */}
+        {tab === "support" && (
+          <div>
+            {/* Active Session */}
+            {supportData?.activeSession && (
+              <Panel title="Active Support Session">
+                <div style={{
+                  background: "rgba(34,197,94,0.05)", border: "1px solid rgba(34,197,94,0.15)",
+                  borderRadius: 10, padding: 16, marginBottom: 16,
+                }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                    <div>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                        <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#22c55e" }} />
+                        <span style={{ fontWeight: 700, fontSize: 15 }}>
+                          {supportData.activeSession.tenant_name}
+                        </span>
+                      </div>
+                      <div style={{ fontSize: 12, color: "rgba(232,223,207,0.5)" }}>
+                        Reason: {supportData.activeSession.reason}
+                      </div>
+                      <div style={{ fontSize: 12, color: "rgba(232,223,207,0.35)", marginTop: 4 }}>
+                        Started {new Date(supportData.activeSession.started_at).toLocaleTimeString()} · Expires {new Date(supportData.activeSession.expires_at).toLocaleTimeString()}
+                      </div>
+                    </div>
+                    <div style={{ display: "flex", gap: 8 }}>
+                      {(supportData.activeSession as { tenant_slug?: string }).tenant_slug && (
+                        <button
+                          onClick={() => router.push(`/mission-control/${(supportData.activeSession as { tenant_slug?: string }).tenant_slug}`)}
+                          style={actionBtnStyle("#d4a574")}
+                        >
+                          Open Workspace
+                        </button>
+                      )}
+                      <button onClick={handleEndSession} style={actionBtnStyle("#f87171")}>
+                        End Session
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </Panel>
+            )}
+
+            {/* Start Support Session */}
+            <Panel title="Start Support Session">
+              {!totpEnabled ? (
+                <div style={{
+                  background: "rgba(234,179,8,0.05)", border: "1px solid rgba(234,179,8,0.15)",
+                  borderRadius: 10, padding: 16,
+                }}>
+                  <p style={{ fontSize: 14, fontWeight: 600, color: "#eab308", margin: "0 0 8px" }}>
+                    Two-factor authentication required
+                  </p>
+                  <p style={{ fontSize: 13, color: "rgba(232,223,207,0.5)", margin: 0 }}>
+                    Enable 2FA in your account settings before using support access. This protects customer workspaces with an additional verification step.
+                  </p>
+                </div>
+              ) : stepUpMode ? (
+                <div style={{
+                  background: "rgba(212,165,116,0.05)", border: "1px solid rgba(212,165,116,0.15)",
+                  borderRadius: 10, padding: 20,
+                }}>
+                  <p style={{ fontSize: 14, fontWeight: 600, color: "#d4a574", margin: "0 0 8px", fontFamily: "var(--font-display)" }}>
+                    Step-up Verification Required
+                  </p>
+                  <p style={{ fontSize: 13, color: "rgba(232,223,207,0.5)", margin: "0 0 16px" }}>
+                    Enter your authenticator code to verify your identity before accessing this workspace.
+                  </p>
+                  <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      maxLength={6}
+                      value={stepUpCode}
+                      onChange={(e) => setStepUpCode(e.target.value.replace(/\D/g, ""))}
+                      placeholder="000000"
+                      style={{
+                        width: 140, textAlign: "center", fontSize: 20, fontWeight: 700,
+                        letterSpacing: 6, padding: "10px 16px", background: "#0b1120",
+                        border: "1px solid rgba(232,223,207,0.15)", borderRadius: 8,
+                        color: "#e8dfcf", outline: "none", fontFamily: "var(--font-body)",
+                      }}
+                      autoFocus
+                      onKeyDown={(e) => { if (e.key === "Enter" && stepUpCode.length === 6) handleStepUp(); }}
+                    />
+                    <button
+                      onClick={handleStepUp}
+                      disabled={stepUpCode.length !== 6 || startingSession}
+                      style={{
+                        background: "#d4a574", color: "#0b1120", border: "none", borderRadius: 8,
+                        padding: "10px 20px", fontSize: 14, fontWeight: 700,
+                        cursor: stepUpCode.length === 6 ? "pointer" : "default",
+                        opacity: stepUpCode.length === 6 ? 1 : 0.5, fontFamily: "var(--font-display)",
+                      }}
+                    >
+                      {startingSession ? "Verifying..." : "Verify & Enter"}
+                    </button>
+                    <button
+                      onClick={() => { setStepUpMode(false); setStepUpCode(""); }}
+                      style={{ background: "none", border: "none", color: "rgba(232,223,207,0.4)", cursor: "pointer", fontSize: 13 }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  {/* Workspace search */}
+                  <div style={{ marginBottom: 16 }}>
+                    <label style={labelStyle}>Select Workspace</label>
+                    <input
+                      type="text"
+                      value={tenantSearch}
+                      onChange={(e) => setTenantSearch(e.target.value)}
+                      placeholder="Search workspaces..."
+                      style={inputStyle}
+                    />
+                  </div>
+
+                  {/* Workspace list */}
+                  <div style={{ maxHeight: 240, overflowY: "auto", marginBottom: 16 }}>
+                    {loadingSupport ? (
+                      <Empty>Loading workspaces...</Empty>
+                    ) : filteredTenants.length === 0 ? (
+                      <Empty>No workspaces found</Empty>
+                    ) : (
+                      <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+                        {filteredTenants.map((t) => (
+                          <button
+                            key={t.id}
+                            onClick={() => setSelectedTenant(t.id)}
+                            style={{
+                              display: "flex", alignItems: "center", justifyContent: "space-between",
+                              padding: "10px 14px", borderRadius: 8, border: "none",
+                              background: selectedTenant === t.id ? "rgba(212,165,116,0.12)" : "rgba(232,223,207,0.02)",
+                              color: selectedTenant === t.id ? "#d4a574" : "#e8dfcf",
+                              cursor: t.support_access_enabled ? "pointer" : "default",
+                              opacity: t.support_access_enabled ? 1 : 0.4,
+                              textAlign: "left", fontFamily: "var(--font-body)", fontSize: 14,
+                              outline: selectedTenant === t.id ? "1px solid rgba(212,165,116,0.3)" : "none",
+                            }}
+                            disabled={!t.support_access_enabled}
+                          >
+                            <div>
+                              <span style={{ fontWeight: 600 }}>{t.name}</span>
+                              <span style={{ fontSize: 12, color: "rgba(232,223,207,0.3)", marginLeft: 8 }}>/{t.slug}</span>
+                            </div>
+                            {!t.support_access_enabled && (
+                              <span style={{ fontSize: 11, color: "#f87171" }}>Access disabled</span>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Access reason */}
+                  <div style={{ marginBottom: 16 }}>
+                    <label style={labelStyle}>Access Reason</label>
+                    <input
+                      type="text"
+                      value={accessReason}
+                      onChange={(e) => setAccessReason(e.target.value)}
+                      placeholder="Setup assistance, troubleshooting, configuration review..."
+                      style={inputStyle}
+                    />
+                    <p style={{ fontSize: 11, color: "rgba(232,223,207,0.25)", marginTop: 4 }}>
+                      This reason is logged and visible to the workspace owner.
+                    </p>
+                  </div>
+
+                  {/* Start button */}
+                  <button
+                    onClick={() => handleStartSession()}
+                    disabled={!selectedTenant || !accessReason.trim() || accessReason.trim().length < 3 || startingSession}
+                    style={{
+                      background: selectedTenant && accessReason.trim().length >= 3 ? "#d4a574" : "rgba(212,165,116,0.2)",
+                      color: selectedTenant && accessReason.trim().length >= 3 ? "#0b1120" : "rgba(232,223,207,0.3)",
+                      border: "none", borderRadius: 8, padding: "10px 24px", fontSize: 14,
+                      fontWeight: 700, cursor: selectedTenant && accessReason.trim().length >= 3 ? "pointer" : "default",
+                      fontFamily: "var(--font-display)",
+                      transition: "all 0.15s",
+                    }}
+                  >
+                    {startingSession ? "Starting..." : "Start Support Session"}
+                  </button>
+                </div>
+              )}
+            </Panel>
+
+            {/* Recent Sessions */}
+            <div style={{ marginTop: 20 }}>
+              <Panel title="Recent Support Sessions">
+                {!supportData || supportData.recentSessions.length === 0 ? (
+                  <Empty>No recent sessions</Empty>
+                ) : (
+                  <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                    {supportData.recentSessions.map((s) => (
+                      <div key={s.id} style={{
+                        display: "flex", alignItems: "center", gap: 10,
+                        padding: "10px 0",
+                        borderBottom: "1px solid rgba(232,223,207,0.06)",
+                      }}>
+                        <div style={{
+                          width: 6, height: 6, borderRadius: "50%", flexShrink: 0,
+                          background: s.status === "active" ? "#22c55e" : s.status === "expired" ? "#eab308" : "rgba(232,223,207,0.25)",
+                        }} />
+                        <div style={{ flex: 1 }}>
+                          <span style={{ fontSize: 13, fontWeight: 500 }}>{s.tenant_name}</span>
+                          <span style={{ fontSize: 12, color: "rgba(232,223,207,0.35)", marginLeft: 8 }}>
+                            {s.reason}
+                          </span>
+                        </div>
+                        <span style={{ fontSize: 11, color: "rgba(232,223,207,0.25)", flexShrink: 0 }}>
+                          {s.status} · {new Date(s.started_at).toLocaleDateString("en-US", {
+                            month: "short", day: "numeric", hour: "numeric", minute: "2-digit",
+                          })}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </Panel>
+            </div>
+          </div>
+        )}
+
         {/* Workspaces Tab */}
         {tab === "workspaces" && (
           <Panel title="Workspaces">
@@ -227,16 +626,19 @@ export function SuperAdminView({ adminName, adminId, tenants, auditLogs }: Props
                   <div key={t.id as number} style={{
                     display: "flex", alignItems: "center", gap: 12,
                     padding: "14px 16px", borderRadius: 10,
-                    border: "1px solid rgba(232,223,207,0.1)",
+                    border: `1px solid ${(t as Record<string, unknown>).is_retainer_client ? "rgba(212,165,116,0.3)" : "rgba(232,223,207,0.1)"}`,
                   }}>
                     <div style={{ flex: 1 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                         <span style={{ fontSize: 15, fontWeight: 600 }}>{t.name as string}</span>
                         <PlanBadge plan={(t as Record<string, unknown>).plan as string} />
+                        {!!(t as Record<string, unknown>).is_retainer_client && (
+                          <span style={{ fontSize: 9, fontWeight: 700, color: "#d4a574", textTransform: "uppercase" as const, letterSpacing: "0.06em", fontFamily: "var(--font-display)", background: "rgba(212,165,116,0.1)", padding: "2px 6px", borderRadius: 4 }}>Retainer</span>
+                        )}
                         {t.onboarding_completed ? (
-                          <span style={{ fontSize: 10, color: "#22c55e" }}>● Live</span>
+                          <span style={{ fontSize: 10, color: "#22c55e" }}>Live</span>
                         ) : (
-                          <span style={{ fontSize: 10, color: "#eab308" }}>● Onboarding</span>
+                          <span style={{ fontSize: 10, color: "#eab308" }}>Onboarding</span>
                         )}
                       </div>
                       <div style={{ fontSize: 12, color: "rgba(232,223,207,0.35)", marginTop: 2 }}>
@@ -244,10 +646,17 @@ export function SuperAdminView({ adminName, adminId, tenants, auditLogs }: Props
                       </div>
                     </div>
                     <button
-                      onClick={() => router.push(`/mission-control/${t.slug as string}`)}
-                      style={actionBtnStyle("#dc2626")}
+                      onClick={() => handleToggleRetainer(t.id as number, !(t as Record<string, unknown>).is_retainer_client)}
+                      disabled={retainerToggles[t.id as number]}
+                      style={{
+                        background: (t as Record<string, unknown>).is_retainer_client ? "rgba(239,68,68,0.1)" : "rgba(212,165,116,0.1)",
+                        color: (t as Record<string, unknown>).is_retainer_client ? "#f87171" : "#d4a574",
+                        border: "none", borderRadius: 8, padding: "6px 12px",
+                        fontSize: 11, fontWeight: 600, cursor: retainerToggles[t.id as number] ? "wait" : "pointer",
+                        fontFamily: "var(--font-display)", flexShrink: 0,
+                      }}
                     >
-                      View as Support
+                      {retainerToggles[t.id as number] ? "..." : (t as Record<string, unknown>).is_retainer_client ? "Remove Retainer" : "Set Retainer"}
                     </button>
                   </div>
                 ))}
@@ -272,79 +681,46 @@ export function SuperAdminView({ adminName, adminId, tenants, auditLogs }: Props
                     border: "1px solid rgba(232,223,207,0.1)",
                     opacity: u.status === "inactive" ? 0.5 : 1,
                   }}>
-                    {/* Avatar */}
                     <div style={{
                       width: 32, height: 32, borderRadius: "50%",
-                      background: u.is_super_admin ? "#dc2626" : "#d4a574",
+                      background: u.is_super_admin ? "#d4a574" : "rgba(212,165,116,0.3)",
                       display: "flex", alignItems: "center", justifyContent: "center",
                       fontSize: 13, fontWeight: 700, color: "#0b1120", flexShrink: 0,
                     }}>
                       {u.full_name.charAt(0).toUpperCase()}
                     </div>
-
                     <div style={{ flex: 1 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                         <span style={{ fontSize: 14, fontWeight: 600 }}>{u.full_name}</span>
                         {u.is_super_admin && (
-                          <span style={{ fontSize: 9, fontWeight: 700, color: "#dc2626", textTransform: "uppercase", letterSpacing: "0.06em", fontFamily: "var(--font-display)" }}>Admin</span>
+                          <span style={{ fontSize: 9, fontWeight: 700, color: "#d4a574", textTransform: "uppercase", letterSpacing: "0.06em", fontFamily: "var(--font-display)" }}>Super User</span>
                         )}
-                        <span style={{
-                          fontSize: 10,
-                          color: u.status === "active" ? "#22c55e" : "#f87171",
-                        }}>
-                          ● {u.status}
+                        <span style={{ fontSize: 10, color: u.status === "active" ? "#22c55e" : "#f87171" }}>
+                          {u.status}
                         </span>
                       </div>
                       <div style={{ fontSize: 12, color: "rgba(232,223,207,0.35)", marginTop: 1 }}>
-                        {u.email} · {u.tenant_count} workspace{u.tenant_count !== 1 ? "s" : ""} · Joined {new Date(u.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+                        {u.email} · {u.tenant_count} workspace{u.tenant_count !== 1 ? "s" : ""}
                         {u.last_login_at && ` · Last login ${new Date(u.last_login_at).toLocaleDateString("en-US", { month: "short", day: "numeric" })}`}
                       </div>
                     </div>
-
-                    {/* Actions */}
                     {u.id !== adminId && (
                       <div style={{ display: "flex", gap: 6 }}>
                         {confirmDelete === u.id ? (
                           <>
-                            <button
-                              onClick={() => handleUserAction("delete", u.id, u.email, "admin_deletion")}
-                              disabled={actionLoading === u.id}
-                              style={{ ...actionBtnStyle("#dc2626"), background: "#dc2626", color: "#fff" }}
-                            >
-                              {actionLoading === u.id ? "..." : "Confirm Delete"}
+                            <button onClick={() => handleUserAction("delete", u.id, u.email, "admin_deletion")} disabled={actionLoading === u.id} style={{ ...actionBtnStyle("#dc2626"), background: "#dc2626", color: "#fff" }}>
+                              {actionLoading === u.id ? "..." : "Confirm"}
                             </button>
-                            <button
-                              onClick={() => setConfirmDelete(null)}
-                              style={actionBtnStyle("rgba(232,223,207,0.3)")}
-                            >
-                              Cancel
-                            </button>
+                            <button onClick={() => setConfirmDelete(null)} style={actionBtnStyle("rgba(232,223,207,0.3)")}>Cancel</button>
                           </>
                         ) : (
                           <>
                             {u.status === "active" ? (
-                              <button
-                                onClick={() => handleUserAction("deactivate", u.id)}
-                                disabled={actionLoading === u.id}
-                                style={actionBtnStyle("#eab308")}
-                              >
-                                Deactivate
-                              </button>
+                              <button onClick={() => handleUserAction("deactivate", u.id)} disabled={actionLoading === u.id} style={actionBtnStyle("#eab308")}>Deactivate</button>
                             ) : (
-                              <button
-                                onClick={() => handleUserAction("reactivate", u.id)}
-                                disabled={actionLoading === u.id}
-                                style={actionBtnStyle("#22c55e")}
-                              >
-                                Reactivate
-                              </button>
+                              <button onClick={() => handleUserAction("reactivate", u.id)} disabled={actionLoading === u.id} style={actionBtnStyle("#22c55e")}>Reactivate</button>
                             )}
-                            <button
-                              onClick={() => setConfirmDelete(u.id)}
-                              style={actionBtnStyle("#dc2626")}
-                            >
-                              Delete
-                            </button>
+                            <button onClick={() => setConfirmDelete(u.id)} style={actionBtnStyle("#dc2626")}>Delete</button>
                           </>
                         )}
                       </div>
@@ -362,45 +738,16 @@ export function SuperAdminView({ adminName, adminId, tenants, auditLogs }: Props
             <p style={{ color: "rgba(232,223,207,0.35)", fontSize: 13, margin: "0 0 16px 0" }}>
               Blocked emails cannot register or be re-added. Use this for opt-out requests and data deletion compliance.
             </p>
-
-            {/* Add to blocklist form */}
             <form onSubmit={handleAddToBlocklist} style={{ display: "flex", gap: 8, marginBottom: 20 }}>
-              <input
-                type="email"
-                value={blockEmail}
-                onChange={(e) => setBlockEmail(e.target.value)}
-                placeholder="email@example.com"
-                required
-                style={{
-                  flex: 1, padding: "8px 12px", background: "#0b1120",
-                  border: "1px solid rgba(232,223,207,0.1)", borderRadius: 6,
-                  color: "#e8dfcf", fontSize: 13, outline: "none", fontFamily: "var(--font-body)",
-                }}
-              />
-              <select
-                value={blockReason}
-                onChange={(e) => setBlockReason(e.target.value)}
-                style={{
-                  padding: "8px 12px", background: "#0b1120",
-                  border: "1px solid rgba(232,223,207,0.1)", borderRadius: 6,
-                  color: "#e8dfcf", fontSize: 13, fontFamily: "var(--font-body)",
-                }}
-              >
+              <input type="email" value={blockEmail} onChange={(e) => setBlockEmail(e.target.value)} placeholder="email@example.com" required style={{ ...inputStyle, flex: 1 }} />
+              <select value={blockReason} onChange={(e) => setBlockReason(e.target.value)} style={{ ...inputStyle, width: "auto" }}>
                 <option value="user_request">User request</option>
                 <option value="gdpr_deletion">GDPR deletion</option>
                 <option value="spam">Spam/abuse</option>
                 <option value="admin_action">Admin action</option>
               </select>
-              <button type="submit" style={{
-                background: "#d4a574", color: "#1a1f2e", border: "none",
-                borderRadius: 6, padding: "8px 16px", fontSize: 13,
-                fontWeight: 600, cursor: "pointer", fontFamily: "var(--font-display)",
-              }}>
-                Block
-              </button>
+              <button type="submit" style={{ background: "#d4a574", color: "#1a1f2e", border: "none", borderRadius: 6, padding: "8px 16px", fontSize: 13, fontWeight: 600, cursor: "pointer", fontFamily: "var(--font-display)" }}>Block</button>
             </form>
-
-            {/* Blocklist entries */}
             {loadingBlocklist ? (
               <Empty>Loading...</Empty>
             ) : blocklist.length === 0 ? (
@@ -408,24 +755,14 @@ export function SuperAdminView({ adminName, adminId, tenants, auditLogs }: Props
             ) : (
               <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
                 {blocklist.map((entry) => (
-                  <div key={entry.id} style={{
-                    display: "flex", alignItems: "center", gap: 12,
-                    padding: "10px 14px", borderRadius: 8,
-                    border: "1px solid rgba(239,68,68,0.1)",
-                    background: "rgba(239,68,68,0.03)",
-                  }}>
+                  <div key={entry.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", borderRadius: 8, border: "1px solid rgba(239,68,68,0.1)", background: "rgba(239,68,68,0.03)" }}>
                     <div style={{ flex: 1 }}>
                       <span style={{ fontSize: 14, fontWeight: 500 }}>{entry.email}</span>
                       <span style={{ fontSize: 11, color: "rgba(232,223,207,0.3)", marginLeft: 8 }}>
                         {entry.reason.replace(/_/g, " ")} · {new Date(entry.created_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
                       </span>
                     </div>
-                    <button
-                      onClick={() => handleRemoveFromBlocklist(entry.email)}
-                      style={actionBtnStyle("rgba(232,223,207,0.3)")}
-                    >
-                      Remove
-                    </button>
+                    <button onClick={() => handleRemoveFromBlocklist(entry.email)} style={actionBtnStyle("rgba(232,223,207,0.3)")}>Remove</button>
                   </div>
                 ))}
               </div>
@@ -448,10 +785,9 @@ export function SuperAdminView({ adminName, adminId, tenants, auditLogs }: Props
                     <div style={{
                       width: 6, height: 6, borderRadius: "50%", flexShrink: 0,
                       background:
+                        (log.action as string)?.includes("support") ? "#d4a574" :
                         (log.action as string)?.includes("delete") ? "#dc2626" :
-                        (log.action as string)?.includes("impersonation") ? "#dc2626" :
                         (log.action as string)?.includes("blocklist") ? "#eab308" :
-                        (log.action as string)?.includes("credential") ? "#eab308" :
                         "rgba(232,223,207,0.25)",
                     }} />
                     <div style={{ flex: 1 }}>
@@ -495,9 +831,9 @@ function Panel({ title, children }: { title: string; children: React.ReactNode }
   return (
     <div style={{
       background: "#111827", border: "1px solid rgba(232,223,207,0.1)",
-      borderRadius: 14, padding: "20px 24px",
+      borderRadius: 14, padding: "20px 24px", marginBottom: 16,
     }}>
-      <h2 style={{ fontSize: 16, fontWeight: 600, margin: "0 0 16px 0", fontFamily: 'var(--font-display)' }}>{title}</h2>
+      <h2 style={{ fontSize: 16, fontWeight: 600, margin: "0 0 16px 0", fontFamily: 'var(--font-display)', color: "#e8dfcf" }}>{title}</h2>
       {children}
     </div>
   );
@@ -539,3 +875,15 @@ function actionBtnStyle(color: string): React.CSSProperties {
     fontFamily: "var(--font-display)",
   };
 }
+
+const labelStyle: React.CSSProperties = {
+  fontSize: 12, fontWeight: 600, color: "rgba(232,223,207,0.5)",
+  display: "block", marginBottom: 6, fontFamily: "var(--font-display)",
+};
+
+const inputStyle: React.CSSProperties = {
+  width: "100%", padding: "10px 14px", background: "#0b1120",
+  border: "1px solid rgba(232,223,207,0.1)", borderRadius: 8,
+  color: "#e8dfcf", fontSize: 14, outline: "none",
+  fontFamily: "var(--font-body)", boxSizing: "border-box",
+};

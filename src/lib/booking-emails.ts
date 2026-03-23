@@ -103,7 +103,7 @@ async function sendOwnerAlert(data: BookingEmailData) {
     from: FROM,
     to: [OWNER_EMAIL],
     reply_to: data.clientEmail,
-    subject: `New Booking: ${data.bookingTitle} — ${data.clientName}`,
+    subject: `New Booking: ${data.bookingTitle} - ${data.clientName}`,
     html: ownerEmailHTML(data, dateStr, timeStr),
   });
 }
@@ -219,7 +219,7 @@ function clientEmailHTML(
                             Complete your $${(data.priceCents / 100).toFixed(0)} payment to confirm your session.
                           </p>
                           <a href="${data.stripePaymentLink}" style="display:inline-block; background-color:#d4a574; color:#0b1120; font-size:15px; font-weight:700; padding:12px 32px; border-radius:8px; text-decoration:none; letter-spacing:0.3px;">
-                            Complete Payment — $${(data.priceCents / 100).toFixed(0)}
+                            Complete Payment: $${(data.priceCents / 100).toFixed(0)}
                           </a>
                           <p style="font-size:11px; color:rgba(232,223,207,0.3); margin:12px 0 0;">Secure payment powered by Stripe</p>
                         </td>
@@ -261,7 +261,7 @@ function ownerEmailHTML(
                 <tr>
                   <td style="background:linear-gradient(135deg, #1a1f2e 0%, #111827 100%); border-radius:12px 12px 0 0; padding:20px 24px; border-bottom:1px solid rgba(212,165,116,0.1);">
                     <p style="font-size:11px; text-transform:uppercase; letter-spacing:2px; color:#d4a574; margin:0 0 4px; font-weight:700;">NEW BOOKING</p>
-                    <h1 style="font-size:20px; font-weight:700; color:#e8dfcf; margin:0;">${data.bookingTitle} — ${data.clientName}</h1>
+                    <h1 style="font-size:20px; font-weight:700; color:#e8dfcf; margin:0;">${data.bookingTitle} - ${data.clientName}</h1>
                   </td>
                 </tr>
               </table>
@@ -319,7 +319,7 @@ function generateICS(data: BookingEmailData): string {
     `DTSTAMP:${now}`,
     `DTSTART:${start}`,
     `DTEND:${end}`,
-    `SUMMARY:${data.bookingTitle} — Cosmic Reach Creative`,
+    `SUMMARY:${data.bookingTitle} - Cosmic Reach Creative`,
     `DESCRIPTION:${data.durationMinutes}-minute session with Cosmic Reach Creative.${data.googleMeetUrl ? `\\nJoin: ${data.googleMeetUrl}` : ""}${data.notes ? `\\nNotes: ${data.notes.replace(/\n/g, "\\n")}` : ""}`,
     locationLine,
     `ORGANIZER;CN=Cosmic Reach:mailto:${OWNER_EMAIL}`,

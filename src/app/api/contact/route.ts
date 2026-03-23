@@ -1,10 +1,19 @@
 import { NextResponse } from "next/server";
 import { saveContactSubmission } from "@/lib/db";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 const NOTIFY_EMAIL = "jordan@cosmicreachcreative.com";
 
 export async function POST(request: Request) {
   try {
+    const rateLimitResult = checkRateLimit(request, 5, 15 * 60 * 1000);
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { error: "Too many submissions. Please try again later." },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
     const { name, email, company, message } = body;
 
@@ -31,7 +40,7 @@ export async function POST(request: Request) {
     await saveContactSubmission({ name, email, company, message }).catch(console.error);
 
     if (!process.env.RESEND_API_KEY) {
-      console.error("RESEND_API_KEY is not set — email not sent.");
+      console.error("RESEND_API_KEY is not set -email not sent.");
       return NextResponse.json(
         { error: "Email service is not configured." },
         { status: 503 }

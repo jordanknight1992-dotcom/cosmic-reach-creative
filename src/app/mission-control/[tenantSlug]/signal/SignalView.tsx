@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useIsMobile } from "@/hooks/useIsMobile";
 import type { GA4Metrics } from "@/lib/ga4";
 
 interface SignalData {
@@ -25,6 +26,7 @@ const STAGE_LABELS: Record<string, string> = {
 
 export function SignalView({ tenantSlug, data }: { tenantSlug: string; data: SignalData }) {
   const router = useRouter();
+  const isMobile = useIsMobile();
   const base = `/mission-control/${tenantSlug}`;
 
   const totalActive = data.pipelineStats
@@ -38,7 +40,7 @@ export function SignalView({ tenantSlug, data }: { tenantSlug: string; data: Sig
   // Biggest issue computation
   let biggestIssue = { label: "Looking good", detail: "No critical issues detected.", type: "neutral" };
   if (totalActive === 0) {
-    biggestIssue = { label: "Empty pipeline", detail: "Add leads to start generating signal.", type: "warning" };
+    biggestIssue = { label: "No active leads", detail: "Import leads to start generating signal and recommendations.", type: "warning" };
   } else if (data.overdueCount > 0) {
     biggestIssue = { label: `${data.overdueCount} overdue follow-up${data.overdueCount > 1 ? "s" : ""}`, detail: "Leads are going cold. Work your overdue targets.", type: "danger" };
   } else if (emailedCount > 5 && repliedCount === 0) {
@@ -54,13 +56,13 @@ export function SignalView({ tenantSlug, data }: { tenantSlug: string; data: Sig
       <div style={{ marginBottom: 28 }}>
         <h1 style={{ fontSize: 24, fontWeight: 700, margin: 0, fontFamily: 'var(--font-display)', color: '#d4a574' }}>Digital Signal</h1>
         <p style={{ color: "rgba(232,223,207,0.35)", fontSize: 14, marginTop: 4 }}>
-          Recommendation-first view of your pipeline health and activity signal.
+          Recommendation-first view of your revenue health and activity signal.
         </p>
       </div>
 
       {/* Top: Biggest Issue + Next Move */}
       <div style={{
-        display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 24,
+        display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16, marginBottom: 24,
       }}>
         <div style={{
           background: biggestIssue.type === "danger" ? "rgba(239,68,68,0.06)" : biggestIssue.type === "warning" ? "rgba(234,179,8,0.06)" : "rgba(34,197,94,0.06)",
@@ -100,16 +102,16 @@ export function SignalView({ tenantSlug, data }: { tenantSlug: string; data: Sig
         background: "#111827", border: "1px solid rgba(232,223,207,0.1)",
         borderRadius: 14, padding: "20px 24px", marginBottom: 24,
       }}>
-        <h2 style={{ fontSize: 15, fontWeight: 600, margin: "0 0 16px 0", color: "rgba(232,223,207,0.85)", fontFamily: 'var(--font-display)' }}>Pipeline Health</h2>
+        <h2 style={{ fontSize: 15, fontWeight: 600, margin: "0 0 16px 0", color: "rgba(232,223,207,0.85)", fontFamily: 'var(--font-display)' }}>Revenue Health</h2>
 
         {totalActive === 0 ? (
           <div style={{ color: "rgba(232,223,207,0.25)", fontSize: 14, textAlign: "center", padding: "20px 0" }}>
-            No active pipeline data yet
+            No active lead data yet
           </div>
         ) : (
           <>
             {/* KPI row */}
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
+            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
               <KpiCard label="Active Leads" value={totalActive} color="#d4a574" />
               <KpiCard label="Won" value={wonCount} color="#22c55e" />
               <KpiCard label="Replied +" value={repliedCount} color="#22c55e" />
@@ -155,7 +157,7 @@ export function SignalView({ tenantSlug, data }: { tenantSlug: string; data: Sig
           <h2 style={{ fontSize: 15, fontWeight: 600, margin: "0 0 16px 0", color: "rgba(232,223,207,0.85)", fontFamily: 'var(--font-display)' }}>Website Analytics (30d)</h2>
 
           {/* GA4 KPI row */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
             <GA4KpiCard
               label="Sessions"
               value={data.ga4Data.sessions30d.toLocaleString()}
@@ -255,7 +257,7 @@ export function SignalView({ tenantSlug, data }: { tenantSlug: string; data: Sig
           )}
 
           {/* User Breakdown */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 16 }}>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 12, marginTop: 16 }}>
             <div style={{ background: "rgba(34,197,94,0.06)", borderRadius: 10, padding: "12px 14px", textAlign: "center" }}>
               <div style={{ fontSize: 20, fontWeight: 800, color: "#22c55e", fontFamily: 'var(--font-display)' }}>{data.ga4Data.newUsers30d}</div>
               <div style={{ fontSize: 11, color: "rgba(232,223,207,0.5)" }}>New Users</div>

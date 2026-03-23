@@ -850,7 +850,7 @@ function ApolloSearchBar({ onImported }: { onImported: () => void }) {
       const newUsage = incrementApolloUsage();
       setUsage(newUsage);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Search failed — network error");
+      setError(err instanceof Error ? err.message : "Search failed. Network error.");
       setHasSearched(true);
     } finally {
       setSearching(false);
@@ -1016,7 +1016,7 @@ function ApolloSearchBar({ onImported }: { onImported: () => void }) {
             <div className="rounded-lg px-3 py-3 text-center" style={{ backgroundColor: T.page, border: `1px solid ${T.border}` }}>
               <div className="text-sm" style={{ color: T.muted, ...FONT_HEADING }}>No results found</div>
               <div className="text-xs mt-1" style={{ color: T.faint }}>
-                Try broadening your search — remove title keywords or use a larger metro area.
+                Try broadening your search. Remove title keywords or use a larger metro area.
               </div>
               {debugInfo && (
                 <details className="mt-2 text-left">

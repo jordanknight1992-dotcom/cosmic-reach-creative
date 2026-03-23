@@ -6,9 +6,9 @@ import { Icon } from "@/components/Icon";
 import { StripeBuyButton } from "@/components/StripeBuyButton";
 
 export const metadata: Metadata = {
-  title: "Pricing | Business Clarity Audit & Strategy Sprints",
+  title: "Pricing | Mission Control, Clarity Audits & Strategy Sprints",
   description:
-    "Start with a $150 Business Clarity Audit. Implementation Sprints from $2,000-$6,000. Ongoing advisory at $750/month. Mission Control at $299/month. Structured engagements with fixed outcomes for founders and growing businesses.",
+    "Mission Control at $149/month — daily operator intelligence, decision engine, revenue-focused prioritization. Business Clarity Audit at $150. Implementation Sprints from $2,000-$6,000. Flight Support advisory at $750/month. Retainer clients get full Mission Control access included.",
   alternates: { canonical: `${siteConfig.domain}/pricing` },
 };
 
@@ -55,9 +55,9 @@ const advisoryTier = {
 
 const missionControlTier = {
   name: "Mission Control",
-  price: "$299/mo",
+  price: "$149/mo",
   description:
-    "The daily operating system for founders who want pipeline clarity, daily targets, and one clear next move, all in one place.",
+    "Daily operator intelligence that directs execution. Surfaces what's slipping, what's being ignored, and where attention should shift. Not a CRM — a decision engine for revenue teams.",
   icon: "compass",
 };
 
@@ -280,12 +280,15 @@ export default function PricingPage() {
                   {missionControlTier.name}
                 </h3>
                 <p className="text-sm text-starlight/60">{missionControlTier.description}</p>
+                <p className="text-xs text-copper/70 mt-2 font-display font-medium">
+                  Included at no extra cost for all Flight Support retainer clients.
+                </p>
               </div>
               <div className="shrink-0 flex flex-col items-end gap-2 w-40">
                 <p className="text-copper font-display font-semibold text-xl">
                   {missionControlTier.price}
                 </p>
-                <StripeBuyButton buyButtonId="buy_btn_1TDtF70vGBLnj72k5a2Q3awc" label="Subscribe" />
+                <StripeBuyButton buyButtonId="buy_btn_1TEEoc0vGBLnj72kYikUQLBs" label="Subscribe" />
                 <Link
                   href="/mission-control"
                   className="inline-flex items-center rounded-[var(--radius-sm)] text-starlight/50 hover:text-copper px-4 py-1 text-xs font-display transition-colors"

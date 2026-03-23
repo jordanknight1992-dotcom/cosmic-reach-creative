@@ -1,7 +1,7 @@
 import { CrmView } from "../../[tenantSlug]/crm/CrmView";
 import { DEMO_LEADS, DEMO_PIPELINE_STATS } from "../demo-data";
 
-export const metadata = { title: "CRM Demo | Mission Control" };
+export const metadata = { title: "Leads Demo | Mission Control" };
 
 export default function DemoCrmPage() {
   return (

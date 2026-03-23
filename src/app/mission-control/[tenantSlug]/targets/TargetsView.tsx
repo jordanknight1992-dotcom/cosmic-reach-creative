@@ -99,17 +99,17 @@ export function TargetsView({ tenantSlug, data }: { tenantSlug: string; data: Ta
           <div style={{ fontSize: 32, marginBottom: 12 }}>◎</div>
           <h2 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 8px 0", fontFamily: 'var(--font-display)' }}>No targets yet</h2>
           <p style={{ color: "rgba(232,223,207,0.35)", fontSize: 14, margin: "0 0 20px 0" }}>
-            Add leads to your CRM and Mission Control will automatically surface your daily targets.
+            Import leads and Mission Control will automatically surface your highest-priority targets each day.
           </p>
           <button
             onClick={() => router.push(`${base}/crm`)}
             style={{
-              background: "#e04747", color: "#fff", border: "none",
+              background: "#d4a574", color: "#1a1f2e", border: "none",
               borderRadius: 10, padding: "10px 20px", fontSize: 14,
               fontWeight: 600, cursor: "pointer", fontFamily: 'var(--font-display)',
             }}
           >
-            Open CRM →
+            Import Leads →
           </button>
         </div>
       ) : (
@@ -174,7 +174,7 @@ export function TargetsView({ tenantSlug, data }: { tenantSlug: string; data: Ta
                     <button
                       onClick={(e) => { e.stopPropagation(); router.push(`${base}/crm?lead=${target.id}`); }}
                       style={{
-                        background: "#e04747", color: "#fff", border: "none",
+                        background: "#d4a574", color: "#1a1f2e", border: "none",
                         borderRadius: 8, padding: "6px 14px", fontSize: 12,
                         fontWeight: 600, cursor: "pointer", fontFamily: 'var(--font-display)',
                       }}

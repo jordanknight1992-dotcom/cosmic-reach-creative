@@ -19,7 +19,7 @@ const STEPS = [
   { key: "workspace", label: "Workspace", description: "Your business details" },
   { key: "calendar", label: "Calendar", description: "Connect Google Calendar" },
   { key: "booking", label: "Booking", description: "Meeting preferences" },
-  { key: "crm", label: "CRM", description: "Lead target & pipeline" },
+  { key: "crm", label: "Leads", description: "Lead intelligence & scoring" },
   { key: "integrations", label: "Integrations", description: "Signal sources" },
   { key: "review", label: "Launch", description: "Review & go live" },
 ];
@@ -296,19 +296,19 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
 
         {step.key === "crm" && (
           <>
-            <StepHeader title="CRM Setup" subtitle="Your CRM is ready to go. Here's what to know." />
+            <StepHeader title="Lead Intelligence" subtitle="Your lead system is ready. Here's how it directs your daily execution." />
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <ReadyItem label="Lead Pipeline" detail="Candidate → Qualified → Ready → Emailed → Replied → Meeting → Won" />
-              <ReadyItem label="Fit Scoring" detail="Automatic 0-100 scoring based on title, industry, location, and email validity" />
-              <ReadyItem label="Activity Tracking" detail="Every email, stage change, and note is logged automatically" />
-              <ReadyItem label="Email Generation" detail="AI-powered draft generation personalized by lead persona" />
+              <ReadyItem label="Daily Briefing" detail="Every morning surfaces what's slipping, what's being ignored, and where attention should shift" />
+              <ReadyItem label="ICP Scoring" detail="Automatic 0-100 scoring based on role, industry, geography, company size, and email quality" />
+              <ReadyItem label="5 Key Daily Targets" detail="The highest-leverage leads to work today, ranked by urgency, fit, and stage" />
+              <ReadyItem label="AI Outreach" detail="Email drafts in your voice, personalized to each lead's profile" />
             </div>
             <div style={{
               background: "rgba(212,165,116,0.06)", borderRadius: 10, padding: "12px 16px",
               border: "1px solid rgba(212,165,116,0.1)", marginTop: 16,
             }}>
               <div style={{ fontSize: 13, color: "rgba(232,223,207,0.5)" }}>
-                Leads can be added manually, imported from People Data Labs, or auto-created when someone books a meeting.
+                Import leads from any CSV (Apollo, LinkedIn, CRM exports). Mission Control scores them against your ICP and surfaces daily direction automatically.
               </div>
             </div>
           </>
@@ -363,7 +363,7 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
               border: "1px solid rgba(232,223,207,0.06)", marginTop: 16,
             }}>
               <div style={{ fontSize: 13, color: "rgba(232,223,207,0.35)" }}>
-                All integrations are optional. Mission Control works with just CRM and meetings.
+                All integrations are optional. Mission Control generates direction from lead data and meetings alone.
                 Connect more sources to unlock deeper recommendations.
               </div>
             </div>
@@ -377,7 +377,7 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
               <ChecklistItem label="Workspace created" done />
               <ChecklistItem label={`Calendar ${providerSources["google_calendar"] === "platform" ? "(pre-configured)" : "connected"}`} done={connectedProviders.includes("google_calendar")} optional />
               <ChecklistItem label="Meeting preferences set" done={completedSteps["booking"] ?? false} />
-              <ChecklistItem label="CRM ready" done />
+              <ChecklistItem label="Lead intelligence ready" done />
               <ChecklistItem label={`GA4 ${providerSources["google_analytics"] === "platform" ? "(pre-configured)" : "connected"}`} done={connectedProviders.includes("google_analytics")} optional />
               <ChecklistItem label={`PDL ${providerSources["pdl"] === "platform" ? "(pre-configured)" : "connected"}`} done={connectedProviders.includes("pdl")} optional />
               <ChecklistItem label={`Resend ${providerSources["resend"] === "platform" ? "(pre-configured)" : "connected"}`} done={connectedProviders.includes("resend")} optional />
@@ -408,7 +408,7 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
               onClick={handleComplete}
               disabled={saving}
               style={{
-                background: "linear-gradient(135deg, #d4a574, #e04747)", color: "#fff", border: "none",
+                background: "#d4a574", color: "#1a1f2e", border: "none",
                 borderRadius: 10, padding: "12px 32px", fontSize: 15,
                 fontWeight: 700, cursor: "pointer",
                 fontFamily: 'var(--font-display)',
@@ -421,7 +421,7 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
               onClick={handleNext}
               disabled={saving}
               style={{
-                background: "#e04747", color: "#fff", border: "none",
+                background: "#d4a574", color: "#1a1f2e", border: "none",
                 borderRadius: 10, padding: "10px 24px", fontSize: 14,
                 fontWeight: 600, cursor: "pointer",
                 fontFamily: 'var(--font-display)',
@@ -534,7 +534,7 @@ const inputStyle: React.CSSProperties = {
 };
 
 const btnPrimary: React.CSSProperties = {
-  background: "#e04747", color: "#fff", border: "none",
+  background: "#d4a574", color: "#1a1f2e", border: "none",
   borderRadius: 8, padding: "8px 16px", fontSize: 13,
   fontWeight: 600, cursor: "pointer", marginTop: 8,
   fontFamily: 'var(--font-display)',

@@ -133,7 +133,7 @@ export async function POST(
     const suppressed = await isContactSuppressed(lead.contact_id as number);
     if (suppressed) {
       return NextResponse.json(
-        { error: "Contact is suppressed — cannot send email" },
+        { error: "Contact is suppressed. Cannot send email." },
         { status: 403 }
       );
     }

@@ -12,7 +12,7 @@ export const metadata = { title: "Mission Control Demo | Cosmic Reach Creative" 
 export default function DemoPage() {
   return (
     <DailyBriefing
-      userName="Jordan"
+      userName=""
       tenantSlug="demo"
       onboardingCompleted={true}
       data={{

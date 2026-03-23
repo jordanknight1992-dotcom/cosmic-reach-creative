@@ -2,14 +2,14 @@ import { McShell } from "../[tenantSlug]/McShell";
 
 const DEMO_USER = {
   id: 0,
-  email: "demo@cosmicreachcreative.com",
-  full_name: "Demo User",
+  email: "alex@atlasops.co",
+  full_name: "Alex",
   is_super_admin: false,
 };
 
 const DEMO_TENANT = {
   id: 0,
-  name: "Cosmic Reach Creative",
+  name: "AtlasOps",
   slug: "demo",
   plan: "core",
   onboarding_completed: true,

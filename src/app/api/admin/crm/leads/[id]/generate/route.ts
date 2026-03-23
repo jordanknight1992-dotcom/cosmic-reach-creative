@@ -7,12 +7,12 @@ import {
 } from "@/lib/crm-db";
 
 function buildSystemPrompt(personaType: string): string {
-  const founderAngle = `You are writing a cold outreach email on behalf of Jordan Knight, founder of Cosmic Reach Creative — a brand strategy and web design studio in Memphis, TN.
+  const founderAngle = `You are writing a cold outreach email on behalf of Jordan Knight, founder of Cosmic Reach Creative -a brand strategy and web design studio in Memphis, TN.
 
 Target persona: FOUNDER / CEO
 Messaging angle: Clarity at the business, offer, and system level. Signal vs noise. Reducing wasted activity. Positioning a brand refresh or web redesign as a growth lever, not a cosmetic exercise.`;
 
-  const marketingLeaderAngle = `You are writing a cold outreach email on behalf of Jordan Knight, founder of Cosmic Reach Creative — a brand strategy and web design studio in Memphis, TN.
+  const marketingLeaderAngle = `You are writing a cold outreach email on behalf of Jordan Knight, founder of Cosmic Reach Creative -a brand strategy and web design studio in Memphis, TN.
 
 Target persona: MARKETING LEADER (VP/Director of Marketing)
 Messaging angle: Clearer messaging architecture, stronger conversion paths, system alignment. Pitch fractional creative direction or overflow design support that gives their team leverage without a full-time hire.`;
@@ -69,7 +69,7 @@ function fallbackDraft(lead: Record<string, unknown>): { subject: string; body: 
     subject: `Quick thought on ${companyName}`,
     body: `Hi ${firstName},
 
-I run Cosmic Reach Creative here in Memphis — we help growing companies sharpen their brand and web presence so the work actually converts.
+I run Cosmic Reach Creative here in Memphis -we help growing companies sharpen their brand and web presence so the work actually converts.
 
 I took a look at ${companyName} and had a few observations I think would be worth sharing.
 
@@ -107,7 +107,7 @@ export async function POST(
     let usedFallback = false;
 
     if (!process.env.OPENAI_API_KEY) {
-      // No API key — use fallback
+      // No API key -use fallback
       const fb = fallbackDraft(lead);
       subject = fb.subject;
       emailBody = fb.body;

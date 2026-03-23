@@ -147,7 +147,7 @@ export async function POST() {
     try {
       existingContacts = await sql`SELECT email FROM contacts WHERE email IS NOT NULL`;
     } catch {
-      // Table may not exist yet — that's fine, no dedup needed
+      // Table may not exist yet -that's fine, no dedup needed
     }
     const existingEmails = new Set(
       existingContacts
@@ -159,11 +159,11 @@ export async function POST() {
     const skipped: { name: string; reason: string }[] = [];
     const errors: string[] = [];
 
-    // Rotate through ICP queries — pick one based on day of month
+    // Rotate through ICP queries -pick one based on day of month
     const queryIndex = new Date().getDate() % ICP_QUERIES.length;
     const icpQuery = ICP_QUERIES[queryIndex];
 
-    // ONE API call, 10 results — respects PDL free tier (100/mo, 10/min)
+    // ONE API call, 10 results -respects PDL free tier (100/mo, 10/min)
     try {
       const pdlRes = await fetch("https://api.peopledatalabs.com/v5/person/search", {
         method: "POST",
@@ -191,7 +191,7 @@ export async function POST() {
             success: true, imported: 0, leads: [],
             skipped: 0, skippedDetails: [],
             errors: [],
-            message: `No results for "${icpQuery.label}" — try again tomorrow for a different ICP.`,
+            message: `No results for "${icpQuery.label}". Try again tomorrow for a different ICP.`,
           });
         }
         return NextResponse.json({ error: msg }, { status: 500 });

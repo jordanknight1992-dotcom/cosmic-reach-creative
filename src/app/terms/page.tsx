@@ -25,6 +25,17 @@ export default function TermsPage() {
               {siteConfig.siteName} provides marketing strategy consulting services including Business Clarity Audits, implementation sprints, and ongoing advisory retainers. All services are delivered remotely. Specific deliverables, timelines, and scope are defined at the time of engagement.
             </p>
 
+            <h2 className="text-xl mt-8">Mission Control</h2>
+            <p>
+              Mission Control is a subscription-based SaaS product that provides daily operational tools for founders, including pipeline management, lead generation, and performance dashboards. Access requires a registered account and an active subscription.
+            </p>
+            <p>
+              You are responsible for maintaining the confidentiality of your account credentials and any API keys you provide. You agree not to share your login credentials with unauthorized users. We reserve the right to suspend accounts that violate these terms.
+            </p>
+            <p>
+              Mission Control subscriptions are billed monthly. You may cancel at any time, and your access will continue through the end of the current billing period. No partial-month refunds are provided for cancellations.
+            </p>
+
             <h2 className="text-xl mt-8">Use of This Site</h2>
             <p>
               This website is provided for informational purposes. The content describes our services and approach to marketing strategy consulting. It is not a substitute for professional advice specific to your situation.

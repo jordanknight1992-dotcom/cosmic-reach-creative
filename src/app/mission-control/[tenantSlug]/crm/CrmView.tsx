@@ -164,9 +164,9 @@ export function CrmView({ tenantSlug, data }: { tenantSlug: string; data: CrmDat
       {/* Header */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
         <div>
-          <h1 style={{ fontSize: 24, fontWeight: 700, margin: 0, fontFamily: 'var(--font-display)', color: '#d4a574' }}>CRM</h1>
+          <h1 style={{ fontSize: 24, fontWeight: 700, margin: 0, fontFamily: 'var(--font-display)', color: '#d4a574' }}>Leads</h1>
           <p style={{ color: "rgba(232,223,207,0.35)", fontSize: 14, marginTop: 4 }}>
-            {totalActive} active lead{totalActive !== 1 ? "s" : ""} in pipeline
+            {totalActive} active lead{totalActive !== 1 ? "s" : ""} requiring attention
           </p>
         </div>
         <div style={{ display: "flex", gap: 8 }}>

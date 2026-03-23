@@ -6,27 +6,27 @@ import { Icon } from "@/components/Icon";
 import { StripeBuyButton } from "@/components/StripeBuyButton";
 
 export const metadata: Metadata = {
-  title: "Mission Control | See What's Happening. Know What to Do Next.",
+  title: "Mission Control | Daily Operator Intelligence. Decisions That Move Revenue.",
   description:
-    "Mission Control is the operating layer that sits above your tools, your data, and your reporting. It turns activity into direction so decisions move faster and with confidence.",
+    "Mission Control is the decision engine for revenue teams. It directs daily execution — surfacing what's slipping, what's being ignored, and where attention should shift. Not a CRM. A system that tells you what to do next.",
   alternates: { canonical: `${siteConfig.domain}/mission-control` },
 };
 
 const FEATURES = [
-  "Daily Briefing + Next Move recommendation",
-  "5 Key Daily Targets (priority-ranked)",
-  "Operational CRM with pipeline stages",
+  "Daily Briefing — what matters today, delivered every morning",
+  "Next Move — one clear action, always visible",
+  "5 Key Daily Targets — ranked by urgency, fit, and stage",
+  "ICP scoring — deterministic fit scoring against your ideal profile",
+  "Import from any source (CSV, Apollo, LinkedIn, exports)",
+  "Smart field mapping — messy columns cleaned automatically",
   "AI-powered email drafts (your voice, your strategy)",
-  "Lead generation with ICP scoring (PDL)",
-  "Pipeline Signal dashboard",
+  "Digital Signal — recommendation-first performance view",
   "GA4 website analytics integration",
-  "Meeting scheduling + booking link",
-  "Google Calendar sync",
-  "Brand strategy & voice configuration",
-  "Guided onboarding",
-  "Two-factor authentication",
-  "Encrypted credential storage",
-  "1 user",
+  "Meeting scheduling + Google Calendar sync",
+  "Team workspaces with Owner, Admin & Member roles",
+  "Two-factor authentication + encrypted credential storage",
+  "Retainer clients: full access included at no extra cost",
+  "Guided onboarding included",
 ];
 
 export default function MissionControlLanding() {
@@ -51,11 +51,10 @@ export default function MissionControlLanding() {
               Mission Control
             </div>
             <h1 id="mc-hero" className="text-copper mb-4">
-              See what&apos;s happening.<br />Know what to do next.
+              The system that tells you<br />what to do next.
             </h1>
             <p className="text-starlight/80 text-lg sm:text-xl mt-3 max-w-[560px] mx-auto">
-              The operating layer that sits above your tools, your data, and your reporting.
-              It turns activity into direction so decisions move faster and with confidence.
+              Mission Control is the decision engine for revenue teams. Every morning it surfaces what&apos;s slipping, what&apos;s being ignored, and exactly where your attention should shift. Direction without prompting.
             </p>
             <div className="mt-9 flex flex-wrap justify-center gap-4">
               <a
@@ -90,17 +89,17 @@ export default function MissionControlLanding() {
             The problem
           </p>
           <h2 className="font-display font-bold text-2xl text-starlight mb-5">
-            More data than ever. Still uncertain when it&apos;s time to act.
+            Every day starts without direction.
           </h2>
           <div className="space-y-4 text-starlight/60 text-base leading-relaxed">
             <p>
-              Dashboards update constantly. Reports get generated on schedule. Metrics shift across platforms.
+              Leads go cold because nobody noticed. Meetings don&apos;t get booked because priorities aren&apos;t clear. Follow-ups slip because there&apos;s no system tracking what matters.
             </p>
             <p>
-              The connection between those signals and real decisions is missing. Time gets spent interpreting instead of moving.
+              The information exists across tools and spreadsheets. But connecting it to a decision — what to do first, who needs attention, where momentum is dying — that&apos;s the gap.
             </p>
             <p className="text-starlight/80 font-display font-medium">
-              Momentum slows quietly.
+              Revenue teams don&apos;t need another dashboard. They need direction.
             </p>
           </div>
         </div>
@@ -113,21 +112,24 @@ export default function MissionControlLanding() {
             What Mission Control does
           </p>
           <h2 className="font-display font-bold text-2xl text-starlight mb-5">
-            Connect your systems. See the pattern. Move.
+            Direction. Every morning. Without asking.
           </h2>
           <div className="space-y-4 text-starlight/60 text-base leading-relaxed">
             <p>
-              Mission Control reads changes across your pipeline, marketing activity, and performance data. Patterns surface. Friction points become visible. Opportunities show up earlier.
+              Mission Control reads your lead data, scores fit against your ICP, and surfaces what needs attention. Overdue follow-ups. High-fit leads going cold. Empty calendars when deals are warm. It tells you what&apos;s slipping before you notice.
+            </p>
+            <p>
+              Every day starts with a briefing and one clear Next Move. Your team sees the same priorities, works from the same targets, and executes without guessing.
             </p>
             <p className="text-starlight/80 font-display font-medium">
-              You open it and understand where attention should go.
+              Not a dashboard. A decision engine.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Daily Briefing + Recommendations */}
-      <section className="py-14 sm:py-20" aria-label="Daily Briefing and Recommendations">
+      {/* Daily Briefing + Next Move */}
+      <section className="py-14 sm:py-20" aria-label="Daily Briefing and Next Move">
         <div className="max-w-[900px] mx-auto px-5 sm:px-6 lg:px-8">
           <div className="grid gap-6 sm:grid-cols-2">
             <div className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-6 sm:p-8 transition-all duration-[var(--duration-base)] hover:border-copper/30 hover:shadow-subtle">
@@ -136,22 +138,22 @@ export default function MissionControlLanding() {
                 Daily Briefing
               </h3>
               <p className="text-starlight/60 text-sm leading-relaxed">
-                Each day starts with a briefing built from live system data. It highlights movement across your business and focuses attention on what deserves it. No digging. No switching between tools.
+                Every morning, Mission Control tells you what changed, what&apos;s slipping, and what needs attention. Overdue follow-ups. High-fit leads stalling. Empty calendars when warm replies are waiting.
               </p>
               <p className="text-starlight/50 text-sm leading-relaxed mt-3">
-                The briefing evolves as your systems evolve, so the signal stays relevant as conditions change.
+                No prompting. No digging. You open it and know where to focus.
               </p>
             </div>
             <div className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-6 sm:p-8 transition-all duration-[var(--duration-base)] hover:border-copper/30 hover:shadow-subtle">
               <Icon name="signal" size={28} className="mb-4 opacity-80" />
               <h3 className="font-display font-bold text-lg text-starlight mb-3">
-                Recommendations
+                Next Move
               </h3>
               <p className="text-starlight/60 text-sm leading-relaxed">
-                When conversion shifts, the pressure point becomes visible. When pipeline slows, the constraint is identified. When something gains traction, you see how to expand it.
+                Every insight leads to an action. The system doesn&apos;t just show you problems — it recommends the move. Work overdue targets. Book a meeting with a warm reply. Advance a high-fit lead stuck in qualification.
               </p>
               <p className="text-starlight/50 text-sm leading-relaxed mt-3">
-                Each recommendation leads into a next move so execution stays consistent.
+                One clear action, always visible. Execution stays consistent because the system directs it.
               </p>
             </div>
           </div>
@@ -166,12 +168,12 @@ export default function MissionControlLanding() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
             {[
-              { icon: "compass", title: "Daily Briefing", desc: "Your biggest issue, what's working, and one clear next move. Every morning." },
-              { icon: "orbit", title: "5 Key Targets", desc: "The highest-leverage leads to work today, ranked by urgency and fit." },
-              { icon: "gears", title: "Operational CRM", desc: "Pipeline, contacts, and email outreach. Built for daily use, not data entry." },
-              { icon: "signal", title: "Pipeline Signal", desc: "Real-time pipeline health, GA4 analytics, and recommendations that adapt." },
-              { icon: "rocket", title: "Strategy Engine", desc: "Define your voice, goals, and offers. AI drafts emails that sound like you." },
-              { icon: "network", title: "Meetings", desc: "Booking links, Google Calendar sync, and scheduling from one place." },
+              { icon: "compass", title: "Daily Briefing", desc: "What's slipping, what's being ignored, and where attention should shift. Every morning." },
+              { icon: "signal", title: "Next Move", desc: "Every insight leads to an action. One clear recommendation, always visible and actionable." },
+              { icon: "orbit", title: "5 Key Targets", desc: "The highest-leverage leads to work today — ranked by urgency, fit, and stage." },
+              { icon: "gears", title: "ICP Scoring", desc: "Deterministic fit scoring against your ideal profile. Explainable. Consistent. No guessing." },
+              { icon: "rocket", title: "AI Outreach", desc: "Email drafts in your voice and strategy. The system writes, you review and send." },
+              { icon: "network", title: "Team Workspace", desc: "Shared priorities, role-based access, and meetings. Everyone sees the same direction." },
             ].map((item) => (
               <div
                 key={item.title}
@@ -186,7 +188,7 @@ export default function MissionControlLanding() {
         </div>
       </section>
 
-      {/* Built for Operators + System Integration */}
+      {/* Built for Operators + Retainer Clients */}
       <section className="py-14 sm:py-20" aria-label="Built for operators">
         <div className="max-w-2xl mx-auto px-5 sm:px-6 lg:px-8">
           <div className="space-y-12">
@@ -195,18 +197,18 @@ export default function MissionControlLanding() {
                 Built for operators
               </p>
               <p className="text-starlight/70 text-base leading-relaxed">
-                Founders, marketing leads, and operators who need clarity without building it manually every day. You open it, understand the current state, and move forward with intention.
+                Founders, revenue leads, and operators who need daily clarity without building it manually. You open Mission Control and know where your attention should go. No prompting. No configuring. The system directs execution.
               </p>
             </div>
             <div>
               <p className="text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-4">
-                System integration
+                Included for retainer clients
               </p>
               <p className="text-starlight/70 text-base leading-relaxed mb-4">
-                Mission Control connects to the tools already in place.
+                Every Cosmic Reach Creative retainer client gets full Mission Control access at no additional cost. It&apos;s the operating layer that keeps Sprint outcomes alive and execution on track.
               </p>
               <div className="flex flex-wrap gap-3">
-                {["CRM", "Analytics", "Campaign platforms", "Scheduling systems"].map((tool) => (
+                {["Flight Support clients", "Sprint graduates", "Advisory retainers"].map((tool) => (
                   <span
                     key={tool}
                     className="rounded-full border border-starlight/10 bg-navy/40 px-4 py-1.5 text-xs font-display font-medium text-starlight/60"
@@ -216,7 +218,7 @@ export default function MissionControlLanding() {
                 ))}
               </div>
               <p className="text-starlight/50 text-sm leading-relaxed mt-4">
-                The value comes from how everything is interpreted together, creating a single layer of understanding across the system.
+                Your data stays in your workspace. Import from Apollo, LinkedIn, HubSpot, Salesforce, or any CSV export.
               </p>
             </div>
           </div>
@@ -231,9 +233,9 @@ export default function MissionControlLanding() {
           </p>
           <div className="grid gap-4 sm:grid-cols-3 max-w-xl mx-auto">
             {[
-              "Visibility becomes immediate",
-              "Decisions become faster",
-              "Execution becomes consistent",
+              "Decisions become immediate",
+              "Attention goes where it matters",
+              "Execution stays consistent",
             ].map((item) => (
               <div
                 key={item}
@@ -246,7 +248,7 @@ export default function MissionControlLanding() {
             ))}
           </div>
           <p className="text-starlight/50 text-sm mt-6">
-            The system improves as more data flows through it and patterns become clearer.
+            The more data flows through the system, the sharper the recommendations become.
           </p>
         </div>
       </section>
@@ -266,17 +268,17 @@ export default function MissionControlLanding() {
           <div className="max-w-[480px] mx-auto">
             <div className="rounded-[var(--radius-lg)] border-2 border-copper/40 bg-navy/70 p-7 sm:p-8 relative overflow-hidden transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/60 hover:shadow-subtle">
               <div className="flex items-baseline gap-0.5 mb-2">
-                <span className="text-5xl font-display font-bold text-copper">$299</span>
+                <span className="text-5xl font-display font-bold text-copper">$149</span>
                 <span className="text-sm text-starlight/40">/mo</span>
               </div>
 
               <p className="text-sm text-starlight/50 leading-relaxed mb-6">
-                For founders who want pipeline clarity, daily targets, and one clear next move.
-                Includes guided onboarding. You bring your own API keys.
+                Daily operator intelligence that directs execution and sharpens decision-making.
+                Includes guided onboarding. Retainer clients: included at no extra cost.
               </p>
 
               <div className="mb-6">
-                <StripeBuyButton buyButtonId="buy_btn_1TDtF70vGBLnj72k5a2Q3awc" />
+                <StripeBuyButton buyButtonId="buy_btn_1TEEoc0vGBLnj72kYikUQLBs" />
               </div>
 
               {/* Features in two columns */}

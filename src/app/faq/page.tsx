@@ -5,9 +5,9 @@ import { Icon } from "@/components/Icon";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "FAQ | Business Clarity Audit & Marketing Strategy Questions",
+  title: "FAQ | Mission Control, Clarity Audits & Strategy Sprints",
   description:
-    "Answers to common questions about the Business Clarity Audit, implementation sprints, marketing strategy consulting, and how Cosmic Reach Creative works with founders and growing businesses.",
+    "Answers to common questions about Mission Control, Business Clarity Audits, implementation sprints, Flight Support advisory, and how Cosmic Reach Creative works with founders and growing businesses.",
   alternates: { canonical: `${siteConfig.domain}/faq` },
 };
 
@@ -30,12 +30,12 @@ const faqs: { question: string; answer: string; signals?: string[]; closing?: st
   {
     question: "What is Mission Control?",
     answer:
-      "Mission Control is the daily operating system for founders who want pipeline clarity, daily targets, and one clear next move. It includes a daily briefing, operational CRM, AI-powered email drafts in your voice, lead generation with ICP scoring, GA4 analytics, meeting scheduling, and Google Calendar sync.\n\nIt’s $299/month with guided onboarding included. You bring your own API keys so you control your costs.",
+      "Mission Control is a daily operator intelligence system for revenue teams. Every morning it surfaces what’s slipping, what’s being ignored, and where attention should shift — then recommends the next move.\n\nIt’s not a CRM. It’s a decision engine that scores leads against your ICP, ranks your highest-priority targets, generates AI-powered email drafts in your voice, and keeps your team aligned inside a shared workspace.\n\nIt’s $149/month with guided onboarding included. All Cosmic Reach Creative retainer clients get full access at no additional cost.",
   },
   {
     question: "What is the Flight Support Retainer?",
     answer:
-      "Flight Support ($750/month) is ongoing advisory to maintain the systems built during a Sprint, prevent operational drift, and recalibrate as your business evolves. It’s designed for founders who want a strategic partner keeping the architecture sharp after implementation.",
+      "Flight Support ($750/month) is ongoing advisory to maintain the systems built during a Sprint, prevent operational drift, and recalibrate as your business evolves. It’s designed for founders who want a strategic partner keeping the architecture sharp after implementation.\n\nAll Flight Support retainer clients receive full Mission Control access included at no additional cost.",
   },
   {
     question: "Do I need a Sprint after the Business Clarity Audit?",
@@ -63,7 +63,17 @@ const faqs: { question: string; answer: string; signals?: string[]; closing?: st
   {
     question: "Can I use Mission Control without doing an audit or sprint?",
     answer:
-      "Yes. Mission Control is a standalone product. It works best when paired with a Clarity Audit so the system is configured around real strategic priorities, but it’s fully functional on its own from day one.",
+      "Yes. Mission Control is a standalone product. Import your lead lists, configure your ICP, and start scoring and prioritizing on day one. It works best when paired with a Clarity Audit so the system is configured around real strategic priorities, but it’s fully functional on its own.",
+  },
+  {
+    question: "What data sources does Mission Control support?",
+    answer:
+      "Any CSV file. That includes exports from Apollo, LinkedIn Sales Navigator, HubSpot, Salesforce, Pipedrive, or a hand-built spreadsheet. Mission Control’s smart field mapper detects your column headers and maps them to standard fields automatically. You preview and adjust the mapping before importing.\n\nNo integrations to configure. Just export a CSV from wherever your leads live and upload it.",
+  },
+  {
+    question: "Can my team use Mission Control together?",
+    answer:
+      "Yes. Mission Control is built for team collaboration. Each workspace supports Owner, Admin, and Member roles with invitation-based access. Your whole team sees the same daily briefing, the same prioritized targets, and executes from the same direction.",
   },
   {
     question: "Where is Cosmic Reach Creative located?",

@@ -338,11 +338,10 @@ export default function HomePage() {
               Mission Control
             </div>
             <h2 id="mc-cta-heading" className="mb-3">
-              Strategy Becomes Daily Action
+              Direction Without Prompting
             </h2>
             <p className="text-starlight/70 text-base" style={{ textWrap: "pretty" }}>
-              The operating system that turns your Clarity Audit into daily execution.
-              Pipeline visibility, prioritized targets, AI-powered outreach, all driven by your strategy.
+              The decision engine that surfaces what&apos;s slipping, recommends the next move, and keeps your team focused on what matters. Not a CRM — daily operator intelligence.
             </p>
           </div>
 
@@ -350,14 +349,14 @@ export default function HomePage() {
           <div className="max-w-xl mx-auto mb-10">
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
               {[
-                "Daily briefing + next move",
-                "5 priority targets each morning",
-                "CRM with pipeline stages",
+                "Daily Briefing — what needs attention now",
+                "Next Move — one clear action, always visible",
+                "5 Key Daily Targets — ranked by urgency and fit",
+                "ICP scoring — deterministic, explainable",
                 "AI email drafts in your voice",
-                "Lead generation + ICP scoring",
-                "GA4 analytics dashboard",
-                "Google Calendar sync",
-                "Meeting scheduling + booking",
+                "Digital Signal — revenue health at a glance",
+                "Meeting scheduling + Google Calendar",
+                "Team workspaces with role-based access",
               ].map((feature) => (
                 <li key={feature} className="flex items-center gap-2.5 text-sm text-starlight/70">
                   <span className="text-copper text-xs shrink-0" aria-hidden="true">&#9670;</span>
@@ -376,7 +375,7 @@ export default function HomePage() {
               Explore Mission Control
             </Link>
             <p className="mt-3 text-xs text-starlight/40">
-              $299/mo · Guided onboarding included · BYO API keys
+              $149/mo · Guided onboarding included · Retainer clients: included free
             </p>
           </div>
         </div>

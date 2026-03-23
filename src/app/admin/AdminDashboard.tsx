@@ -296,7 +296,7 @@ function GA4Dashboard({ ga4 }: { ga4: GA4Metrics }) {
       key: "engagement",
       label: "Engagement Rate",
       current: `${ga4.engagementRate30d.toFixed(1)}%`,
-      previous: comp.engagement.previous > 0 ? `${comp.engagement.previous.toFixed(1)}%` : "—",
+      previous: comp.engagement.previous > 0 ? `${comp.engagement.previous.toFixed(1)}%` : "-",
       change: comp.engagement.changePercent,
       color: "#06b6d4",
       invert: false,
@@ -1044,11 +1044,11 @@ function BookingsTab() {
                             ● Join Meet
                           </a>
                         ) : (
-                          <span className="text-xs" style={{ color: T.faint }}>—</span>
+                          <span className="text-xs" style={{ color: T.faint }}>-</span>
                         )}
                       </td>
                       <td className="px-4 py-3">
-                        <span className="text-xs" style={{ color: T.muted }}>{b.notes || "—"}</span>
+                        <span className="text-xs" style={{ color: T.muted }}>{b.notes || "-"}</span>
                       </td>
                     </tr>
                   );
@@ -1116,7 +1116,7 @@ function BookingsTab() {
               return (
                 <div key={d.id} className="flex items-center justify-between rounded-lg px-4 py-2" style={{ backgroundColor: T.card, border: `1px solid ${T.border}` }}>
                   <span className="text-sm" style={{ color: T.starlight }}>
-                    {dateDisplay}{d.label ? ` — ${d.label}` : ""}
+                    {dateDisplay}{d.label ? `: ${d.label}` : ""}
                   </span>
                   <button onClick={() => removeBlackout(d.id)} className="text-xs" style={{ color: T.red }}>Remove</button>
                 </div>
@@ -1159,12 +1159,12 @@ function DashboardTab({
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
         <StatCard
           label="Revenue MTD"
-          value={stripe ? `$${stripe.mtdRevenue.toLocaleString("en-US", { minimumFractionDigits: 0 })}` : "—"}
+          value={stripe ? `$${stripe.mtdRevenue.toLocaleString("en-US", { minimumFractionDigits: 0 })}` : "-"}
           sub="This calendar month"
         />
         <StatCard
           label="All-Time Revenue"
-          value={stripe ? `$${stripe.allTimeRevenue.toLocaleString("en-US", { minimumFractionDigits: 0 })}` : "—"}
+          value={stripe ? `$${stripe.allTimeRevenue.toLocaleString("en-US", { minimumFractionDigits: 0 })}` : "-"}
           sub="Recent transactions"
         />
         <StatCard
@@ -1182,7 +1182,7 @@ function DashboardTab({
       {/* Activity Charts */}
       {(ctaTimeline.length > 0 || submissionTimeline.length > 0) && (
         <div className="mb-10">
-          <SectionHeader title="Activity — Last 30 Days" />
+          <SectionHeader title="Activity: Last 30 Days" />
           <div className="grid sm:grid-cols-2 gap-4">
             {ctaTimeline.length > 0 && (
               <div className="rounded-xl p-5" style={{ backgroundColor: T.card, border: `1px solid ${T.border}` }}>
@@ -1508,7 +1508,7 @@ export function AdminDashboard({
   const clicks30d  = ctaStats.reduce((s, r) => s + r.clicks_30d, 0);
   const convRate   = clicks30d > 0
     ? ((totalSubmissions / clicks30d) * 100).toFixed(1) + "%"
-    : "—";
+    : "-";
 
   const handleStatusChange = useCallback(
     (table: "contact" | "audit", id: number, status: string) => {

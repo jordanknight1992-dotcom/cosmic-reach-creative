@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getAdminPasswordHash, setAdminPasswordHash } from "@/lib/db";
 import { createHash } from "crypto";
+import bcrypt from "bcryptjs";
 import {
   generateTotpSecret,
   verifyTotpCode,
@@ -8,15 +9,18 @@ import {
 } from "@/lib/totp";
 
 function makeSessionResponse(message: Record<string, unknown> = { success: true }) {
-  const secret = process.env.SESSION_SECRET ?? "fallback-secret-change-me";
+  const secret = process.env.SESSION_SECRET;
+  if (!secret) {
+    throw new Error("SESSION_SECRET environment variable is not set");
+  }
   const sessionCookieValue = createHash("sha256").update(secret).digest("hex");
 
   const response = NextResponse.json(message);
   response.cookies.set("admin_session", sessionCookieValue, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
-    maxAge: 60 * 60 * 24 * 30,
+    sameSite: "strict",
+    maxAge: 60 * 60 * 24 * 7, // 7 days
     path: "/",
   });
   return response;
@@ -39,8 +43,13 @@ export async function POST(request: Request) {
   if (confirmSetup && totpCode && totpSecret) {
     /* Password must still be valid */
     if (existing) {
-      const hash = createHash("sha256").update(password).digest("hex");
-      if (hash !== existing) {
+      let valid = false;
+      if (existing.startsWith("$2")) {
+        valid = await bcrypt.compare(password, existing);
+      } else {
+        valid = createHash("sha256").update(password).digest("hex") === existing;
+      }
+      if (!valid) {
         return NextResponse.json(
           { error: "Invalid password." },
           { status: 401 }
@@ -56,9 +65,9 @@ export async function POST(request: Request) {
       );
     }
 
-    /* If this is first-time setup, store the password now */
+    /* If this is first-time setup, store the password now (bcrypt) */
     if (!existing) {
-      const hash = createHash("sha256").update(password).digest("hex");
+      const hash = await bcrypt.hash(password, 12);
       await setAdminPasswordHash(hash);
     }
 
@@ -71,10 +80,13 @@ export async function POST(request: Request) {
   /* ── Initial setup (step 1) ── */
   if (existing) {
     /* Require the current password to change it */
-    const currentPasswordHash = createHash("sha256")
-      .update(setupToken ?? "")
-      .digest("hex");
-    if (currentPasswordHash !== existing) {
+    let tokenValid = false;
+    if (existing.startsWith("$2")) {
+      tokenValid = await bcrypt.compare(setupToken ?? "", existing);
+    } else {
+      tokenValid = createHash("sha256").update(setupToken ?? "").digest("hex") === existing;
+    }
+    if (!tokenValid) {
       return NextResponse.json(
         { error: "Admin account already exists." },
         { status: 403 }
@@ -82,9 +94,9 @@ export async function POST(request: Request) {
     }
   }
 
-  /* For first-time setup, store password and generate TOTP */
+  /* For first-time setup, store password with bcrypt */
   if (!existing) {
-    const hash = createHash("sha256").update(password).digest("hex");
+    const hash = await bcrypt.hash(password, 12);
     await setAdminPasswordHash(hash);
   }
 
