@@ -2,147 +2,41 @@
 
 import { useRouter } from "next/navigation";
 import { useIsMobile } from "@/hooks/useIsMobile";
-
-interface BriefingData {
-  pipelineStats: { stage: string; count: number }[];
-  recentLeads: Record<string, unknown>[];
-  upcomingMeetings: Record<string, unknown>[];
-  recentActivities: Record<string, unknown>[];
-  overdueFollowUps: Record<string, unknown>[];
-}
+import type { BriefingOutput, Insight, DailyTarget } from "@/lib/briefing-engine";
 
 interface Props {
   userName: string;
   tenantSlug: string;
   onboardingCompleted: boolean;
-  data: BriefingData;
+  briefing: BriefingOutput;
+  meetings: Record<string, unknown>[];
+  activities: Record<string, unknown>[];
+  pipelineStats: { stage: string; count: number }[];
 }
 
-/* ─── Recommendation Engine ─── */
+/* ─── Stage display helpers ─── */
 
-function generateRecommendations(data: BriefingData) {
-  const issues: { priority: number; label: string; detail: string; action: string; link: string }[] = [];
+const STAGE_LABELS: Record<string, string> = {
+  candidate: "Candidate", qualified: "Qualified", ready_to_email: "Ready",
+  emailed: "Emailed", replied_positive: "Replied +", replied_negative: "Replied −",
+  meeting_requested: "Mtg Req", meeting_booked: "Mtg Booked",
+  won: "Won", lost: "Lost", suppressed: "Suppressed",
+};
 
-  // Overdue follow-ups are the #1 issue
-  if (data.overdueFollowUps.length > 0) {
-    issues.push({
-      priority: 1,
-      label: "Overdue follow-ups",
-      detail: `${data.overdueFollowUps.length} lead${data.overdueFollowUps.length > 1 ? "s" : ""} overdue for follow-up. Momentum is being lost.`,
-      action: "Work overdue targets first",
-      link: "targets",
-    });
-  }
+const STAGE_COLORS: Record<string, string> = {
+  candidate: "rgba(232,223,207,0.35)", qualified: "#d4a574",
+  ready_to_email: "#e04747", emailed: "#3b82f6",
+  replied_positive: "#22c55e", replied_negative: "#ef4444",
+  meeting_requested: "#eab308", meeting_booked: "#22c55e",
+  won: "#10b981", lost: "#6b7280", suppressed: "rgba(232,223,207,0.2)",
+};
 
-  // High-score leads stuck in early stage
-  const stuckLeads = data.recentLeads.filter(
-    (l) => (l.fit_score as number) >= 75 && ["candidate", "qualified"].includes(l.stage as string)
-  );
-  if (stuckLeads.length > 0) {
-    issues.push({
-      priority: 2,
-      label: "High-fit leads stalling",
-      detail: `${stuckLeads.length} lead${stuckLeads.length > 1 ? "s" : ""} with 75+ fit score still in early stages. These deserve attention now.`,
-      action: "Review and advance top leads",
-      link: "crm",
-    });
-  }
-
-  // No upcoming meetings
-  if (data.upcomingMeetings.length === 0) {
-    issues.push({
-      priority: 3,
-      label: "No meetings this week",
-      detail: "Your calendar is empty for the next 7 days. Pipeline velocity depends on conversations.",
-      action: "Book meetings with warm leads",
-      link: "meetings",
-    });
-  }
-
-  // Pipeline health
-  const totalActive = data.pipelineStats
-    .filter((s) => !["suppressed", "lost"].includes(s.stage))
-    .reduce((sum, s) => sum + s.count, 0);
-  if (totalActive === 0) {
-    issues.push({
-      priority: 1,
-      label: "No active leads",
-      detail: "Import leads to start receiving daily direction. Mission Control needs data to generate recommendations.",
-      action: "Add your first leads",
-      link: "crm",
-    });
-  }
-
-  // Emailed leads with no reply
-  const emailedCount = data.pipelineStats.find((s) => s.stage === "emailed")?.count ?? 0;
-  if (emailedCount >= 5) {
-    issues.push({
-      priority: 3,
-      label: "Waiting on replies",
-      detail: `${emailedCount} leads emailed but no response yet. Consider a follow-up sequence.`,
-      action: "Review emailed leads",
-      link: "crm",
-    });
-  }
-
-  issues.sort((a, b) => a.priority - b.priority);
-  return issues;
-}
-
-function generateDailyTargets(data: BriefingData): Record<string, unknown>[] {
-  const targets: Record<string, unknown>[] = [];
-
-  // Priority 1: Overdue follow-ups (highest urgency)
-  for (const lead of data.overdueFollowUps.slice(0, 3)) {
-    targets.push({
-      ...lead,
-      reason: "Overdue follow-up: momentum at risk",
-      recommended_action: lead.next_action || "Follow up",
-    });
-  }
-
-  // Priority 2: High-score leads in actionable stages
-  const actionable = data.recentLeads.filter(
-    (l) =>
-      !targets.some((t) => t.id === l.id) &&
-      ["qualified", "ready_to_email", "replied_positive"].includes(l.stage as string)
-  );
-  for (const lead of actionable.slice(0, 5 - targets.length)) {
-    const stage = lead.stage as string;
-    const reason =
-      stage === "replied_positive"
-        ? "Positive reply: book a meeting"
-        : stage === "ready_to_email"
-          ? "Ready to email: send outreach"
-          : "Qualified: advance to next stage";
-    targets.push({
-      ...lead,
-      reason,
-      recommended_action:
-        stage === "replied_positive"
-          ? "Book meeting"
-          : stage === "ready_to_email"
-            ? "Send email"
-            : "Review and qualify",
-    });
-  }
-
-  // Fill remaining with highest-score leads
-  if (targets.length < 5) {
-    const remaining = data.recentLeads.filter(
-      (l) => !targets.some((t) => t.id === l.id) && !["suppressed", "lost", "won"].includes(l.stage as string)
-    );
-    for (const lead of remaining.slice(0, 5 - targets.length)) {
-      targets.push({
-        ...lead,
-        reason: `Fit score ${lead.fit_score}: worth advancing`,
-        recommended_action: lead.next_action || "Review lead",
-      });
-    }
-  }
-
-  return targets.slice(0, 5);
-}
+const SEVERITY_COLORS: Record<string, { bg: string; border: string; accent: string; icon: string }> = {
+  critical: { bg: "rgba(239,68,68,0.06)", border: "rgba(239,68,68,0.2)", accent: "#f87171", icon: "⚠" },
+  warning: { bg: "rgba(234,179,8,0.06)", border: "rgba(234,179,8,0.2)", accent: "#eab308", icon: "◈" },
+  info: { bg: "rgba(59,130,246,0.06)", border: "rgba(59,130,246,0.15)", accent: "#60a5fa", icon: "◎" },
+  positive: { bg: "rgba(34,197,94,0.06)", border: "rgba(34,197,94,0.2)", accent: "#22c55e", icon: "✓" },
+};
 
 function getGreeting(): string {
   const hour = new Date().getHours();
@@ -153,68 +47,35 @@ function getGreeting(): string {
 
 function getDateStr(): string {
   return new Date().toLocaleDateString("en-US", {
-    weekday: "long",
-    month: "long",
-    day: "numeric",
+    weekday: "long", month: "long", day: "numeric",
   });
 }
 
-/* ─── Stage display helpers ─── */
-
-const STAGE_LABELS: Record<string, string> = {
-  candidate: "Candidate",
-  qualified: "Qualified",
-  ready_to_email: "Ready",
-  emailed: "Emailed",
-  replied_positive: "Replied +",
-  replied_negative: "Replied −",
-  meeting_requested: "Mtg Req",
-  meeting_booked: "Mtg Booked",
-  won: "Won",
-  lost: "Lost",
-  suppressed: "Suppressed",
-};
-
-const STAGE_COLORS: Record<string, string> = {
-  candidate: "rgba(232,223,207,0.35)",
-  qualified: "#d4a574",
-  ready_to_email: "#e04747",
-  emailed: "#3b82f6",
-  replied_positive: "#22c55e",
-  replied_negative: "#ef4444",
-  meeting_requested: "#eab308",
-  meeting_booked: "#22c55e",
-  won: "#10b981",
-  lost: "#6b7280",
-  suppressed: "rgba(232,223,207,0.2)",
-};
+function formatTimeAgo(dateStr: string): string {
+  const diffMs = Date.now() - new Date(dateStr).getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  if (diffMins < 60) return `${diffMins}m ago`;
+  const diffHours = Math.floor(diffMins / 60);
+  if (diffHours < 24) return `${diffHours}h ago`;
+  return `${Math.floor(diffHours / 24)}d ago`;
+}
 
 /* ─── Components ─── */
 
-export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data }: Props) {
+export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, briefing, meetings, activities, pipelineStats }: Props) {
   const router = useRouter();
   const isMobile = useIsMobile();
   const base = `/mission-control/${tenantSlug}`;
-  const recommendations = generateRecommendations(data);
-  const targets = generateDailyTargets(data);
   const firstName = (userName || "").trim().split(" ")[0] || "";
   const greeting = firstName.length > 0 ? `${getGreeting()}, ${firstName}` : getGreeting();
-  const topIssue = recommendations[0];
 
   // Onboarding nudge
   if (!onboardingCompleted) {
     return (
       <div>
-        <div style={{ marginBottom: 32 }}>
-          <h1 style={{ fontSize: 28, fontWeight: 700, margin: 0, fontFamily: 'var(--font-display)', color: '#d4a574' }}>
-            {greeting}
-          </h1>
-          <p style={{ color: "rgba(232,223,207,0.35)", fontSize: 15, marginTop: 4 }}>{getDateStr()}</p>
-        </div>
-
+        <BriefingHeader greeting={greeting} />
         <div style={{
-          background: "rgba(212,165,116,0.08)",
-          border: "1px solid rgba(212,165,116,0.2)",
+          background: "rgba(212,165,116,0.08)", border: "1px solid rgba(212,165,116,0.2)",
           borderRadius: 16, padding: "32px 28px",
         }}>
           <h2 style={{ fontSize: 20, fontWeight: 700, margin: "0 0 8px 0", color: "#e8dfcf", fontFamily: 'var(--font-display)' }}>
@@ -238,62 +99,45 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data 
     );
   }
 
+  const { topInsight, insights, targets, momentum, narrativeSummary, quickStats } = briefing;
+
   return (
     <div>
-      {/* Header */}
-      <div style={{ marginBottom: 32 }}>
-        <h1 style={{ fontSize: 28, fontWeight: 700, margin: 0, fontFamily: 'var(--font-display)', color: '#d4a574' }}>
-          {greeting}
-        </h1>
-        <p style={{ color: "rgba(232,223,207,0.35)", fontSize: 15, marginTop: 4 }}>{getDateStr()}</p>
+      {/* Header + Quick Stats */}
+      <div style={{ marginBottom: 24 }}>
+        <BriefingHeader greeting={greeting} />
+
+        {/* Quick Stats Row */}
+        {quickStats.totalActive > 0 && (
+          <div style={{
+            display: "flex", gap: isMobile ? 8 : 16, flexWrap: "wrap", marginTop: 16,
+          }}>
+            <QuickStat label="Active" value={quickStats.totalActive} />
+            <QuickStat label="Hot" value={quickStats.hotLeads} accent={quickStats.hotLeads > 0 ? "#22c55e" : undefined} />
+            <QuickStat label="Overdue" value={quickStats.overdueCount} accent={quickStats.overdueCount > 0 ? "#f87171" : undefined} />
+            <QuickStat label="Meetings" value={quickStats.meetingsThisWeek} />
+            {quickStats.newToday > 0 && <QuickStat label="New today" value={quickStats.newToday} accent="#60a5fa" />}
+            {quickStats.stageChangesToday > 0 && <QuickStat label="Moved" value={quickStats.stageChangesToday} accent="#22c55e" />}
+          </div>
+        )}
       </div>
 
-      {/* Top Issue + Next Move */}
-      {topIssue && (
+      {/* Narrative Summary */}
+      {narrativeSummary && quickStats.totalActive > 0 && (
         <div style={{
-          background: "rgba(212,165,116,0.06)",
-          border: "1px solid rgba(212,165,116,0.15)",
-          borderRadius: 16, padding: "24px 28px", marginBottom: 24,
+          background: "#111827", border: "1px solid rgba(232,223,207,0.08)",
+          borderRadius: 12, padding: "16px 20px", marginBottom: 20,
+          fontSize: 14, lineHeight: 1.6, color: "rgba(232,223,207,0.6)",
         }}>
-          <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
-            <div style={{ flex: 1, minWidth: isMobile ? 0 : 280 }}>
-              <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "#d4a574", marginBottom: 8, fontFamily: 'var(--font-display)' }}>
-                Biggest issue right now
-              </div>
-              <div style={{ fontSize: 18, fontWeight: 700, color: "#e8dfcf", marginBottom: 4, fontFamily: 'var(--font-display)' }}>
-                {topIssue.label}
-              </div>
-              <div style={{ fontSize: 14, color: "rgba(232,223,207,0.5)", lineHeight: 1.5 }}>
-                {topIssue.detail}
-              </div>
-            </div>
-            <div style={{
-              background: "#111827", border: "1px solid rgba(232,223,207,0.1)",
-              borderRadius: 12, padding: "16px 20px", minWidth: isMobile ? 0 : 220,
-            }}>
-              <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "#22c55e", marginBottom: 6, fontFamily: 'var(--font-display)' }}>
-                Next Move
-              </div>
-              <div style={{ fontSize: 15, fontWeight: 600, color: "#e8dfcf", marginBottom: 10 }}>
-                {topIssue.action}
-              </div>
-              <button
-                onClick={() => router.push(`${base}/${topIssue.link}`)}
-                style={{
-                  background: "#d4a574", color: "#1a1f2e", border: "none",
-                  borderRadius: 8, padding: "8px 16px", fontSize: 13,
-                  fontWeight: 600, cursor: "pointer", fontFamily: 'var(--font-display)',
-                }}
-              >
-                Go →
-              </button>
-            </div>
-          </div>
+          {narrativeSummary}
         </div>
       )}
 
-      {/* Empty state when no data at all */}
-      {!topIssue && data.recentLeads.length === 0 && (
+      {/* Top Insight + Next Move */}
+      {topInsight && <TopInsightCard insight={topInsight} base={base} router={router} isMobile={isMobile} />}
+
+      {/* Empty state */}
+      {!topInsight && quickStats.totalActive === 0 && (
         <div style={{
           background: "#111827", border: "1px solid rgba(232,223,207,0.1)",
           borderRadius: 16, padding: "40px 28px", textAlign: "center", marginBottom: 24,
@@ -316,6 +160,20 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data 
         </div>
       )}
 
+      {/* Additional Insights (beyond top) */}
+      {insights.length > 1 && (
+        <div style={{ marginBottom: 24 }}>
+          <h2 style={{ fontSize: 14, fontWeight: 600, margin: "0 0 12px 0", color: "rgba(232,223,207,0.5)", fontFamily: 'var(--font-display)', letterSpacing: "0.05em", textTransform: "uppercase" as const }}>
+            What needs attention
+          </h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {insights.slice(1, 4).map((insight) => (
+              <InsightRow key={insight.id} insight={insight} base={base} router={router} />
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* 5 Key Daily Targets */}
       {targets.length > 0 && (
         <div style={{ marginBottom: 24 }}>
@@ -330,76 +188,34 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data 
               View all →
             </button>
           </div>
-
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {targets.map((target, i) => (
-              <div
-                key={target.id as number ?? i}
-                style={{
-                  background: "#111827", border: "1px solid rgba(232,223,207,0.1)",
-                  borderRadius: 12, padding: "16px 20px",
-                  display: "flex", alignItems: "center", gap: 16,
-                  cursor: "pointer", transition: "border-color 0.15s",
-                }}
-                onClick={() => router.push(`${base}/crm?lead=${target.id}`)}
-              >
-                {/* Rank */}
-                <div style={{
-                  width: 28, height: 28, borderRadius: "50%",
-                  background: i === 0 ? "rgba(212,165,116,0.15)" : "rgba(232,223,207,0.05)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: 13, fontWeight: 700,
-                  color: i === 0 ? "#d4a574" : "rgba(232,223,207,0.35)",
-                  flexShrink: 0, fontFamily: 'var(--font-display)',
-                }}>
-                  {i + 1}
-                </div>
+            {targets.map((target) => (
+              <TargetCard key={target.lead.id} target={target} base={base} router={router} isMobile={isMobile} />
+            ))}
+          </div>
+        </div>
+      )}
 
-                {/* Lead info */}
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 2 }}>
-                    <span style={{ fontSize: 14, fontWeight: 600, color: "#e8dfcf" }}>
-                      {(target.contact_name as string) || "Unknown"}
-                    </span>
-                    <span style={{
-                      fontSize: 11, padding: "2px 6px", borderRadius: 4,
-                      background: `${STAGE_COLORS[target.stage as string] ?? "rgba(232,223,207,0.35)"}20`,
-                      color: STAGE_COLORS[target.stage as string] ?? "rgba(232,223,207,0.35)",
-                      fontWeight: 500, fontFamily: 'var(--font-display)',
-                    }}>
-                      {STAGE_LABELS[target.stage as string] ?? target.stage}
-                    </span>
-                  </div>
-                  <div style={{ fontSize: 12, color: "rgba(232,223,207,0.35)" }}>
-                    {(target.company_name as string) || ""}{target.contact_title ? ` · ${target.contact_title}` : ""}
-                  </div>
-                  <div style={{ fontSize: 12, color: "#d4a574", marginTop: 4 }}>
-                    {target.reason as string}
-                  </div>
-                </div>
-
-                {/* Score */}
+      {/* Momentum Indicators */}
+      {momentum.length > 0 && quickStats.totalActive > 0 && (
+        <div style={{ marginBottom: 24 }}>
+          <h2 style={{ fontSize: 14, fontWeight: 600, margin: "0 0 12px 0", color: "rgba(232,223,207,0.5)", fontFamily: 'var(--font-display)', letterSpacing: "0.05em", textTransform: "uppercase" as const }}>
+            Momentum
+          </h2>
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : `repeat(${Math.min(momentum.length, 5)}, 1fr)`, gap: 8 }}>
+            {momentum.map((m) => (
+              <div key={m.label} style={{
+                background: "#111827", border: "1px solid rgba(232,223,207,0.08)",
+                borderRadius: 10, padding: "14px 16px", textAlign: "center",
+              }}>
                 <div style={{
-                  textAlign: "center", flexShrink: 0, width: 48,
+                  fontSize: 22, fontWeight: 800, fontFamily: 'var(--font-display)',
+                  color: m.trend === "up" ? "#22c55e" : m.trend === "down" ? "#f87171" : "rgba(232,223,207,0.6)",
                 }}>
-                  <div style={{
-                    fontSize: 18, fontWeight: 700, fontFamily: 'var(--font-display)',
-                    color: (target.fit_score as number) >= 75 ? "#22c55e" : (target.fit_score as number) >= 50 ? "#eab308" : "rgba(232,223,207,0.35)",
-                  }}>
-                    {target.fit_score as number}
-                  </div>
-                  <div style={{ fontSize: 10, color: "rgba(232,223,207,0.25)" }}>score</div>
+                  {m.label === "Response rate" ? `${m.value}%` : m.value}
+                  {m.label === "Avg. early-stage age" && <span style={{ fontSize: 11, fontWeight: 400, color: "rgba(232,223,207,0.3)" }}>d</span>}
                 </div>
-
-                {/* Action */}
-                <div style={{
-                  background: "rgba(212,165,116,0.1)", color: "#d4a574",
-                  borderRadius: 8, padding: "6px 12px", fontSize: 12,
-                  fontWeight: 600, whiteSpace: "nowrap", flexShrink: 0,
-                  fontFamily: 'var(--font-display)',
-                }}>
-                  {target.recommended_action as string}
-                </div>
+                <div style={{ fontSize: 11, color: "rgba(232,223,207,0.35)", marginTop: 4 }}>{m.label}</div>
               </div>
             ))}
           </div>
@@ -422,15 +238,14 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data 
               View all →
             </button>
           </div>
-
-          {data.upcomingMeetings.length === 0 ? (
+          {meetings.length === 0 ? (
             <div style={{ color: "rgba(232,223,207,0.25)", fontSize: 13, textAlign: "center", padding: "20px 0" }}>
               No meetings this week
             </div>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {data.upcomingMeetings.map((m, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0", borderBottom: i < data.upcomingMeetings.length - 1 ? "1px solid rgba(232,223,207,0.08)" : "none" }}>
+              {meetings.map((m, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 0", borderBottom: i < meetings.length - 1 ? "1px solid rgba(232,223,207,0.08)" : "none" }}>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: 13, fontWeight: 500, color: "rgba(232,223,207,0.85)" }}>{m.client_name as string}</div>
                     <div style={{ fontSize: 12, color: "rgba(232,223,207,0.35)" }}>
@@ -440,12 +255,8 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data 
                     </div>
                   </div>
                   {!!m.google_meet_url && (
-                    <a
-                      href={m.google_meet_url as string}
-                      target="_blank"
-                      rel="noopener"
-                      style={{ fontSize: 11, color: "#22c55e", textDecoration: "none", fontWeight: 500 }}
-                    >
+                    <a href={m.google_meet_url as string} target="_blank" rel="noopener"
+                      style={{ fontSize: 11, color: "#22c55e", textDecoration: "none", fontWeight: 500 }}>
                       Join →
                     </a>
                   )}
@@ -461,14 +272,13 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data 
           borderRadius: 12, padding: "20px 20px",
         }}>
           <h3 style={{ fontSize: 14, fontWeight: 600, margin: "0 0 14px 0", color: "rgba(232,223,207,0.85)", fontFamily: 'var(--font-display)' }}>Recent Activity</h3>
-
-          {data.recentActivities.length === 0 ? (
+          {activities.length === 0 ? (
             <div style={{ color: "rgba(232,223,207,0.25)", fontSize: 13, textAlign: "center", padding: "20px 0" }}>
               No recent activity
             </div>
           ) : (
             <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              {data.recentActivities.map((a, i) => (
+              {activities.map((a, i) => (
                 <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 8, padding: "6px 0" }}>
                   <div style={{
                     width: 6, height: 6, borderRadius: "50%", marginTop: 6, flexShrink: 0,
@@ -496,15 +306,15 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data 
         </div>
       </div>
 
-      {/* Pipeline Summary */}
-      {data.pipelineStats.length > 0 && (
+      {/* Lead Status */}
+      {pipelineStats.length > 0 && (
         <div style={{
           background: "#111827", border: "1px solid rgba(232,223,207,0.1)",
           borderRadius: 12, padding: "20px 20px", marginTop: 16,
         }}>
           <h3 style={{ fontSize: 14, fontWeight: 600, margin: "0 0 14px 0", color: "rgba(232,223,207,0.85)", fontFamily: 'var(--font-display)' }}>Lead Status</h3>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-            {data.pipelineStats
+            {pipelineStats
               .filter((s) => !["suppressed", "lost"].includes(s.stage))
               .map((s) => (
                 <div key={s.stage} style={{
@@ -527,14 +337,219 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, data 
   );
 }
 
-function formatTimeAgo(dateStr: string): string {
-  const now = new Date();
-  const date = new Date(dateStr);
-  const diffMs = now.getTime() - date.getTime();
-  const diffMins = Math.floor(diffMs / 60000);
-  if (diffMins < 60) return `${diffMins}m ago`;
-  const diffHours = Math.floor(diffMins / 60);
-  if (diffHours < 24) return `${diffHours}h ago`;
-  const diffDays = Math.floor(diffHours / 24);
-  return `${diffDays}d ago`;
+/* ─── Sub-components ─── */
+
+function BriefingHeader({ greeting }: { greeting: string }) {
+  return (
+    <div>
+      <h1 style={{ fontSize: 28, fontWeight: 700, margin: 0, fontFamily: 'var(--font-display)', color: '#d4a574' }}>
+        {greeting}
+      </h1>
+      <p style={{ color: "rgba(232,223,207,0.35)", fontSize: 15, marginTop: 4 }}>{getDateStr()}</p>
+    </div>
+  );
+}
+
+function QuickStat({ label, value, accent }: { label: string; value: number; accent?: string }) {
+  return (
+    <div style={{
+      display: "flex", alignItems: "center", gap: 6,
+      background: "rgba(232,223,207,0.03)", borderRadius: 8, padding: "6px 12px",
+    }}>
+      <span style={{
+        fontSize: 16, fontWeight: 700, fontFamily: 'var(--font-display)',
+        color: accent || "rgba(232,223,207,0.6)",
+      }}>
+        {value}
+      </span>
+      <span style={{ fontSize: 11, color: "rgba(232,223,207,0.3)" }}>{label}</span>
+    </div>
+  );
+}
+
+function TopInsightCard({ insight, base, router, isMobile }: {
+  insight: Insight;
+  base: string;
+  router: ReturnType<typeof useRouter>;
+  isMobile: boolean;
+}) {
+  const colors = SEVERITY_COLORS[insight.severity] || SEVERITY_COLORS.info;
+
+  return (
+    <div style={{
+      background: colors.bg, border: `1px solid ${colors.border}`,
+      borderRadius: 16, padding: "24px 28px", marginBottom: 24,
+    }}>
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 16, flexWrap: "wrap" }}>
+        <div style={{ flex: 1, minWidth: isMobile ? 0 : 280 }}>
+          <div style={{
+            fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const,
+            color: colors.accent, marginBottom: 8, fontFamily: 'var(--font-display)',
+            display: "flex", alignItems: "center", gap: 6,
+          }}>
+            <span>{colors.icon}</span>
+            {insight.severity === "critical" ? "Requires attention" : insight.severity === "positive" ? "Positive signal" : "Worth noting"}
+          </div>
+          <div style={{ fontSize: 18, fontWeight: 700, color: "#e8dfcf", marginBottom: 4, fontFamily: 'var(--font-display)' }}>
+            {insight.headline}
+          </div>
+          <div style={{ fontSize: 14, color: "rgba(232,223,207,0.5)", lineHeight: 1.5 }}>
+            {insight.detail}
+          </div>
+        </div>
+        <div style={{
+          background: "#111827", border: "1px solid rgba(232,223,207,0.1)",
+          borderRadius: 12, padding: "16px 20px", minWidth: isMobile ? 0 : 220,
+        }}>
+          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "#22c55e", marginBottom: 6, fontFamily: 'var(--font-display)' }}>
+            Next Move
+          </div>
+          <div style={{ fontSize: 15, fontWeight: 600, color: "#e8dfcf", marginBottom: 10 }}>
+            {insight.action}
+          </div>
+          <button
+            onClick={() => router.push(`${base}/${insight.link}`)}
+            style={{
+              background: "#d4a574", color: "#1a1f2e", border: "none",
+              borderRadius: 8, padding: "8px 16px", fontSize: 13,
+              fontWeight: 600, cursor: "pointer", fontFamily: 'var(--font-display)',
+            }}
+          >
+            Go →
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function InsightRow({ insight, base, router }: {
+  insight: Insight;
+  base: string;
+  router: ReturnType<typeof useRouter>;
+}) {
+  const colors = SEVERITY_COLORS[insight.severity] || SEVERITY_COLORS.info;
+
+  return (
+    <div
+      onClick={() => router.push(`${base}/${insight.link}`)}
+      style={{
+        background: "#111827", border: `1px solid ${colors.border}`,
+        borderRadius: 10, padding: "14px 18px",
+        display: "flex", alignItems: "center", gap: 14,
+        cursor: "pointer", transition: "border-color 0.15s",
+        borderLeft: `3px solid ${colors.accent}`,
+      }}
+    >
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontSize: 14, fontWeight: 600, color: "#e8dfcf" }}>{insight.headline}</span>
+        </div>
+        <div style={{ fontSize: 12, color: "rgba(232,223,207,0.4)", marginTop: 2, lineHeight: 1.4 }}>
+          {insight.detail.length > 120 ? insight.detail.slice(0, 120) + "..." : insight.detail}
+        </div>
+      </div>
+      <div style={{
+        background: `${colors.accent}15`, color: colors.accent,
+        borderRadius: 8, padding: "6px 12px", fontSize: 12,
+        fontWeight: 600, whiteSpace: "nowrap", flexShrink: 0,
+        fontFamily: 'var(--font-display)',
+      }}>
+        {insight.action}
+      </div>
+    </div>
+  );
+}
+
+function TargetCard({ target, base, router, isMobile }: {
+  target: DailyTarget;
+  base: string;
+  router: ReturnType<typeof useRouter>;
+  isMobile: boolean;
+}) {
+  const lead = target.lead;
+  const stageColor = STAGE_COLORS[lead.stage] ?? "rgba(232,223,207,0.35)";
+
+  return (
+    <div
+      style={{
+        background: "#111827",
+        border: `1px solid ${target.rank === 1 ? "rgba(212,165,116,0.3)" : "rgba(232,223,207,0.1)"}`,
+        borderRadius: 12, padding: isMobile ? "14px 16px" : "16px 20px",
+        display: "flex", alignItems: "center", gap: isMobile ? 12 : 16,
+        cursor: "pointer", transition: "border-color 0.15s",
+      }}
+      onClick={() => router.push(`${base}/crm?lead=${lead.id}`)}
+    >
+      {/* Rank */}
+      <div style={{
+        width: 28, height: 28, borderRadius: "50%",
+        background: target.rank === 1 ? "rgba(212,165,116,0.15)" : "rgba(232,223,207,0.05)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: 13, fontWeight: 700,
+        color: target.rank === 1 ? "#d4a574" : "rgba(232,223,207,0.35)",
+        flexShrink: 0, fontFamily: 'var(--font-display)',
+      }}>
+        {target.rank}
+      </div>
+
+      {/* Lead info */}
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 2, flexWrap: "wrap" }}>
+          <span style={{ fontSize: 14, fontWeight: 600, color: "#e8dfcf" }}>
+            {lead.contact_name || "Unknown"}
+          </span>
+          <span style={{
+            fontSize: 11, padding: "2px 6px", borderRadius: 4,
+            background: `${stageColor}20`, color: stageColor,
+            fontWeight: 500, fontFamily: 'var(--font-display)',
+          }}>
+            {STAGE_LABELS[lead.stage] ?? lead.stage}
+          </span>
+        </div>
+        <div style={{ fontSize: 12, color: "rgba(232,223,207,0.35)" }}>
+          {lead.company_name || ""}{lead.contact_title ? ` · ${lead.contact_title}` : ""}
+        </div>
+        <div style={{ fontSize: 12, color: "#d4a574", marginTop: 4 }}>
+          {target.reason}
+        </div>
+        {/* Signals */}
+        {target.signals.length > 0 && (
+          <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginTop: 4 }}>
+            {target.signals.slice(0, 3).map((s, i) => (
+              <span key={i} style={{
+                fontSize: 10, padding: "1px 6px", borderRadius: 4,
+                background: "rgba(232,223,207,0.05)", color: "rgba(232,223,207,0.3)",
+              }}>
+                {s}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Score */}
+      {!isMobile && (
+        <div style={{ textAlign: "center", flexShrink: 0, width: 48 }}>
+          <div style={{
+            fontSize: 18, fontWeight: 700, fontFamily: 'var(--font-display)',
+            color: lead.fit_score >= 75 ? "#22c55e" : lead.fit_score >= 50 ? "#eab308" : "rgba(232,223,207,0.35)",
+          }}>
+            {lead.fit_score}
+          </div>
+          <div style={{ fontSize: 10, color: "rgba(232,223,207,0.25)" }}>score</div>
+        </div>
+      )}
+
+      {/* Action */}
+      <div style={{
+        background: "rgba(212,165,116,0.1)", color: "#d4a574",
+        borderRadius: 8, padding: "6px 12px", fontSize: 12,
+        fontWeight: 600, whiteSpace: "nowrap", flexShrink: 0,
+        fontFamily: 'var(--font-display)',
+      }}>
+        {target.action}
+      </div>
+    </div>
+  );
 }
