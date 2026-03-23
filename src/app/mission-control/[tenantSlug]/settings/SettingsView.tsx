@@ -47,6 +47,7 @@ interface Props {
 const INTEGRATIONS = [
   { key: "google_calendar", label: "Google Calendar", description: "Sync availability, create events with Google Meet links", icon: "📅" },
   { key: "google_analytics", label: "Google Analytics (GA4)", description: "Website traffic signal for recommendations", icon: "📊" },
+  { key: "openai", label: "OpenAI", description: "Powers AI email drafts personalized to each lead's profile", icon: "🤖" },
   { key: "pdl", label: "People Data Labs", description: "Search and enrich leads matching your ICP", icon: "🔍" },
   { key: "resend", label: "Resend (Email)", description: "Send emails and booking confirmations from your domain", icon: "✉️" },
 ];

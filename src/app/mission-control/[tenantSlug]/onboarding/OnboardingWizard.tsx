@@ -320,6 +320,7 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               {[
                 { key: "google_analytics", label: "Google Analytics (GA4)", icon: "📊", desc: "Traffic signal for website performance recommendations.", placeholder: "GA4 Property ID" },
+                { key: "openai", label: "OpenAI", icon: "🤖", desc: "Powers AI email drafts personalized to each lead's profile.", placeholder: "OpenAI API Key (sk-...)" },
                 { key: "pdl", label: "People Data Labs", icon: "🔍", desc: "Auto-generate scored leads matching your ideal customer profile.", placeholder: "PDL API Key" },
                 { key: "resend", label: "Resend", icon: "✉️", desc: "Send emails from your own domain.", placeholder: "Resend API Key" },
               ].map((int) => {
@@ -379,6 +380,7 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
               <ChecklistItem label="Meeting preferences set" done={completedSteps["booking"] ?? false} />
               <ChecklistItem label="Lead intelligence ready" done />
               <ChecklistItem label={`GA4 ${providerSources["google_analytics"] === "platform" ? "(pre-configured)" : "connected"}`} done={connectedProviders.includes("google_analytics")} optional />
+              <ChecklistItem label={`OpenAI ${providerSources["openai"] === "platform" ? "(pre-configured)" : "connected"}`} done={connectedProviders.includes("openai")} optional />
               <ChecklistItem label={`PDL ${providerSources["pdl"] === "platform" ? "(pre-configured)" : "connected"}`} done={connectedProviders.includes("pdl")} optional />
               <ChecklistItem label={`Resend ${providerSources["resend"] === "platform" ? "(pre-configured)" : "connected"}`} done={connectedProviders.includes("resend")} optional />
             </div>
