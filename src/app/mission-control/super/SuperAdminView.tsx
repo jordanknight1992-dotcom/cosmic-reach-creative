@@ -64,6 +64,14 @@ export function SuperAdminView({ adminName, adminId, tenants, auditLogs, totpEna
   const [confirmDelete, setConfirmDelete] = useState<number | null>(null);
   const [retainerToggles, setRetainerToggles] = useState<Record<number, boolean>>({});
 
+  // Tenant creation state
+  const [showCreateTenant, setShowCreateTenant] = useState(false);
+  const [newTenantName, setNewTenantName] = useState("");
+  const [newTenantOwnerEmail, setNewTenantOwnerEmail] = useState("");
+  const [newTenantIndustry, setNewTenantIndustry] = useState("");
+  const [newTenantIsRetainer, setNewTenantIsRetainer] = useState(false);
+  const [creatingTenant, setCreatingTenant] = useState(false);
+
   // Support console state
   const [supportData, setSupportData] = useState<{
     activeSession: (SupportSessionRecord & { tenant_slug?: string }) | null;
@@ -177,6 +185,40 @@ export function SuperAdminView({ adminName, adminId, tenants, auditLogs, totpEna
       }
     } catch {
       setMessage({ type: "error", text: "Failed to end session" });
+    }
+  }
+
+  async function handleCreateTenant() {
+    if (!newTenantName.trim()) return;
+    setCreatingTenant(true);
+    setMessage(null);
+    try {
+      const res = await fetch("/api/mc/admin/tenants", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: newTenantName.trim(),
+          ownerEmail: newTenantOwnerEmail.trim() || undefined,
+          industry: newTenantIndustry.trim() || undefined,
+          isRetainer: newTenantIsRetainer,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setMessage({ type: "error", text: data.error || "Failed to create workspace" });
+        return;
+      }
+      setMessage({ type: "success", text: `Created workspace "${data.tenant.name}" — ${data.tenant.url}` });
+      setNewTenantName("");
+      setNewTenantOwnerEmail("");
+      setNewTenantIndustry("");
+      setNewTenantIsRetainer(false);
+      setShowCreateTenant(false);
+      router.refresh();
+    } catch {
+      setMessage({ type: "error", text: "Failed to create workspace" });
+    } finally {
+      setCreatingTenant(false);
     }
   }
 
@@ -618,6 +660,98 @@ export function SuperAdminView({ adminName, adminId, tenants, auditLogs, totpEna
         {/* Workspaces Tab */}
         {tab === "workspaces" && (
           <Panel title="Workspaces">
+            {/* Create Tenant */}
+            <div style={{ marginBottom: 16 }}>
+              {!showCreateTenant ? (
+                <button
+                  onClick={() => setShowCreateTenant(true)}
+                  style={{
+                    background: "rgba(212,165,116,0.15)", color: "#d4a574",
+                    border: "1px solid rgba(212,165,116,0.3)", borderRadius: 8,
+                    padding: "8px 16px", fontSize: 13, fontWeight: 600,
+                    cursor: "pointer", fontFamily: "var(--font-display)",
+                  }}
+                >
+                  + New Workspace
+                </button>
+              ) : (
+                <div style={{
+                  padding: 16, borderRadius: 10, border: "1px solid rgba(212,165,116,0.3)",
+                  background: "rgba(212,165,116,0.05)", display: "flex", flexDirection: "column", gap: 10,
+                }}>
+                  <div style={{ fontSize: 14, fontWeight: 600, fontFamily: "var(--font-display)", color: "#d4a574" }}>
+                    Create Workspace
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="Company Name *"
+                    value={newTenantName}
+                    onChange={(e) => setNewTenantName(e.target.value)}
+                    style={{
+                      background: "rgba(255,255,255,0.06)", border: "1px solid rgba(232,223,207,0.15)",
+                      borderRadius: 8, padding: "8px 12px", color: "#e8dfcf", fontSize: 13,
+                    }}
+                  />
+                  {newTenantName.trim() && (
+                    <div style={{ fontSize: 11, color: "rgba(232,223,207,0.4)" }}>
+                      URL: /mission-control/{newTenantName.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "")}
+                    </div>
+                  )}
+                  <input
+                    type="email"
+                    placeholder="Owner Email (optional — links existing user)"
+                    value={newTenantOwnerEmail}
+                    onChange={(e) => setNewTenantOwnerEmail(e.target.value)}
+                    style={{
+                      background: "rgba(255,255,255,0.06)", border: "1px solid rgba(232,223,207,0.15)",
+                      borderRadius: 8, padding: "8px 12px", color: "#e8dfcf", fontSize: 13,
+                    }}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Industry (optional)"
+                    value={newTenantIndustry}
+                    onChange={(e) => setNewTenantIndustry(e.target.value)}
+                    style={{
+                      background: "rgba(255,255,255,0.06)", border: "1px solid rgba(232,223,207,0.15)",
+                      borderRadius: 8, padding: "8px 12px", color: "#e8dfcf", fontSize: 13,
+                    }}
+                  />
+                  <label style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "#e8dfcf", cursor: "pointer" }}>
+                    <input
+                      type="checkbox"
+                      checked={newTenantIsRetainer}
+                      onChange={(e) => setNewTenantIsRetainer(e.target.checked)}
+                      style={{ accentColor: "#d4a574" }}
+                    />
+                    Retainer client (free access)
+                  </label>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <button
+                      onClick={handleCreateTenant}
+                      disabled={!newTenantName.trim() || creatingTenant}
+                      style={{
+                        background: "#d4a574", color: "#0b1120", border: "none", borderRadius: 8,
+                        padding: "8px 16px", fontSize: 13, fontWeight: 600, cursor: creatingTenant ? "wait" : "pointer",
+                        fontFamily: "var(--font-display)", opacity: !newTenantName.trim() || creatingTenant ? 0.5 : 1,
+                      }}
+                    >
+                      {creatingTenant ? "Creating..." : "Create Workspace"}
+                    </button>
+                    <button
+                      onClick={() => { setShowCreateTenant(false); setNewTenantName(""); setNewTenantOwnerEmail(""); setNewTenantIndustry(""); setNewTenantIsRetainer(false); }}
+                      style={{
+                        background: "rgba(255,255,255,0.06)", color: "#e8dfcf", border: "1px solid rgba(232,223,207,0.1)",
+                        borderRadius: 8, padding: "8px 16px", fontSize: 13, cursor: "pointer",
+                      }}
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
             {tenants.length === 0 ? (
               <Empty>No workspaces yet</Empty>
             ) : (

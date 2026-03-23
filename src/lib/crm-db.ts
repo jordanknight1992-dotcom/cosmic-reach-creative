@@ -70,6 +70,7 @@ async function _createTables() {
       id                     SERIAL PRIMARY KEY,
       company_id             INTEGER REFERENCES companies(id),
       contact_id             INTEGER REFERENCES contacts(id),
+      tenant_id              INTEGER,
       fit_score              INTEGER DEFAULT 0,
       fit_reason             TEXT,
       pain_point_summary     TEXT,
@@ -85,6 +86,14 @@ async function _createTables() {
       updated_at             TIMESTAMPTZ DEFAULT NOW(),
       UNIQUE(contact_id)
     )
+  `;
+
+  /* Migration: add tenant_id if table already existed without it */
+  await sql`
+    DO $$ BEGIN
+      ALTER TABLE leads ADD COLUMN IF NOT EXISTS tenant_id INTEGER;
+    EXCEPTION WHEN duplicate_column THEN NULL;
+    END $$
   `;
 
   await sql`
