@@ -6,6 +6,8 @@ import {
   createImportJob,
   updateImportJob,
   getImportJobs,
+  getTenantICP,
+  setCachedScore,
   logAudit,
 } from "@/lib/mc-db";
 import { ensureCrmTables } from "@/lib/crm-db";
@@ -16,6 +18,7 @@ import {
   isUsableRecord,
   type StandardField,
 } from "@/lib/import-mapper";
+import { scoreLead, hashLeadData, hashICP, type LeadData } from "@/lib/scoring-engine";
 
 /**
  * GET /api/mc/imports?tenantSlug=xxx
@@ -127,6 +130,10 @@ export async function POST(request: NextRequest) {
     const headers = rows[0];
     const dataRows = rows.slice(1);
 
+    // Fetch ICP once — used to score every imported lead
+    const icp = await getTenantICP(tenant.id);
+    const icpHash = icp ? hashICP(icp) : null;
+
     // Create import job
     const job = await createImportJob({
       tenant_id: tenant.id,
@@ -213,11 +220,52 @@ export async function POST(request: NextRequest) {
           RETURNING id
         `;
 
-        // Create lead
-        await sql`
-          INSERT INTO leads (company_id, contact_id, stage, owner, source, tenant_id)
-          VALUES (${companyId}, ${newContact[0].id}, 'candidate', ${ctx.user.full_name}, 'import', ${tenant.id})
+        // Score lead against tenant ICP (deterministic, no AI)
+        const leadData: LeadData = {
+          title: normalized.title || null,
+          company_name: normalized.company || null,
+          industry: normalized.industry || null,
+          city: normalized.city || null,
+          state: normalized.state || null,
+          country: normalized.country || null,
+          email: normalized.email || null,
+          email_status: null,
+          linkedin_url: normalized.linkedin_url || null,
+          website: normalized.website || null,
+          company_size: null,
+        };
+
+        let fitScore = 0;
+        let fitReason: string | null = null;
+        let scoreResult = null;
+
+        if (icp) {
+          scoreResult = scoreLead(leadData, icp);
+          fitScore = scoreResult.fitScore;
+          fitReason = scoreResult.shortReason;
+        }
+
+        // Create lead with fit score
+        const newLead = await sql`
+          INSERT INTO leads (company_id, contact_id, fit_score, fit_reason, stage, owner, source, tenant_id)
+          VALUES (${companyId}, ${newContact[0].id}, ${fitScore}, ${fitReason}, 'candidate', ${ctx.user.full_name}, 'import', ${tenant.id})
+          RETURNING id
         `;
+
+        // Cache the score
+        if (icp && icpHash && scoreResult && newLead[0]) {
+          const dataHash = hashLeadData(leadData);
+          await setCachedScore({
+            tenant_id: tenant.id,
+            lead_id: newLead[0].id as number,
+            data_hash: dataHash,
+            icp_hash: icpHash,
+            fit_score: scoreResult.fitScore,
+            priority: scoreResult.priority,
+            short_reason: scoreResult.shortReason,
+            matched_signals: scoreResult.matchedSignals,
+          }).catch(() => { /* non-fatal — import succeeds regardless */ });
+        }
 
         imported++;
       } catch (err) {

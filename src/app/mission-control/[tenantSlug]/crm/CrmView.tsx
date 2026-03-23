@@ -236,6 +236,14 @@ export function CrmView({ tenantSlug, data }: { tenantSlug: string; data: CrmDat
 
       setImportResult(result.result);
       setImportStep("done");
+
+      // Fire-and-forget: score any leads that didn't get scored during import
+      // (e.g. if ICP wasn't configured at import time but is now)
+      fetch("/api/mc/icp/score-batch", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ tenantSlug }),
+      }).catch(() => {});
     } catch {
       setImportError("Import failed. Please try again.");
       setImportStep("mapping");
