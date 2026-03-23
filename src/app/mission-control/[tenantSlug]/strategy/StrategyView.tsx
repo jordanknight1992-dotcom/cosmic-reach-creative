@@ -53,6 +53,10 @@ export function StrategyView({ tenantSlug, tenantName, initialGoals }: Props) {
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
+    if (tenantSlug === "demo") {
+      setMessage({ type: "success", text: "Strategy saved (demo mode)" });
+      return;
+    }
     setSaving(true);
     setMessage(null);
 
@@ -94,6 +98,17 @@ export function StrategyView({ tenantSlug, tenantName, initialGoals }: Props) {
     setGenerating(true);
     setPreviewDraft(null);
     setMessage(null);
+
+    // Demo mode: return a prepopulated sample email with no API call
+    if (tenantSlug === "demo") {
+      await new Promise((r) => setTimeout(r, 600));
+      setPreviewDraft({
+        subject: "Quick thought on Brightpath's positioning",
+        body: `Hi Alex,\n\nI took a look at Brightpath Solutions and noticed a disconnect between how strong the product appears and how the brand comes across in market.\n\nSpecifically, the messaging feels like it could belong to any SaaS company. The positioning doesn't reflect the depth of what you've built. That gap tends to show up in conversion rates and sales cycle length.\n\nWe work with growing SaaS teams to close that gap, turning brand clarity into a revenue lever. Would a 15-minute conversation make sense to see if there's a fit?\n\nBest,\nJordan`,
+      });
+      setGenerating(false);
+      return;
+    }
 
     try {
       const res = await fetch(`/api/mc/${tenantSlug}/drafts`, {
