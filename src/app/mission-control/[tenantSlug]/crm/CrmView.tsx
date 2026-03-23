@@ -98,6 +98,18 @@ export function CrmView({ tenantSlug, data }: { tenantSlug: string; data: CrmDat
     setDraftLoading(true);
     setDraftError(null);
     try {
+      // Demo mode: use prepopulated drafts — no API calls
+      if (tenantSlug === "demo") {
+        await new Promise((r) => setTimeout(r, 600)); // simulate brief loading
+        const firstName = ((lead.contact_name as string) || "").split(" ")[0] || "there";
+        const company = (lead.company_name as string) || "your company";
+        setDraftSubject(`Quick thought on ${company}'s growth`);
+        setDraftBody(`Hi ${firstName},\n\nI took a look at ${company} and noticed a few things that caught my eye — particularly around how your brand shows up in market.\n\n${lead.fit_reason ? `What stood out: ${lead.fit_reason}\n\n` : ""}We help companies like yours turn brand into a measurable revenue lever. Would a 15-minute conversation make sense to see if there's a fit?\n\nBest,\nJordan`);
+        setDraftGenerated(true);
+        setGeneratedLeadIds((prev) => new Set(prev).add(lead.id as number));
+        return;
+      }
+
       const res = await fetch(`/api/mc/${tenantSlug}/drafts`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -135,6 +147,14 @@ export function CrmView({ tenantSlug, data }: { tenantSlug: string; data: CrmDat
     setSending(true);
     setSendResult(null);
     try {
+      // Demo mode: simulate send without API call
+      if (tenantSlug === "demo") {
+        await new Promise((r) => setTimeout(r, 400));
+        setSendResult({ type: "success", text: `Demo: email would be sent to ${lead.contact_email || "contact"}` });
+        setSending(false);
+        return;
+      }
+
       const res = await fetch(`/api/mc/${tenantSlug}/leads/${lead.id}/send`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
