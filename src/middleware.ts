@@ -37,6 +37,9 @@ export async function middleware(request: NextRequest) {
   }
 
   /* ── Mission Control auth routes (public) ── */
+  if (pathname === "/mission-control") {
+    return NextResponse.next();
+  }
   const mcPublicPaths = [
     "/mission-control/login",
     "/mission-control/register",
