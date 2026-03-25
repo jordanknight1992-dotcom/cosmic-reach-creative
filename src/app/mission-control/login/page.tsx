@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -106,6 +107,13 @@ export default function LoginPage() {
       >
         {/* Brand */}
         <div style={{ textAlign: "center", marginBottom: 40 }}>
+          <Image
+            src="/logo/logo-mark-light.svg"
+            alt="Cosmic Reach Creative"
+            width={48}
+            height={48}
+            style={{ marginBottom: 16 }}
+          />
           <div
             style={{
               fontSize: 13,
