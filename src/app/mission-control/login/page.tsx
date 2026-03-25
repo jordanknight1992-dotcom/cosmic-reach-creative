@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -90,29 +89,33 @@ export default function LoginPage() {
   return (
     <div
       style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        position: "fixed",
+        inset: 0,
         background: "#0b1120",
         fontFamily: 'var(--font-body)',
+        zIndex: 50,
+        overflow: "auto",
+        display: "flex",
+        justifyContent: "center",
       }}
     >
       <div
         style={{
           width: "100%",
           maxWidth: 420,
-          padding: "0 20px",
+          padding: "24px 20px",
+          margin: "auto 0",
         }}
       >
         {/* Brand */}
-        <div style={{ textAlign: "center", marginBottom: 40 }}>
-          <Image
+        <div style={{ textAlign: "center", marginBottom: 28 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src="/logo/logo-mark-light.svg"
             alt="Cosmic Reach Creative"
-            width={48}
-            height={48}
-            style={{ marginBottom: 16 }}
+            width={40}
+            height={40}
+            style={{ marginBottom: 12, display: "inline-block" }}
           />
           <div
             style={{
