@@ -12,6 +12,22 @@ export const metadata: Metadata = {
   alternates: { canonical: `${siteConfig.domain}/mission-control` },
 };
 
+const problemSignals = [
+  "Leads go cold because nobody noticed in time",
+  "Follow-ups slip through the cracks every week",
+  "Priorities shift daily without a clear system behind them",
+  "Pipeline data exists but doesn't drive decisions",
+];
+
+const capabilities = [
+  { icon: "compass", title: "Daily Briefing", desc: "What changed overnight, what's slipping, where attention should go, and why. Delivered every morning." },
+  { icon: "signal", title: "Next Move", desc: "Every insight leads to one clear action. The system recommends, you execute." },
+  { icon: "orbit", title: "5 Key Targets", desc: "The highest-leverage leads to work today, ranked by urgency and fit." },
+  { icon: "gears", title: "ICP Scoring", desc: "Deterministic fit scoring against your ideal profile. Explainable. No guessing." },
+  { icon: "rocket", title: "AI Outreach", desc: "Email drafts in your voice and strategy. Personalized per lead, ready to send." },
+  { icon: "network", title: "Team Workspace", desc: "Shared priorities, role-based access, calendar sync, and encrypted credentials." },
+];
+
 const FEATURES = [
   "Daily Briefing: what matters today, delivered every morning",
   "Next Move: one clear action, always visible",
@@ -45,8 +61,8 @@ export default function MissionControlLanding() {
           />
           <div className="absolute inset-0 bg-gradient-to-b from-deep-space/80 via-deep-space/70 to-deep-space" />
         </div>
-        <div className="relative mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-24">
-          <div className="max-w-2xl mx-auto text-center">
+        <div className="relative mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-24 text-center">
+          <div className="max-w-2xl mx-auto">
             <div className="text-xs font-display font-semibold tracking-[0.14em] uppercase text-copper mb-4">
               Mission Control
             </div>
@@ -54,7 +70,7 @@ export default function MissionControlLanding() {
               The system that tells you<br />what to do next.
             </h1>
             <p className="text-starlight/80 text-lg sm:text-xl mt-3 max-w-[560px] mx-auto">
-              Mission Control is the decision engine for revenue teams. Every morning it surfaces what&apos;s slipping, what&apos;s being ignored, and exactly where your attention should shift. Direction without prompting.
+              Daily operator intelligence for revenue teams. Every morning it surfaces what&apos;s slipping and exactly where your attention should shift.
             </p>
             <div className="mt-9 flex flex-wrap justify-center gap-4">
               <a
@@ -82,99 +98,44 @@ export default function MissionControlLanding() {
         </div>
       </section>
 
-      {/* The Problem */}
+      {/* The Problem — card-based signals */}
       <section className="py-14 sm:py-20" aria-label="The problem">
-        <div className="max-w-2xl mx-auto px-5 sm:px-6 lg:px-8">
-          <p className="text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-4">
-            The problem
-          </p>
-          <h2 className="font-display font-bold text-2xl text-starlight mb-5">
+        <div className="max-w-[900px] mx-auto px-5 sm:px-6 lg:px-8 text-center">
+          <Icon name="compass" size={32} className="mx-auto mb-4 opacity-60" />
+          <h2 className="font-display font-bold text-2xl text-starlight mb-3">
             Every day starts without direction.
           </h2>
-          <div className="space-y-4 text-starlight/60 text-base leading-relaxed">
-            <p>
-              Leads go cold because nobody noticed. Meetings don&apos;t get booked because priorities aren&apos;t clear. Follow-ups slip because there&apos;s no system tracking what matters.
-            </p>
-            <p>
-              The information exists across tools and spreadsheets. But connecting it to a decision (what to do first, who needs attention, where momentum is dying) is the gap.
-            </p>
-            <p className="text-starlight/80 font-display font-medium">
-              Revenue teams don&apos;t need another dashboard. They need direction.
-            </p>
+          <p className="text-starlight/50 text-sm max-w-lg mx-auto mb-10">
+            The data exists across tools and spreadsheets. Connecting it to a decision is the gap.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {problemSignals.map((signal) => (
+              <div
+                key={signal}
+                className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/40 p-5 flex items-start gap-3 text-left transition-all duration-[var(--duration-base)] hover:border-copper/20"
+              >
+                <span className="text-copper mt-0.5 shrink-0">&#9670;</span>
+                <span className="text-sm text-starlight/70">{signal}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* What Mission Control Does */}
+      {/* What It Does — centered with one-liner */}
       <section className="py-14 sm:py-20 bg-navy/20" aria-label="What Mission Control does">
-        <div className="max-w-2xl mx-auto px-5 sm:px-6 lg:px-8">
+        <div className="max-w-[900px] mx-auto px-5 sm:px-6 lg:px-8 text-center">
           <p className="text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-4">
             What Mission Control does
           </p>
-          <h2 className="font-display font-bold text-2xl text-starlight mb-5">
+          <h2 className="font-display font-bold text-2xl text-starlight mb-3">
             Direction. Every morning. Without asking.
           </h2>
-          <div className="space-y-4 text-starlight/60 text-base leading-relaxed">
-            <p>
-              Mission Control reads your lead data, scores fit against your ICP, and surfaces what needs attention. Overdue follow-ups. High-fit leads going cold. Empty calendars when deals are warm. It tells you what&apos;s slipping before you notice.
-            </p>
-            <p>
-              Every day starts with a briefing and one clear Next Move. Your team sees the same priorities, works from the same targets, and executes without guessing.
-            </p>
-            <p className="text-starlight/80 font-display font-medium">
-              Not a dashboard. A decision engine.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Daily Briefing + Next Move */}
-      <section className="py-14 sm:py-20" aria-label="Daily Briefing and Next Move">
-        <div className="max-w-[900px] mx-auto px-5 sm:px-6 lg:px-8">
-          <div className="grid gap-6 sm:grid-cols-2">
-            <div className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-6 sm:p-8 transition-all duration-[var(--duration-base)] hover:border-copper/30 hover:shadow-subtle">
-              <Icon name="compass" size={28} className="mb-4 opacity-80" />
-              <h3 className="font-display font-bold text-lg text-starlight mb-3">
-                Daily Briefing
-              </h3>
-              <p className="text-starlight/60 text-sm leading-relaxed">
-                Every morning, Mission Control tells you what changed, what&apos;s slipping, and what needs attention. Overdue follow-ups. High-fit leads stalling. Empty calendars when warm replies are waiting.
-              </p>
-              <p className="text-starlight/50 text-sm leading-relaxed mt-3">
-                No prompting. No digging. You open it and know where to focus.
-              </p>
-            </div>
-            <div className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-6 sm:p-8 transition-all duration-[var(--duration-base)] hover:border-copper/30 hover:shadow-subtle">
-              <Icon name="signal" size={28} className="mb-4 opacity-80" />
-              <h3 className="font-display font-bold text-lg text-starlight mb-3">
-                Next Move
-              </h3>
-              <p className="text-starlight/60 text-sm leading-relaxed">
-                Every insight leads to an action. The system recommends the move. Work overdue targets. Book a meeting with a warm reply. Advance a high-fit lead stuck in qualification.
-              </p>
-              <p className="text-starlight/50 text-sm leading-relaxed mt-3">
-                One clear action, always visible. Execution stays consistent because the system directs it.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Capabilities — 6 feature cards */}
-      <section className="py-14 sm:py-20 bg-navy/20" aria-label="Capabilities">
-        <div className="max-w-[900px] mx-auto px-5 sm:px-6 lg:px-8">
-          <p className="text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-4 text-center">
-            Inside Mission Control
+          <p className="text-starlight/50 text-sm max-w-lg mx-auto mb-10">
+            It reads your lead data, scores fit against your ICP, and surfaces what needs attention. Your team sees the same priorities and executes without guessing.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-8">
-            {[
-              { icon: "compass", title: "Daily Briefing", desc: "What needs attention and where momentum is dying. Every morning." },
-              { icon: "signal", title: "Next Move", desc: "Every insight leads to an action. One clear recommendation, always visible." },
-              { icon: "orbit", title: "5 Key Targets", desc: "The highest-leverage leads to work today, ranked by urgency and fit." },
-              { icon: "gears", title: "ICP Scoring", desc: "Deterministic fit scoring against your ideal profile. Explainable. No guessing." },
-              { icon: "rocket", title: "AI Outreach", desc: "Email drafts in your voice and strategy. The system writes, you review and send." },
-              { icon: "network", title: "Team Workspace", desc: "Shared priorities, role-based access, and meetings in one place." },
-            ].map((item) => (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {capabilities.map((item) => (
               <div
                 key={item.title}
                 className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-6 text-center transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/30 hover:shadow-subtle"
@@ -188,54 +149,51 @@ export default function MissionControlLanding() {
         </div>
       </section>
 
-      {/* Built for Operators + Retainer Clients */}
+      {/* Who It's For — centered cards instead of prose */}
       <section className="py-14 sm:py-20" aria-label="Built for operators">
-        <div className="max-w-2xl mx-auto px-5 sm:px-6 lg:px-8">
-          <div className="space-y-12">
-            <div>
-              <p className="text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-4">
-                Built for operators
-              </p>
-              <p className="text-starlight/70 text-base leading-relaxed">
-                Founders, revenue leads, and operators who need daily clarity without building it manually. You open Mission Control and know where your attention should go. No prompting. No configuring. The system directs execution.
-              </p>
+        <div className="max-w-[900px] mx-auto px-5 sm:px-6 lg:px-8 text-center">
+          <Icon name="rocket" size={32} className="mx-auto mb-4 opacity-60" />
+          <h2 className="font-display font-bold text-2xl text-starlight mb-3">
+            Built for operators.
+          </h2>
+          <p className="text-starlight/50 text-sm max-w-lg mx-auto mb-10">
+            Founders, revenue leads, solo operators, and small teams who need daily clarity without building it manually.
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+            <div className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-6 text-center transition-all duration-[var(--duration-base)] hover:border-copper/30">
+              <div className="font-display font-bold text-sm mb-2 text-copper">$149/mo subscribers</div>
+              <p className="text-sm text-starlight/50">Full access to daily intelligence, ICP scoring, AI outreach, team workspace, and guided onboarding.</p>
             </div>
-            <div>
-              <p className="text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-4">
-                Included for retainer clients
-              </p>
-              <p className="text-starlight/70 text-base leading-relaxed mb-4">
-                Every Cosmic Reach Creative retainer client gets full Mission Control access at no additional cost. It&apos;s the operating layer that keeps Sprint outcomes alive and execution on track.
-              </p>
-              <div className="flex flex-wrap gap-3">
-                {["Flight Support clients", "Sprint graduates", "Advisory retainers"].map((tool) => (
-                  <span
-                    key={tool}
-                    className="rounded-full border border-starlight/10 bg-navy/40 px-4 py-1.5 text-xs font-display font-medium text-starlight/60"
-                  >
-                    {tool}
-                  </span>
-                ))}
-              </div>
-              <p className="text-starlight/50 text-sm leading-relaxed mt-4">
-                Your data stays in your workspace. Import from Apollo, LinkedIn, HubSpot, Salesforce, or any CSV export.
-              </p>
+            <div className="rounded-[var(--radius-lg)] border border-copper/20 bg-navy/50 p-6 text-center transition-all duration-[var(--duration-base)] hover:border-copper/40">
+              <div className="font-display font-bold text-sm mb-2 text-copper">Retainer clients</div>
+              <p className="text-sm text-starlight/50">Full Mission Control access included at no extra cost. The operating layer that keeps Sprint outcomes alive.</p>
             </div>
+          </div>
+          <div className="flex flex-wrap justify-center gap-3 mt-6">
+            {["Flight Support clients", "Sprint graduates", "Advisory retainers"].map((tag) => (
+              <span
+                key={tag}
+                className="rounded-full border border-starlight/10 bg-navy/40 px-4 py-1.5 text-xs font-display font-medium text-starlight/60"
+              >
+                {tag}
+              </span>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* What Changes */}
+      {/* What Changes — 4 items instead of 3 */}
       <section className="py-14 sm:py-20 bg-navy/20" aria-label="What changes">
-        <div className="max-w-2xl mx-auto px-5 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-[900px] mx-auto px-5 sm:px-6 lg:px-8 text-center">
           <p className="text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-6">
             What changes
           </p>
-          <div className="grid gap-4 sm:grid-cols-3 max-w-xl mx-auto">
+          <div className="grid gap-4 sm:grid-cols-2 max-w-xl mx-auto">
             {[
               "Decisions become immediate",
               "Attention goes where it matters",
               "Execution stays consistent",
+              "Momentum compounds over time",
             ].map((item) => (
               <div
                 key={item}
