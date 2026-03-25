@@ -99,7 +99,7 @@ export default function MissionControlLanding() {
       </section>
 
       {/* The Problem — card-based signals */}
-      <section className="py-14 sm:py-20" aria-label="The problem">
+      <section className="py-14 sm:py-20 bg-navy/40" aria-label="The problem">
         <div className="max-w-[900px] mx-auto px-5 sm:px-6 lg:px-8 text-center">
           <Icon name="compass" size={32} className="mx-auto mb-4 opacity-60" />
           <h2 className="font-display font-bold text-2xl text-starlight mb-3">
@@ -123,7 +123,7 @@ export default function MissionControlLanding() {
       </section>
 
       {/* What It Does — centered with one-liner */}
-      <section className="py-14 sm:py-20 bg-navy/20" aria-label="What Mission Control does">
+      <section className="py-14 sm:py-20" aria-label="What Mission Control does">
         <div className="max-w-[900px] mx-auto px-5 sm:px-6 lg:px-8 text-center">
           <p className="text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-4">
             What Mission Control does
@@ -150,7 +150,7 @@ export default function MissionControlLanding() {
       </section>
 
       {/* Who It's For — centered cards instead of prose */}
-      <section className="py-14 sm:py-20" aria-label="Built for operators">
+      <section className="py-14 sm:py-20 bg-navy/40" aria-label="Built for operators">
         <div className="max-w-[900px] mx-auto px-5 sm:px-6 lg:px-8 text-center">
           <Icon name="rocket" size={32} className="mx-auto mb-4 opacity-60" />
           <h2 className="font-display font-bold text-2xl text-starlight mb-3">
@@ -183,7 +183,7 @@ export default function MissionControlLanding() {
       </section>
 
       {/* What Changes — 4 items instead of 3 */}
-      <section className="py-14 sm:py-20 bg-navy/20" aria-label="What changes">
+      <section className="py-14 sm:py-20" aria-label="What changes">
         <div className="max-w-[900px] mx-auto px-5 sm:px-6 lg:px-8 text-center">
           <p className="text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-6">
             What changes
@@ -212,7 +212,7 @@ export default function MissionControlLanding() {
       </section>
 
       {/* Pricing — Single Tier */}
-      <section id="pricing" className="py-14 sm:py-20" aria-label="Pricing">
+      <section id="pricing" className="py-14 sm:py-20 bg-navy/40" aria-label="Pricing">
         <div className="max-w-[var(--container-max)] mx-auto px-5 sm:px-6 lg:px-8">
           <div className="text-center mb-10">
             <h2 className="text-2xl font-display font-bold mb-2 text-starlight">
