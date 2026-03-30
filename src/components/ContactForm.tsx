@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import { Icon } from "@/components/Icon";
 
@@ -111,6 +112,16 @@ export function ContactForm() {
         >
           {status === "sending" ? "Sending..." : "Send Message"}
         </button>
+        <p className="text-xs text-starlight/50 text-center mt-3">
+          By submitting this form, you agree to our{" "}
+          <Link href="/privacy" className="text-copper/80 hover:text-copper hover:underline transition-colors">
+            Privacy Policy
+          </Link>{" "}
+          and{" "}
+          <Link href="/terms" className="text-copper/80 hover:text-copper hover:underline transition-colors">
+            Terms of Service
+          </Link>.
+        </p>
         {status === "error" && (
           <p className="text-center text-sm text-spark-red">
             Something went wrong. Please try again or email{" "}

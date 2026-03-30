@@ -13,7 +13,7 @@ export default function PrivacyPage() {
       <div className="mx-auto max-w-[var(--container-max)] px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl">
           <h1 className="mb-4">Privacy Policy</h1>
-          <p className="text-starlight/40 text-sm mb-8">Last updated: March 22, 2026</p>
+          <p className="text-starlight/40 text-sm mb-8">Last updated: March 30, 2026</p>
 
           <div className="space-y-6 text-starlight/70">
             <p>
@@ -88,7 +88,10 @@ export default function PrivacyPage() {
 
             <h2 className="text-xl mt-8">Cookies</h2>
             <p>
-              Google Analytics may set cookies to distinguish unique users and sessions. These cookies do not personally identify you. You can control cookie behavior through your browser settings.
+              Cosmic Reach uses essential cookies to support core site functionality and analytics cookies to understand traffic and improve the website experience. Visitors can accept, decline, or manage analytics preferences through the cookie banner and the &ldquo;Cookie Preferences&rdquo; link in the footer.
+            </p>
+            <p>
+              If you accept analytics cookies, Google Analytics (GA4) will set cookies to distinguish unique users and sessions. These cookies do not personally identify you. If you decline, no analytics cookies are set and GA4 does not load.
             </p>
             <p>
               Mission Control uses a secure, HTTP-only session cookie to keep you signed in. This cookie is set to SameSite Strict, meaning it is not sent with cross-site requests. Session cookies expire after 30 days of inactivity.

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Script from "next/script";
 import { siteConfig } from "@/config/site";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { CookieConsent } from "@/components/CookieConsent";
 
 import "./globals.css";
 
@@ -157,6 +157,15 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('consent', 'default', { analytics_storage: 'denied' });
+            `,
+          }}
+        />
       </head>
       <body className="font-body antialiased">
         <a href="#main-content" className="skip-link">
@@ -165,23 +174,7 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
-
-
-        {/* GA4 */}
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${siteConfig.ga4MeasurementId}`}
-          strategy="afterInteractive"
-        />
-        <Script id="ga4-config" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${siteConfig.ga4MeasurementId}', {
-              anonymize_ip: true
-            });
-          `}
-        </Script>
+        <CookieConsent />
       </body>
     </html>
   );
