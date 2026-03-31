@@ -286,7 +286,7 @@ export default function LoginPage() {
                 </p>
                 <StripeBuyButton
                   buyButtonId="buy_btn_1TH9aI0vGBLnj72khWDM9KqB"
-                  label="Subscribe — $750/mo"
+                  label="Subscribe — $19.99/mo"
                 />
               </div>
 

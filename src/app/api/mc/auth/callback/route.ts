@@ -1,30 +1,26 @@
-import { NextResponse } from "next/server";
-import { getSessionCookieName, getSessionCookieOptions, validateSession } from "@/lib/mc-auth";
+import { validateSession } from "@/lib/mc-auth";
 import { getUserTenants } from "@/lib/mc-db";
+
+export const dynamic = "force-dynamic";
 
 /**
  * GET /api/mc/auth/callback?session_id=xxx
  *
- * Sets the session cookie via a full-page redirect response.
- * This avoids the browser's unreliable handling of Set-Cookie
- * headers from fetch() JSON responses.
+ * Returns a small HTML page that sets the cookie and then navigates.
+ * This avoids any issues with cookies on 302 redirects through middleware.
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const sessionId = searchParams.get("session_id");
 
   if (!sessionId) {
-    return NextResponse.redirect(
-      new URL("/mission-control/login?error=missing_session", request.url)
-    );
+    return Response.redirect(new URL("/mission-control/login?error=missing_session", request.url).toString());
   }
 
   // Validate the session is real before setting the cookie
   const session = await validateSession(sessionId);
   if (!session) {
-    return NextResponse.redirect(
-      new URL("/mission-control/login?error=invalid_session", request.url)
-    );
+    return Response.redirect(new URL("/mission-control/login?error=invalid_session", request.url).toString());
   }
 
   // Determine redirect destination
@@ -36,12 +32,31 @@ export async function GET(request: Request) {
     redirect = "/mission-control/super";
   }
 
-  // Redirect response — browser will store the cookie from this response
-  const response = NextResponse.redirect(new URL(redirect, request.url));
+  // Build Set-Cookie header
+  const maxAge = 30 * 24 * 60 * 60;
+  const cookieParts = [
+    `mc_session=${sessionId}`,
+    `Path=/`,
+    `HttpOnly`,
+    `Secure`,
+    `SameSite=Lax`,
+    `Max-Age=${maxAge}`,
+  ];
 
-  const cookieName = getSessionCookieName();
-  const cookieOpts = getSessionCookieOptions();
-  response.cookies.set(cookieName, sessionId, cookieOpts);
+  // Return an HTML page that the browser renders (receiving the Set-Cookie)
+  // then immediately navigates to the dashboard via JS
+  const html = `<!DOCTYPE html>
+<html><head>
+<meta http-equiv="refresh" content="0;url=${redirect}">
+<script>window.location.href="${redirect}";</script>
+</head><body></body></html>`;
 
-  return response;
+  return new Response(html, {
+    status: 200,
+    headers: {
+      "Content-Type": "text/html",
+      "Set-Cookie": cookieParts.join("; "),
+      "Cache-Control": "no-store, no-cache, must-revalidate",
+    },
+  });
 }

@@ -145,7 +145,7 @@ export default function PricingPage() {
                     Mission Control
                   </h2>
                   <div className="flex items-baseline gap-2">
-                    <p className="text-copper font-display font-semibold text-2xl">$750/month</p>
+                    <p className="text-copper font-display font-semibold text-2xl">$19.99/month</p>
                   </div>
                 </div>
               </div>
@@ -170,7 +170,7 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <StripeBuyButton buyButtonId="buy_btn_1TH9aI0vGBLnj72khWDM9KqB" label="Subscribe to Mission Control" />
+              <StripeBuyButton buyButtonId="buy_btn_1TH9aI0vGBLnj72khWDM9KqB" label="Subscribe — $19.99/mo" />
               <p className="mt-4 text-center text-xs text-starlight/40">
                 Free for all Cosmic Reach Creative-built websites.
               </p>
