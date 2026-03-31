@@ -191,14 +191,14 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
 
         {step.key === "integrations" && (
           <>
-            <StepHeader title="Connect Data Sources" subtitle="Connect Google Analytics to see traffic, sources, and page performance inside Mission Control." />
+            <StepHeader title="Connect Data Sources" subtitle="Connect your Google accounts to see traffic, sources, and keyword performance inside Mission Control." />
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
               <IntegrationCard
                 label="Google Analytics (GA4)"
                 icon="📊"
                 connected={connectedProviders.includes("google_analytics")}
                 source={providerSources["google_analytics"]}
-                description="See sessions, page views, traffic sources, and top pages."
+                description="Sessions, page views, traffic sources, bounce rates, and top pages."
               >
                 {!connectedProviders.includes("google_analytics") && (
                   <div style={{ marginTop: 12 }}>
@@ -213,11 +213,42 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
                       {saving ? "Saving..." : "Connect"}
                     </button>
                     <p style={{ fontSize: 12, color: "rgba(232,223,207,0.25)", marginTop: 8 }}>
-                      Found in Google Analytics → Admin → Property Settings. You can skip and add this later.
+                      Found in Google Analytics → Admin → Property Settings.
                     </p>
                   </div>
                 )}
                 {providerSources["google_analytics"] === "platform" && (
+                  <p style={{ fontSize: 12, color: "rgba(212,165,116,0.5)", marginTop: 8 }}>
+                    Already configured by Cosmic Reach Creative. No action needed.
+                  </p>
+                )}
+              </IntegrationCard>
+
+              <IntegrationCard
+                label="Google Search Console"
+                icon="🔍"
+                connected={connectedProviders.includes("search_console")}
+                source={providerSources["search_console"]}
+                description="Keyword rankings, click-through rates, impressions, and search position."
+              >
+                {!connectedProviders.includes("search_console") && (
+                  <div style={{ marginTop: 12 }}>
+                    <input
+                      type="text"
+                      value={keyInputs.search_console || ""}
+                      onChange={(e) => setKeyInputs({ ...keyInputs, search_console: e.target.value })}
+                      placeholder="Site URL (e.g., sc-domain:yoursite.com)"
+                      style={inputStyle}
+                    />
+                    <button onClick={() => saveCredential("search_console")} disabled={saving} style={btnPrimary}>
+                      {saving ? "Saving..." : "Connect"}
+                    </button>
+                    <p style={{ fontSize: 12, color: "rgba(232,223,207,0.25)", marginTop: 8 }}>
+                      Found in Search Console → Settings → Property. Use the format shown (sc-domain: or full URL).
+                    </p>
+                  </div>
+                )}
+                {providerSources["search_console"] === "platform" && (
                   <p style={{ fontSize: 12, color: "rgba(212,165,116,0.5)", marginTop: 8 }}>
                     Already configured by Cosmic Reach Creative. No action needed.
                   </p>
@@ -230,8 +261,9 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
               border: "1px solid rgba(232,223,207,0.06)", marginTop: 20,
             }}>
               <div style={{ fontSize: 13, color: "rgba(232,223,207,0.35)" }}>
-                Google Analytics is optional. Mission Control tracks form submissions from your website automatically.
-                Connecting GA4 adds traffic data, top pages, and source breakdowns.
+                Both are optional. Mission Control tracks form submissions from your website automatically.
+                Connecting these adds traffic data, keyword rankings, and source breakdowns.
+                You can always add them later in Settings.
               </div>
             </div>
           </>
@@ -251,6 +283,7 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 <ChecklistItem label="Workspace created" done />
                 <ChecklistItem label="Google Analytics connected" done={connectedProviders.includes("google_analytics")} optional />
+                <ChecklistItem label="Search Console connected" done={connectedProviders.includes("search_console")} optional />
               </div>
             </div>
           </>

@@ -23,20 +23,24 @@ async function getPerformanceData(tenantId: number) {
 
   if (hasGA4) {
     try {
-      const [ga4Cred, calCred] = await Promise.all([
+      const [ga4Cred, calCred, scCred] = await Promise.all([
         resolveCredential(tenantId, "google_analytics"),
         resolveCredential(tenantId, "google_calendar"),
+        resolveCredential(tenantId, "search_console"),
       ]);
       if (ga4Cred) {
+        const siteUrl = scCred?.value || process.env.SEARCH_CONSOLE_SITE_URL || "";
         const [ga4Result, kwResult] = await Promise.all([
           getGA4Data({
             propertyId: ga4Cred.value,
             refreshToken: calCred?.value,
           }),
-          getSearchConsoleData({
-            siteUrl: process.env.SEARCH_CONSOLE_SITE_URL || "",
-            refreshToken: calCred?.value,
-          }).catch(() => null),
+          siteUrl
+            ? getSearchConsoleData({
+                siteUrl,
+                refreshToken: calCred?.value,
+              }).catch(() => null)
+            : Promise.resolve(null),
         ]);
         ga4Data = ga4Result;
         keywordData = kwResult;
