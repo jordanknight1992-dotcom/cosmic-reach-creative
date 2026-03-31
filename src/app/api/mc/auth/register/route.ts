@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import { hashPassword, getSessionCookieName, getSessionCookieOptions } from "@/lib/mc-auth";
 import {
   createUser,
@@ -114,11 +113,8 @@ export async function POST(request: Request) {
       expires_at: expiresAt,
     });
 
-    // Set cookie
-    const cookieStore = await cookies();
-    cookieStore.set(getSessionCookieName(), sessionId, getSessionCookieOptions());
-
-    return NextResponse.json({
+    // Build response and set cookie directly on it
+    const response = NextResponse.json({
       user: {
         id: user.id,
         email: user.email,
@@ -131,6 +127,10 @@ export async function POST(request: Request) {
       },
       redirect: `/mission-control/${tenant.slug}/onboarding`,
     });
+
+    response.cookies.set(getSessionCookieName(), sessionId, getSessionCookieOptions());
+
+    return response;
   } catch (err) {
     console.error("Register error:", err);
     return NextResponse.json(

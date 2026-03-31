@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 import {
   authenticateUser,
   verifyTotpAndCreateSession,
@@ -12,33 +11,36 @@ import { checkRateLimit } from "@/lib/rate-limit";
 const RATE_LIMIT = 5;
 const RATE_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
 
-async function buildLoginResponse(userId: number, sessionId: string, user: { id: number; email: string; full_name: string; is_super_admin: boolean }) {
-  const cookieStore = await cookies();
-  cookieStore.set(getSessionCookieName(), sessionId, getSessionCookieOptions());
+function buildLoginResponse(
+  userId: number,
+  sessionId: string,
+  user: { id: number; email: string; full_name: string; is_super_admin: boolean },
+  tenants: { id: number; name: string; slug: string; role: string; plan?: string }[]
+) {
+  const redirect =
+    tenants.length === 1
+      ? `/mission-control/${tenants[0].slug}`
+      : tenants.length === 0 && user.is_super_admin
+        ? "/mission-control/super"
+        : "/mission-control/select-workspace";
 
-  const tenants = await getUserTenants(userId);
-
-  return NextResponse.json({
+  const response = NextResponse.json({
     user: {
       id: user.id,
       email: user.email,
       full_name: user.full_name,
       is_super_admin: user.is_super_admin,
     },
-    tenants: tenants.map((t) => ({
-      id: t.id,
-      name: t.name,
-      slug: t.slug,
-      role: t.role,
-      plan: (t as unknown as Record<string, unknown>).plan ?? "core",
-    })),
-    redirect:
-      tenants.length === 1
-        ? `/mission-control/${tenants[0].slug}`
-        : tenants.length === 0 && user.is_super_admin
-          ? "/mission-control/super"
-          : "/mission-control/select-workspace",
+    tenants,
+    redirect,
   });
+
+  // Set cookie directly on the response to ensure it's included
+  const cookieName = getSessionCookieName();
+  const cookieOpts = getSessionCookieOptions();
+  response.cookies.set(cookieName, sessionId, cookieOpts);
+
+  return response;
 }
 
 export async function POST(request: Request) {
@@ -64,7 +66,16 @@ export async function POST(request: Request) {
       const user = await getUserById(user_id);
       if (!user) return NextResponse.json({ error: "User not found" }, { status: 401 });
 
-      return buildLoginResponse(user.id, totpResult.sessionId, user);
+      const tenants = await getUserTenants(user.id);
+      return buildLoginResponse(
+        user.id,
+        totpResult.sessionId,
+        user,
+        tenants.map((t) => ({
+          id: t.id, name: t.name, slug: t.slug, role: t.role,
+          plan: (t as unknown as Record<string, unknown>).plan as string ?? "core",
+        }))
+      );
     }
 
     // Step 1: Email + password
@@ -90,7 +101,16 @@ export async function POST(request: Request) {
     }
 
     const { user, sessionId } = result;
-    return buildLoginResponse(user.id, sessionId, user);
+    const tenants = await getUserTenants(user.id);
+    return buildLoginResponse(
+      user.id,
+      sessionId,
+      user,
+      tenants.map((t) => ({
+        id: t.id, name: t.name, slug: t.slug, role: t.role,
+        plan: (t as unknown as Record<string, unknown>).plan as string ?? "core",
+      }))
+    );
   } catch (err) {
     console.error("Login error:", err);
     return NextResponse.json(
