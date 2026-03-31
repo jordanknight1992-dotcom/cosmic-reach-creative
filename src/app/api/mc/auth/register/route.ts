@@ -7,6 +7,11 @@ import {
   createSession,
   getUserByEmail,
   isEmailBlocked,
+  getUnusedGrantByEmail,
+  markGrantUsed,
+  getPromoCodeByCode,
+  incrementPromoCodeUsage,
+  createRegistrationGrant,
 } from "@/lib/mc-db";
 import { checkRateLimit } from "@/lib/rate-limit";
 
@@ -40,7 +45,7 @@ export async function POST(request: Request) {
     }
 
     const body = await request.json();
-    const { email, password, full_name, company_name, industry, timezone } = body;
+    const { email, password, full_name, company_name, industry, timezone, promo_code } = body;
 
     if (!email || !password || !full_name || !company_name) {
       return NextResponse.json(
@@ -74,6 +79,63 @@ export async function POST(request: Request) {
       );
     }
 
+    // ── Registration gate: require Stripe purchase or valid promo code ──
+    // Super admin email bypasses the gate entirely
+    const SUPER_ADMIN_EMAILS = ["jordan@cosmicreachcreative.com"];
+    const isSuperAdmin = SUPER_ADMIN_EMAILS.includes(email.toLowerCase().trim());
+
+    // First check for an existing grant (from Stripe webhook)
+    let grant = isSuperAdmin ? { id: 0, email, grant_type: "admin", used: false } : await getUnusedGrantByEmail(email);
+
+    // If no existing grant, try promo code
+    if (!grant && promo_code) {
+      const code = await getPromoCodeByCode(promo_code);
+      if (!code) {
+        return NextResponse.json(
+          { error: "Invalid promo code." },
+          { status: 403 }
+        );
+      }
+      if (!code.is_active) {
+        return NextResponse.json(
+          { error: "This promo code is no longer active." },
+          { status: 403 }
+        );
+      }
+      if (code.times_used >= code.max_uses) {
+        return NextResponse.json(
+          { error: "This promo code has reached its usage limit." },
+          { status: 403 }
+        );
+      }
+      if (code.expires_at && new Date(code.expires_at) < new Date()) {
+        return NextResponse.json(
+          { error: "This promo code has expired." },
+          { status: 403 }
+        );
+      }
+
+      // Create a promo-based grant
+      await createRegistrationGrant({
+        email: email.toLowerCase().trim(),
+        grant_type: "promo",
+        promo_code_id: code.id,
+      });
+      await incrementPromoCodeUsage(code.id);
+
+      // Re-fetch the grant
+      grant = await getUnusedGrantByEmail(email);
+    }
+
+    if (!grant) {
+      return NextResponse.json(
+        {
+          error: "Registration requires a subscription purchase or a valid promo code. If you just purchased, please wait a moment and try again.",
+        },
+        { status: 403 }
+      );
+    }
+
     // Create user
     const passwordHash = await hashPassword(password);
     const user = await createUser({
@@ -82,9 +144,13 @@ export async function POST(request: Request) {
       full_name: full_name.trim(),
     });
 
+    // Mark grant as used (skip for super admin bypass)
+    if (grant.id > 0) {
+      await markGrantUsed(grant.id);
+    }
+
     // Create tenant workspace
     let slug = slugify(company_name);
-    // Ensure uniqueness by appending random chars if needed
     const { getTenantBySlug } = await import("@/lib/mc-db");
     const existingTenant = await getTenantBySlug(slug);
     if (existingTenant) {
@@ -113,7 +179,7 @@ export async function POST(request: Request) {
       expires_at: expiresAt,
     });
 
-    // Build response and set cookie directly on it
+    // Build response — include sessionId for callback-based cookie flow
     const response = NextResponse.json({
       user: {
         id: user.id,
@@ -126,6 +192,7 @@ export async function POST(request: Request) {
         slug: tenant.slug,
       },
       redirect: `/mission-control/${tenant.slug}/onboarding`,
+      sessionId,
     });
 
     response.cookies.set(getSessionCookieName(), sessionId, getSessionCookieOptions());

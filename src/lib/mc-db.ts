@@ -351,6 +351,36 @@ async function _createTables() {
     )
   `;
   await sql`CREATE INDEX IF NOT EXISTS idx_briefing_snapshots_tenant_date ON briefing_snapshots(tenant_id, snapshot_date)`;
+
+  /* ── Promo Codes ── */
+  await sql`
+    CREATE TABLE IF NOT EXISTS promo_codes (
+      id          SERIAL PRIMARY KEY,
+      code        TEXT NOT NULL UNIQUE,
+      max_uses    INTEGER DEFAULT 1,
+      times_used  INTEGER DEFAULT 0,
+      expires_at  TIMESTAMPTZ,
+      created_by  INTEGER REFERENCES mc_users(id),
+      is_active   BOOLEAN DEFAULT TRUE,
+      created_at  TIMESTAMPTZ DEFAULT NOW()
+    )
+  `;
+
+  /* ── Registration Grants (Stripe purchase or promo code) ── */
+  await sql`
+    CREATE TABLE IF NOT EXISTS registration_grants (
+      id                  SERIAL PRIMARY KEY,
+      email               TEXT NOT NULL,
+      grant_type          TEXT NOT NULL,
+      stripe_session_id   TEXT,
+      stripe_customer_id  TEXT,
+      promo_code_id       INTEGER REFERENCES promo_codes(id),
+      used                BOOLEAN DEFAULT FALSE,
+      created_at          TIMESTAMPTZ DEFAULT NOW(),
+      UNIQUE(email, grant_type)
+    )
+  `;
+  await sql`CREATE INDEX IF NOT EXISTS idx_registration_grants_email ON registration_grants(email)`;
 }
 
 /* ─── Types ─── */
@@ -1459,4 +1489,87 @@ export async function getYesterdaySnapshot(tenantId: number): Promise<BriefingSn
     stage_counts: typeof row.stage_counts === "string" ? JSON.parse(row.stage_counts) : row.stage_counts || {},
     insight_ids: typeof row.insight_ids === "string" ? JSON.parse(row.insight_ids) : row.insight_ids || [],
   } as unknown as BriefingSnapshot;
+}
+
+/* ─── Registration Grants & Promo Codes ─── */
+
+export async function createRegistrationGrant(data: {
+  email: string;
+  grant_type: "stripe" | "promo";
+  stripe_session_id?: string;
+  stripe_customer_id?: string;
+  promo_code_id?: number;
+}) {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`
+    INSERT INTO registration_grants (email, grant_type, stripe_session_id, stripe_customer_id, promo_code_id)
+    VALUES (${data.email.toLowerCase().trim()}, ${data.grant_type}, ${data.stripe_session_id ?? null}, ${data.stripe_customer_id ?? null}, ${data.promo_code_id ?? null})
+    ON CONFLICT (email, grant_type) DO UPDATE SET
+      stripe_session_id = COALESCE(EXCLUDED.stripe_session_id, registration_grants.stripe_session_id),
+      stripe_customer_id = COALESCE(EXCLUDED.stripe_customer_id, registration_grants.stripe_customer_id),
+      used = FALSE
+    RETURNING *
+  `;
+  return rows[0];
+}
+
+export async function getUnusedGrantByEmail(email: string) {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`
+    SELECT * FROM registration_grants
+    WHERE email = ${email.toLowerCase().trim()} AND used = FALSE
+    ORDER BY created_at DESC
+    LIMIT 1
+  `;
+  return rows[0] as { id: number; email: string; grant_type: string; used: boolean } | undefined;
+}
+
+export async function markGrantUsed(grantId: number) {
+  const sql = getSQL();
+  await sql`UPDATE registration_grants SET used = TRUE WHERE id = ${grantId}`;
+}
+
+export async function getPromoCodeByCode(code: string) {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`
+    SELECT * FROM promo_codes WHERE code = ${code.trim().toUpperCase()}
+  `;
+  return rows[0] as {
+    id: number; code: string; max_uses: number; times_used: number;
+    expires_at: string | null; is_active: boolean;
+  } | undefined;
+}
+
+export async function incrementPromoCodeUsage(codeId: number) {
+  const sql = getSQL();
+  await sql`UPDATE promo_codes SET times_used = times_used + 1 WHERE id = ${codeId}`;
+}
+
+export async function createPromoCode(data: {
+  code: string;
+  max_uses?: number;
+  expires_at?: Date | null;
+  created_by?: number;
+}) {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`
+    INSERT INTO promo_codes (code, max_uses, expires_at, created_by)
+    VALUES (${data.code.trim().toUpperCase()}, ${data.max_uses ?? 1}, ${data.expires_at ?? null}, ${data.created_by ?? null})
+    RETURNING *
+  `;
+  return rows[0];
+}
+
+export async function listPromoCodes() {
+  await ensureMcTables();
+  const sql = getSQL();
+  const rows = await sql`SELECT * FROM promo_codes ORDER BY created_at DESC`;
+  return rows as unknown as {
+    id: number; code: string; max_uses: number; times_used: number;
+    expires_at: string | null; is_active: boolean; created_at: string;
+  }[];
 }

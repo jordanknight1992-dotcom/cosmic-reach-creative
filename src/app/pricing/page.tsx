@@ -133,8 +133,8 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* Ongoing */}
-      <section className="py-8 sm:py-10" aria-label="Ongoing performance">
+      {/* Mission Control */}
+      <section className="py-8 sm:py-10" aria-label="Mission Control">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
             <article className="rounded-[var(--radius-lg)] border border-copper/20 bg-navy/50 p-6 sm:p-8 transition-all duration-[var(--duration-base)] hover:border-copper/40">
@@ -142,23 +142,27 @@ export default function PricingPage() {
                 <Icon name="network" size={28} className="opacity-80 shrink-0 mt-0.5" />
                 <div>
                   <h2 className="font-display font-semibold text-xl text-starlight mb-1">
-                    Ongoing Performance
+                    Mission Control
                   </h2>
                   <div className="flex items-baseline gap-2">
                     <p className="text-copper font-display font-semibold text-2xl">$750/month</p>
                   </div>
                 </div>
               </div>
-              <p className="text-starlight/70 text-base mb-5">
-                Ongoing performance and visibility after the rebuild.
+              <p className="text-starlight/70 text-base mb-2">
+                A clear view of website performance, lead activity, and conversion signals in one place.
+              </p>
+              <p className="text-starlight/50 text-sm mb-5">
+                Use it standalone or as part of the full rebuild. Available to any business.
               </p>
               <ul className="space-y-2 mb-6">
                 {[
-                  "Track leads and sources",
-                  "Site speed, uptime, and health monitoring",
+                  "Live site health scoring across four layers",
+                  "PageSpeed, uptime, and Core Web Vitals monitoring",
+                  "Lead tracking and conversion signals",
                   "Search visibility and keyword tracking",
                   "Exportable monthly performance reports",
-                  "Small updates and recommendations",
+                  "Small updates and ongoing recommendations",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-sm text-starlight/80">
                     <span className="text-copper mt-0.5 shrink-0">&#9670;</span>
@@ -166,7 +170,10 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <StripeBuyButton buyButtonId="buy_btn_1TDtJg0vGBLnj72k4vWaSa7F" label="Subscribe" />
+              <StripeBuyButton buyButtonId="buy_btn_1TH9aI0vGBLnj72khWDM9KqB" label="Subscribe to Mission Control" />
+              <p className="mt-4 text-center text-xs text-starlight/40">
+                Free for all Cosmic Reach Creative-built websites.
+              </p>
             </article>
           </div>
         </div>

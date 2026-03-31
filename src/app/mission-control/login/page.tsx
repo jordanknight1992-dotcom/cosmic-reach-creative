@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { StripeBuyButton } from "@/components/StripeBuyButton";
 
 export default function LoginPage() {
   const [mode, setMode] = useState<"login" | "register">("login");
+  const [registrationPath, setRegistrationPath] = useState<"choose" | "stripe" | "promo">("choose");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -16,6 +18,7 @@ export default function LoginPage() {
   const [fullName, setFullName] = useState("");
   const [companyName, setCompanyName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [promoCode, setPromoCode] = useState("");
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -70,6 +73,7 @@ export default function LoginPage() {
           password,
           full_name: fullName,
           company_name: companyName,
+          ...(registrationPath === "promo" && promoCode ? { promo_code: promoCode } : {}),
         }),
       });
 
@@ -80,11 +84,24 @@ export default function LoginPage() {
         return;
       }
 
-      window.location.href = data.redirect;
+      // Use callback redirect for reliable cookie setting
+      window.location.href = `/api/mc/auth/callback?session_id=${data.sessionId}`;
     } catch {
       setError("Something went wrong. Please try again.");
       setLoading(false);
     }
+  }
+
+  function switchToRegister() {
+    setMode("register");
+    setRegistrationPath("choose");
+    setError("");
+  }
+
+  function switchToLogin() {
+    setMode("login");
+    setRegistrationPath("choose");
+    setError("");
   }
 
   return (
@@ -170,7 +187,9 @@ export default function LoginPage() {
           >
             {mode === "login"
               ? "Sign in to your workspace"
-              : "Create your workspace"}
+              : registrationPath === "choose"
+                ? "Choose how to create your workspace"
+                : "Create your workspace"}
           </p>
 
           {error && (
@@ -189,68 +208,30 @@ export default function LoginPage() {
             </div>
           )}
 
-          <form onSubmit={mode === "login" ? handleLogin : handleRegister}>
-            {mode === "register" && (
-              <>
-                <label style={labelStyle}>Full name</label>
-                <input
-                  type="text"
-                  value={fullName}
-                  onChange={(e) => setFullName(e.target.value)}
-                  required
-                  style={inputStyle}
-                  placeholder="Jordan Knight"
-                />
+          {/* ── Login Form ── */}
+          {mode === "login" && (
+            <form onSubmit={handleLogin}>
+              <label style={labelStyle}>Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                style={inputStyle}
+                placeholder="you@company.com"
+              />
 
-                <label style={labelStyle}>Company name</label>
-                <input
-                  type="text"
-                  value={companyName}
-                  onChange={(e) => setCompanyName(e.target.value)}
-                  required
-                  style={inputStyle}
-                  placeholder="Acme Corp"
-                />
-              </>
-            )}
+              <label style={labelStyle}>Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                minLength={8}
+                style={inputStyle}
+                placeholder="••••••••"
+              />
 
-            <label style={labelStyle}>Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              style={inputStyle}
-              placeholder="you@company.com"
-            />
-
-            <label style={labelStyle}>Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={8}
-              style={inputStyle}
-              placeholder="••••••••"
-            />
-
-            {mode === "register" && (
-              <>
-                <label style={labelStyle}>Confirm password</label>
-                <input
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  required
-                  minLength={8}
-                  style={inputStyle}
-                  placeholder="••••••••"
-                />
-              </>
-            )}
-
-            {mode === "login" && (
               <div style={{ textAlign: "right", marginTop: 8 }}>
                 <Link
                   href="/mission-control/reset-password"
@@ -263,34 +244,182 @@ export default function LoginPage() {
                   Forgot password?
                 </Link>
               </div>
-            )}
 
-            <button
-              type="submit"
-              disabled={loading}
-              style={{
-                width: "100%",
-                padding: "12px 0",
-                marginTop: 8,
-                background: loading ? "#b8906a" : "#d4a574",
-                color: "#1a1f2e",
-                border: "none",
-                borderRadius: 10,
-                fontSize: 15,
-                fontWeight: 600,
-                cursor: loading ? "wait" : "pointer",
-                transition: "background 0.15s",
-                fontFamily: 'var(--font-display)',
-              }}
-            >
-              {loading
-                ? "..."
-                : mode === "login"
-                  ? "Sign in"
-                  : "Create workspace"}
-            </button>
-          </form>
+              <button type="submit" disabled={loading} style={buttonStyle(loading)}>
+                {loading ? "..." : "Sign in"}
+              </button>
+            </form>
+          )}
 
+          {/* ── Registration Path Chooser ── */}
+          {mode === "register" && registrationPath === "choose" && (
+            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+              {/* Purchase subscription option */}
+              <div
+                style={{
+                  border: "1px solid rgba(212,165,116,0.25)",
+                  borderRadius: 12,
+                  padding: "16px 18px",
+                  background: "rgba(212,165,116,0.04)",
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 600,
+                    color: "#e8dfcf",
+                    margin: "0 0 6px 0",
+                    fontFamily: 'var(--font-display)',
+                  }}
+                >
+                  Subscribe to Mission Control
+                </p>
+                <p
+                  style={{
+                    fontSize: 13,
+                    color: "rgba(232,223,207,0.45)",
+                    margin: "0 0 14px 0",
+                    lineHeight: 1.5,
+                  }}
+                >
+                  Site health, lead tracking, and performance insights. After purchase, return here to create your workspace.
+                </p>
+                <StripeBuyButton
+                  buyButtonId="buy_btn_1TH9aI0vGBLnj72khWDM9KqB"
+                  label="Subscribe — $750/mo"
+                />
+              </div>
+
+              {/* Already purchased */}
+              <button
+                onClick={() => { setRegistrationPath("stripe"); setError(""); }}
+                style={{
+                  background: "none",
+                  border: "1px solid rgba(232,223,207,0.1)",
+                  borderRadius: 12,
+                  padding: "14px 18px",
+                  cursor: "pointer",
+                  textAlign: "left",
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 600,
+                    color: "#e8dfcf",
+                    margin: "0 0 4px 0",
+                    fontFamily: 'var(--font-display)',
+                  }}
+                >
+                  I already purchased
+                </p>
+                <p style={{ fontSize: 13, color: "rgba(232,223,207,0.35)", margin: 0 }}>
+                  Create your workspace with the email used at checkout
+                </p>
+              </button>
+
+              {/* Promo code */}
+              <button
+                onClick={() => { setRegistrationPath("promo"); setError(""); }}
+                style={{
+                  background: "none",
+                  border: "1px solid rgba(232,223,207,0.1)",
+                  borderRadius: 12,
+                  padding: "14px 18px",
+                  cursor: "pointer",
+                  textAlign: "left",
+                }}
+              >
+                <p
+                  style={{
+                    fontSize: 14,
+                    fontWeight: 600,
+                    color: "#e8dfcf",
+                    margin: "0 0 4px 0",
+                    fontFamily: 'var(--font-display)',
+                  }}
+                >
+                  I have a promo code
+                </p>
+                <p style={{ fontSize: 13, color: "rgba(232,223,207,0.35)", margin: 0 }}>
+                  Enter your code to create a free workspace
+                </p>
+              </button>
+            </div>
+          )}
+
+          {/* ── Registration Form (stripe path) ── */}
+          {mode === "register" && registrationPath === "stripe" && (
+            <form onSubmit={handleRegister}>
+              <p
+                style={{
+                  fontSize: 13,
+                  color: "rgba(232,223,207,0.45)",
+                  margin: "0 0 16px 0",
+                  padding: "10px 14px",
+                  background: "rgba(212,165,116,0.06)",
+                  borderRadius: 8,
+                  border: "1px solid rgba(212,165,116,0.12)",
+                  lineHeight: 1.5,
+                }}
+              >
+                Use the same email you provided during checkout.
+              </p>
+
+              {registrationFormFields({
+                fullName, setFullName, companyName, setCompanyName,
+                email, setEmail, password, setPassword,
+                confirmPassword, setConfirmPassword,
+              })}
+
+              <button type="submit" disabled={loading} style={buttonStyle(loading)}>
+                {loading ? "..." : "Create workspace"}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => { setRegistrationPath("choose"); setError(""); }}
+                style={{ ...backLinkStyle, marginTop: 16, display: "block", width: "100%", textAlign: "center" }}
+              >
+                &larr; Back
+              </button>
+            </form>
+          )}
+
+          {/* ── Registration Form (promo path) ── */}
+          {mode === "register" && registrationPath === "promo" && (
+            <form onSubmit={handleRegister}>
+              <label style={labelStyle}>Promo code</label>
+              <input
+                type="text"
+                value={promoCode}
+                onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                required
+                style={{ ...inputStyle, letterSpacing: "0.1em", fontFamily: "var(--font-display)" }}
+                placeholder="ENTER CODE"
+              />
+
+              {registrationFormFields({
+                fullName, setFullName, companyName, setCompanyName,
+                email, setEmail, password, setPassword,
+                confirmPassword, setConfirmPassword,
+              })}
+
+              <button type="submit" disabled={loading} style={buttonStyle(loading)}>
+                {loading ? "..." : "Create workspace"}
+              </button>
+
+              <button
+                type="button"
+                onClick={() => { setRegistrationPath("choose"); setError(""); }}
+                style={{ ...backLinkStyle, marginTop: 16, display: "block", width: "100%", textAlign: "center" }}
+              >
+                &larr; Back
+              </button>
+            </form>
+          )}
+
+          {/* Toggle login / register */}
           <div
             style={{
               textAlign: "center",
@@ -302,26 +431,14 @@ export default function LoginPage() {
             {mode === "login" ? (
               <>
                 New to Mission Control?{" "}
-                <button
-                  onClick={() => {
-                    setMode("register");
-                    setError("");
-                  }}
-                  style={linkStyle}
-                >
+                <button onClick={switchToRegister} style={linkStyle}>
                   Create workspace
                 </button>
               </>
             ) : (
               <>
                 Already have an account?{" "}
-                <button
-                  onClick={() => {
-                    setMode("login");
-                    setError("");
-                  }}
-                  style={linkStyle}
-                >
+                <button onClick={switchToLogin} style={linkStyle}>
                   Sign in
                 </button>
               </>
@@ -344,6 +461,78 @@ export default function LoginPage() {
     </div>
   );
 }
+
+/* ── Shared form fields for registration ── */
+
+function registrationFormFields({
+  fullName, setFullName, companyName, setCompanyName,
+  email, setEmail, password, setPassword,
+  confirmPassword, setConfirmPassword,
+}: {
+  fullName: string; setFullName: (v: string) => void;
+  companyName: string; setCompanyName: (v: string) => void;
+  email: string; setEmail: (v: string) => void;
+  password: string; setPassword: (v: string) => void;
+  confirmPassword: string; setConfirmPassword: (v: string) => void;
+}) {
+  return (
+    <>
+      <label style={labelStyle}>Full name</label>
+      <input
+        type="text"
+        value={fullName}
+        onChange={(e) => setFullName(e.target.value)}
+        required
+        style={inputStyle}
+        placeholder="Jordan Knight"
+      />
+
+      <label style={labelStyle}>Company name</label>
+      <input
+        type="text"
+        value={companyName}
+        onChange={(e) => setCompanyName(e.target.value)}
+        required
+        style={inputStyle}
+        placeholder="Acme Corp"
+      />
+
+      <label style={labelStyle}>Email</label>
+      <input
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+        style={inputStyle}
+        placeholder="you@company.com"
+      />
+
+      <label style={labelStyle}>Password</label>
+      <input
+        type="password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+        minLength={8}
+        style={inputStyle}
+        placeholder="••••••••"
+      />
+
+      <label style={labelStyle}>Confirm password</label>
+      <input
+        type="password"
+        value={confirmPassword}
+        onChange={(e) => setConfirmPassword(e.target.value)}
+        required
+        minLength={8}
+        style={inputStyle}
+        placeholder="••••••••"
+      />
+    </>
+  );
+}
+
+/* ── Styles ── */
 
 const labelStyle: React.CSSProperties = {
   display: "block",
@@ -378,3 +567,29 @@ const linkStyle: React.CSSProperties = {
   padding: 0,
   fontFamily: 'var(--font-body)',
 };
+
+const backLinkStyle: React.CSSProperties = {
+  background: "none",
+  border: "none",
+  color: "rgba(232,223,207,0.35)",
+  cursor: "pointer",
+  fontSize: 13,
+  fontFamily: 'var(--font-body)',
+};
+
+function buttonStyle(loading: boolean): React.CSSProperties {
+  return {
+    width: "100%",
+    padding: "12px 0",
+    marginTop: 8,
+    background: loading ? "#b8906a" : "#d4a574",
+    color: "#1a1f2e",
+    border: "none",
+    borderRadius: 10,
+    fontSize: 15,
+    fontWeight: 600,
+    cursor: loading ? "wait" : "pointer",
+    transition: "background 0.15s",
+    fontFamily: 'var(--font-display)',
+  };
+}
