@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 
 interface Props {
   tenantSlug: string;
@@ -17,15 +16,11 @@ interface Props {
 
 const STEPS = [
   { key: "workspace", label: "Workspace", description: "Your business details" },
-  { key: "calendar", label: "Calendar", description: "Connect Google Calendar" },
-  { key: "booking", label: "Booking", description: "Meeting preferences" },
-  { key: "crm", label: "Leads", description: "Lead intelligence & scoring" },
-  { key: "integrations", label: "Integrations", description: "Signal sources" },
+  { key: "integrations", label: "Connections", description: "Connect data sources" },
   { key: "review", label: "Launch", description: "Review & go live" },
 ];
 
 export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, connectedProviders, providerSources = {} }: Props) {
-  const router = useRouter();
   const base = `/mission-control/${tenantSlug}`;
 
   const initialStep = STEPS.findIndex((s) => s.key === progress.current_step);
@@ -35,16 +30,11 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
   );
   const [saving, setSaving] = useState(false);
 
-  // Form state per step
+  // Form state
   const [workspace, setWorkspace] = useState({
     industry: "",
     timezone: "America/Chicago",
     website: "",
-    leadTarget: "20",
-  });
-  const [booking, setBooking] = useState({
-    meetingLengths: ["30", "60"],
-    defaultTitle: "Meeting with " + userName.split(" ")[0],
   });
   const [keyInputs, setKeyInputs] = useState<Record<string, string>>({});
 
@@ -60,7 +50,7 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
         body: JSON.stringify({
           steps: newCompleted,
           current_step: STEPS[Math.min(currentStep + 1, STEPS.length - 1)].key,
-          data: { workspace, booking },
+          data: { workspace },
         }),
       });
     } catch {
@@ -80,9 +70,8 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
 
   async function handleComplete() {
     await saveProgress("review");
-    // Mark onboarding as complete
     await fetch(`/api/mc/${tenantSlug}/onboarding/complete`, { method: "POST" });
-    router.push(base);
+    window.location.href = base;
   }
 
   async function saveCredential(provider: string) {
@@ -95,7 +84,6 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ provider, credential: value }),
       });
-      // Update local state
       connectedProviders.push(provider);
       setKeyInputs({ ...keyInputs, [provider]: "" });
     } catch {
@@ -144,7 +132,7 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
       </div>
 
       {/* Step labels */}
-      <div style={{ display: "flex", justifyContent: "center", gap: 16, marginBottom: 32 }}>
+      <div style={{ display: "flex", justifyContent: "center", gap: 24, marginBottom: 32 }}>
         {STEPS.map((s, i) => (
           <button
             key={s.key}
@@ -169,12 +157,12 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
       }}>
         {step.key === "workspace" && (
           <>
-            <StepHeader title="Workspace Details" subtitle="Tell us about your business so Mission Control can tailor recommendations." />
+            <StepHeader title="Workspace Details" subtitle="Basic information about your business." />
             <Field label="Industry">
               <input
                 value={workspace.industry}
                 onChange={(e) => setWorkspace({ ...workspace, industry: e.target.value })}
-                placeholder="e.g., SaaS, Consulting, Agency"
+                placeholder="e.g., Wedding Planning, Consulting, SaaS"
                 style={inputStyle}
               />
             </Field>
@@ -198,174 +186,52 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
                 <option value="America/Los_Angeles">Pacific</option>
               </select>
             </Field>
-            <Field label="Monthly lead target">
-              <input
-                type="number"
-                value={workspace.leadTarget}
-                onChange={(e) => setWorkspace({ ...workspace, leadTarget: e.target.value })}
-                placeholder="20"
-                style={inputStyle}
-              />
-              <div style={{ fontSize: 12, color: "rgba(232,223,207,0.25)", marginTop: 4 }}>
-                How many new leads do you want to work per month?
-              </div>
-            </Field>
-          </>
-        )}
-
-        {step.key === "calendar" && (
-          <>
-            <StepHeader title="Connect Calendar" subtitle="Link your Google Calendar so Mission Control can manage availability and create meetings." />
-            <IntegrationCard
-              label="Google Calendar"
-              icon="📅"
-              connected={connectedProviders.includes("google_calendar")}
-              source={providerSources["google_calendar"]}
-              description="Enables real-time availability, automatic meeting creation, and Google Meet links."
-            >
-              {!connectedProviders.includes("google_calendar") && (
-                <div style={{ marginTop: 12 }}>
-                  <input
-                    type="password"
-                    value={keyInputs.google_calendar || ""}
-                    onChange={(e) => setKeyInputs({ ...keyInputs, google_calendar: e.target.value })}
-                    placeholder="Google OAuth refresh token"
-                    style={inputStyle}
-                  />
-                  <button onClick={() => saveCredential("google_calendar")} disabled={saving} style={btnPrimary}>
-                    {saving ? "Saving..." : "Connect"}
-                  </button>
-                  <p style={{ fontSize: 12, color: "rgba(232,223,207,0.25)", marginTop: 8 }}>
-                    Jordan will help you generate this during setup. You can skip and return later.
-                  </p>
-                </div>
-              )}
-              {providerSources["google_calendar"] === "platform" && (
-                <p style={{ fontSize: 12, color: "rgba(212,165,116,0.5)", marginTop: 8 }}>
-                  Already configured by Cosmic Reach Creative. No action needed.
-                </p>
-              )}
-            </IntegrationCard>
-          </>
-        )}
-
-        {step.key === "booking" && (
-          <>
-            <StepHeader title="Meeting Preferences" subtitle="Configure how people book time with you." />
-            <Field label="Default meeting title">
-              <input
-                value={booking.defaultTitle}
-                onChange={(e) => setBooking({ ...booking, defaultTitle: e.target.value })}
-                style={inputStyle}
-              />
-            </Field>
-            <Field label="Preferred meeting lengths">
-              <div style={{ display: "flex", gap: 8 }}>
-                {["15", "30", "60", "90"].map((len) => (
-                  <button
-                    key={len}
-                    onClick={() => {
-                      const lengths = booking.meetingLengths.includes(len)
-                        ? booking.meetingLengths.filter((l) => l !== len)
-                        : [...booking.meetingLengths, len];
-                      setBooking({ ...booking, meetingLengths: lengths });
-                    }}
-                    style={{
-                      padding: "8px 16px", borderRadius: 8, fontSize: 13, fontWeight: 500, cursor: "pointer",
-                      background: booking.meetingLengths.includes(len) ? "#d4a574" : "rgba(232,223,207,0.05)",
-                      color: booking.meetingLengths.includes(len) ? "#0b1120" : "rgba(232,223,207,0.5)",
-                      border: "none",
-                      fontFamily: 'var(--font-display)',
-                    }}
-                  >
-                    {len} min
-                  </button>
-                ))}
-              </div>
-            </Field>
-            <div style={{
-              background: "rgba(212,165,116,0.06)", borderRadius: 10, padding: "12px 16px",
-              border: "1px solid rgba(212,165,116,0.1)", marginTop: 16,
-            }}>
-              <div style={{ fontSize: 13, color: "rgba(232,223,207,0.5)" }}>
-                PTO & blocked time can be managed in Meetings after setup.
-              </div>
-            </div>
-          </>
-        )}
-
-        {step.key === "crm" && (
-          <>
-            <StepHeader title="Lead Intelligence" subtitle="Your lead system is ready. This is what it does for you every day." />
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              <ReadyItem label="Daily Briefing" detail="Every morning surfaces what needs attention and where momentum is dying" />
-              <ReadyItem label="ICP Scoring" detail="Automatic 0-100 scoring based on role, industry, geography, company size, and email quality" />
-              <ReadyItem label="5 Key Daily Targets" detail="The highest-leverage leads to work today, ranked by urgency, fit, and stage" />
-              <ReadyItem label="AI Outreach" detail="Email drafts in your voice, personalized to each lead's profile" />
-            </div>
-            <div style={{
-              background: "rgba(212,165,116,0.06)", borderRadius: 10, padding: "12px 16px",
-              border: "1px solid rgba(212,165,116,0.1)", marginTop: 16,
-            }}>
-              <div style={{ fontSize: 13, color: "rgba(232,223,207,0.5)" }}>
-                Import leads from any CSV (Apollo, LinkedIn, CRM exports). Mission Control scores them against your ICP and surfaces daily direction automatically.
-              </div>
-            </div>
           </>
         )}
 
         {step.key === "integrations" && (
           <>
-            <StepHeader title="Signal Sources" subtitle="Connect additional services to deepen Mission Control's recommendations." />
+            <StepHeader title="Connect Data Sources" subtitle="Connect Google Analytics to see traffic, sources, and page performance inside Mission Control." />
             <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {[
-                { key: "google_analytics", label: "Google Analytics (GA4)", icon: "📊", desc: "Traffic signal for website performance recommendations.", placeholder: "GA4 Property ID" },
-                { key: "openai", label: "OpenAI", icon: "🤖", desc: "Powers AI email drafts personalized to each lead's profile.", placeholder: "OpenAI API Key (sk-...)" },
-                { key: "pdl", label: "People Data Labs", icon: "🔍", desc: "Auto-generate scored leads matching your ideal customer profile.", placeholder: "PDL API Key" },
-                { key: "resend", label: "Resend", icon: "✉️", desc: "Send emails from your own domain.", placeholder: "Resend API Key" },
-              ].map((int) => {
-                const isConnected = connectedProviders.includes(int.key);
-                const source = providerSources[int.key];
-                return (
-                  <IntegrationCard
-                    key={int.key}
-                    label={int.label}
-                    icon={int.icon}
-                    connected={isConnected}
-                    source={source}
-                    description={int.desc}
-                  >
-                    {!isConnected && (
-                      <div style={{ marginTop: 12 }}>
-                        <input
-                          type="password"
-                          value={keyInputs[int.key] || ""}
-                          onChange={(e) => setKeyInputs({ ...keyInputs, [int.key]: e.target.value })}
-                          placeholder={int.placeholder}
-                          style={inputStyle}
-                        />
-                        <button onClick={() => saveCredential(int.key)} disabled={saving} style={btnPrimary}>
-                          {saving ? "Saving..." : "Connect"}
-                        </button>
-                      </div>
-                    )}
-                    {source === "platform" && (
-                      <p style={{ fontSize: 12, color: "rgba(212,165,116,0.5)", marginTop: 8 }}>
-                        Already configured by Cosmic Reach Creative. No action needed.
-                      </p>
-                    )}
-                  </IntegrationCard>
-                );
-              })}
+              <IntegrationCard
+                label="Google Analytics (GA4)"
+                icon="📊"
+                connected={connectedProviders.includes("google_analytics")}
+                source={providerSources["google_analytics"]}
+                description="See sessions, page views, traffic sources, and top pages."
+              >
+                {!connectedProviders.includes("google_analytics") && (
+                  <div style={{ marginTop: 12 }}>
+                    <input
+                      type="text"
+                      value={keyInputs.google_analytics || ""}
+                      onChange={(e) => setKeyInputs({ ...keyInputs, google_analytics: e.target.value })}
+                      placeholder="GA4 Property ID (e.g., 123456789)"
+                      style={inputStyle}
+                    />
+                    <button onClick={() => saveCredential("google_analytics")} disabled={saving} style={btnPrimary}>
+                      {saving ? "Saving..." : "Connect"}
+                    </button>
+                    <p style={{ fontSize: 12, color: "rgba(232,223,207,0.25)", marginTop: 8 }}>
+                      Found in Google Analytics → Admin → Property Settings. You can skip and add this later.
+                    </p>
+                  </div>
+                )}
+                {providerSources["google_analytics"] === "platform" && (
+                  <p style={{ fontSize: 12, color: "rgba(212,165,116,0.5)", marginTop: 8 }}>
+                    Already configured by Cosmic Reach Creative. No action needed.
+                  </p>
+                )}
+              </IntegrationCard>
             </div>
 
             <div style={{
               background: "rgba(232,223,207,0.03)", borderRadius: 10, padding: "12px 16px",
-              border: "1px solid rgba(232,223,207,0.06)", marginTop: 16,
+              border: "1px solid rgba(232,223,207,0.06)", marginTop: 20,
             }}>
               <div style={{ fontSize: 13, color: "rgba(232,223,207,0.35)" }}>
-                All integrations are optional. Mission Control generates direction from lead data and meetings alone.
-                Connect more sources to unlock deeper recommendations.
+                Google Analytics is optional. Mission Control tracks form submissions from your website automatically.
+                Connecting GA4 adds traffic data, top pages, and source breakdowns.
               </div>
             </div>
           </>
@@ -373,16 +239,19 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
 
         {step.key === "review" && (
           <>
-            <StepHeader title="Ready to Launch" subtitle={`${tenantName} is almost ready. Review your setup below.`} />
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <ChecklistItem label="Workspace created" done />
-              <ChecklistItem label={`Calendar ${providerSources["google_calendar"] === "platform" ? "(pre-configured)" : "connected"}`} done={connectedProviders.includes("google_calendar")} optional />
-              <ChecklistItem label="Meeting preferences set" done={completedSteps["booking"] ?? false} />
-              <ChecklistItem label="Lead intelligence ready" done />
-              <ChecklistItem label={`GA4 ${providerSources["google_analytics"] === "platform" ? "(pre-configured)" : "connected"}`} done={connectedProviders.includes("google_analytics")} optional />
-              <ChecklistItem label={`OpenAI ${providerSources["openai"] === "platform" ? "(pre-configured)" : "connected"}`} done={connectedProviders.includes("openai")} optional />
-              <ChecklistItem label={`PDL ${providerSources["pdl"] === "platform" ? "(pre-configured)" : "connected"}`} done={connectedProviders.includes("pdl")} optional />
-              <ChecklistItem label={`Resend ${providerSources["resend"] === "platform" ? "(pre-configured)" : "connected"}`} done={connectedProviders.includes("resend")} optional />
+            <StepHeader title="Ready to Launch" subtitle={`${tenantName} is set up. Here is what Mission Control will do for you.`} />
+            <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 20 }}>
+              <ReadyItem label="Captures leads" detail="Every contact and audit form submission from your website appears automatically." />
+              <ReadyItem label="Shows where leads come from" detail="See which sources and pages are driving inquiries." />
+              <ReadyItem label="Tracks site performance" detail="Sessions, page views, bounce rates, and trends over time." />
+              <ReadyItem label="Highlights what is working" detail="Top pages, traffic sources, and keyword visibility at a glance." />
+            </div>
+
+            <div style={{ borderTop: "1px solid rgba(232,223,207,0.08)", paddingTop: 16 }}>
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                <ChecklistItem label="Workspace created" done />
+                <ChecklistItem label="Google Analytics connected" done={connectedProviders.includes("google_analytics")} optional />
+              </div>
             </div>
           </>
         )}

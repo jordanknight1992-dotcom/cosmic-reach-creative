@@ -20,11 +20,15 @@ export default async function SettingsPage({
   ]);
 
   // Merge DB credentials with env-var-configured providers
+  // Only show platform pre-configured providers for the owner account
+  const isOwner = user.email.toLowerCase() === "jordan@cosmicreachcreative.com";
   const envProviders = getEnvConfiguredProviders();
   const providerMap = new Map<string, "tenant" | "platform">();
   for (const p of dbProviders) providerMap.set(p, "tenant");
-  for (const ep of envProviders) {
-    if (!providerMap.has(ep.provider)) providerMap.set(ep.provider, "platform");
+  if (isOwner) {
+    for (const ep of envProviders) {
+      if (!providerMap.has(ep.provider)) providerMap.set(ep.provider, "platform");
+    }
   }
 
   const connectedProviders = Array.from(providerMap.keys());

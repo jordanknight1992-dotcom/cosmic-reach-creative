@@ -3,6 +3,8 @@ import { getOnboardingProgress, getCredentialProviders } from "@/lib/mc-db";
 import { getEnvConfiguredProviders } from "@/lib/mc-auth";
 import { OnboardingWizard } from "./OnboardingWizard";
 
+const OWNER_EMAIL = "jordan@cosmicreachcreative.com";
+
 export default async function OnboardingPage({
   params,
 }: {
@@ -15,12 +17,17 @@ export default async function OnboardingPage({
     getCredentialProviders(tenant.id),
   ]);
 
-  // Merge DB credentials with env-var-configured providers
-  const envProviders = getEnvConfiguredProviders();
+  // Only show platform pre-configured providers for the owner account
+  const isOwner = user.email.toLowerCase() === OWNER_EMAIL;
+
   const providerMap = new Map<string, "tenant" | "platform">();
   for (const p of dbProviders) providerMap.set(p, "tenant");
-  for (const ep of envProviders) {
-    if (!providerMap.has(ep.provider)) providerMap.set(ep.provider, "platform");
+
+  if (isOwner) {
+    const envProviders = getEnvConfiguredProviders();
+    for (const ep of envProviders) {
+      if (!providerMap.has(ep.provider)) providerMap.set(ep.provider, "platform");
+    }
   }
 
   const connectedProviders = Array.from(providerMap.keys());
