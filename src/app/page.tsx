@@ -162,19 +162,16 @@ export default function HomePage() {
                 step: "1",
                 title: "Audit",
                 description: "A focused review of what is not working. You see where visitors get stuck, what is unclear, and what to fix first.",
-                icon: "map",
               },
               {
                 step: "2",
                 title: "Rebuild",
                 description: "Brand, messaging, website, and sales materials are rebuilt to work together. Completed in about 30 days.",
-                icon: "gears",
               },
               {
                 step: "3",
                 title: "Launch + Visibility",
                 description: "The site goes live with lead capture and performance visibility built in. You see where inquiries come from.",
-                icon: "rocket",
               },
             ].map((item) => (
               <div
@@ -182,7 +179,6 @@ export default function HomePage() {
                 className="rounded-[var(--radius-lg)] border border-navy/10 bg-white p-5 shadow-subtle text-center transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/40 hover:shadow-soft"
               >
                 <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-copper text-deep-space text-sm font-display font-bold mb-3">{item.step}</span>
-                <Icon name={item.icon} size={26} className="mb-2 opacity-70 mx-auto" />
                 <h3 className="font-display font-semibold text-base mb-2 text-navy">{item.title}</h3>
                 <p className="text-sm text-navy/60 leading-relaxed">{item.description}</p>
               </div>
