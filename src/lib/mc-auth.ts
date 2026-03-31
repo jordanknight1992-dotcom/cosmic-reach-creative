@@ -641,11 +641,14 @@ export function getSessionCookieName(): string {
 }
 
 export function getSessionCookieOptions(maxAge?: number) {
+  const isProd = process.env.NODE_ENV === "production";
   return {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: isProd,
     sameSite: "lax" as const,
     path: "/",
     maxAge: maxAge ?? SESSION_DURATION_DAYS * 24 * 60 * 60,
+    // Explicit domain ensures cookie works across www and non-www
+    ...(isProd ? { domain: ".cosmicreachcreative.com" } : {}),
   };
 }
