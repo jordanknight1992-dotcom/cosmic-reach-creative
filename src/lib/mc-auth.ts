@@ -583,12 +583,8 @@ export async function decryptCredential(ciphertext: string): Promise<string> {
 /* ─── Credential Resolver (tenant DB first, env var fallback) ─── */
 
 const ENV_VAR_MAP: Record<string, () => string | undefined> = {
-  google_calendar: () => process.env.GOOGLE_REFRESH_TOKEN,
   google_analytics: () => process.env.GA4_PROPERTY_ID,
-  search_console: () => process.env.SEARCH_CONSOLE_SITE_URL,
-  pdl: () => process.env.PDL_API_KEY,
-  resend: () => process.env.RESEND_API_KEY,
-  openai: () => process.env.OPENAI_API_KEY,
+  google_search_console: () => process.env.SEARCH_CONSOLE_SITE_URL,
 };
 
 /**

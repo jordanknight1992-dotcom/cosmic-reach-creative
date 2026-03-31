@@ -23,7 +23,7 @@ interface SupportSessionInfo {
 
 interface Props {
   tenantSlug: string;
-  tenant: { name: string; plan: string; timezone: string };
+  tenant: { name: string; plan: string; timezone: string; domain: string };
   user: { id: number; full_name: string; email: string; totp_enabled: boolean; is_super_admin: boolean };
   connectedProviders: string[];
   providerSources?: Record<string, "tenant" | "platform">;
@@ -45,11 +45,8 @@ interface Props {
 }
 
 const INTEGRATIONS = [
-  { key: "google_calendar", label: "Google Calendar", description: "Sync availability, create events with Google Meet links", icon: "📅" },
-  { key: "google_analytics", label: "Google Analytics (GA4)", description: "Website traffic signal for recommendations", icon: "📊" },
-  { key: "openai", label: "OpenAI", description: "Powers AI email drafts personalized to each lead's profile", icon: "🤖" },
-  { key: "pdl", label: "People Data Labs", description: "Search and enrich leads matching your ICP", icon: "🔍" },
-  { key: "resend", label: "Resend (Email)", description: "Send emails and booking confirmations from your domain", icon: "✉️" },
+  { key: "google_analytics", label: "Google Analytics (GA4)", description: "Website traffic and engagement data", icon: "📊" },
+  { key: "google_search_console", label: "Google Search Console", description: "Search visibility and keyword performance", icon: "🔍" },
 ];
 
 export function SettingsView({ tenantSlug, tenant, user, connectedProviders, providerSources = {}, members, icp, supportAccess, isSupportMode }: Props) {
@@ -58,6 +55,7 @@ export function SettingsView({ tenantSlug, tenant, user, connectedProviders, pro
   const [showKeyInput, setShowKeyInput] = useState<string | null>(null);
   const [keyValue, setKeyValue] = useState("");
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [domainValue, setDomainValue] = useState(tenant.domain || "");
   const [activeTab, setActiveTab] = useState<"general" | "team" | "icp" | "integrations" | "security">("general");
 
   // Password change state
@@ -219,8 +217,49 @@ export function SettingsView({ tenantSlug, tenant, user, connectedProviders, pro
               <InfoRow label="Workspace" value={tenant.name} />
               <InfoRow label="Plan" value={tenant.plan.charAt(0).toUpperCase() + tenant.plan.slice(1)} />
               <InfoRow label="Timezone" value={tenant.timezone} />
-              <InfoRow label="URL" value={`/mission-control/${tenantSlug}`} />
             </div>
+          </Section>
+          <Section title="Website Domain">
+            <p style={{ color: "rgba(232,223,207,0.35)", fontSize: 13, margin: "0 0 12px 0" }}>
+              Your website domain is used for site health monitoring, PageSpeed checks, and uptime tracking.
+            </p>
+            <form onSubmit={async (e) => {
+              e.preventDefault();
+              setSaving("domain");
+              try {
+                const res = await fetch(`/api/mc/settings`, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ domain: domainValue }),
+                });
+                const data = await res.json();
+                if (res.ok) {
+                  setMessage({ type: "success", text: `Domain updated to ${data.domain || "(none)"}` });
+                } else {
+                  setMessage({ type: "error", text: data.error || "Failed to update" });
+                }
+              } catch {
+                setMessage({ type: "error", text: "Failed to update domain" });
+              }
+              setSaving(null);
+            }}>
+              <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                <input
+                  type="text"
+                  value={domainValue}
+                  onChange={(e) => setDomainValue(e.target.value)}
+                  placeholder="example.com"
+                  style={{ ...fieldInputStyle, flex: 1 }}
+                />
+                <button type="submit" disabled={saving === "domain"} style={{
+                  background: "#d4a574", color: "#0b1120", border: "none", borderRadius: 6,
+                  padding: "8px 18px", fontSize: 13, fontWeight: 600, cursor: "pointer",
+                  fontFamily: "var(--font-display)", flexShrink: 0,
+                }}>
+                  {saving === "domain" ? "..." : "Save"}
+                </button>
+              </div>
+            </form>
           </Section>
           <Section title="Account">
             <div style={{ display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16 }}>

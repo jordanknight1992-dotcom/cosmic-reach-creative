@@ -41,6 +41,7 @@ export default async function SettingsPage({
         name: tenant.name,
         plan: (tenant as unknown as Record<string, unknown>).plan as string ?? "core",
         timezone: tenant.timezone,
+        domain: tenant.domain ?? "",
       }}
       user={{
         id: user.id,

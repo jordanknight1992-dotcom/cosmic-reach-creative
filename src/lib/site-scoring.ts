@@ -139,7 +139,7 @@ function scoreSignal(input: ScoringInput): LayerScore {
       : 0;
     factors.push({
       name: "Organic Traffic",
-      value: `${organicPct}%`,
+      value: `${organicPct.toFixed(0)}%`,
       contribution: orgScore,
       weight: 0.2,
     });
