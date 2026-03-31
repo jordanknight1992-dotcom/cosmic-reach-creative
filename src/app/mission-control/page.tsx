@@ -2,12 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
-import { Icon } from "@/components/Icon";
 
 export const metadata: Metadata = {
-  title: "Mission Control | Visibility After Launch",
+  title: "Mission Control | A Clear View of What Your Website Is Doing",
   description:
-    "Mission Control is included with every rebuild. It captures leads, tracks sources, and shows what is working across your site. See where inquiries come from and what needs attention.",
+    "Mission Control is included with every rebuild. It captures leads, shows where they came from, and highlights which pages are driving action.",
   alternates: { canonical: `${siteConfig.domain}/mission-control` },
 };
 
@@ -33,10 +32,10 @@ export default function MissionControlLanding() {
               Included with every rebuild
             </div>
             <h1 id="mc-hero" className="text-copper mb-4">
-              Visibility after launch.
+              A clear view of what your website is doing.
             </h1>
             <p className="text-starlight/80 text-lg sm:text-xl mt-3 max-w-[560px] mx-auto">
-              Most websites go live and become difficult to evaluate. Mission Control changes that.
+              After a site launches, most businesses lose visibility. Mission Control changes that.
             </p>
             <div className="mt-9 flex flex-wrap justify-center gap-4">
               <Link
@@ -61,17 +60,16 @@ export default function MissionControlLanding() {
       {/* The Problem */}
       <section className="py-14 sm:py-20 bg-navy/40" aria-label="The problem">
         <div className="max-w-[900px] mx-auto px-5 sm:px-6 lg:px-8 text-center">
-          <Icon name="compass" size={32} className="mx-auto mb-4 opacity-60" />
           <h2 className="font-display font-bold text-2xl text-starlight mb-3">
-            It is not always clear what is working.
+            It becomes unclear what is working.
           </h2>
           <p className="text-starlight/50 text-sm max-w-lg mx-auto mb-10">
-            After launch, most business owners lose visibility into their own site.
+            Without visibility, it is hard to know where to focus.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
-              "Where leads come from",
-              "Which pages are performing",
+              "Where leads are coming from",
+              "What pages are working",
               "What needs attention",
             ].map((signal) => (
               <div
@@ -85,27 +83,25 @@ export default function MissionControlLanding() {
         </div>
       </section>
 
-      {/* What It Provides */}
-      <section className="py-14 sm:py-20" aria-label="What Mission Control provides">
+      {/* What It Handles */}
+      <section className="py-14 sm:py-20" aria-label="What Mission Control handles">
         <div className="max-w-[900px] mx-auto px-5 sm:px-6 lg:px-8 text-center">
           <h2 className="font-display font-bold text-2xl text-starlight mb-3">
-            What Mission Control provides.
+            It handles three things.
           </h2>
           <p className="text-starlight/50 text-sm max-w-lg mx-auto mb-10">
-            The site continues to function as a system, not just a set of pages.
+            You can see what is working and where to focus next without digging through multiple tools.
           </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
             {[
-              { icon: "compass", title: "Lead capture and intake", desc: "Leads are captured and organized automatically from forms on your site." },
-              { icon: "signal", title: "Source tracking", desc: "See where each inquiry comes from so you know which channels are producing." },
-              { icon: "eye", title: "Page performance", desc: "Understand which pages are working and which ones visitors leave." },
-              { icon: "gears", title: "Follow-up visibility", desc: "A view of what needs attention so leads do not go cold." },
+              { title: "Captures leads", desc: "Leads from your website are logged and organized in one place." },
+              { title: "Shows sources", desc: "See where each inquiry came from so you know which channels are producing." },
+              { title: "Highlights performance", desc: "Understand which pages are driving action and which ones are not." },
             ].map((item) => (
               <div
                 key={item.title}
                 className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-6 text-center transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/30 hover:shadow-subtle"
               >
-                <div className="mb-3"><Icon name={item.icon} size={26} className="mx-auto" /></div>
                 <div className="font-display font-bold text-sm mb-1.5 text-starlight">{item.title}</div>
                 <div className="text-sm text-starlight/50 leading-relaxed">{item.desc}</div>
               </div>

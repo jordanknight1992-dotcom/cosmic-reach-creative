@@ -3,51 +3,40 @@ import { siteConfig } from "@/config/site";
 import { MarkdownPage } from "@/components/MarkdownPage";
 
 export const metadata: Metadata = {
-  title: "The Clarity Session",
+  title: "Clarity Audit | A Focused Audit of What Is Not Working",
   description:
-    "A structured working session designed to diagnose what's slowing growth and give leaders usable direction immediately.",
+    "A focused review of your website and messaging. See where your message breaks down, what visitors do not understand, and what to fix first. Delivered in a few days.",
   alternates: { canonical: `${siteConfig.domain}/clarity` },
 };
 
-const content = `# The Clarity Session
+const content = `# A focused audit of what is not working.
 
-A structured working session designed to diagnose what's slowing growth and give leaders usable direction immediately.
+If your website is not bringing in consistent business, there is usually a clear reason.
 
 IMAGE: 07-clarity-section.jpg
 
 ---
 
-## What Happens in the Session
+## What the Audit Shows You
 
-We map current priorities, identify decision bottlenecks, and highlight the system gaps affecting progress.
+This audit identifies the specific issues limiting results:
 
-You leave with a prioritized view of what to address first and why it matters.
+- Where your message breaks down
+- What visitors do not understand
+- What is limiting inquiries
+- What to fix first
 
-ICON: map
-
----
-
-## Your Clarity Report
-
-Within one week, you receive a structured report outlining:
-
-- Mission Context
-- Observed Friction Points
-- System Map Snapshot
-- Priority Shift Recommendations
-- What Improvement Looks Like
-- Recommended Next Step
+Delivered in a few days.
 
 ICON: document
-IMAGE: 08-results-section.jpg
 
 ---
 
-## Start With Insight
+## Start With the Audit
 
-If the forces driving your business feel misaligned, the next step is simple.
+If the site is not working the way it should, this is the first step.
 
-[CTA: Book Your Clarity Session]`;
+[CTA: Start with the Audit]`;
 
 export default function ClarityPage() {
   return <MarkdownPage content={content} />;

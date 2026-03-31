@@ -70,42 +70,34 @@ export default function HowItWorksPage() {
               {
                 step: "1",
                 title: "Audit",
-                icon: "map",
                 description: "Identify what is not working. A focused review of your website, messaging, and lead flow. You see where visitors get stuck and what to fix first.",
                 price: "$150",
               },
               {
                 step: "2",
                 title: "Rebuild",
-                icon: "gears",
                 description: "Restructure the brand, website, and messaging so they work together. Includes positioning, site design, sales materials, and lead capture. Completed in about 30 days.",
                 price: "$4K - $8K",
               },
               {
                 step: "3",
                 title: "Launch",
-                icon: "rocket",
                 description: "Deploy with lead capture and performance visibility built in. You see where inquiries come from and what needs attention going forward.",
                 price: "Included",
               },
             ].map((item) => (
               <div
                 key={item.title}
-                className="rounded-[var(--radius-lg)] border border-navy/10 bg-white p-6 shadow-subtle transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/40 hover:shadow-soft"
+                className="rounded-[var(--radius-lg)] border border-navy/10 bg-white p-6 shadow-subtle text-center transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/40 hover:shadow-soft"
               >
-                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-copper text-deep-space text-sm font-display font-bold mb-3">{item.step}</span>
-                <Icon
-                  name={item.icon}
-                  size={26}
-                  className="mb-2 opacity-70 mx-auto"
-                />
-                <h3 className="font-display font-semibold text-base mb-0.5 text-navy text-center">
+                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-copper text-deep-space text-sm font-display font-bold mb-3 mx-auto">{item.step}</span>
+                <h3 className="font-display font-semibold text-base mb-0.5 text-navy">
                   {item.title}
                 </h3>
-                <p className="text-xs text-copper font-display font-medium text-center mb-3">
+                <p className="text-xs text-copper font-display font-medium mb-3">
                   {item.price}
                 </p>
-                <p className="text-sm text-navy/60 text-center leading-relaxed">
+                <p className="text-sm text-navy/60 leading-relaxed">
                   {item.description}
                 </p>
               </div>
