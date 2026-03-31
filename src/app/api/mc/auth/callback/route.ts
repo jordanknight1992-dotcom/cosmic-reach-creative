@@ -7,7 +7,6 @@ export const dynamic = "force-dynamic";
  * GET /api/mc/auth/callback?session_id=xxx
  *
  * Returns a small HTML page that sets the cookie and then navigates.
- * This avoids any issues with cookies on 302 redirects through middleware.
  */
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -18,9 +17,31 @@ export async function GET(request: Request) {
   }
 
   // Validate the session is real before setting the cookie
-  const session = await validateSession(sessionId);
+  let session;
+  let validationError = "";
+  try {
+    session = await validateSession(sessionId);
+  } catch (err) {
+    validationError = String(err);
+  }
+
   if (!session) {
-    return Response.redirect(new URL("/mission-control/login?error=invalid_session", request.url).toString());
+    // Try to look up the raw session to diagnose why validation failed
+    let diagnostic = "";
+    try {
+      const { getSession: getRawSession } = await import("@/lib/mc-db");
+      const rawSession = await getRawSession(sessionId);
+      if (rawSession) {
+        diagnostic = `raw_session_found=true&user_id=${rawSession.user_id}&expires=${rawSession.expires_at}`;
+      } else {
+        diagnostic = "raw_session_found=false";
+      }
+    } catch (e) {
+      diagnostic = `diagnostic_error=${encodeURIComponent(String(e))}`;
+    }
+    return Response.redirect(
+      new URL(`/mission-control/login?error=invalid_session&${diagnostic}&validation_error=${encodeURIComponent(validationError)}&sid_prefix=${sessionId.slice(0, 8)}`, request.url).toString()
+    );
   }
 
   // Determine redirect destination
@@ -43,8 +64,7 @@ export async function GET(request: Request) {
     `Max-Age=${maxAge}`,
   ];
 
-  // Return an HTML page that the browser renders (receiving the Set-Cookie)
-  // then immediately navigates to the dashboard via JS
+  // Return an HTML page — browser stores cookie from 200 response, then navigates
   const html = `<!DOCTYPE html>
 <html><head>
 <meta http-equiv="refresh" content="0;url=${redirect}">
