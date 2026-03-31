@@ -28,7 +28,7 @@ async function getPerformanceData(tenantId: number, domain: string | null) {
       const [ga4Cred, calCred, scCred] = await Promise.all([
         resolveCredential(tenantId, "google_analytics"),
         resolveCredential(tenantId, "google_calendar"),
-        resolveCredential(tenantId, "search_console"),
+        resolveCredential(tenantId, "google_search_console"),
       ]);
       if (ga4Cred) {
         const siteUrl = scCred?.value || process.env.SEARCH_CONSOLE_SITE_URL || "";
@@ -71,7 +71,7 @@ async function getPerformanceData(tenantId: number, domain: string | null) {
   }
 
   // Calculate layer scores from all available data
-  const hasSearchConsole = connectedProviders.includes("search_console");
+  const hasSearchConsole = connectedProviders.includes("google_search_console");
   const scores = calculateSiteHealth({
     pageSpeed,
     uptime,

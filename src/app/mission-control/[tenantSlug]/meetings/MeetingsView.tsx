@@ -17,6 +17,23 @@ export function MeetingsView({ tenantSlug, data }: { tenantSlug: string; data: M
   const base = `/mission-control/${tenantSlug}`;
   const [showPto, setShowPto] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
+  const [deleting, setDeleting] = useState<number | null>(null);
+
+  async function handleDelete(id: number) {
+    if (!confirm("Delete this meeting?")) return;
+    setDeleting(id);
+    try {
+      await fetch(`/api/mc/${tenantSlug}/meetings`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+      router.refresh();
+    } catch {
+      alert("Failed to delete meeting");
+    }
+    setDeleting(null);
+  }
 
   return (
     <div>
@@ -211,6 +228,17 @@ export function MeetingsView({ tenantSlug, data }: { tenantSlug: string; data: M
                         Join
                       </a>
                     )}
+                    <button
+                      onClick={() => handleDelete(m.id as number)}
+                      disabled={deleting === (m.id as number)}
+                      style={{
+                        background: "rgba(239,68,68,0.1)", color: "#ef4444", border: "none",
+                        borderRadius: 8, padding: "6px 10px", fontSize: 12, fontWeight: 500,
+                        cursor: "pointer", opacity: deleting === (m.id as number) ? 0.5 : 1,
+                      }}
+                    >
+                      {deleting === (m.id as number) ? "..." : "Cancel"}
+                    </button>
                   </div>
                 </div>
               );
@@ -233,6 +261,17 @@ export function MeetingsView({ tenantSlug, data }: { tenantSlug: string; data: M
                 <div style={{ fontSize: 12, color: "rgba(232,223,207,0.25)" }}>
                   {new Date(m.start_time as string).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                 </div>
+                <button
+                  onClick={() => handleDelete(m.id as number)}
+                  disabled={deleting === (m.id as number)}
+                  style={{
+                    background: "none", color: "rgba(239,68,68,0.5)", border: "none",
+                    fontSize: 12, cursor: "pointer", padding: "4px 8px",
+                    opacity: deleting === (m.id as number) ? 0.5 : 1,
+                  }}
+                >
+                  {deleting === (m.id as number) ? "..." : "Remove"}
+                </button>
               </div>
             ))}
           </div>
