@@ -97,21 +97,27 @@ export default function PricingPage() {
                     Full Rebuild
                   </h2>
                   <div className="flex items-baseline gap-2">
-                    <p className="text-copper font-display font-semibold text-2xl">$4,000 - $8,000</p>
+                    <p className="text-copper font-display font-semibold text-2xl">$4,000&ndash;$8,000</p>
                   </div>
                 </div>
               </div>
-              <p className="text-starlight/70 text-base mb-5">
-                A full rebuild of how your business shows up and converts. Completed in about 30 days.
+              <p className="text-starlight/70 text-base mb-2">
+                A complete overhaul of how your business shows up and converts.
+                Completed in about 30 days.
               </p>
+              <p className="text-starlight/50 text-sm mb-5">
+                For businesses that are ready to fix what is holding their site back.
+              </p>
+              <p className="text-starlight/70 text-sm font-display font-semibold mb-3">Includes:</p>
               <ul className="space-y-2 mb-6">
                 {[
-                  "Positioning and messaging",
-                  "Website rebuild",
-                  "Sales deck and presentation template",
-                  "Lead capture system",
-                  "Performance visibility",
-                  "Search-ready structure",
+                  "A full brand system and guidelines that define how your business communicates",
+                  "Positioning and messaging that make the business clear on first pass",
+                  "A rebuilt website designed to guide visitors toward action",
+                  "Sales materials that stay aligned across every conversation",
+                  "Lead capture built directly into the site",
+                  "Visibility into what is driving inquiries",
+                  "A structure that supports long-term search visibility",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-sm text-starlight/80">
                     <span className="text-copper mt-0.5 shrink-0">&#9670;</span>
@@ -120,7 +126,7 @@ export default function PricingPage() {
                 ))}
               </ul>
               <p className="text-xs text-starlight/40">
-                Scope is determined after the audit. The audit fee is credited toward any rebuild engagement.
+                Scope is defined after the audit. The audit fee is applied toward the rebuild.
               </p>
             </article>
           </div>

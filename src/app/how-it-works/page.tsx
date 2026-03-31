@@ -76,7 +76,7 @@ export default function HowItWorksPage() {
               {
                 step: "2",
                 title: "Rebuild",
-                description: "Restructure the brand, website, and messaging so they work together. Includes positioning, site design, sales materials, and lead capture. Completed in about 30 days.",
+                description: "Build a brand system, rebuild the website, and align everything so it works together. Includes positioning, visual identity, site design, sales materials, and lead capture. Completed in about 30 days.",
                 price: "$4K - $8K",
               },
               {

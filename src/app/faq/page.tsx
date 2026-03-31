@@ -24,7 +24,7 @@ const faqs: { question: string; answer: string; signals?: string[]; closing?: st
   {
     question: "What does a full rebuild include?",
     answer:
-      "A full rebuild covers positioning, messaging, website design and development, sales materials, lead capture, and performance visibility. Everything is rebuilt to work together.\n\nRebuilds are completed in about 30 days and range from $4,000 to $8,000 depending on scope.",
+      "A full rebuild includes a brand system (positioning, voice, visual identity, and guidelines), website design and development, sales materials, lead capture, and performance visibility. Everything is built to work together.\n\nRebuilds are completed in about 30 days and range from $4,000 to $8,000 depending on scope.",
   },
   {
     question: "What is Mission Control?",

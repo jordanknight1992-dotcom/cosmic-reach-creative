@@ -15,13 +15,14 @@ IMAGE: 03-services-hero.jpg
 
 ---
 
-## Positioning and Messaging
+## Brand System
 
-We review how your business communicates and fix what is not landing with the right people.
+We build the foundation your business communicates from — positioning, voice, visual identity, and guidelines that hold everything together.
 
-- Messaging audit and positioning refinement
-- Voice and tone alignment across your site
-- Audience alignment assessment
+- Positioning and messaging strategy
+- Brand voice and tone direction
+- Visual identity — logo, color system, typography
+- Brand guidelines document
 
 ICON: signal
 
@@ -32,6 +33,7 @@ ICON: signal
 We rebuild the site so it communicates what you do and guides visitors toward action.
 
 - Website structure and page architecture
+- Messaging aligned to brand system
 - Conversion points and lead capture
 - Search-ready structure and content
 

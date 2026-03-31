@@ -2,150 +2,27 @@
 
 import { useRouter } from "next/navigation";
 import { useIsMobile } from "@/hooks/useIsMobile";
-import type { GA4Metrics } from "@/lib/ga4";
+import type { GA4Metrics, SearchConsoleMetrics } from "@/lib/ga4";
 
-interface SignalData {
-  pipelineStats: { stage: string; count: number }[];
-  recentLeads: Record<string, unknown>[];
-  overdueCount: number;
+interface PerformanceData {
   hasGA4: boolean;
   ga4Data: GA4Metrics | null;
+  keywordData: SearchConsoleMetrics | null;
   connectedProviders: string[];
 }
 
-const STAGE_COLORS: Record<string, string> = {
-  candidate: "rgba(232,223,207,0.35)", qualified: "#d4a574", ready_to_email: "#e04747",
-  emailed: "#3b82f6", replied_positive: "#22c55e", meeting_booked: "#22c55e",
-  won: "#10b981",
-};
-
-const STAGE_LABELS: Record<string, string> = {
-  candidate: "Candidate", qualified: "Qualified", ready_to_email: "Ready",
-  emailed: "Emailed", replied_positive: "Replied +", meeting_booked: "Mtg Booked", won: "Won",
-};
-
-export function SignalView({ tenantSlug, data }: { tenantSlug: string; data: SignalData }) {
+export function SignalView({ tenantSlug, data }: { tenantSlug: string; data: PerformanceData }) {
   const router = useRouter();
   const isMobile = useIsMobile();
   const base = `/mission-control/${tenantSlug}`;
-
-  const totalActive = data.pipelineStats
-    .filter((s) => !["suppressed", "lost"].includes(s.stage))
-    .reduce((sum, s) => sum + s.count, 0);
-
-  const wonCount = data.pipelineStats.find((s) => s.stage === "won")?.count ?? 0;
-  const repliedCount = data.pipelineStats.find((s) => s.stage === "replied_positive")?.count ?? 0;
-  const emailedCount = data.pipelineStats.find((s) => s.stage === "emailed")?.count ?? 0;
-
-  // Biggest issue computation
-  let biggestIssue = { label: "Looking good", detail: "No critical issues detected.", type: "neutral" };
-  if (totalActive === 0) {
-    biggestIssue = { label: "No active leads", detail: "Import leads to start tracking activity and sources.", type: "warning" };
-  } else if (data.overdueCount > 0) {
-    biggestIssue = { label: `${data.overdueCount} overdue follow-up${data.overdueCount > 1 ? "s" : ""}`, detail: "Leads are going cold. Work your overdue targets.", type: "danger" };
-  } else if (emailedCount > 5 && repliedCount === 0) {
-    biggestIssue = { label: "Low reply rate", detail: `${emailedCount} leads emailed with no positive replies yet. Review your outreach.`, type: "warning" };
-  }
-
-  let nextMove = "Review your leads";
-  if (data.overdueCount > 0) nextMove = "Work your overdue follow-ups first";
-  else if (repliedCount > 0) nextMove = "Book meetings with warm replies";
 
   return (
     <div>
       <div style={{ marginBottom: 28 }}>
         <h1 style={{ fontSize: 24, fontWeight: 700, margin: 0, fontFamily: 'var(--font-display)', color: '#d4a574' }}>Performance</h1>
         <p style={{ color: "rgba(232,223,207,0.35)", fontSize: 14, marginTop: 4 }}>
-          Lead activity, sources, and site performance at a glance.
+          Website traffic, sources, and keyword visibility over the last 30 days.
         </p>
-      </div>
-
-      {/* Top: Biggest Issue + Next Move */}
-      <div style={{
-        display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 16, marginBottom: 24,
-      }}>
-        <div style={{
-          background: biggestIssue.type === "danger" ? "rgba(239,68,68,0.06)" : biggestIssue.type === "warning" ? "rgba(234,179,8,0.06)" : "rgba(34,197,94,0.06)",
-          border: `1px solid ${biggestIssue.type === "danger" ? "rgba(239,68,68,0.15)" : biggestIssue.type === "warning" ? "rgba(234,179,8,0.15)" : "rgba(34,197,94,0.15)"}`,
-          borderRadius: 14, padding: "20px 24px",
-        }}>
-          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: biggestIssue.type === "danger" ? "#f87171" : biggestIssue.type === "warning" ? "#eab308" : "#22c55e", marginBottom: 8, fontFamily: 'var(--font-display)' }}>
-            Biggest Issue
-          </div>
-          <div style={{ fontSize: 17, fontWeight: 700, color: "#e8dfcf", marginBottom: 4, fontFamily: 'var(--font-display)' }}>{biggestIssue.label}</div>
-          <div style={{ fontSize: 13, color: "rgba(232,223,207,0.5)" }}>{biggestIssue.detail}</div>
-        </div>
-
-        <div style={{
-          background: "rgba(212,165,116,0.06)", border: "1px solid rgba(212,165,116,0.15)",
-          borderRadius: 14, padding: "20px 24px",
-        }}>
-          <div style={{ fontSize: 11, fontWeight: 600, letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "#22c55e", marginBottom: 8, fontFamily: 'var(--font-display)' }}>
-            Next Move
-          </div>
-          <div style={{ fontSize: 17, fontWeight: 700, color: "#e8dfcf", marginBottom: 10, fontFamily: 'var(--font-display)' }}>{nextMove}</div>
-          <button
-            onClick={() => router.push(`${base}/crm`)}
-            style={{
-              background: "#d4a574", color: "#1a1f2e", border: "none",
-              borderRadius: 8, padding: "8px 16px", fontSize: 13,
-              fontWeight: 600, cursor: "pointer", fontFamily: 'var(--font-display)',
-            }}
-          >
-            Go to Leads →
-          </button>
-        </div>
-      </div>
-
-      {/* Pipeline Health */}
-      <div style={{
-        background: "#111827", border: "1px solid rgba(232,223,207,0.1)",
-        borderRadius: 14, padding: "20px 24px", marginBottom: 24,
-      }}>
-        <h2 style={{ fontSize: 15, fontWeight: 600, margin: "0 0 16px 0", color: "rgba(232,223,207,0.85)", fontFamily: 'var(--font-display)' }}>Lead Activity</h2>
-
-        {totalActive === 0 ? (
-          <div style={{ color: "rgba(232,223,207,0.25)", fontSize: 14, textAlign: "center", padding: "20px 0" }}>
-            No active lead data yet
-          </div>
-        ) : (
-          <>
-            {/* KPI row */}
-            <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
-              <KpiCard label="Active Leads" value={totalActive} color="#d4a574" />
-              <KpiCard label="Won" value={wonCount} color="#22c55e" />
-              <KpiCard label="Replied +" value={repliedCount} color="#22c55e" />
-              <KpiCard label="Overdue" value={data.overdueCount} color={data.overdueCount > 0 ? "#ef4444" : "rgba(232,223,207,0.35)"} />
-            </div>
-
-            {/* Stage bar */}
-            <div style={{ display: "flex", gap: 2, height: 8, borderRadius: 4, overflow: "hidden", background: "rgba(232,223,207,0.08)" }}>
-              {data.pipelineStats
-                .filter((s) => !["suppressed", "lost"].includes(s.stage))
-                .map((s) => (
-                  <div
-                    key={s.stage}
-                    style={{
-                      flex: s.count,
-                      background: STAGE_COLORS[s.stage] ?? "rgba(232,223,207,0.25)",
-                      minWidth: s.count > 0 ? 4 : 0,
-                    }}
-                  />
-                ))}
-            </div>
-
-            <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 12 }}>
-              {data.pipelineStats
-                .filter((s) => !["suppressed", "lost"].includes(s.stage))
-                .map((s) => (
-                  <div key={s.stage} style={{ display: "flex", alignItems: "center", gap: 4 }}>
-                    <div style={{ width: 8, height: 8, borderRadius: 2, background: STAGE_COLORS[s.stage] ?? "rgba(232,223,207,0.25)" }} />
-                    <span style={{ fontSize: 12, color: "rgba(232,223,207,0.5)" }}>{STAGE_LABELS[s.stage] ?? s.stage} ({s.count})</span>
-                  </div>
-                ))}
-            </div>
-          </>
-        )}
       </div>
 
       {/* GA4 Analytics Dashboard */}
@@ -181,7 +58,7 @@ export function SignalView({ tenantSlug, data }: { tenantSlug: string; data: Sig
             />
           </div>
 
-          {/* Sessions Overlay Chart — current vs previous period */}
+          {/* Sessions Overlay Chart */}
           {data.ga4Data.dailySessions.length > 0 && (
             <div style={{ marginBottom: 20 }}>
               <h3 style={{ fontSize: 13, fontWeight: 600, color: "rgba(232,223,207,0.5)", margin: "0 0 10px 0", fontFamily: 'var(--font-display)' }}>Sessions: Current vs Previous 30 Days</h3>
@@ -234,7 +111,7 @@ export function SignalView({ tenantSlug, data }: { tenantSlug: string; data: Sig
 
           {/* Top Pages */}
           {data.ga4Data.topPages.length > 0 && (
-            <div>
+            <div style={{ marginBottom: 16 }}>
               <h3 style={{ fontSize: 13, fontWeight: 600, color: "rgba(232,223,207,0.5)", margin: "0 0 10px 0", fontFamily: 'var(--font-display)' }}>Top Pages</h3>
               <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                 {data.ga4Data.topPages.slice(0, 5).map((page) => (
@@ -280,7 +157,7 @@ export function SignalView({ tenantSlug, data }: { tenantSlug: string; data: Sig
                 Connect Google Analytics for traffic data
               </h3>
               <p style={{ fontSize: 13, color: "rgba(232,223,207,0.35)", margin: 0 }}>
-                When connected, you will see page views, top pages, and traffic sources alongside your lead data.
+                When connected, you will see page views, top pages, and traffic sources here.
               </p>
               <button
                 onClick={() => router.push(`${base}/settings`)}
@@ -297,9 +174,72 @@ export function SignalView({ tenantSlug, data }: { tenantSlug: string; data: Sig
           </div>
         </div>
       ) : null}
+
+      {/* Keyword Performance */}
+      {data.keywordData && data.keywordData.keywords.length > 0 && (
+        <div style={{
+          background: "#111827", border: "1px solid rgba(232,223,207,0.1)",
+          borderRadius: 14, padding: "20px 24px", marginBottom: 24,
+        }}>
+          <h2 style={{ fontSize: 15, fontWeight: 600, margin: "0 0 16px 0", color: "rgba(232,223,207,0.85)", fontFamily: 'var(--font-display)' }}>Keyword Performance (30d)</h2>
+
+          {/* Keyword KPI row */}
+          <div style={{ display: "grid", gridTemplateColumns: isMobile ? "repeat(2, 1fr)" : "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
+            <div style={{ background: "rgba(212,165,116,0.06)", borderRadius: 10, padding: "14px 16px", textAlign: "center" }}>
+              <div style={{ fontSize: 20, fontWeight: 800, color: "#d4a574", fontFamily: 'var(--font-display)' }}>{data.keywordData.totalClicks.toLocaleString()}</div>
+              <div style={{ fontSize: 11, color: "rgba(232,223,207,0.5)", marginTop: 2 }}>Clicks</div>
+            </div>
+            <div style={{ background: "rgba(212,165,116,0.06)", borderRadius: 10, padding: "14px 16px", textAlign: "center" }}>
+              <div style={{ fontSize: 20, fontWeight: 800, color: "#d4a574", fontFamily: 'var(--font-display)' }}>{data.keywordData.totalImpressions.toLocaleString()}</div>
+              <div style={{ fontSize: 11, color: "rgba(232,223,207,0.5)", marginTop: 2 }}>Impressions</div>
+            </div>
+            <div style={{ background: "rgba(212,165,116,0.06)", borderRadius: 10, padding: "14px 16px", textAlign: "center" }}>
+              <div style={{ fontSize: 20, fontWeight: 800, color: "#d4a574", fontFamily: 'var(--font-display)' }}>{data.keywordData.avgCtr.toFixed(1)}%</div>
+              <div style={{ fontSize: 11, color: "rgba(232,223,207,0.5)", marginTop: 2 }}>Avg CTR</div>
+            </div>
+            <div style={{ background: "rgba(212,165,116,0.06)", borderRadius: 10, padding: "14px 16px", textAlign: "center" }}>
+              <div style={{ fontSize: 20, fontWeight: 800, color: "#d4a574", fontFamily: 'var(--font-display)' }}>{data.keywordData.avgPosition.toFixed(1)}</div>
+              <div style={{ fontSize: 11, color: "rgba(232,223,207,0.5)", marginTop: 2 }}>Avg Position</div>
+            </div>
+          </div>
+
+          {/* Keyword table */}
+          <div style={{ overflowX: "auto" }}>
+            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 13 }}>
+              <thead>
+                <tr style={{ borderBottom: "1px solid rgba(232,223,207,0.1)" }}>
+                  <th style={{ textAlign: "left", padding: "8px 8px 8px 0", color: "rgba(232,223,207,0.4)", fontWeight: 600, fontSize: 11, fontFamily: 'var(--font-display)' }}>Keyword</th>
+                  <th style={{ textAlign: "right", padding: "8px 8px", color: "rgba(232,223,207,0.4)", fontWeight: 600, fontSize: 11, fontFamily: 'var(--font-display)' }}>Clicks</th>
+                  <th style={{ textAlign: "right", padding: "8px 8px", color: "rgba(232,223,207,0.4)", fontWeight: 600, fontSize: 11, fontFamily: 'var(--font-display)' }}>Impressions</th>
+                  {!isMobile && <th style={{ textAlign: "right", padding: "8px 8px", color: "rgba(232,223,207,0.4)", fontWeight: 600, fontSize: 11, fontFamily: 'var(--font-display)' }}>CTR</th>}
+                  <th style={{ textAlign: "right", padding: "8px 0 8px 8px", color: "rgba(232,223,207,0.4)", fontWeight: 600, fontSize: 11, fontFamily: 'var(--font-display)' }}>Position</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.keywordData.keywords.slice(0, 15).map((kw) => (
+                  <tr key={kw.query} style={{ borderBottom: "1px solid rgba(232,223,207,0.05)" }}>
+                    <td style={{ padding: "8px 8px 8px 0", color: "rgba(232,223,207,0.7)" }}>{kw.query}</td>
+                    <td style={{ textAlign: "right", padding: "8px 8px", color: "rgba(232,223,207,0.6)" }}>{kw.clicks}</td>
+                    <td style={{ textAlign: "right", padding: "8px 8px", color: "rgba(232,223,207,0.5)" }}>{kw.impressions.toLocaleString()}</td>
+                    {!isMobile && <td style={{ textAlign: "right", padding: "8px 8px", color: "rgba(232,223,207,0.5)" }}>{kw.ctr.toFixed(1)}%</td>}
+                    <td style={{
+                      textAlign: "right", padding: "8px 0 8px 8px", fontWeight: 600,
+                      color: kw.position <= 10 ? "#22c55e" : kw.position <= 20 ? "#eab308" : "rgba(232,223,207,0.4)",
+                    }}>
+                      {kw.position.toFixed(1)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
+
+/* ─── Helper Components ─── */
 
 function GA4KpiCard({ label, value, change, invertColor }: { label: string; value: string; change: number; invertColor?: boolean }) {
   const isPositive = invertColor ? change < 0 : change > 0;
@@ -314,18 +254,6 @@ function GA4KpiCard({ label, value, change, invertColor }: { label: string; valu
           {arrow} {Math.abs(change).toFixed(1)}%
         </div>
       )}
-    </div>
-  );
-}
-
-function KpiCard({ label, value, color }: { label: string; value: number; color: string }) {
-  return (
-    <div style={{
-      background: `${color}08`, borderRadius: 10, padding: "14px 16px",
-      textAlign: "center",
-    }}>
-      <div style={{ fontSize: 24, fontWeight: 800, color, fontFamily: 'var(--font-display)' }}>{value}</div>
-      <div style={{ fontSize: 11, color: "rgba(232,223,207,0.5)", marginTop: 2 }}>{label}</div>
     </div>
   );
 }
@@ -355,12 +283,10 @@ function SessionsOverlayChart({
       .join(" ");
   }
 
-  // Y-axis labels
   const yTicks = [0, Math.round(maxVal / 2), maxVal];
 
   return (
     <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", height: "auto" }}>
-      {/* Grid lines */}
       {yTicks.map((v) => {
         const y = PY + (H - PY * 2) * (1 - v / maxVal);
         return (
@@ -370,11 +296,9 @@ function SessionsOverlayChart({
           </g>
         );
       })}
-      {/* Previous period (dashed) */}
       {previous.length > 0 && (
         <path d={toPath(previous)} fill="none" stroke="rgba(212,165,116,0.25)" strokeWidth={1.5} strokeDasharray="4 3" />
       )}
-      {/* Current period (solid) */}
       <path d={toPath(current)} fill="none" stroke="#d4a574" strokeWidth={2} />
     </svg>
   );
@@ -395,7 +319,6 @@ function SourceTimelineChart({
 
   const W = 700, H = 160, PX = 40, PY = 20;
 
-  // Collect all source names
   const sourceNames = Array.from(
     new Set(timeline.flatMap((t) => Object.keys(t.sources)))
   ).slice(0, 6);
@@ -406,20 +329,18 @@ function SourceTimelineChart({
   );
 
   function toPath(source: string) {
-    const points = timeline
+    return timeline
       .map((t, i) => {
         const x = PX + (i * (W - PX * 2)) / Math.max(timeline.length - 1, 1);
         const y = PY + (H - PY * 2) * (1 - (t.sources[source] || 0) / maxVal);
         return `${i === 0 ? "M" : "L"}${x.toFixed(1)},${y.toFixed(1)}`;
       })
       .join(" ");
-    return points;
   }
 
   return (
     <div>
       <svg viewBox={`0 0 ${W} ${H}`} style={{ width: "100%", height: "auto" }}>
-        {/* Grid */}
         {[0, Math.round(maxVal / 2), maxVal].map((v) => {
           const y = PY + (H - PY * 2) * (1 - v / maxVal);
           return (

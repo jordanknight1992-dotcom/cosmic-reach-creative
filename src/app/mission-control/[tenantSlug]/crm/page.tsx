@@ -1,53 +1,64 @@
 import { requireTenantAccess } from "@/lib/mc-session";
-import { getSQL } from "@/lib/mc-db";
-import { CrmView } from "./CrmView";
+import { LeadsView } from "./LeadsView";
+import { getContactSubmissions, getAuditSubmissions } from "@/lib/db";
 
-async function getCrmData(tenantId: number) {
-  const sql = getSQL();
-
-  const [leads, stats] = await Promise.all([
-    sql`
-      SELECT
-        l.id, l.fit_score, l.stage, l.next_action, l.next_action_at,
-        l.last_contacted_at, l.fit_reason, l.outreach_angle, l.pain_point_summary,
-        l.owner, l.approved_for_send, l.manual_review_required,
-        l.created_at, l.updated_at,
-        co.name AS company_name, co.domain AS company_domain,
-        co.website AS company_website, co.industry AS company_industry,
-        co.city AS company_city, co.state AS company_state,
-        ct.full_name AS contact_name, ct.email AS contact_email,
-        ct.title AS contact_title, ct.persona_type AS contact_persona_type,
-        ct.do_not_contact AS contact_do_not_contact,
-        ct.linkedin_url AS contact_linkedin_url
-      FROM leads l
-      LEFT JOIN companies co ON co.id = l.company_id
-      LEFT JOIN contacts ct ON ct.id = l.contact_id
-      WHERE l.tenant_id = ${tenantId}
-      ORDER BY l.fit_score DESC, l.created_at DESC
-      LIMIT 200
-    `.catch(() => []),
-
-    sql`
-      SELECT stage, COUNT(*)::int AS count
-      FROM leads WHERE tenant_id = ${tenantId}
-      GROUP BY stage
-    `.catch(() => []),
-  ]);
-
-  return {
-    leads: leads as unknown as Record<string, unknown>[],
-    stats: stats as unknown as { stage: string; count: number }[],
-  };
+interface Submission {
+  id: number;
+  type: "contact" | "audit";
+  name: string;
+  email: string;
+  company: string | null;
+  message: string | null;
+  website: string | null;
+  status: string;
+  notes: string;
+  created_at: string;
 }
 
-export default async function CrmPage({
+async function getLeadsData() {
+  const [contacts, audits] = await Promise.all([
+    getContactSubmissions().catch(() => []),
+    getAuditSubmissions().catch(() => []),
+  ]);
+
+  const submissions: Submission[] = [
+    ...(contacts as Record<string, unknown>[]).map((c) => ({
+      id: c.id as number,
+      type: "contact" as const,
+      name: c.name as string,
+      email: c.email as string,
+      company: (c.company as string) || null,
+      message: (c.message as string) || null,
+      website: null,
+      status: (c.status as string) || "new",
+      notes: (c.notes as string) || "",
+      created_at: String(c.created_at),
+    })),
+    ...(audits as Record<string, unknown>[]).map((a) => ({
+      id: a.id as number,
+      type: "audit" as const,
+      name: a.name as string,
+      email: a.email as string,
+      company: (a.company as string) || null,
+      message: (a.what_is_stuck as string) || null,
+      website: (a.website as string) || null,
+      status: (a.status as string) || "new",
+      notes: (a.notes as string) || "",
+      created_at: String(a.created_at),
+    })),
+  ].sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
+  return { submissions };
+}
+
+export default async function LeadsPage({
   params,
 }: {
   params: Promise<{ tenantSlug: string }>;
 }) {
   const { tenantSlug } = await params;
-  const { tenant } = await requireTenantAccess(tenantSlug);
-  const data = await getCrmData(tenant.id);
+  await requireTenantAccess(tenantSlug);
+  const data = await getLeadsData();
 
-  return <CrmView tenantSlug={tenant.slug} data={data} />;
+  return <LeadsView tenantSlug={tenantSlug} submissions={data.submissions} />;
 }

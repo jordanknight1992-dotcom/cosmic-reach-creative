@@ -64,6 +64,24 @@ export interface GA4Metrics {
   sourceTimeline: { date: string; sources: Record<string, number> }[];
 }
 
+/* ─── Search Console types ─── */
+
+export interface KeywordData {
+  query: string;
+  clicks: number;
+  impressions: number;
+  ctr: number;       /* 0-100 */
+  position: number;  /* average position */
+}
+
+export interface SearchConsoleMetrics {
+  keywords: KeywordData[];
+  totalClicks: number;
+  totalImpressions: number;
+  avgCtr: number;       /* 0-100 */
+  avgPosition: number;
+}
+
 /* ─── OAuth2 token exchange ─── */
 
 export interface GA4Credentials {
@@ -360,6 +378,78 @@ export async function getGA4Data(creds?: GA4Credentials): Promise<GA4Metrics | n
     };
   } catch (err) {
     console.error("GA4 data fetch error:", err instanceof Error ? err.message : err);
+    return null;
+  }
+}
+
+/* ─── Search Console keyword data ─── */
+
+export interface SearchConsoleCredentials {
+  siteUrl: string;       /* e.g. "sc-domain:cosmicreachcreative.com" or "https://cosmicreachcreative.com/" */
+  refreshToken?: string;
+  clientId?: string;
+  clientSecret?: string;
+}
+
+export async function getSearchConsoleData(creds?: SearchConsoleCredentials): Promise<SearchConsoleMetrics | null> {
+  const siteUrl = creds?.siteUrl || process.env.SEARCH_CONSOLE_SITE_URL;
+  if (!siteUrl) return null;
+
+  try {
+    const token = await getAccessToken(creds);
+    if (!token) return null;
+
+    const endDate = new Date().toISOString().split("T")[0];
+    const startDate = new Date(Date.now() - 30 * 86400000).toISOString().split("T")[0];
+
+    const res = await fetch(
+      `https://www.googleapis.com/webmasters/v3/sites/${encodeURIComponent(siteUrl)}/searchAnalytics/query`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          startDate,
+          endDate,
+          dimensions: ["query"],
+          rowLimit: 25,
+          type: "web",
+        }),
+      }
+    );
+
+    if (!res.ok) {
+      console.error("Search Console API error:", await res.text().catch(() => ""));
+      return null;
+    }
+
+    const data = (await res.json()) as {
+      rows?: { keys: string[]; clicks: number; impressions: number; ctr: number; position: number }[];
+    };
+
+    const rows = data.rows ?? [];
+    const keywords: KeywordData[] = rows.map((r) => ({
+      query: r.keys[0],
+      clicks: r.clicks,
+      impressions: r.impressions,
+      ctr: r.ctr * 100,
+      position: Math.round(r.position * 10) / 10,
+    }));
+
+    const totalClicks = keywords.reduce((s, k) => s + k.clicks, 0);
+    const totalImpressions = keywords.reduce((s, k) => s + k.impressions, 0);
+
+    return {
+      keywords,
+      totalClicks,
+      totalImpressions,
+      avgCtr: totalImpressions > 0 ? (totalClicks / totalImpressions) * 100 : 0,
+      avgPosition: keywords.length > 0 ? keywords.reduce((s, k) => s + k.position, 0) / keywords.length : 0,
+    };
+  } catch (err) {
+    console.error("Search Console fetch error:", err instanceof Error ? err.message : err);
     return null;
   }
 }

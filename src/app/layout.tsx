@@ -129,11 +129,11 @@ const jsonLd = {
     },
     {
       "@type": "Service",
-      name: "Brand and Website Rebuild",
+      name: "Brand System and Website Rebuild",
       provider: { "@id": `${siteConfig.domain}/#organization` },
       description:
-        "A full rebuild of positioning, messaging, website, sales materials, and lead capture. Completed in about 30 days.",
-      serviceType: "Website Design and Development",
+        "A full rebuild including brand system (positioning, voice, visual identity, and guidelines), website design and development, sales materials, and lead capture. Completed in about 30 days.",
+      serviceType: "Brand Strategy and Website Design",
       offers: {
         "@type": "AggregateOffer",
         lowPrice: "4000",

@@ -1,35 +1,11 @@
 import { requireTenantAccess } from "@/lib/mc-session";
 import { SignalView } from "./SignalView";
-import { getSQL, getCredentialProviders } from "@/lib/mc-db";
+import { getCredentialProviders } from "@/lib/mc-db";
 import { getEnvConfiguredProviders, resolveCredential } from "@/lib/mc-auth";
-import { getGA4Data, type GA4Metrics } from "@/lib/ga4";
+import { getGA4Data, getSearchConsoleData, type GA4Metrics, type SearchConsoleMetrics } from "@/lib/ga4";
 
-async function getSignalData(tenantId: number) {
-  const sql = getSQL();
-
-  const [pipelineStats, recentLeads, overdueFollowUps, dbProviders] = await Promise.all([
-    sql`
-      SELECT stage, COUNT(*)::int AS count
-      FROM leads WHERE tenant_id = ${tenantId}
-      GROUP BY stage
-    `.catch(() => []),
-
-    sql`
-      SELECT l.id, l.fit_score, l.stage, l.last_contacted_at,
-        co.name AS company_name, ct.full_name AS contact_name
-      FROM leads l
-      LEFT JOIN companies co ON co.id = l.company_id
-      LEFT JOIN contacts ct ON ct.id = l.contact_id
-      WHERE l.tenant_id = ${tenantId} AND l.stage NOT IN ('suppressed', 'lost')
-      ORDER BY l.fit_score DESC LIMIT 10
-    `.catch(() => []),
-
-    sql`
-      SELECT COUNT(*)::int AS count FROM leads
-      WHERE tenant_id = ${tenantId} AND next_action_at < NOW()
-        AND stage NOT IN ('suppressed', 'lost', 'won')
-    `.catch(() => [{ count: 0 }]),
-
+async function getPerformanceData(tenantId: number) {
+  const [dbProviders] = await Promise.all([
     getCredentialProviders(tenantId),
   ]);
 
@@ -41,8 +17,10 @@ async function getSignalData(tenantId: number) {
 
   const hasGA4 = connectedProviders.includes("google_analytics");
 
-  // Fetch GA4 analytics data if connected
+  // Fetch GA4 analytics + Search Console keyword data
   let ga4Data: GA4Metrics | null = null;
+  let keywordData: SearchConsoleMetrics | null = null;
+
   if (hasGA4) {
     try {
       const [ga4Cred, calCred] = await Promise.all([
@@ -50,34 +28,40 @@ async function getSignalData(tenantId: number) {
         resolveCredential(tenantId, "google_calendar"),
       ]);
       if (ga4Cred) {
-        ga4Data = await getGA4Data({
-          propertyId: ga4Cred.value,
-          refreshToken: calCred?.value,
-        });
+        const [ga4Result, kwResult] = await Promise.all([
+          getGA4Data({
+            propertyId: ga4Cred.value,
+            refreshToken: calCred?.value,
+          }),
+          getSearchConsoleData({
+            siteUrl: process.env.SEARCH_CONSOLE_SITE_URL || "",
+            refreshToken: calCred?.value,
+          }).catch(() => null),
+        ]);
+        ga4Data = ga4Result;
+        keywordData = kwResult;
       }
     } catch (err) {
-      console.error("GA4 fetch failed:", err);
+      console.error("Performance data fetch failed:", err);
     }
   }
 
   return {
-    pipelineStats: pipelineStats as unknown as { stage: string; count: number }[],
-    recentLeads: recentLeads as unknown as Record<string, unknown>[],
-    overdueCount: (overdueFollowUps[0] as unknown as { count: number })?.count ?? 0,
     hasGA4,
     ga4Data,
+    keywordData,
     connectedProviders,
   };
 }
 
-export default async function SignalPage({
+export default async function PerformancePage({
   params,
 }: {
   params: Promise<{ tenantSlug: string }>;
 }) {
   const { tenantSlug } = await params;
   const { tenant } = await requireTenantAccess(tenantSlug);
-  const data = await getSignalData(tenant.id);
+  const data = await getPerformanceData(tenant.id);
 
   return <SignalView tenantSlug={tenant.slug} data={data} />;
 }
