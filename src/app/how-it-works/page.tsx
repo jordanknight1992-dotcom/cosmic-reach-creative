@@ -3,90 +3,13 @@ import { siteConfig } from "@/config/site";
 import Image from "next/image";
 import { Icon } from "@/components/Icon";
 import { CTAButton } from "@/components/CTAButton";
-import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "How It Works | The Launch Sequence Framework",
+  title: "How It Works | Website Audit, Rebuild & Launch",
   description:
-    "See how Cosmic Reach Creative evaluates your business across four forces: Signal, Gravity, Orbit, and Thrust. We diagnose what's blocking growth and build the plan to fix it.",
+    "A simple process: audit what is not working, rebuild the brand and website, then launch with lead capture and performance visibility built in. Full rebuilds completed in about 30 days.",
   alternates: { canonical: `${siteConfig.domain}/how-it-works` },
 };
-
-const frameworkLayers = [
-  {
-    name: "Signal",
-    subtitle: "Messaging Clarity",
-    icon: "compass",
-    description:
-      "Where positioning is unclear and value isn't landing with the right audience.",
-  },
-  {
-    name: "Gravity",
-    subtitle: "Offer Strength",
-    icon: "orbit",
-    description:
-      "How offers are structured, framed, and perceived, and whether they create genuine pull.",
-  },
-  {
-    name: "Orbit",
-    subtitle: "Customer Journey",
-    icon: "gears",
-    description:
-      "The path from first contact to conversion, and what's slowing it down.",
-  },
-  {
-    name: "Thrust",
-    subtitle: "Growth Opportunities",
-    icon: "signal",
-    description:
-      "Where the highest-leverage growth potential exists and what to act on first.",
-  },
-];
-
-const engagementPath = [
-  {
-    name: "Business Clarity Audit",
-    price: "$150",
-    description:
-      "The starting point. A diagnostic that evaluates your messaging, offers, customer journey, and growth levers, then tells you exactly what to address first.",
-    isEntry: true,
-  },
-  {
-    name: "Direction Sprint",
-    price: "$2,000",
-    description:
-      "Signal and Gravity. Messaging architecture and offer design: the foundation that determines whether attention converts.",
-    isEntry: false,
-  },
-  {
-    name: "Alignment Sprint",
-    price: "$4,000",
-    description:
-      "Messaging, offer design, and the customer journey aligned into one coordinated system, so every piece reinforces the rest.",
-    isEntry: false,
-  },
-  {
-    name: "Execution Sprint",
-    price: "$6,000",
-    description:
-      "The full build. Brand messaging, marketing systems, and performance tracking installed end to end.",
-    isEntry: false,
-  },
-  {
-    name: "Mission Control",
-    price: "$149 / mo",
-    description:
-      "Daily operator intelligence that directs execution. Surfaces what's slipping, recommends the next move, and keeps your team focused on what matters. Included free for retainer clients.",
-    isEntry: false,
-  },
-  {
-    name: "Flight Support Retainer",
-    price: "$750 / mo",
-    description:
-      "Ongoing advisory to maintain the system, prevent operational drift, and recalibrate as the business evolves.",
-    isEntry: false,
-  },
-];
 
 export default function HowItWorksPage() {
   return (
@@ -118,220 +41,134 @@ export default function HowItWorksPage() {
         <div className="relative mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-24 text-center">
           <div className="max-w-2xl mx-auto">
             <h1 id="how-it-works-title" className="text-copper mb-4">
-              How Cosmic Reach Works
+              A simple process.
             </h1>
             <p
               className="text-starlight/70 text-lg sm:text-xl"
               style={{ textWrap: "pretty" }}
             >
-              We evaluate the four forces that drive every business, then
-              build a prioritized plan to get growth moving.
+              Identify what is not working. Rebuild it. Launch with visibility built in.
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── The Framework ── */}
+      {/* ── The Three Steps ── */}
       <section
         className="py-16 sm:py-24 bg-section-light"
-        aria-labelledby="framework-overview-heading"
+        aria-labelledby="steps-heading"
       >
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center mb-10">
-            <div className="mb-3">
-              <Icon name="orbit" size={36} className="opacity-80 mx-auto" />
-            </div>
-            <h2
-              id="framework-overview-heading"
-              className="mb-3 text-navy"
-            >
-              The Launch Sequence
+            <h2 id="steps-heading" className="mb-3 text-navy">
+              How we improve website performance.
             </h2>
-            <p className="text-navy/70 text-base">
-              Every business runs on four forces. We evaluate each one before
-              recommending where to focus.
-            </p>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
-            {frameworkLayers.map((layer) => (
+          <div className="grid gap-6 sm:grid-cols-3 max-w-3xl mx-auto">
+            {[
+              {
+                step: "1",
+                title: "Audit",
+                icon: "map",
+                description: "Identify what is not working. A focused review of your website, messaging, and lead flow. You see where visitors get stuck and what to fix first.",
+                price: "$150",
+              },
+              {
+                step: "2",
+                title: "Rebuild",
+                icon: "gears",
+                description: "Restructure the brand, website, and messaging so they work together. Includes positioning, site design, sales materials, and lead capture. Completed in about 30 days.",
+                price: "$4K - $8K",
+              },
+              {
+                step: "3",
+                title: "Launch",
+                icon: "rocket",
+                description: "Deploy with lead capture and performance visibility built in. You see where inquiries come from and what needs attention going forward.",
+                price: "Included",
+              },
+            ].map((item) => (
               <div
-                key={layer.name}
-                className="rounded-[var(--radius-lg)] border border-navy/10 bg-white p-5 shadow-subtle transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/40 hover:shadow-soft"
+                key={item.title}
+                className="rounded-[var(--radius-lg)] border border-navy/10 bg-white p-6 shadow-subtle transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/40 hover:shadow-soft"
               >
+                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-copper text-deep-space text-sm font-display font-bold mb-3">{item.step}</span>
                 <Icon
-                  name={layer.icon}
+                  name={item.icon}
                   size={26}
                   className="mb-2 opacity-70 mx-auto"
                 />
                 <h3 className="font-display font-semibold text-base mb-0.5 text-navy text-center">
-                  {layer.name}
+                  {item.title}
                 </h3>
-                <p className="text-xs text-copper font-display font-medium text-center mb-2">
-                  {layer.subtitle}
+                <p className="text-xs text-copper font-display font-medium text-center mb-3">
+                  {item.price}
                 </p>
-                <p className="text-sm text-navy/60 text-center">
-                  {layer.description}
+                <p className="text-sm text-navy/60 text-center leading-relaxed">
+                  {item.description}
                 </p>
               </div>
             ))}
           </div>
-
-          <div className="text-center">
-            <Link
-              href="/framework"
-              className="inline-flex items-center gap-2 font-display font-semibold text-sm text-navy/60 hover:text-navy transition-colors underline underline-offset-2"
-            >
-              Explore the full Framework
-              <span aria-hidden="true">→</span>
-            </Link>
-          </div>
         </div>
       </section>
 
-      {/* ── Engagement Path ── */}
+      {/* ── What the Audit Includes ── */}
       <section
         className="py-16 sm:py-24 bg-navy/40"
-        aria-labelledby="engagement-path-heading"
-      >
-        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center mb-10">
-            <div className="mb-3">
-              <Icon name="rocket" size={36} className="opacity-80 mx-auto" />
-            </div>
-            <h2 id="engagement-path-heading" className="mb-3">
-              The Engagement Path
-            </h2>
-            <p className="text-starlight/70 text-base">
-              Every engagement starts with a Clarity Audit. From there, you
-              choose the depth of implementation that fits your business.
-            </p>
-          </div>
-
-          <div className="max-w-2xl mx-auto space-y-3 mb-8">
-            {engagementPath.map((step, i) => (
-              <div
-                key={step.name}
-                className={`rounded-xl border px-5 py-4 flex items-start gap-4 transition-all duration-[var(--duration-base)] ${
-                  step.isEntry
-                    ? "border-copper/30 bg-navy/70 hover:border-copper/50"
-                    : "border-starlight/8 bg-navy/50 hover:border-copper/20"
-                }`}
-              >
-                <span
-                  className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-display font-bold mt-0.5 ${
-                    step.isEntry
-                      ? "bg-copper text-deep-space"
-                      : "bg-starlight/10 text-starlight/50"
-                  }`}
-                  aria-hidden="true"
-                >
-                  {i + 1}
-                </span>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-baseline justify-between gap-3 flex-wrap mb-1">
-                    <p
-                      className={`font-display font-semibold text-sm ${
-                        step.isEntry ? "text-copper" : "text-starlight"
-                      }`}
-                    >
-                      {step.name}
-                    </p>
-                    <p className="text-xs text-starlight/40 font-display font-medium shrink-0">
-                      {step.price}
-                    </p>
-                  </div>
-                  <p className="text-starlight/60 text-sm leading-relaxed">
-                    {step.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center">
-            <Link
-              href="/services"
-              className="inline-flex items-center gap-2 font-display font-semibold text-sm text-starlight/60 hover:text-starlight transition-colors underline underline-offset-2"
-            >
-              View full Services page
-              <span aria-hidden="true">→</span>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Example Report ── */}
-      <section
-        className="py-16 sm:py-24 bg-section-light"
-        aria-labelledby="example-report-heading"
+        aria-labelledby="audit-details-heading"
       >
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center mb-8">
             <div className="mb-3">
               <Icon name="document" size={36} className="opacity-80 mx-auto" />
             </div>
-            <h2 id="example-report-heading" className="mb-3 text-navy">
-              What You Receive: Business Clarity Audit
+            <h2 id="audit-details-heading" className="mb-3">
+              What the $150 audit covers.
             </h2>
-            <p className="text-navy/70 text-base mb-6">
-              The audit delivers a written report with scored analysis across
-              all four layers, root-cause findings, and a step-by-step
-              implementation plan.
+            <p className="text-starlight/70 text-base mb-6">
+              A written report delivered in 3-5 business days. You will know exactly where the issues are and what to address first.
             </p>
-            <div className="grid gap-3 sm:grid-cols-3 text-left max-w-2xl mx-auto mb-8">
-              {[
-                { label: "Executive Readout", detail: "System Momentum Score and the single highest-leverage shift." },
-                { label: "Layer Scorecard", detail: "Signal, Gravity, Orbit, and Thrust, each scored and diagnosed." },
-                { label: "Implementation Path", detail: "A prioritized sequence of what to address first." },
-              ].map((item) => (
-                <div
-                  key={item.label}
-                  className="rounded-xl border border-navy/10 bg-white p-4 shadow-subtle"
-                >
-                  <p className="font-display font-semibold text-sm text-copper mb-1">
-                    {item.label}
-                  </p>
-                  <p className="text-navy/60 text-xs leading-relaxed">
-                    {item.detail}
-                  </p>
-                </div>
-              ))}
-            </div>
-            <Link
-              href="/clarity-report-example"
-              className="inline-flex items-center gap-2 font-display font-semibold text-sm text-navy/60 hover:text-navy transition-colors underline underline-offset-2"
-            >
-              View Example Report
-              <span aria-hidden="true">→</span>
-            </Link>
+          </div>
+          <div className="grid gap-3 sm:grid-cols-2 max-w-2xl mx-auto">
+            {[
+              "Where visitors get stuck on your site",
+              "What is unclear in your messaging",
+              "What is limiting inquiries",
+              "What to fix first and why",
+            ].map((item) => (
+              <div
+                key={item}
+                className="rounded-xl border border-starlight/8 bg-navy/50 px-5 py-4 flex items-start gap-3 transition-all duration-[var(--duration-base)] hover:border-copper/20"
+              >
+                <span className="text-copper mt-0.5 shrink-0">&#9670;</span>
+                <span className="text-starlight/70 text-sm">{item}</span>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* ── Final CTA ── */}
       <section
-        className="py-16 sm:py-24 bg-navy/60 border-t border-copper/15"
+        className="py-16 sm:py-24 bg-section-light border-t border-copper/15"
         aria-labelledby="how-it-works-cta-heading"
       >
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <div className="mb-3">
-              <Icon name="spark" size={36} className="opacity-80 mx-auto" />
-            </div>
-            <h2 id="how-it-works-cta-heading" className="mb-4">
-              Ready to Find the Constraint?
+            <h2 id="how-it-works-cta-heading" className="mb-4 text-navy">
+              Start with the audit.
             </h2>
             <p
-              className="text-starlight/70 text-base mb-6"
+              className="text-navy/70 text-base mb-6"
               style={{ textWrap: "pretty" }}
             >
-              The Clarity Audit evaluates the four forces driving your business
-              and delivers a prioritized plan for what to address first.
+              A focused $150 review of your website and messaging. From there, you will know exactly what needs to change.
             </p>
-            <CTAButton label="Get Your Clarity Audit" variant="primary" />
-            <p className="mt-3 text-xs text-starlight/60">
-              3–5 day turnaround &middot; Structured clarity report included
+            <CTAButton label="Start with the Audit" variant="primary" />
+            <p className="mt-3 text-xs text-navy/40">
+              3-5 day turnaround &middot; Written report included
             </p>
           </div>
         </div>

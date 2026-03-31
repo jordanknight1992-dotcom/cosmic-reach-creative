@@ -6,56 +6,11 @@ import { CTAButton } from "@/components/CTAButton";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Cosmic Reach Creative | Marketing Strategy & Growth Systems for Founders",
+  title: "Cosmic Reach Creative | Website Not Converting? We Fix That.",
   description:
-    "Cosmic Reach Creative helps founders and growing businesses sharpen messaging, design stronger offers, and build marketing systems that scale. Strategic consulting founded in Memphis, TN, serving businesses nationwide. Start with a Business Clarity Audit.",
+    "Your website should be generating leads. If it is not, there is usually a deeper issue. Cosmic Reach Creative reviews your message, site, and lead flow, then rebuilds what is not working. Start with a $150 audit.",
   alternates: { canonical: siteConfig.domain },
 };
-
-const diagnosticSignals = [
-  "Messaging doesn't land with the right buyers",
-  "Offers create hesitation instead of urgency",
-  "Leads stall somewhere in the journey without a clear reason",
-  "Teams lack visibility into what's actually driving results",
-  "Marketing activity increases without producing proportional revenue",
-  "Growth depends on individual effort rather than a repeatable system",
-];
-
-const frameworkLayers = [
-  {
-    title: "Signal",
-    description: "The clarity of your message. Who it reaches, what it says, and whether it creates immediate recognition in the right buyer.",
-    icon: "compass",
-  },
-  {
-    title: "Gravity",
-    description: "The structural strength of your offer. How well it reduces friction, creates pull, and converts attention into action.",
-    icon: "orbit",
-  },
-  {
-    title: "Orbit",
-    description: "The infrastructure moving prospects from first contact to close. Workflows, touchpoints, and the handoffs between them.",
-    icon: "gears",
-  },
-  {
-    title: "Thrust",
-    description: "The performance data that tells you what's working. KPI visibility that recalibrates Signal and keeps the system compounding.",
-    icon: "signal",
-  },
-];
-
-const fitSignals = [
-  "A business with traction that hasn't translated into predictable growth",
-  "A team that works hard but keeps shifting priorities without clear returns",
-  "A founder building the right foundation before scaling spend",
-  "A company where marketing, offers, and follow-through aren't working together",
-];
-
-const notFitSignals = [
-  "You're looking for quick marketing hacks",
-  "You're not open to adjusting how the business is structured",
-  "You're expecting a hands-on production team",
-];
 
 export default function HomePage() {
   return (
@@ -65,7 +20,7 @@ export default function HomePage() {
         <div className="absolute inset-0">
           <Image
             src="/images/01-home-hero.jpg"
-            alt="Cosmic Reach Creative: Marketing strategy consulting for founders"
+            alt="Cosmic Reach Creative: small business website help"
             fill
             className="object-cover"
             priority
@@ -75,27 +30,28 @@ export default function HomePage() {
         </div>
         <div className="relative mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-24 text-center">
           <div className="max-w-2xl mx-auto">
-            <h1 id="hero-title" className="mb-4 text-copper" style={{ textWrap: "pretty" }}>
-              Sharpen the Message. Install the System.
+            <h1 id="hero-title" className="mb-4 text-copper">
+              Your website should be<br />
+              bringing you business.
             </h1>
             <p className="text-starlight/80 text-base sm:text-lg mb-2" style={{ textWrap: "pretty" }}>
-              We design the strategic architecture behind scalable marketing: the structure that allows messaging, offers, and systems to compound rather than compete.
+              If it is not, there is usually a deeper issue behind it. I review what is happening across your message, site, and lead flow, then show you what needs to change.
             </p>
             <p className="text-starlight/60 text-sm mb-6">
-              Diagnosis before prescription. Founded in Memphis, TN, serving founders nationwide.
+              Start with a focused $150 audit. From there, full rebuilds are completed in about 30 days.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <CTAButton label="Start The Clarity Audit" variant="primary" />
-              <CTAButton label="Explore the Launch Sequence" variant="secondary" />
+              <CTAButton label="Start with the Audit" variant="primary" />
+              <CTAButton label="How It Works" variant="secondary" />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ── Symptoms of a Structural Problem ── */}
+      {/* ── The Problem ── */}
       <section
         className="relative overflow-hidden py-16 sm:py-24 bg-section-light"
-        aria-labelledby="symptoms-heading"
+        aria-labelledby="problem-heading"
       >
         <div
           aria-hidden="true"
@@ -107,14 +63,6 @@ export default function HomePage() {
             `,
           }}
         />
-        <div
-          aria-hidden="true"
-          className="absolute left-1/2 top-[72px] h-[520px] w-[520px] -translate-x-1/2 rounded-full border border-navy/[0.05] z-0"
-        />
-        <div
-          aria-hidden="true"
-          className="absolute left-1/2 top-[110px] h-[380px] w-[380px] -translate-x-1/2 rounded-full border border-navy/[0.04] z-0"
-        />
         <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-navy/10 to-transparent z-0" />
         <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-navy/10 to-transparent z-0" />
 
@@ -123,16 +71,18 @@ export default function HomePage() {
             <div className="mb-3">
               <Icon name="spark" size={36} className="opacity-80 mx-auto" />
             </div>
-            <h2 id="symptoms-heading" className="mb-8 text-navy">
-              Symptoms of a Structural Problem
+            <h2 id="problem-heading" className="mb-4 text-navy">
+              Most websites look polished but underperform.
             </h2>
+            <p className="text-navy/70 text-base mb-8">
+              The issue is usually not design. It is something deeper.
+            </p>
 
-            <div className="grid grid-cols-2 gap-4 max-w-lg mx-auto mb-10">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-xl mx-auto mb-10">
               {[
-                { icon: "compass", text: "Messaging doesn\u2019t land with the right buyers." },
-                { icon: "orbit",   text: "Offers create hesitation instead of urgency." },
-                { icon: "gears",   text: "Leads stall somewhere in the journey." },
-                { icon: "signal",  text: "Teams lack visibility into what\u2019s actually working." },
+                { icon: "compass", text: "Unclear messaging" },
+                { icon: "orbit", text: "Weak structure" },
+                { icon: "signal", text: "No path to action" },
               ].map((item) => (
                 <div
                   key={item.text}
@@ -144,20 +94,17 @@ export default function HomePage() {
               ))}
             </div>
 
-            <p className="text-navy text-xl sm:text-2xl font-display font-bold mb-2 leading-snug">
-              Growth stalls when the system breaks down.
-            </p>
             <p className="text-navy/70 text-base">
-              Cosmic Reach identifies the exact friction points and installs the architecture to resolve them.
+              Visitors hesitate and leave. The site looks fine, but leads do not come in.
             </p>
           </div>
         </div>
       </section>
 
-      {/* ── Diagnostic Signals ── */}
+      {/* ── What We Do ── */}
       <section
         className="relative py-16 sm:py-24 bg-navy/40 overflow-hidden"
-        aria-labelledby="signals-heading"
+        aria-labelledby="what-we-do-heading"
       >
         <div className="absolute inset-0 -z-10">
           <Image
@@ -175,112 +122,96 @@ export default function HomePage() {
             <div className="mb-3">
               <Icon name="eye" size={36} className="opacity-80 mx-auto" />
             </div>
-            <h2 id="signals-heading" className="mb-3">
-              Signs the Architecture Needs Attention
+            <h2 id="what-we-do-heading" className="mb-3">
+              Rebuild what is holding growth back.
             </h2>
             <p className="text-starlight/70 text-base mb-8">
-              If any of these are present, the growth infrastructure may be working against itself.
+              Cosmic Reach Creative helps businesses fix the parts of their brand and website that are limiting results.
             </p>
           </div>
 
-          <div className="mx-auto max-w-2xl grid gap-3 sm:grid-cols-2">
-            {diagnosticSignals.map((signal, i) => (
+          <div className="mx-auto max-w-2xl grid gap-3 sm:grid-cols-3">
+            {[
+              "How the business is positioned",
+              "How it communicates",
+              "How the site guides action",
+            ].map((item) => (
               <div
-                key={i}
-                className="rounded-xl border border-starlight/8 bg-navy/50 px-5 py-4 flex items-start gap-3 transition-all duration-[var(--duration-base)] hover:border-copper/20"
+                key={item}
+                className="rounded-xl border border-starlight/8 bg-navy/50 px-5 py-4 text-center transition-all duration-[var(--duration-base)] hover:border-copper/20"
               >
-                <span className="text-copper mt-1 text-xs shrink-0" aria-hidden="true">
-                  &#9670;
-                </span>
-                <span className="text-starlight/70 text-sm">{signal}</span>
+                <span className="text-starlight/70 text-sm">{item}</span>
               </div>
             ))}
-          </div>
-
-          <div className="mx-auto max-w-3xl text-center mt-8">
-            <p className="text-starlight/80 text-base font-display font-semibold mb-2">
-              Every one of these is a structural problem with a structural fix.
-            </p>
-            <p className="text-starlight/70 text-sm mb-6">
-              The Business Clarity Audit is a structural diagnostic that identifies the exact friction points and what to address first.
-            </p>
-            <CTAButton label="Start the Clarity Audit" variant="primary" />
           </div>
         </div>
       </section>
 
-      {/* ── The Growth Engine ── */}
-      <section className="py-16 sm:py-24 bg-section-light" aria-labelledby="framework-heading">
+      {/* ── The Process ── */}
+      <section className="py-16 sm:py-24 bg-section-light" aria-labelledby="process-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center mb-10">
             <div className="mb-3">
               <Icon name="orbit" size={36} className="opacity-80 mx-auto" />
             </div>
-            <h2 id="framework-heading" className="mb-3 text-navy">The Growth Engine</h2>
-            <p className="text-navy/70 text-base mb-3" style={{ textWrap: "pretty" }}>
-              The Launch Sequence operates as a continuous feedback loop.
-            </p>
-            <p className="text-navy/60 text-sm leading-relaxed max-w-xl mx-auto">
-              Signal shapes what the market sees. Gravity converts attention into demand. Orbit moves prospects through the journey. Thrust provides the performance data that recalibrates Signal, and the cycle compounds.
-            </p>
+            <h2 id="process-heading" className="mb-3 text-navy">How it works</h2>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {frameworkLayers.map((layer) => (
+          <div className="grid gap-4 sm:grid-cols-3 max-w-3xl mx-auto">
+            {[
+              {
+                step: "1",
+                title: "Audit",
+                description: "A focused review of what is not working. You see where visitors get stuck, what is unclear, and what to fix first.",
+                icon: "map",
+              },
+              {
+                step: "2",
+                title: "Rebuild",
+                description: "Brand, messaging, website, and sales materials are rebuilt to work together. Completed in about 30 days.",
+                icon: "gears",
+              },
+              {
+                step: "3",
+                title: "Launch + Visibility",
+                description: "The site goes live with lead capture and performance visibility built in. You see where inquiries come from.",
+                icon: "rocket",
+              },
+            ].map((item) => (
               <div
-                key={layer.title}
+                key={item.title}
                 className="rounded-[var(--radius-lg)] border border-navy/10 bg-white p-5 shadow-subtle text-center transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/40 hover:shadow-soft"
               >
-                <Icon name={layer.icon} size={26} className="mb-2 opacity-70 mx-auto" />
-                <h3 className="font-display font-semibold text-base mb-2 text-navy">{layer.title}</h3>
-                <p className="text-sm text-navy/60 leading-relaxed">{layer.description}</p>
+                <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-copper text-deep-space text-sm font-display font-bold mb-3">{item.step}</span>
+                <Icon name={item.icon} size={26} className="mb-2 opacity-70 mx-auto" />
+                <h3 className="font-display font-semibold text-base mb-2 text-navy">{item.title}</h3>
+                <p className="text-sm text-navy/60 leading-relaxed">{item.description}</p>
               </div>
             ))}
-          </div>
-          <div className="text-center mt-8">
-            <p className="text-navy/50 text-xs tracking-wide">
-              Signal → Gravity → Orbit → Thrust → Signal
-            </p>
           </div>
         </div>
       </section>
 
-      {/* ── Inside the Clarity Report ── */}
-      <section className="py-16 sm:py-24 bg-navy/40" aria-labelledby="report-preview-heading">
+      {/* ── Mission Control (Short) ── */}
+      <section
+        className="py-16 sm:py-24 bg-deep-space"
+        aria-labelledby="mc-cta-heading"
+      >
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center mb-8">
-            <div className="mb-3">
-              <Icon name="document" size={36} className="opacity-80 mx-auto" />
+          <div className="mx-auto max-w-2xl text-center">
+            <div className="text-xs font-display font-semibold tracking-[0.14em] uppercase text-copper mb-3">
+              Included with every rebuild
             </div>
-            <h2 id="report-preview-heading" className="mb-3">Inside the Clarity Report</h2>
-            <p className="text-starlight/70 text-base">
-              Every Business Clarity Audit delivers a structured written report. Here&apos;s what&apos;s inside.
+            <h2 id="mc-cta-heading" className="mb-3">
+              See where your leads come from.
+            </h2>
+            <p className="text-starlight/70 text-base mb-8" style={{ textWrap: "pretty" }}>
+              Every rebuild includes a system that captures leads and shows what is working across the site. You can see where inquiries come from and what needs attention.
             </p>
-          </div>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 max-w-4xl mx-auto mb-8">
-            {[
-              { label: "Executive Readout", detail: "System Momentum Score and highest-leverage shift at a glance." },
-              { label: "System Map", detail: "How the four framework forces interact in your specific business." },
-              { label: "Layer-by-Layer Scorecard", detail: "Scored analysis of Signal, Gravity, Orbit, and Thrust." },
-              { label: "Deep-Dive Analysis", detail: "What's slowing each layer and exactly why it matters." },
-              { label: "Recommended Shifts", detail: "Specific, prioritized actions to accelerate growth." },
-              { label: "Implementation Path", detail: "Sprint recommendation and a sequenced action plan for what to fix first." },
-            ].map((item) => (
-              <div
-                key={item.label}
-                className="rounded-xl border border-starlight/8 bg-navy/50 px-5 py-4 transition-all duration-[var(--duration-base)] hover:border-copper/20"
-              >
-                <p className="font-display font-semibold text-sm text-copper mb-1">{item.label}</p>
-                <p className="text-starlight/60 text-xs leading-relaxed">{item.detail}</p>
-              </div>
-            ))}
-          </div>
-          <div className="text-center">
             <Link
-              href="/clarity-report-example"
-              className="inline-flex items-center gap-2 font-display font-semibold text-sm text-starlight/70 hover:text-starlight transition-colors underline underline-offset-2"
+              href="/mission-control"
+              className="inline-flex items-center justify-center rounded-[var(--radius-md)] px-6 py-3 font-display font-semibold text-base bg-copper text-deep-space transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0"
             >
-              View an example report
-              <span aria-hidden="true">→</span>
+              Learn More
             </Link>
           </div>
         </div>
@@ -289,13 +220,9 @@ export default function HomePage() {
       {/* ── Testimonial ── */}
       <section
         className="relative overflow-hidden py-16 sm:py-24 bg-section-light"
-        aria-label="What operators say"
+        aria-label="What clients say"
       >
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
-          <p className="text-center text-xs font-display font-semibold tracking-widest text-copper uppercase mb-8">
-            From the Mission Log
-          </p>
-
           <div className="relative max-w-4xl mx-auto">
             <div
               aria-hidden="true"
@@ -307,7 +234,7 @@ export default function HomePage() {
             <div className="relative z-10 grid gap-6 md:grid-cols-2">
               <blockquote className="rounded-2xl border border-navy/10 bg-white shadow-subtle p-6 sm:p-8">
                 <p className="text-navy/75 text-base italic leading-relaxed mb-4">
-                  Cosmic Reach brings a level of imagination and strategic clarity that&apos;s rare to find. Jordan has a way of seeing the system underneath a business and identifying where momentum is breaking down. The result is clarity and direction you wouldn&apos;t arrive at on your own.
+                  Cosmic Reach brings a level of imagination and strategic thinking that is rare to find. Jordan has a way of seeing the system underneath a business and identifying where momentum is breaking down. The result is direction you would not arrive at on your own.
                 </p>
                 <footer className="text-sm text-copper font-display font-medium">
                   Fractional Sales &amp; Marketing Director, California
@@ -316,111 +243,13 @@ export default function HomePage() {
 
               <blockquote className="rounded-2xl border border-navy/10 bg-white shadow-subtle p-6 sm:p-8">
                 <p className="text-navy/75 text-base italic leading-relaxed mb-4">
-                  I&apos;ve spent decades leading infrastructure and network programs where milestone visibility and structured reporting were critical to success. Cosmic Reach translated that same disciplined framework into a modern, intuitive platform. It gives project leaders clarity, control, and professional-grade reporting without unnecessary complexity.
+                  I have spent decades leading infrastructure programs where milestone visibility and structured reporting were critical to success. Cosmic Reach translated that same disciplined framework into a modern, intuitive platform.
                 </p>
                 <footer className="text-sm text-copper font-display font-medium">
                   Licensed PMO, Texas
                 </footer>
               </blockquote>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Mission Control ── */}
-      <section
-        className="py-16 sm:py-24 bg-deep-space"
-        aria-labelledby="mc-cta-heading"
-      >
-        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center mb-10">
-            <div className="text-xs font-display font-semibold tracking-[0.14em] uppercase text-copper mb-3">
-              Mission Control
-            </div>
-            <h2 id="mc-cta-heading" className="mb-3">
-              Direction Without Prompting
-            </h2>
-            <p className="text-starlight/70 text-base" style={{ textWrap: "pretty" }}>
-              The decision engine that surfaces what&apos;s slipping, recommends the next move, and keeps your team focused on what matters. Not a CRM — daily operator intelligence.
-            </p>
-          </div>
-
-          {/* Features — simple list */}
-          <div className="max-w-xl mx-auto mb-10">
-            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-3">
-              {[
-                "Daily Briefing — what needs attention now",
-                "Next Move — one clear action, always visible",
-                "5 Key Daily Targets — ranked by urgency and fit",
-                "ICP scoring — deterministic, explainable",
-                "AI email drafts in your voice",
-                "Digital Signal — revenue health at a glance",
-                "Meeting scheduling + Google Calendar",
-                "Team workspaces with role-based access",
-              ].map((feature) => (
-                <li key={feature} className="flex items-center gap-2.5 text-sm text-starlight/70">
-                  <span className="text-copper text-xs shrink-0" aria-hidden="true">&#9670;</span>
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* CTA */}
-          <div className="text-center">
-            <Link
-              href="/mission-control"
-              className="inline-flex items-center justify-center rounded-[var(--radius-md)] px-6 py-3 font-display font-semibold text-base bg-copper text-deep-space transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0"
-            >
-              Explore Mission Control
-            </Link>
-            <p className="mt-3 text-xs text-starlight/40">
-              $149/mo · Guided onboarding included · Retainer clients: included free
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* ── Who Cosmic Reach Is For ── */}
-      <section className="py-16 sm:py-24 bg-section-light" aria-labelledby="fit-heading">
-        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <div className="mb-3">
-              <Icon name="compass" size={36} className="opacity-80 mx-auto" />
-            </div>
-            <h2 id="fit-heading" className="mb-3 text-navy">Who Cosmic Reach Is For</h2>
-            <p className="text-navy/70 text-base mb-8">
-              Cosmic Reach works best with founders and teams who sense something in their business isn&apos;t converting the way it should.
-            </p>
-          </div>
-          <div className="grid gap-6 md:grid-cols-2 max-w-3xl mx-auto">
-            <div className="rounded-2xl border border-navy/10 bg-white p-6 sm:p-8 shadow-subtle">
-              <h3 className="font-display font-semibold text-base text-copper mb-4">The Right Trajectory</h3>
-              <ul className="space-y-3">
-                {fitSignals.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-navy/70 text-sm">
-                    <span className="text-copper mt-1 text-xs shrink-0" aria-hidden="true">&#9670;</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="rounded-2xl border border-navy/10 bg-white p-6 sm:p-8 shadow-subtle">
-              <h3 className="font-display font-semibold text-base text-navy/50 mb-4">Not the Right Fit</h3>
-              <ul className="space-y-3">
-                {notFitSignals.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3 text-navy/50 text-sm">
-                    <span className="text-navy/25 mt-1 text-xs shrink-0" aria-hidden="true">&#9670;</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          <div className="text-center mt-6">
-            <p className="text-navy/50 text-sm mb-4">
-              The common thread: a willingness to fix the foundation before scaling the spend.
-            </p>
           </div>
         </div>
       </section>
@@ -432,13 +261,13 @@ export default function HomePage() {
             <div className="mb-3">
               <Icon name="rocket" size={36} className="opacity-80 mx-auto" />
             </div>
-            <h2 id="final-cta-heading" className="mb-4">See What&apos;s Holding You Back</h2>
+            <h2 id="final-cta-heading" className="mb-4">Start with the Audit</h2>
             <p className="text-starlight/70 text-base mb-6" style={{ textWrap: "pretty" }}>
-              The Business Clarity Audit evaluates your messaging, offers, customer journey, and growth levers, then tells you exactly what to address first.
+              A focused $150 review of your website and messaging. You will see where visitors get stuck, what is unclear, and what to fix first.
             </p>
-            <CTAButton label="Start The Clarity Audit" variant="primary" />
+            <CTAButton label="Start with the Audit" variant="primary" />
             <p className="mt-3 text-xs text-starlight/60">
-              3–5 day turnaround &middot; Structured clarity report included
+              3-5 day turnaround &middot; Written report included
             </p>
           </div>
         </div>
@@ -457,23 +286,23 @@ export default function HomePage() {
                 name: "What is Cosmic Reach Creative?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Cosmic Reach Creative is a marketing strategy consultancy founded by Jordan Knight in Memphis, TN. We help founders and growing businesses diagnose what's blocking growth and build the strategic systems to fix it, including messaging, offer design, customer journey optimization, and performance visibility."
+                  text: "Cosmic Reach Creative is a brand and website rebuild consultancy founded by Jordan Knight in Memphis, TN. We help small businesses improve website performance, generate more leads, and build sites that actually convert."
                 }
               },
               {
                 "@type": "Question",
-                name: "What does a marketing strategist do?",
+                name: "My website is not converting. Can you help?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "A marketing strategist evaluates the underlying structure of how a business attracts, converts, and retains customers. At Cosmic Reach, we use the Launch Sequence framework to diagnose messaging clarity, offer strength, customer journey friction, and growth visibility, then build systems to fix what's broken."
+                  text: "Yes. Most websites underperform because of unclear messaging, weak structure, or no path to action. We start with a $150 audit to identify the specific issues, then rebuild the site in about 30 days."
                 }
               },
               {
                 "@type": "Question",
-                name: "Is Cosmic Reach Creative a marketing agency?",
+                name: "What does the $150 audit include?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Cosmic Reach Creative is a strategic consultancy. We design the architecture that makes marketing effective: messaging systems, offer positioning, conversion infrastructure, and growth dashboards."
+                  text: "The audit is a focused review of your website and messaging. You will see where visitors get stuck, what is unclear, what is limiting inquiries, and what to fix first. Delivered in 3-5 business days."
                 }
               },
               {
@@ -481,15 +310,15 @@ export default function HomePage() {
                 name: "Do you only work with businesses in Memphis?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "No. Cosmic Reach Creative is headquartered in Memphis, TN, but we work with founders and growing businesses nationwide. All engagements are delivered remotely through structured audits, strategy sprints, and advisory retainers."
+                  text: "No. Cosmic Reach Creative is headquartered in Memphis, TN, but we work with small businesses nationwide. All engagements are delivered remotely."
                 }
               },
               {
                 "@type": "Question",
-                name: "What is a Business Clarity Audit?",
+                name: "What does a full rebuild include?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "The Business Clarity Audit is a structured diagnostic that evaluates your messaging, offer design, customer journey, and growth levers using the Launch Sequence framework. You receive a scored report with prioritized recommendations. It costs $150, takes 3-5 business days, and the fee is credited toward any Sprint engagement."
+                  text: "A full rebuild includes positioning, messaging, website design and development, sales materials, a lead capture system, and performance visibility. Completed in about 30 days. Pricing ranges from $4,000 to $8,000."
                 }
               },
             ]
@@ -498,15 +327,14 @@ export default function HomePage() {
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center mb-10">
             <h2 id="home-faq-heading" className="text-navy mb-3">Common Questions</h2>
-            <p className="text-navy/60 text-sm">Quick answers for founders exploring strategic support.</p>
           </div>
           <div className="max-w-2xl mx-auto space-y-4">
             {[
-              { q: "What is Cosmic Reach Creative?", a: "A marketing strategy consultancy founded by Jordan Knight in Memphis, TN. We help founders and growing businesses diagnose what's blocking growth and build the strategic systems to fix it." },
-              { q: "What does a marketing strategist do?", a: "We evaluate the underlying structure of how a business attracts, converts, and retains customers, then build systems to fix what's broken. Messaging, offers, customer journey, and performance visibility." },
-              { q: "Is Cosmic Reach a marketing agency?", a: "No. We're a strategic consultancy. We don't run ads or manage social media. We design the architecture that makes marketing effective: messaging systems, offer positioning, conversion infrastructure, and growth dashboards." },
-              { q: "Do you only work with businesses in Memphis?", a: "We're headquartered in Memphis, TN, but we work with founders and growing businesses nationwide. All engagements are delivered remotely." },
-              { q: "What is a Business Clarity Audit?", a: "A structured diagnostic that evaluates your messaging, offer design, customer journey, and growth levers. You receive a scored report with prioritized recommendations. $150, 3-5 business days, credited toward any Sprint." },
+              { q: "What is Cosmic Reach Creative?", a: "A brand and website rebuild consultancy founded by Jordan Knight in Memphis, TN. We help small businesses fix websites that are not converting and start generating consistent leads." },
+              { q: "My website is not converting. Can you help?", a: "Yes. Most websites underperform because of unclear messaging, weak structure, or no path to action. We start with a $150 audit to identify the specific issues, then rebuild the site in about 30 days." },
+              { q: "What does the $150 audit include?", a: "A focused review of your website and messaging. You will see where visitors get stuck, what is unclear, what is limiting inquiries, and what to fix first. Delivered in 3-5 business days." },
+              { q: "Do you only work with businesses in Memphis?", a: "We are headquartered in Memphis, TN, but we work with small businesses nationwide. All engagements are delivered remotely." },
+              { q: "What does a full rebuild include?", a: "Positioning, messaging, website design and development, sales materials, a lead capture system, and performance visibility. Completed in about 30 days. Pricing ranges from $4,000 to $8,000." },
             ].map((faq) => (
               <details key={faq.q} className="group rounded-xl border border-navy/10 bg-white shadow-subtle">
                 <summary className="flex items-center justify-between px-5 py-4 cursor-pointer font-display font-semibold text-sm text-navy list-none [&::-webkit-details-marker]:hidden">
