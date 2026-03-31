@@ -47,14 +47,14 @@ function resolveCtaHref(label: string): string {
     return siteConfig.claritySessionUrl;
   }
 
-  // Sprint / Monthly
-  if (lower.includes("sprint") || lower.includes("monthly support")) {
-    return siteConfig.signalCheckUrl;
+  // Rebuild / Monthly
+  if (lower.includes("rebuild") || lower.includes("monthly support")) {
+    return "/pricing";
   }
 
-  // Framework
-  if (lower.includes("framework") || lower.includes("how it works")) {
-    return "/framework";
+  // How it works
+  if (lower.includes("how it works")) {
+    return "/how-it-works";
   }
 
   // Audit intake form

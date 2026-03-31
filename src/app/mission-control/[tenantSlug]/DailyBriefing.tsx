@@ -82,7 +82,7 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, brief
             Let&apos;s get you set up
           </h2>
           <p style={{ color: "rgba(232,223,207,0.5)", fontSize: 14, margin: "0 0 20px 0" }}>
-            Complete your workspace setup to unlock Daily Briefing, Targets, and recommendations.
+            Complete your workspace setup to start seeing lead activity and performance.
           </p>
           <button
             onClick={() => router.push(`${base}/onboarding`)}
@@ -143,9 +143,9 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, brief
           borderRadius: 16, padding: "40px 28px", textAlign: "center", marginBottom: 24,
         }}>
           <div style={{ fontSize: 36, marginBottom: 12 }}>◉</div>
-          <h2 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 8px 0", fontFamily: 'var(--font-display)' }}>Your briefing is ready</h2>
+          <h2 style={{ fontSize: 18, fontWeight: 700, margin: "0 0 8px 0", fontFamily: 'var(--font-display)' }}>Ready when you are</h2>
           <p style={{ color: "rgba(232,223,207,0.35)", fontSize: 14, margin: "0 0 20px 0" }}>
-            Import leads and Mission Control will start generating daily recommendations and direction.
+            Import leads to start tracking activity, sources, and follow-ups.
           </p>
           <button
             onClick={() => router.push(`${base}/crm`)}
@@ -179,10 +179,10 @@ export function DailyBriefing({ userName, tenantSlug, onboardingCompleted, brief
         <div style={{ marginBottom: 24 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
             <h2 style={{ fontSize: 16, fontWeight: 700, margin: 0, fontFamily: 'var(--font-display)' }}>
-              5 Key Daily Targets
+              Leads to Follow Up
             </h2>
             <button
-              onClick={() => router.push(`${base}/targets`)}
+              onClick={() => router.push(`${base}/crm`)}
               style={{ background: "none", border: "none", color: "#d4a574", fontSize: 13, fontWeight: 500, cursor: "pointer", fontFamily: 'var(--font-body)' }}
             >
               View all →

@@ -33,11 +33,9 @@ interface McShellProps {
 }
 
 const NAV_ITEMS = [
-  { key: "", label: "Briefing", iconSrc: "/icons/compass.svg" },
-  { key: "targets", label: "Targets", iconSrc: "/icons/signal.svg" },
+  { key: "", label: "Overview", iconSrc: "/icons/compass.svg" },
   { key: "crm", label: "Leads", iconSrc: "/icons/network.svg" },
-  { key: "signal", label: "Signal", iconSrc: "/icons/eye.svg" },
-  { key: "strategy", label: "Strategy", iconSrc: "/icons/map.svg" },
+  { key: "signal", label: "Performance", iconSrc: "/icons/eye.svg" },
   { key: "meetings", label: "Meetings", iconSrc: "/icons/orbit.svg" },
   { key: "settings", label: "Settings", iconSrc: "/icons/gears.svg" },
 ];

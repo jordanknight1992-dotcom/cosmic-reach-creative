@@ -40,23 +40,23 @@ export function SignalView({ tenantSlug, data }: { tenantSlug: string; data: Sig
   // Biggest issue computation
   let biggestIssue = { label: "Looking good", detail: "No critical issues detected.", type: "neutral" };
   if (totalActive === 0) {
-    biggestIssue = { label: "No active leads", detail: "Import leads to start generating signal and recommendations.", type: "warning" };
+    biggestIssue = { label: "No active leads", detail: "Import leads to start tracking activity and sources.", type: "warning" };
   } else if (data.overdueCount > 0) {
     biggestIssue = { label: `${data.overdueCount} overdue follow-up${data.overdueCount > 1 ? "s" : ""}`, detail: "Leads are going cold. Work your overdue targets.", type: "danger" };
   } else if (emailedCount > 5 && repliedCount === 0) {
     biggestIssue = { label: "Low reply rate", detail: `${emailedCount} leads emailed with no positive replies yet. Review your outreach.`, type: "warning" };
   }
 
-  let nextMove = "Review your 5 daily targets";
+  let nextMove = "Review your leads";
   if (data.overdueCount > 0) nextMove = "Work your overdue follow-ups first";
   else if (repliedCount > 0) nextMove = "Book meetings with warm replies";
 
   return (
     <div>
       <div style={{ marginBottom: 28 }}>
-        <h1 style={{ fontSize: 24, fontWeight: 700, margin: 0, fontFamily: 'var(--font-display)', color: '#d4a574' }}>Digital Signal</h1>
+        <h1 style={{ fontSize: 24, fontWeight: 700, margin: 0, fontFamily: 'var(--font-display)', color: '#d4a574' }}>Performance</h1>
         <p style={{ color: "rgba(232,223,207,0.35)", fontSize: 14, marginTop: 4 }}>
-          Recommendation-first view of your revenue health and activity signal.
+          Lead activity, sources, and site performance at a glance.
         </p>
       </div>
 
@@ -85,14 +85,14 @@ export function SignalView({ tenantSlug, data }: { tenantSlug: string; data: Sig
           </div>
           <div style={{ fontSize: 17, fontWeight: 700, color: "#e8dfcf", marginBottom: 10, fontFamily: 'var(--font-display)' }}>{nextMove}</div>
           <button
-            onClick={() => router.push(`${base}/targets`)}
+            onClick={() => router.push(`${base}/crm`)}
             style={{
               background: "#d4a574", color: "#1a1f2e", border: "none",
               borderRadius: 8, padding: "8px 16px", fontSize: 13,
               fontWeight: 600, cursor: "pointer", fontFamily: 'var(--font-display)',
             }}
           >
-            Go to Targets →
+            Go to Leads →
           </button>
         </div>
       </div>
@@ -102,7 +102,7 @@ export function SignalView({ tenantSlug, data }: { tenantSlug: string; data: Sig
         background: "#111827", border: "1px solid rgba(232,223,207,0.1)",
         borderRadius: 14, padding: "20px 24px", marginBottom: 24,
       }}>
-        <h2 style={{ fontSize: 15, fontWeight: 600, margin: "0 0 16px 0", color: "rgba(232,223,207,0.85)", fontFamily: 'var(--font-display)' }}>Revenue Health</h2>
+        <h2 style={{ fontSize: 15, fontWeight: 600, margin: "0 0 16px 0", color: "rgba(232,223,207,0.85)", fontFamily: 'var(--font-display)' }}>Lead Activity</h2>
 
         {totalActive === 0 ? (
           <div style={{ color: "rgba(232,223,207,0.25)", fontSize: 14, textAlign: "center", padding: "20px 0" }}>
@@ -277,10 +277,10 @@ export function SignalView({ tenantSlug, data }: { tenantSlug: string; data: Sig
             <div style={{ fontSize: 28, opacity: 0.3 }}>◇</div>
             <div>
               <h3 style={{ fontSize: 15, fontWeight: 600, margin: "0 0 4px 0", color: "rgba(232,223,207,0.85)", fontFamily: 'var(--font-display)' }}>
-                Connect Google Analytics for deeper signal
+                Connect Google Analytics for traffic data
               </h3>
               <p style={{ fontSize: 13, color: "rgba(232,223,207,0.35)", margin: 0 }}>
-                When connected, Mission Control will use your traffic data to enhance recommendations and surface website performance insights.
+                When connected, you will see page views, top pages, and traffic sources alongside your lead data.
               </p>
               <button
                 onClick={() => router.push(`${base}/settings`)}

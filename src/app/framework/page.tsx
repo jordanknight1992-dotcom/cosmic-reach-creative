@@ -1,63 +1,58 @@
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import Image from "next/image";
-import { Icon } from "@/components/Icon";
 import { CTAButton } from "@/components/CTAButton";
 
 export const metadata: Metadata = {
-  title: "The Launch Sequence | 4-Force Marketing Strategy Framework",
+  title: "How We Think About the Work | Cosmic Reach Creative",
   description:
-    "The Launch Sequence evaluates four forces driving every business: messaging clarity (Signal), offer strength (Gravity), customer journey (Orbit), and growth opportunities (Thrust). A systematic approach to marketing strategy.",
+    "Most websites underperform because of four things: unclear messaging, a weak offer, a broken path to action, or no visibility into what is working. We evaluate and fix all four.",
   alternates: { canonical: `${siteConfig.domain}/framework` },
 };
 
-const layers = [
+const areas = [
   {
-    name: "Signal",
-    subtitle: "Messaging Clarity",
-    icon: "compass",
+    name: "Messaging",
+    question: "Is it clear what you do and who it is for?",
     description:
-      "Where is messaging falling short? This layer diagnoses positioning gaps, identifies where value isn’t landing with the right audience, and reveals why the story of the business isn’t translating into action.",
-    deliverables: [
-      "A clear diagnosis of current messaging across channels",
-      "Positioning refinement tied to the right audience",
-      "Focused recommendations on what to clarify first",
+      "Most websites lead with what the business does rather than the problem the buyer is experiencing. When visitors have to work to understand why it matters to them, they leave.",
+    whatWeCheck: [
+      "Whether the headline connects with the buyer's situation",
+      "Whether the language is clear or full of jargon",
+      "Whether visitors can quickly tell if this is for them",
     ],
   },
   {
-    name: "Gravity",
-    subtitle: "Offer Strength",
-    icon: "orbit",
+    name: "Offer",
+    question: "Is it obvious what someone gets and what it costs?",
     description:
-      "Is the offer strong enough to convert on its own? This layer evaluates how offers are framed, priced, and perceived, identifying where hesitation is outweighing perceived value.",
-    deliverables: [
-      "Offer positioning and framing analysis",
-      "Value perception insights",
-      "Recommendations for structuring offers that convert",
+      "An unclear offer creates hesitation. If visitors cannot quickly understand what they are buying, how long it takes, or what the outcome is, they will not move forward.",
+    whatWeCheck: [
+      "Whether the offer has a defined scope and deliverable",
+      "Whether pricing or next steps are visible",
+      "Whether the value is clear before the ask",
     ],
   },
   {
-    name: "Orbit",
-    subtitle: "Customer Journey",
-    icon: "gears",
+    name: "Path to Action",
+    question: "Does the site guide visitors toward one clear next step?",
     description:
-      "What happens between first touch and purchase? This layer maps the customer journey, surfaces drop-off points, and identifies the steps that move prospects toward a decision.",
-    deliverables: [
-      "Customer journey mapping and friction diagnosis",
-      "Conversion flow analysis",
-      "Practical improvements that reduce hesitation and shorten time to purchase",
+      "Multiple navigation paths and competing calls to action dilute momentum. The site should make it easy to take the next step, not force visitors to figure out what to do.",
+    whatWeCheck: [
+      "Whether each page has one clear call to action",
+      "Whether the site reduces friction at decision points",
+      "Whether there is a low-commitment entry point for visitors who are not ready to buy",
     ],
   },
   {
-    name: "Thrust",
-    subtitle: "Growth Opportunities",
-    icon: "signal",
+    name: "Visibility",
+    question: "Do you know what is working and what is not?",
     description:
-      "Where should you invest next? This layer translates business activity into actionable insight so growth decisions are driven by evidence, not assumptions.",
-    deliverables: [
-      "Growth opportunity analysis tied to business outcomes",
-      "Prioritized improvement roadmap",
-      "A decision framework for what to build, fix, or deprioritize",
+      "After launch, most businesses lose sight of what their website is doing. Without visibility, decisions are based on guesswork instead of evidence.",
+    whatWeCheck: [
+      "Whether leads are being captured and tracked",
+      "Whether you know where inquiries are coming from",
+      "Whether you can tell which pages are driving results",
     ],
   },
 ];
@@ -70,7 +65,7 @@ export default function FrameworkPage() {
         "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Home", item: "https://cosmicreachcreative.com" },
-          { "@type": "ListItem", position: 2, name: "Framework", item: "https://cosmicreachcreative.com/framework" },
+          { "@type": "ListItem", position: 2, name: "How We Think", item: "https://cosmicreachcreative.com/framework" },
         ]
       })}} />
       {/* Hero */}
@@ -88,9 +83,9 @@ export default function FrameworkPage() {
         </div>
         <div className="relative mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-24 text-center">
           <div className="max-w-2xl mx-auto">
-            <h1 id="framework-hero" className="text-copper">The Four Forces Behind Every Business</h1>
+            <h1 id="framework-hero" className="text-copper">How we think about the work.</h1>
             <p className="text-starlight/80 text-base sm:text-lg mt-3">
-              We don&apos;t begin with tactics. We evaluate the forces that make tactics succeed or fail.
+              Most websites underperform for predictable reasons. We look at four things.
             </p>
           </div>
         </div>
@@ -100,40 +95,36 @@ export default function FrameworkPage() {
       <section className="py-12 sm:py-16" aria-labelledby="framework-intro">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
-            <div className="mb-3">
-              <Icon name="orbit" size={36} className="opacity-80 mx-auto" />
-            </div>
-            <h2 id="framework-intro" className="mb-4">Four Layers. One System.</h2>
+            <h2 id="framework-intro" className="mb-4">Four areas. One system.</h2>
             <p className="text-starlight/70 text-base">
-              The Launch Sequence evaluates four forces: sharpening positioning, strengthening offers, streamlining the customer journey, and building performance visibility. Every layer builds on the last.
+              A website that converts has clear messaging, a defined offer, a straightforward path to action, and visibility into what is working. When any of these break down, leads stop coming in.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Framework Layers */}
-      <section className="py-12 sm:py-16 bg-navy/30" aria-label="Framework layers">
+      {/* Areas */}
+      <section className="py-12 sm:py-16 bg-navy/30" aria-label="What we evaluate">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="grid gap-6 sm:grid-cols-2 max-w-4xl mx-auto">
-            {layers.map((layer) => (
+            {areas.map((area) => (
               <article
-                key={layer.name}
+                key={area.name}
                 className="rounded-2xl border border-starlight/10 bg-navy/50 p-6 sm:p-8 flex flex-col transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/30 hover:shadow-subtle"
               >
-                <div className="mb-4">
-                  <Icon name={layer.icon} size={32} className="opacity-80" />
-                </div>
                 <div className="mb-3">
-                  <span className="text-copper font-display font-bold text-lg">{layer.name}</span>
-                  <span className="text-starlight/50 text-sm font-display ml-2">{layer.subtitle}</span>
+                  <span className="text-copper font-display font-bold text-lg">{area.name}</span>
                 </div>
-                <p className="text-starlight/70 text-sm leading-relaxed mb-5 flex-1">{layer.description}</p>
+                <p className="text-starlight font-display font-semibold text-sm mb-3">
+                  {area.question}
+                </p>
+                <p className="text-starlight/70 text-sm leading-relaxed mb-5 flex-1">{area.description}</p>
                 <div>
                   <p className="text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-3">
-                    Clients get
+                    What we check
                   </p>
                   <ul className="space-y-2">
-                    {layer.deliverables.map((item) => (
+                    {area.whatWeCheck.map((item) => (
                       <li key={item} className="flex items-start gap-2.5 text-sm text-starlight/60">
                         <span className="text-copper mt-1 text-[8px] shrink-0" aria-hidden="true">&#9670;</span>
                         {item}
@@ -147,21 +138,17 @@ export default function FrameworkPage() {
         </div>
       </section>
 
-
       {/* Final CTA */}
       <section className="py-12 sm:py-16" aria-labelledby="framework-cta">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto text-center">
-            <div className="mb-3">
-              <Icon name="rocket" size={36} className="opacity-80 mx-auto" />
-            </div>
-            <h2 id="framework-cta" className="mb-3">Ready to Evaluate the System?</h2>
+            <h2 id="framework-cta" className="mb-3">Start with the audit.</h2>
             <p className="text-starlight/70 text-base mb-6">
-              The Business Clarity Audit applies all four layers to your business and delivers a prioritized action plan.
+              The $150 audit evaluates all four areas and shows you exactly what is not working and what to fix first.
             </p>
-            <CTAButton label="Start the Clarity Audit" variant="primary" />
+            <CTAButton label="Start with the Audit" variant="primary" />
             <p className="mt-3 text-xs text-starlight/60">
-              3&ndash;5 day turnaround &middot; Structured clarity report included
+              3&ndash;5 day turnaround &middot; Written report included
             </p>
           </div>
         </div>

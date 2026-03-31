@@ -1,89 +1,73 @@
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import Image from "next/image";
-import { Icon } from "@/components/Icon";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "FAQ | Mission Control, Clarity Audits & Strategy Sprints",
+  title: "FAQ | Audit, Rebuild & Ongoing Performance",
   description:
-    "Answers to common questions about Mission Control, Business Clarity Audits, implementation sprints, Flight Support advisory, and how Cosmic Reach Creative works with founders and growing businesses.",
+    "Answers to common questions about the $150 website audit, 30-day rebuild process, ongoing performance at $750/month, and how Cosmic Reach Creative works with small businesses.",
   alternates: { canonical: `${siteConfig.domain}/faq` },
 };
 
 const faqs: { question: string; answer: string; signals?: string[]; closing?: string }[] = [
   {
-    question: "What is a Business Clarity Audit?",
+    question: "What does the $150 audit include?",
     answer:
-      "A Business Clarity Audit is a structured diagnostic that evaluates your messaging, offer positioning, customer journey, and growth levers using the Launch Sequence framework. The goal is to identify what’s working, what isn’t, and what to address first.\n\nYou receive a scored diagnosis and a prioritized action plan. Even if you never work with Cosmic Reach again, you’ll walk away knowing exactly where your business is getting stuck and what to change.",
+      "A focused review of your website and messaging. You will see where visitors get stuck, what is unclear, what is limiting inquiries, and what to fix first.\n\nDelivered as a written report in 3–5 business days. Even if you never work with us again, you will know exactly what needs to change.",
   },
   {
-    question: "How long does the audit take?",
+    question: "What happens after the audit?",
     answer:
-      "Most Business Clarity Audits are completed within 3–5 business days after the intake form is submitted. You’ll receive a scored report covering all four layers of the Launch Sequence, with prioritized recommendations you can act on immediately.",
+      "You receive a report with clear findings and priority fixes. If deeper work is needed, the next step is a full rebuild. The audit fee is credited toward any rebuild engagement.\n\nMany businesses use the audit alone and make changes on their own. There is no obligation to move forward.",
   },
   {
-    question: "What are Implementation Sprints?",
+    question: "What does a full rebuild include?",
     answer:
-      "Sprints are fixed-scope engagements that build the architecture identified in your Clarity Audit. There are three tiers:\n\nDirection Sprint ($2,000) — Messaging and offer design. The foundation that determines whether attention converts.\n\nAlignment Sprint ($4,000) — Customer journey mapping, marketing workflows, and infrastructure that moves prospects from awareness to close.\n\nExecution Sprint ($6,000) — Complete system build across all four forces, with dashboards that make performance visible and self-correcting.",
+      "A full rebuild covers positioning, messaging, website design and development, sales materials, lead capture, and performance visibility. Everything is rebuilt to work together.\n\nRebuilds are completed in about 30 days and range from $4,000 to $8,000 depending on scope.",
   },
   {
     question: "What is Mission Control?",
     answer:
-      "Mission Control is a daily operator intelligence system for revenue teams. Every morning it surfaces what’s slipping, what’s being ignored, and where attention should shift — then recommends the next move.\n\nIt’s not a CRM. It’s a decision engine that scores leads against your ICP, ranks your highest-priority targets, generates AI-powered email drafts in your voice, and keeps your team aligned inside a shared workspace.\n\nIt’s $149/month with guided onboarding included. All Cosmic Reach Creative retainer clients get full access at no additional cost.",
+      "Mission Control is included with every rebuild. It captures leads from your website, shows where those leads came from, and highlights which pages are driving action.\n\nIt gives you a clear view of what your site is doing after launch, without digging through multiple tools.",
   },
   {
-    question: "What is the Flight Support Retainer?",
+    question: "What does the $750/month ongoing service include?",
     answer:
-      "Flight Support ($750/month) is ongoing advisory to maintain the systems built during a Sprint, prevent operational drift, and recalibrate as your business evolves. It’s designed for founders who want a strategic partner keeping the architecture sharp after implementation.\n\nAll Flight Support retainer clients receive full Mission Control access included at no additional cost.",
+      "Ongoing performance monitoring and improvement after the rebuild. This includes tracking leads and sources, monitoring site performance, improving search visibility, making small updates, and recommending what to focus on next.\n\nIt is designed for businesses that want continued visibility and improvement without managing it themselves.",
   },
   {
-    question: "Do I need a Sprint after the Business Clarity Audit?",
+    question: "Do I need the ongoing service after a rebuild?",
     answer:
-      "No. Many teams use the audit alone and implement the roadmap internally.\n\nIf deeper support is needed, implementation happens through structured Sprints designed to fix the highest-impact issues identified in the audit. You decide whether to move forward after the audit.",
-  },
-  {
-    question: "Is this marketing consulting?",
-    answer:
-      "Not exactly. Marketing issues often surface first, but the real constraint is usually in the structure beneath them. Messaging, offer design, the customer journey, and performance visibility all interact as connected forces.\n\nCosmic Reach diagnoses which force is weakest and identifies what to address first.",
+      "No. The rebuild is designed to stand on its own. Mission Control is included at launch so you have visibility from day one.\n\nThe ongoing service is for businesses that want continued improvement, SEO progress, and someone keeping an eye on performance over time.",
   },
   {
     question: "Who is this best for?",
     answer:
-      "Cosmic Reach works best with founders and leadership teams who know something in their business isn’t converting the way it should.",
+      "Cosmic Reach works best with small businesses and founders who know their website is not converting the way it should.",
     signals: [
-      "Marketing activity that isn’t producing results",
-      "Teams working hard but priorities constantly shifting",
-      "Customers showing interest but hesitating before buying",
-      "Messaging or offers that feel unclear",
+      "The site looks fine but leads are not coming in",
+      "Messaging feels unclear or unfocused",
+      "There is no visibility into what is working",
+      "Marketing activity is not producing results",
     ],
     closing:
-      "If those patterns sound familiar, the Business Clarity Audit is designed to diagnose exactly why.",
+      "If those patterns sound familiar, the $150 audit is designed to show you exactly what is going on and what to fix first.",
   },
   {
-    question: "Can I use Mission Control without doing an audit or sprint?",
+    question: "How long does the audit take?",
     answer:
-      "Yes. Mission Control is a standalone product. Import your lead lists, configure your ICP, and start scoring and prioritizing on day one. It works best when paired with a Clarity Audit so the system is configured around real strategic priorities, but it’s fully functional on its own.",
+      "Most audits are completed within 3–5 business days after the intake form is submitted. You receive a written report with clear findings and prioritized recommendations.",
   },
   {
-    question: "What data sources does Mission Control support?",
+    question: "Is this marketing consulting?",
     answer:
-      "Any CSV file. That includes exports from Apollo, LinkedIn Sales Navigator, HubSpot, Salesforce, Pipedrive, or a hand-built spreadsheet. Mission Control’s smart field mapper detects your column headers and maps them to standard fields automatically. You preview and adjust the mapping before importing.\n\nNo integrations to configure. Just export a CSV from wherever your leads live and upload it.",
+      "Not exactly. The issue is usually not marketing tactics. It is something deeper — unclear messaging, weak site structure, or no path to action.\n\nCosmic Reach identifies what is actually holding the site back and fixes it. The result is a website that works as a system, not just a set of pages.",
   },
   {
-    question: "Can my team use Mission Control together?",
+    question: "Do you only work with businesses in Memphis?",
     answer:
-      "Yes. Mission Control is built for team collaboration. Each workspace supports Owner, Admin, and Member roles with invitation-based access. Your whole team sees the same daily briefing, the same prioritized targets, and executes from the same direction.",
-  },
-  {
-    question: "Where is Cosmic Reach Creative located?",
-    answer:
-      "Cosmic Reach Creative is headquartered in Memphis, Tennessee. We work with founders and growing businesses nationwide through remote engagements including structured audits, strategy sprints, ongoing advisory, and Mission Control.",
-  },
-  {
-    question: "What’s the difference between a marketing consultant and a marketing agency?",
-    answer:
-      "A marketing agency typically executes tactics: running ads, managing social media, creating content. A marketing consultant, like Cosmic Reach Creative, works at the strategic level, designing the systems and architecture that make those tactics effective.\n\nWe focus on messaging clarity, offer design, customer journey optimization, and growth visibility. The goal is to build the foundation that makes every marketing dollar and effort more productive.",
+      "No. Cosmic Reach Creative is headquartered in Memphis, Tennessee, but we work with small businesses nationwide. All engagements are delivered remotely.",
   },
 ];
 
@@ -120,7 +104,7 @@ export default function FAQPage() {
         </div>
         <div className="relative mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-24">
           <div className="max-w-2xl mx-auto text-center">
-            <h1 id="faq-hero" className="text-copper">Transmissions From Mission Control</h1>
+            <h1 id="faq-hero" className="text-copper">Common Questions</h1>
             <p className="text-starlight/80 text-lg sm:text-xl mt-3">
               Clear expectations make better partnerships.
             </p>
@@ -164,12 +148,9 @@ export default function FAQPage() {
 
           {/* Bottom CTA */}
           <div className="max-w-2xl mx-auto mt-12 text-center">
-            <div className="flex items-center justify-center gap-2 mb-3">
-              <Icon name="spark" size={18} className="opacity-60" />
-              <p className="text-sm text-starlight/60">
-                Still have questions?
-              </p>
-            </div>
+            <p className="text-sm text-starlight/60 mb-4">
+              Still have questions?
+            </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 href="/contact"
@@ -182,7 +163,7 @@ export default function FAQPage() {
                 href="/pricing"
                 className="inline-flex items-center justify-center rounded-[var(--radius-md)] bg-copper text-deep-space px-5 py-2.5 text-sm font-display font-semibold transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5"
               >
-                Start the Clarity Audit
+                Start with the Audit
               </Link>
             </div>
           </div>

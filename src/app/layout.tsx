@@ -115,11 +115,11 @@ const jsonLd = {
     {
       "@type": "Service",
       "@id": `${siteConfig.domain}/#clarity-audit`,
-      name: "Business Clarity Audit",
+      name: "Website Audit",
       provider: { "@id": `${siteConfig.domain}/#organization` },
       description:
-        "A structured diagnostic that evaluates your messaging, offer design, customer journey, and growth levers using the Launch Sequence framework. Identifies what's blocking growth and what to address first.",
-      serviceType: "Marketing Strategy Audit",
+        "A focused review of your website and messaging that shows where visitors get stuck, what is unclear, what is limiting inquiries, and what to fix first.",
+      serviceType: "Website Audit",
       offers: {
         "@type": "Offer",
         price: "150",
@@ -129,15 +129,15 @@ const jsonLd = {
     },
     {
       "@type": "Service",
-      name: "Implementation Sprints",
+      name: "Brand and Website Rebuild",
       provider: { "@id": `${siteConfig.domain}/#organization` },
       description:
-        "Structured 30-90 day engagements that install marketing architecture: messaging systems, offer design, customer journey infrastructure, and performance dashboards.",
-      serviceType: "Marketing Strategy Implementation",
+        "A full rebuild of positioning, messaging, website, sales materials, and lead capture. Completed in about 30 days.",
+      serviceType: "Website Design and Development",
       offers: {
         "@type": "AggregateOffer",
-        lowPrice: "2000",
-        highPrice: "6000",
+        lowPrice: "4000",
+        highPrice: "8000",
         priceCurrency: "USD",
         url: `${siteConfig.domain}/pricing`,
       },

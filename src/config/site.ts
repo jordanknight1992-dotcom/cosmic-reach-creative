@@ -18,19 +18,19 @@ export const siteConfig = {
   ],
   howItWorksDropdown: [
     {
-      label: "Framework",
+      label: "How We Think",
       href: "/framework",
-      detail: "The 4-force Launch Sequence",
+      detail: "What we evaluate and why",
     },
     {
       label: "Services",
       href: "/services",
-      detail: "Sprints and advisory engagements",
+      detail: "Audit, rebuild, and ongoing",
     },
     {
       label: "Example Report",
       href: "/clarity-report-example",
-      detail: "See a real Clarity Report",
+      detail: "See what the audit delivers",
     },
   ],
   hiddenRoutes: ["/clarity", "/clarity-session"],

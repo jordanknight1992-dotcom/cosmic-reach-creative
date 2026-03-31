@@ -2,40 +2,25 @@ import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import Image from "next/image";
 import Link from "next/link";
-import { Icon } from "@/components/Icon";
 
 export const metadata: Metadata = {
-  title: "Clarity Audit Confirmed",
+  title: "Audit Confirmed | Next Steps",
   description:
-    "Your Business Clarity Audit is confirmed. Complete the intake form to begin.",
+    "Your website audit is confirmed. Complete the intake form to begin.",
   alternates: { canonical: `${siteConfig.domain}/next-steps` },
 };
 
 const steps = [
   { number: 1, label: "Intake Form", active: true },
-  { number: 2, label: "Audit Analysis", active: false },
-  { number: 3, label: "Clarity Report", active: false },
-];
-
-const frameworkAreas = [
-  { name: "Signal", description: "Messaging clarity and positioning", icon: "compass" },
-  { name: "Gravity", description: "Offer strength and value perception", icon: "orbit" },
-  { name: "Orbit", description: "Customer journey and conversion flow", icon: "gears" },
-  { name: "Thrust", description: "Growth opportunities and system improvements", icon: "signal" },
+  { number: 2, label: "Audit Review", active: false },
+  { number: 3, label: "Written Report", active: false },
 ];
 
 const reportIncludes = [
-  "Messaging clarity insights",
-  "Offer positioning improvements",
-  "Customer journey friction points",
-  "Growth opportunities within the business system",
-  "Prioritized recommendations for improvement",
-];
-
-const sprintOptions = [
-  "30 Day Direction Sprint",
-  "60 Day Alignment Sprint",
-  "90 Day Systems Sprint",
+  "Where your message breaks down",
+  "What visitors do not understand",
+  "What is limiting inquiries",
+  "What to fix first and why",
 ];
 
 export default function NextStepsPage() {
@@ -56,10 +41,10 @@ export default function NextStepsPage() {
         </div>
         <div className="relative mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-12 sm:pb-20 text-center">
           <div className="max-w-2xl mx-auto">
-            <h1 className="text-copper">Your Business Clarity Audit Is Confirmed</h1>
+            <h1 className="text-copper">Your Audit Is Confirmed</h1>
             <p className="text-starlight/80 text-base sm:text-lg mt-3">
-              Thank you for purchasing a Business Clarity Audit from Cosmic Reach Creative.
-              The next step is providing a few details about your business so the analysis can begin.
+              Thank you for purchasing a website audit from Cosmic Reach Creative.
+              The next step is providing a few details about your business so the review can begin.
             </p>
           </div>
         </div>
@@ -109,7 +94,7 @@ export default function NextStepsPage() {
             </h2>
             <p className="text-starlight/70 mb-4">
               To begin the audit, please provide a few details about your business.
-              This information allows us to analyze your messaging, offers, and customer journey before preparing your clarity report.
+              This information allows us to review your website and messaging before preparing your report.
             </p>
             <p className="text-starlight/70 mb-5">The intake form will ask for:</p>
             <ul className="space-y-2 mb-8">
@@ -145,24 +130,13 @@ export default function NextStepsPage() {
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
             <h2 id="step2-heading" className="mb-3">
-              <span className="text-starlight/60">Step 2:</span> Analysis and Review
+              <span className="text-starlight/60">Step 2:</span> Audit Review
             </h2>
             <p className="text-starlight/70 mb-6">
-              Once the intake form is submitted, we begin the Business Clarity Audit.
-              During this process we analyze four core areas using the Cosmic Reach Clarity Framework:
+              Once the intake form is submitted, we review your website and messaging across four areas:
+              how clear the message is, how strong the offer is, how well the site guides visitors to take action,
+              and whether you have visibility into what is working.
             </p>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-              {frameworkAreas.map((area) => (
-                <div
-                  key={area.name}
-                  className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-4 text-center"
-                >
-                  <Icon name={area.icon} size={22} className="opacity-60 mx-auto mb-2" />
-                  <p className="font-display font-semibold text-sm text-copper mb-1">{area.name}</p>
-                  <p className="text-xs text-starlight/60">{area.description}</p>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
@@ -176,9 +150,9 @@ export default function NextStepsPage() {
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
             <h2 id="step3-heading" className="mb-3">
-              <span className="text-starlight/60">Step 3:</span> Clarity Report Delivery
+              <span className="text-starlight/60">Step 3:</span> Written Report
             </h2>
-            <p className="text-starlight/70 mb-4">You will receive a structured report outlining:</p>
+            <p className="text-starlight/70 mb-4">You will receive a written report showing:</p>
             <ul className="space-y-2 mb-5">
               {reportIncludes.map((item) => (
                 <li key={item} className="flex items-start gap-2.5 text-sm text-starlight/70">
@@ -206,20 +180,10 @@ export default function NextStepsPage() {
           <div className="max-w-2xl mx-auto">
             <h2 id="whats-next-heading" className="mb-3">What Happens Next</h2>
             <p className="text-starlight/70 mb-4">
-              After reviewing the Clarity Report, we will discuss the recommended improvements
-              and determine whether a focused implementation sprint would accelerate progress.
+              After reviewing the report, we will discuss the findings and determine whether a full rebuild would be the right next step. There is no obligation to continue.
             </p>
-            <p className="text-starlight/70 mb-4">Many clients choose to move forward with a:</p>
-            <ul className="space-y-2 mb-4">
-              {sprintOptions.map((item) => (
-                <li key={item} className="flex items-start gap-2.5 text-sm text-starlight/70">
-                  <span className="text-copper/60 mt-0.5 shrink-0">◆</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
             <p className="text-sm text-starlight/60">
-              These sprints focus on implementing the highest-impact improvements identified during the audit.
+              Full rebuilds are completed in about 30 days and range from $4,000 to $8,000 depending on scope.
             </p>
           </div>
         </div>
@@ -233,10 +197,7 @@ export default function NextStepsPage() {
       <section className="py-8 sm:py-14" aria-labelledby="questions-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
-            <div className="flex items-center gap-3 mb-3">
-              <Icon name="spark" size={20} className="opacity-60" />
-              <h2 id="questions-heading">Questions</h2>
-            </div>
+            <h2 id="questions-heading" className="mb-3">Questions</h2>
             <p className="text-starlight/70 mb-3">
               If you have questions before submitting the intake form, feel free to reach out.
             </p>
@@ -246,9 +207,6 @@ export default function NextStepsPage() {
             >
               jordan@cosmicreachcreative.com
             </a>
-            <p className="mt-6 text-starlight/60 text-sm">
-              We look forward to helping you restore momentum and build a system that supports real progress.
-            </p>
           </div>
         </div>
       </section>
