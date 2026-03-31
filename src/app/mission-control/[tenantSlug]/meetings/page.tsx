@@ -7,6 +7,11 @@ import { MeetingsView } from "./MeetingsView";
 async function getMeetingsData(tenantId: number) {
   const sql = getSQL();
 
+  // Backfill: assign orphan bookings (tenant_id IS NULL) to this tenant
+  // This handles bookings created from the public /connect page
+  await sql`UPDATE bookings SET tenant_id = ${tenantId} WHERE tenant_id IS NULL`.catch(() => {});
+  await sql`UPDATE blackout_dates SET tenant_id = ${tenantId} WHERE tenant_id IS NULL`.catch(() => {});
+
   const [upcoming, past, blackoutDates] = await Promise.all([
     sql`
       SELECT id, booking_type, start_time, end_time, client_name, client_email,

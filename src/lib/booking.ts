@@ -130,6 +130,7 @@ export async function createBooking(data: {
   notes?: string;
   googleEventId?: string | null;
   googleMeetUrl?: string | null;
+  tenantId?: number;
 }) {
   await ensureBookingTables();
   const sql = getSQL();
@@ -140,10 +141,13 @@ export async function createBooking(data: {
     data.startTime.getTime() + type.durationMinutes * 60 * 1000
   );
 
+  // Default to tenant 1 (Cosmic Reach Creative) for public bookings
+  const tenantId = data.tenantId ?? 1;
+
   const rows = await sql`
     INSERT INTO bookings (
       booking_type, start_time, end_time,
-      client_name, client_email, notes, google_event_id, google_meet_url
+      client_name, client_email, notes, google_event_id, google_meet_url, tenant_id
     ) VALUES (
       ${data.bookingType},
       ${data.startTime.toISOString()},
@@ -152,7 +156,8 @@ export async function createBooking(data: {
       ${data.clientEmail},
       ${data.notes ?? ""},
       ${data.googleEventId ?? null},
-      ${data.googleMeetUrl ?? null}
+      ${data.googleMeetUrl ?? null},
+      ${tenantId}
     )
     RETURNING *
   `;
