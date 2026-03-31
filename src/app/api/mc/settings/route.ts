@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { validateSession, getSessionCookieName } from "@/lib/mc-auth";
+import { getUserTenants, getSQL } from "@/lib/mc-db";
 import { cookies } from "next/headers";
 
 export async function POST(request: Request) {
@@ -11,8 +12,18 @@ export async function POST(request: Request) {
     }
 
     const session = await validateSession(sessionId);
-    if (!session || !session.tenant) {
+    if (!session) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Get tenant from session or look up user's tenants
+    let tenantId = session.tenantId;
+    if (!tenantId) {
+      const tenants = await getUserTenants(session.user.id);
+      if (tenants.length === 0) {
+        return NextResponse.json({ error: "No workspace found" }, { status: 403 });
+      }
+      tenantId = tenants[0].id;
     }
 
     const body = await request.json();
@@ -28,9 +39,8 @@ export async function POST(request: Request) {
       .replace(/^www\./, "")
       .replace(/\/+$/, "");
 
-    const { getSQL } = await import("@/lib/mc-db");
     const sql = getSQL();
-    await sql`UPDATE tenants SET domain = ${cleanDomain || null}, updated_at = NOW() WHERE id = ${session.tenant.id}`;
+    await sql`UPDATE tenants SET domain = ${cleanDomain || null}, updated_at = NOW() WHERE id = ${tenantId}`;
 
     return NextResponse.json({ success: true, domain: cleanDomain });
   } catch (err) {
