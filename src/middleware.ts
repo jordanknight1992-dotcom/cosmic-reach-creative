@@ -46,6 +46,8 @@ export async function middleware(request: NextRequest) {
     "/mission-control/reset-password",
     "/mission-control/demo",
     "/api/mc/auth",
+    "/api/mc/debug-session",
+    "/api/mc/test-emails",
   ];
   if (mcPublicPaths.some((p) => pathname.startsWith(p))) {
     return NextResponse.next();
