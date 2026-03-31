@@ -7,12 +7,14 @@ import Link from "next/link";
 import {
   reportMeta,
   businessContext,
+  layerScores,
   siteBreakdowns,
   leadLimiters,
   priorityFixes,
   afterFixing,
   recommendedNextStep,
 } from "@/lib/clarity-report-data";
+import { getScoreColor } from "@/lib/site-scoring";
 
 export const metadata: Metadata = {
   title: "Example Audit Report | See What You Receive",
@@ -275,6 +277,76 @@ export default function ClarityReportExamplePage() {
             </div>
             <div className="border-t border-starlight/8 pt-5">
               <p className="text-starlight/70 text-sm leading-relaxed">{businessContext}</p>
+            </div>
+          </ReportCard>
+
+          {/* ── Layer Scores ── */}
+          <ReportCard label="Layer Scores">
+            <div className="mb-6">
+              <div className="flex items-baseline gap-3 mb-1">
+                <span className="text-xs font-display font-semibold tracking-widest text-starlight/40 uppercase">
+                  Overall Health
+                </span>
+                <span
+                  className="font-display font-bold text-2xl"
+                  style={{ color: getScoreColor(layerScores.overall) }}
+                >
+                  {layerScores.overall}
+                </span>
+                <span className="text-xs font-display font-semibold" style={{ color: getScoreColor(layerScores.overall) }}>
+                  / 10
+                </span>
+              </div>
+            </div>
+            <div className="space-y-4">
+              {([layerScores.signal, layerScores.gravity, layerScores.orbit, layerScores.thrust] as const).map((layer) => (
+                <div key={layer.label} className="rounded-xl border border-starlight/8 bg-deep-space/40 p-5">
+                  <div className="flex items-center justify-between mb-1">
+                    <div>
+                      <span className="font-display font-bold text-starlight text-base">{layer.label}</span>
+                      <span className="text-starlight/30 text-sm ml-2">{layer.area}</span>
+                    </div>
+                    <span className="font-display font-bold text-xl" style={{ color: getScoreColor(layer.score) }}>
+                      {layer.score}
+                    </span>
+                  </div>
+                  <p className="text-starlight/40 text-xs mb-3">{layer.question}</p>
+                  {/* Score bar */}
+                  <div className="h-2 rounded-full bg-starlight/6 overflow-hidden mb-3">
+                    <div
+                      className="h-full rounded-full transition-all duration-500"
+                      style={{
+                        width: `${(layer.score / 10) * 100}%`,
+                        backgroundColor: getScoreColor(layer.score),
+                      }}
+                    />
+                  </div>
+                  {/* Factors */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {layer.factors.map((f) => (
+                      <div key={f.name} className="text-xs">
+                        <span className="text-starlight/35">{f.name}</span>
+                        <span className="text-starlight/55 ml-1">{f.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* Legend */}
+            <div className="flex items-center gap-5 mt-5 pt-4 border-t border-starlight/6">
+              <div className="flex items-center gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: "#22c55e" }} />
+                <span className="text-xs text-starlight/40">8–10 Good</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: "#eab308" }} />
+                <span className="text-xs text-starlight/40">5–7 Be Aware</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: "#ef4444" }} />
+                <span className="text-xs text-starlight/40">0–4 Warning</span>
+              </div>
             </div>
           </ReportCard>
 

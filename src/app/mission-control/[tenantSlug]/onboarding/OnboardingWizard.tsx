@@ -212,9 +212,19 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
                     <button onClick={() => saveCredential("google_analytics")} disabled={saving} style={btnPrimary}>
                       {saving ? "Saving..." : "Connect"}
                     </button>
-                    <p style={{ fontSize: 12, color: "rgba(232,223,207,0.25)", marginTop: 8 }}>
-                      Found in Google Analytics → Admin → Property Settings.
-                    </p>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 8 }}>
+                      <p style={{ fontSize: 12, color: "rgba(232,223,207,0.25)", margin: 0 }}>
+                        Found in Google Analytics → Admin → Property Settings.
+                      </p>
+                      <a
+                        href="https://cosmicreachcreative.com/help/setup-ga4"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ fontSize: 12, color: "#d4a574", fontWeight: 600, whiteSpace: "nowrap", textDecoration: "none", fontFamily: 'var(--font-display)' }}
+                      >
+                        Step-by-step guide &rarr;
+                      </a>
+                    </div>
                   </div>
                 )}
                 {providerSources["google_analytics"] === "platform" && (
@@ -243,9 +253,19 @@ export function OnboardingWizard({ tenantSlug, tenantName, userName, progress, c
                     <button onClick={() => saveCredential("search_console")} disabled={saving} style={btnPrimary}>
                       {saving ? "Saving..." : "Connect"}
                     </button>
-                    <p style={{ fontSize: 12, color: "rgba(232,223,207,0.25)", marginTop: 8 }}>
-                      Found in Search Console → Settings → Property. Use the format shown (sc-domain: or full URL).
-                    </p>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 8 }}>
+                      <p style={{ fontSize: 12, color: "rgba(232,223,207,0.25)", margin: 0 }}>
+                        Found in Search Console → Settings → Property.
+                      </p>
+                      <a
+                        href="https://cosmicreachcreative.com/help/setup-search-console"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ fontSize: 12, color: "#d4a574", fontWeight: 600, whiteSpace: "nowrap", textDecoration: "none", fontFamily: 'var(--font-display)' }}
+                      >
+                        Step-by-step guide &rarr;
+                      </a>
+                    </div>
                   </div>
                 )}
                 {providerSources["search_console"] === "platform" && (

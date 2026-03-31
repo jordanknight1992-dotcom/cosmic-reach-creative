@@ -155,10 +155,10 @@ export default function PricingPage() {
               <ul className="space-y-2 mb-6">
                 {[
                   "Track leads and sources",
-                  "Monitor site performance",
-                  "Improve search visibility",
-                  "Make small updates",
-                  "Recommend next actions",
+                  "Site speed, uptime, and health monitoring",
+                  "Search visibility and keyword tracking",
+                  "Exportable monthly performance reports",
+                  "Small updates and recommendations",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-sm text-starlight/80">
                     <span className="text-copper mt-0.5 shrink-0">&#9670;</span>

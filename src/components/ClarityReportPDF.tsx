@@ -12,12 +12,14 @@ import {
 import {
   reportMeta,
   businessContext,
+  layerScores,
   siteBreakdowns,
   leadLimiters,
   priorityFixes,
   afterFixing,
   recommendedNextStep,
 } from "@/lib/clarity-report-data";
+import { getScoreColor } from "@/lib/site-scoring";
 
 /* ─── Font Registration ─── */
 let fontsRegistered = false;
@@ -304,29 +306,87 @@ export function ClarityReportDocument({ origin = "" }: { origin?: string }) {
       </Page>
 
       {/* ── Page 2: Business Context + Where the Site Breaks Down ── */}
-      <Page size="LETTER" style={s.page}>
+      <Page size="LETTER" style={s.page} wrap>
         <PageBg />
         <View style={s.pageContent}>
           {/* Business Context */}
-          <SectionDivider label="Business Context" />
-          <View style={[s.card, s.mb16]}>
-            <View style={s.mb8}>
-              <Text style={s.metaLabel}>Business</Text>
-              <Text style={s.metaValue}>{reportMeta.business}</Text>
-              <Text style={s.metaLabel}>Industry</Text>
-              <Text style={s.metaValue}>{reportMeta.industry}</Text>
-              <Text style={s.metaLabel}>Primary Offer</Text>
-              <Text style={[s.bodyText, { maxWidth: 400 }]}>{reportMeta.primaryOffer}</Text>
+          <View wrap={false}>
+            <SectionDivider label="Business Context" />
+            <View style={[s.card, s.mb16]}>
+              <View style={s.mb8}>
+                <Text style={s.metaLabel}>Business</Text>
+                <Text style={s.metaValue}>{reportMeta.business}</Text>
+                <Text style={s.metaLabel}>Industry</Text>
+                <Text style={s.metaValue}>{reportMeta.industry}</Text>
+                <Text style={s.metaLabel}>Primary Offer</Text>
+                <Text style={[s.bodyText, { maxWidth: 400 }]}>{reportMeta.primaryOffer}</Text>
+              </View>
+              <View style={s.mt12}>
+                <Text style={s.bodyText}>{businessContext}</Text>
+              </View>
             </View>
-            <View style={s.mt12}>
-              <Text style={s.bodyText}>{businessContext}</Text>
+          </View>
+
+          {/* Layer Scores */}
+          <View wrap={false}>
+            <SectionDivider label="Layer Scores" />
+            <View style={s.card}>
+              {/* Overall */}
+              <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 14 }}>
+                <Text style={s.smallLabel}>Overall Health</Text>
+                <Text style={{ fontFamily: "Space Grotesk", fontSize: 22, fontWeight: 700, color: getScoreColor(layerScores.overall), marginLeft: 10 }}>
+                  {layerScores.overall}
+                </Text>
+                <Text style={{ fontSize: 9, color: c.starlightDim, marginLeft: 3, marginTop: 6 }}>/ 10</Text>
+              </View>
+
+              {/* Each layer */}
+              {[layerScores.signal, layerScores.gravity, layerScores.orbit, layerScores.thrust].map((layer) => (
+                <View key={layer.label} style={[s.subCard, { marginBottom: 8 }]}>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
+                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                      <Text style={{ fontFamily: "Space Grotesk", fontSize: 10, fontWeight: 700, color: c.starlight }}>{layer.label}</Text>
+                      <Text style={{ fontSize: 8, color: c.starlightDim, marginLeft: 6 }}>{layer.area}</Text>
+                    </View>
+                    <Text style={{ fontFamily: "Space Grotesk", fontSize: 14, fontWeight: 700, color: getScoreColor(layer.score) }}>
+                      {layer.score}
+                    </Text>
+                  </View>
+                  {/* Score bar */}
+                  <View style={{ height: 5, borderRadius: 3, backgroundColor: c.cardBorder, marginBottom: 6 }}>
+                    <View style={{ height: 5, borderRadius: 3, backgroundColor: getScoreColor(layer.score), width: `${(layer.score / 10) * 100}%` }} />
+                  </View>
+                  {/* Factors inline */}
+                  <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+                    {layer.factors.map((f) => (
+                      <View key={f.name} style={{ width: "33%", marginBottom: 2 }}>
+                        <Text style={{ fontSize: 6.5, color: c.starlightFaint }}>{f.name}: <Text style={{ color: c.starlightDim }}>{f.value}</Text></Text>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+              ))}
+
+              {/* Legend */}
+              <View style={{ flexDirection: "row", marginTop: 8 }}>
+                {[
+                  { color: "#22c55e", label: "8–10 Good" },
+                  { color: "#eab308", label: "5–7 Be Aware" },
+                  { color: "#ef4444", label: "0–4 Warning" },
+                ].map((item) => (
+                  <View key={item.label} style={{ flexDirection: "row", alignItems: "center", marginRight: 16 }}>
+                    <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: item.color, marginRight: 4 }} />
+                    <Text style={{ fontSize: 7, color: c.starlightDim }}>{item.label}</Text>
+                  </View>
+                ))}
+              </View>
             </View>
           </View>
 
           {/* Where the Site Breaks Down */}
           <SectionDivider label="Where the Site Breaks Down" />
           {siteBreakdowns.map((item) => (
-            <View key={item.area} style={s.card}>
+            <View key={item.area} style={s.card} wrap={false}>
               <Text style={{ fontFamily: "Space Grotesk", fontSize: 11, fontWeight: 700, color: c.starlight, marginBottom: 8 }}>
                 {item.area}
               </Text>
@@ -345,26 +405,28 @@ export function ClarityReportDocument({ origin = "" }: { origin?: string }) {
       </Page>
 
       {/* ── Page 3: What Is Limiting Leads + Priority Fixes ── */}
-      <Page size="LETTER" style={s.page}>
+      <Page size="LETTER" style={s.page} wrap>
         <PageBg />
         <View style={s.pageContent}>
           {/* What Is Limiting Leads */}
-          <SectionDivider label="What Is Limiting Leads" />
-          <View style={[s.card, s.mb20]}>
-            {leadLimiters.map((item, i) => (
-              <View key={i} style={s.numberedItem}>
-                <View style={s.numberCircle}>
-                  <Text style={s.numberText}>{i + 1}</Text>
+          <View wrap={false}>
+            <SectionDivider label="What Is Limiting Leads" />
+            <View style={[s.card, s.mb20]}>
+              {leadLimiters.map((item, i) => (
+                <View key={i} style={s.numberedItem}>
+                  <View style={s.numberCircle}>
+                    <Text style={s.numberText}>{i + 1}</Text>
+                  </View>
+                  <Text style={[s.bodyText, { flex: 1, marginTop: 1 }]}>{item}</Text>
                 </View>
-                <Text style={[s.bodyText, { flex: 1, marginTop: 1 }]}>{item}</Text>
-              </View>
-            ))}
+              ))}
+            </View>
           </View>
 
           {/* Priority Fixes */}
           <SectionDivider label="Priority Fixes" />
           {priorityFixes.map((item, i) => (
-            <View key={i} style={s.card}>
+            <View key={i} style={s.card} wrap={false}>
               <View style={s.numberedItem}>
                 <View style={s.numberCircle}>
                   <Text style={s.numberText}>{i + 1}</Text>
@@ -383,34 +445,38 @@ export function ClarityReportDocument({ origin = "" }: { origin?: string }) {
       </Page>
 
       {/* ── Page 4: What Changes After Fixing + Recommended Next Step ── */}
-      <Page size="LETTER" style={s.page}>
+      <Page size="LETTER" style={s.page} wrap>
         <PageBg />
         <View style={s.pageContent}>
           {/* What Changes After Fixing */}
-          <SectionDivider label="What Changes After Fixing" />
-          <View style={[s.card, s.mb20]}>
-            {afterFixing.map((item, i) => (
-              <View key={i} style={{ flexDirection: "row", marginBottom: 8 }}>
-                <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: c.copper, marginRight: 10, marginTop: 4 }} />
-                <Text style={[s.bodyText, { flex: 1 }]}>{item}</Text>
-              </View>
-            ))}
+          <View wrap={false}>
+            <SectionDivider label="What Changes After Fixing" />
+            <View style={[s.card, s.mb20]}>
+              {afterFixing.map((item, i) => (
+                <View key={i} style={{ flexDirection: "row", marginBottom: 8 }}>
+                  <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: c.copper, marginRight: 10, marginTop: 4 }} />
+                  <Text style={[s.bodyText, { flex: 1 }]}>{item}</Text>
+                </View>
+              ))}
+            </View>
           </View>
 
           {/* Recommended Next Step */}
-          <SectionDivider label="Recommended Next Step" />
-          <View style={[s.card, { borderColor: c.copper, borderWidth: 1.5 }]}>
-            <Text style={[s.smallLabel, s.mb4]}>Recommended Engagement</Text>
-            <Text style={{ fontFamily: "Space Grotesk", fontSize: 12, fontWeight: 700, color: c.copper, marginBottom: 6 }}>
-              {recommendedNextStep.name}
-            </Text>
-            <Text style={[s.bodyText, s.mb8]}>{recommendedNextStep.description}</Text>
-            <Text style={s.subCardAccentLabel}>Next Step</Text>
-            <Text style={{ fontSize: 9, lineHeight: 1.55, color: c.copper }}>{recommendedNextStep.nextStep}</Text>
+          <View wrap={false}>
+            <SectionDivider label="Recommended Next Step" />
+            <View style={[s.card, { borderColor: c.copper, borderWidth: 1.5 }]}>
+              <Text style={[s.smallLabel, s.mb4]}>Recommended Engagement</Text>
+              <Text style={{ fontFamily: "Space Grotesk", fontSize: 12, fontWeight: 700, color: c.copper, marginBottom: 6 }}>
+                {recommendedNextStep.name}
+              </Text>
+              <Text style={[s.bodyText, s.mb8]}>{recommendedNextStep.description}</Text>
+              <Text style={s.subCardAccentLabel}>Next Step</Text>
+              <Text style={{ fontSize: 9, lineHeight: 1.55, color: c.copper }}>{recommendedNextStep.nextStep}</Text>
+            </View>
           </View>
 
           {/* Report end mark */}
-          <View style={[s.mt12, { alignItems: "center", paddingTop: 20 }]}>
+          <View style={[s.mt12, { alignItems: "center", paddingTop: 20 }]} wrap={false}>
             <View style={{ width: 40, height: 1, backgroundColor: c.copperSoft, marginBottom: 16 }} />
             <Text
               style={{

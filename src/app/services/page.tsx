@@ -58,8 +58,9 @@ ICON: orbit
 We track what is working after launch and recommend what to do next.
 
 - Lead tracking and source visibility
-- Site performance monitoring
-- Search visibility improvements
+- Site speed, uptime, and health monitoring
+- Search visibility and keyword tracking
+- Exportable monthly performance reports
 - Small updates and recommendations
 
 ICON: signal`;

@@ -82,7 +82,7 @@ export default function HowItWorksPage() {
               {
                 step: "3",
                 title: "Launch",
-                description: "Deploy with lead capture and performance visibility built in. You see where inquiries come from and what needs attention going forward.",
+                description: "Deploy with lead capture, site health monitoring, and performance visibility built in. You see where inquiries come from, how your site is performing, and what needs attention.",
                 price: "Included",
               },
             ].map((item) => (

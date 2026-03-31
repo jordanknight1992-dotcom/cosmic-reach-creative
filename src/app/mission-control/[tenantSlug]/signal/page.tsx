@@ -3,8 +3,10 @@ import { SignalView } from "./SignalView";
 import { getCredentialProviders } from "@/lib/mc-db";
 import { getEnvConfiguredProviders, resolveCredential } from "@/lib/mc-auth";
 import { getGA4Data, getSearchConsoleData, type GA4Metrics, type SearchConsoleMetrics } from "@/lib/ga4";
+import { getPageSpeedData, checkUptime, type PageSpeedResult, type UptimeResult } from "@/lib/site-health";
+import { calculateSiteHealth } from "@/lib/site-scoring";
 
-async function getPerformanceData(tenantId: number) {
+async function getPerformanceData(tenantId: number, domain: string | null) {
   const [dbProviders] = await Promise.all([
     getCredentialProviders(tenantId),
   ]);
@@ -50,11 +52,44 @@ async function getPerformanceData(tenantId: number) {
     }
   }
 
+  // Fetch free website health data (PageSpeed + uptime) if domain is set
+  let pageSpeed: PageSpeedResult | null = null;
+  let uptime: UptimeResult | null = null;
+
+  if (domain) {
+    const siteUrl = domain.startsWith("http") ? domain : `https://${domain}`;
+    try {
+      const [psResult, uptimeResult] = await Promise.all([
+        getPageSpeedData(siteUrl, "mobile").catch(() => null),
+        checkUptime(siteUrl).catch(() => null),
+      ]);
+      pageSpeed = psResult;
+      uptime = uptimeResult;
+    } catch (err) {
+      console.error("Site health fetch failed:", err);
+    }
+  }
+
+  // Calculate layer scores from all available data
+  const hasSearchConsole = connectedProviders.includes("search_console");
+  const scores = calculateSiteHealth({
+    pageSpeed,
+    uptime,
+    ga4: ga4Data,
+    keywords: keywordData,
+    hasGA4,
+    hasSearchConsole,
+  });
+
   return {
     hasGA4,
     ga4Data,
     keywordData,
     connectedProviders,
+    pageSpeed,
+    uptime,
+    siteUrl: domain ? (domain.startsWith("http") ? domain : `https://${domain}`) : null,
+    scores,
   };
 }
 
@@ -65,7 +100,7 @@ export default async function PerformancePage({
 }) {
   const { tenantSlug } = await params;
   const { tenant } = await requireTenantAccess(tenantSlug);
-  const data = await getPerformanceData(tenant.id);
+  const data = await getPerformanceData(tenant.id, tenant.domain);
 
   return <SignalView tenantSlug={tenant.slug} data={data} />;
 }

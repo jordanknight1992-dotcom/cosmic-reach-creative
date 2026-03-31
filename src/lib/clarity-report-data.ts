@@ -1,9 +1,67 @@
 /* ─── Shared Clarity Report data for web page + PDF export ─── */
 
+import type { SiteHealthScores } from "./site-scoring";
+
 export const reportMeta = {
   business: "AtlasOps",
   industry: "SaaS Operations Consulting",
   primaryOffer: "Operational systems consulting for scaling SaaS companies",
+};
+
+/* ─── Layer Scores (audit assessment) ─── */
+export const layerScores: SiteHealthScores = {
+  overall: 1.5,
+  signal: {
+    score: 2,
+    label: "Signal",
+    area: "Messaging",
+    question: "Is your message reaching the right people?",
+    factors: [
+      { name: "SEO Structure", value: "42/100", contribution: 4.2, weight: 0.3 },
+      { name: "Search Position", value: "Avg #38.4", contribution: 2, weight: 0.3 },
+      { name: "Search Impressions", value: "210/mo", contribution: 2, weight: 0.2 },
+      { name: "Organic Traffic", value: "8%", contribution: 2, weight: 0.2 },
+    ],
+  },
+  gravity: {
+    score: 2,
+    label: "Gravity",
+    area: "Offer",
+    question: "Is your offer converting visitors into leads?",
+    factors: [
+      { name: "Engagement Rate", value: "22%", contribution: 2, weight: 0.3 },
+      { name: "Bounce Rate", value: "74%", contribution: 2, weight: 0.25 },
+      { name: "Search CTR", value: "0.6%", contribution: 2, weight: 0.2 },
+      { name: "Conversion Rate", value: "0.1%", contribution: 0, weight: 0.25 },
+    ],
+  },
+  orbit: {
+    score: 1,
+    label: "Orbit",
+    area: "Path to Action",
+    question: "Is your site guiding visitors toward action?",
+    factors: [
+      { name: "Accessibility", value: "38/100", contribution: 3.8, weight: 0.2 },
+      { name: "Best Practices", value: "25/100", contribution: 2.5, weight: 0.15 },
+      { name: "Layout Stability", value: "0.340", contribution: 2, weight: 0.25 },
+      { name: "Page Load (LCP)", value: "5.2s", contribution: 2, weight: 0.2 },
+      { name: "Responsiveness", value: "820ms", contribution: 2, weight: 0.2 },
+    ],
+  },
+  thrust: {
+    score: 1,
+    label: "Thrust",
+    area: "Visibility",
+    question: "Can you see what is working?",
+    factors: [
+      { name: "Performance", value: "28/100", contribution: 2.8, weight: 0.25 },
+      { name: "Uptime", value: "2400ms", contribution: 4, weight: 0.2 },
+      { name: "Analytics", value: "Not connected", contribution: 0, weight: 0.2 },
+      { name: "Search Data", value: "Not connected", contribution: 0, weight: 0.15 },
+      { name: "Traffic Trend", value: "-18%", contribution: 2, weight: 0.2 },
+    ],
+  },
+  generatedAt: new Date().toISOString(),
 };
 
 /* ─── Section 1: Business Context ─── */
