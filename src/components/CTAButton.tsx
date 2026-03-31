@@ -16,6 +16,7 @@ function resolveCtaHref(label: string): string {
   // High-intent: Audit / Clarity → Book a conversation first
   if (
     lower.includes("start the clarity audit") ||
+    lower.includes("start with the audit") ||
     lower.includes("get your clarity audit") ||
     lower.includes("start with a business") ||
     lower.includes("book a business clarity audit") ||

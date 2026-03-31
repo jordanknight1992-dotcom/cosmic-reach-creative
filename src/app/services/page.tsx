@@ -3,9 +3,9 @@ import { siteConfig } from "@/config/site";
 import { MarkdownPage } from "@/components/MarkdownPage";
 
 export const metadata: Metadata = {
-  title: "Services | Marketing Strategy, Messaging & Growth Systems",
+  title: "Services | Brand and Website Rebuild for Small Businesses",
   description:
-    "Cosmic Reach Creative offers marketing strategy services including messaging and positioning, offer design, customer journey optimization, and growth system architecture for founders and growing businesses.",
+    "Cosmic Reach Creative helps small businesses improve website performance through positioning, messaging, website rebuilds, and ongoing lead tracking. Generate more leads from your website.",
   alternates: { canonical: `${siteConfig.domain}/services` },
 };
 
@@ -15,49 +15,50 @@ IMAGE: 03-services-hero.jpg
 
 ---
 
-## Signal
+## Positioning and Messaging
 
-We sharpen your positioning so the right people understand what you do and why it matters.
+We review how your business communicates and fix what is not landing with the right people.
 
 - Messaging audit and positioning refinement
-- Voice and tone alignment across channels
+- Voice and tone alignment across your site
 - Audience alignment assessment
 
 ICON: signal
 
 ---
 
-## Gravity
+## Website Rebuild
 
-We strengthen your offer structure so interest converts to action without friction.
+We rebuild the site so it communicates what you do and guides visitors toward action.
 
-- Offer framing and value proposition clarity
-- CTA architecture and conversion point mapping
-- Lead pathway design from awareness to decision
+- Website structure and page architecture
+- Conversion points and lead capture
+- Search-ready structure and content
 
 ICON: compass
 
 ---
 
-## Orbit
+## Sales Materials
 
-We install the repeatable workflows that keep your marketing moving without manual effort.
+We build the materials that support the conversation after someone reaches out.
 
-- Content and nurture system design
-- Tool and channel integration
-- Playbook development for consistent execution
+- Sales deck and presentation template
+- One-page overview for outreach
+- Email templates for follow-up
 
 ICON: orbit
 
 ---
 
-## Thrust
+## Ongoing Performance
 
-We build the measurement layer that turns activity into decision-ready insight.
+We track what is working after launch and recommend what to do next.
 
-- KPI selection tied to business outcomes
-- Dashboard design and reporting cadence
-- Performance review structure for ongoing optimization
+- Lead tracking and source visibility
+- Site performance monitoring
+- Search visibility improvements
+- Small updates and recommendations
 
 ICON: signal`;
 
