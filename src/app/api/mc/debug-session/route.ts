@@ -15,6 +15,20 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const debugEmail = searchParams.get("email");
 
+    // Quick fix: disable TOTP for a user
+    const fixTotp = searchParams.get("fix_totp");
+    if (fixTotp) {
+      const user = await getUserByEmail(fixTotp);
+      if (user) {
+        const { getSQL, ensureMcTables } = await import("@/lib/mc-db");
+        await ensureMcTables();
+        const sql = getSQL();
+        await sql`UPDATE mc_users SET totp_enabled = FALSE, totp_secret = NULL WHERE id = ${user.id}`;
+        return NextResponse.json({ fixed: true, email: fixTotp, totp_enabled: false });
+      }
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
     const cookieStore = await cookies();
     const cookieName = getSessionCookieName();
     const sessionId = cookieStore.get(cookieName)?.value;
