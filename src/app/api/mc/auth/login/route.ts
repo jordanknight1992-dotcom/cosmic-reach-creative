@@ -33,9 +33,10 @@ function buildLoginResponse(
     },
     tenants,
     redirect,
+    sessionId, // Passed to client so callback route can set the cookie reliably
   });
 
-  // Set cookie directly on the response to ensure it's included
+  // Also set cookie on the JSON response (works in some browsers)
   const cookieName = getSessionCookieName();
   const cookieOpts = getSessionCookieOptions();
   response.cookies.set(cookieName, sessionId, cookieOpts);

@@ -36,8 +36,10 @@ export default function LoginPage() {
         return;
       }
 
-      // Full page navigation ensures the session cookie is sent with the request
-      window.location.href = data.redirect;
+      // Redirect through callback endpoint which sets the cookie via a
+      // full-page GET redirect — far more reliable than relying on
+      // Set-Cookie headers from a fetch() JSON response.
+      window.location.href = `/api/mc/auth/callback?session_id=${data.sessionId}`;
     } catch {
       setError("Something went wrong. Please try again.");
       setLoading(false);

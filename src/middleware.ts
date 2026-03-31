@@ -46,6 +46,7 @@ export async function middleware(request: NextRequest) {
     "/mission-control/reset-password",
     "/mission-control/demo",
     "/api/mc/auth",
+    "/api/mc/auth/callback",
     "/api/mc/debug-session",
     "/api/mc/test-emails",
   ];
