@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { saveContactSubmission } from "@/lib/db";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { brandedEmailShell, emailCard, emailSectionLabel, emailField } from "@/lib/email-template";
 
 const NOTIFY_EMAIL = "jordan@cosmicreachcreative.com";
 
@@ -58,7 +59,20 @@ export async function POST(request: Request) {
         to: [NOTIFY_EMAIL],
         reply_to: email,
         subject: `New inquiry from ${name}`,
-        text: `Name: ${name}\nEmail: ${email}\nCompany: ${company || "N/A"}\n\nMessage:\n${message}`,
+        html: brandedEmailShell(
+          emailCard(`
+            ${emailSectionLabel("New Contact Inquiry")}
+            <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+              ${emailField("Name", name)}
+              ${emailField("Email", email)}
+              ${emailField("Company", company || "N/A")}
+            </table>
+            <div style="margin-top:16px; padding-top:16px; border-top:1px solid rgba(232,223,207,0.06);">
+              <p style="font-size:11px; text-transform:uppercase; letter-spacing:1px; color:rgba(232,223,207,0.3); font-weight:600; margin:0 0 8px;">Message</p>
+              <p style="font-size:14px; color:rgba(232,223,207,0.7); line-height:1.6; margin:0; white-space:pre-wrap;">${message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br />")}</p>
+            </div>
+          `)
+        ),
       }),
     });
 

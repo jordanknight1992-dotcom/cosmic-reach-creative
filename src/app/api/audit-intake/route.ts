@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { saveAuditSubmission } from "@/lib/db";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { brandedEmailShell, emailCard, emailSectionLabel, emailField, emailInfoBlock } from "@/lib/email-template";
 
 const NOTIFY_EMAIL = "jordan@cosmicreachcreative.com";
 
@@ -43,31 +44,38 @@ export async function POST(request: Request) {
       );
     }
 
-    const emailText = [
-      "=== NEW BUSINESS CLARITY AUDIT INTAKE ===",
-      "",
-      `Name:        ${name}`,
-      `Email:       ${email}`,
-      `Company:     ${company || "N/A"}`,
-      `Website:     ${website || "N/A"}`,
-      "",
-      "--- Business Context ---",
-      `What does your business do?\n${businessDescription}`,
-      "",
-      `What feels stuck right now?\n${whatIsStuck}`,
-      "",
-      `Primary goal (6–12 months):\n${primaryGoal || "N/A"}`,
-      "",
-      `Key offers or services:\n${keyOffers || "N/A"}`,
-      "",
-      `Ideal customer:\n${idealCustomer || "N/A"}`,
-      "",
-      `Anything else to review:\n${anythingElse || "N/A"}`,
-      "",
-      `Supporting links:\n${supportingLinks || "N/A"}`,
-      "",
-      "==========================================",
-    ].join("\n");
+    const esc = (s: string) => s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\n/g, "<br />");
+
+    const contextFields = [
+      { label: "What does your business do?", value: businessDescription },
+      { label: "What feels stuck right now?", value: whatIsStuck },
+      { label: "Primary goal (6-12 months)", value: primaryGoal || "N/A" },
+      { label: "Key offers or services", value: keyOffers || "N/A" },
+      { label: "Ideal customer", value: idealCustomer || "N/A" },
+      { label: "Anything else to review", value: anythingElse || "N/A" },
+      { label: "Supporting links", value: supportingLinks || "N/A" },
+    ];
+
+    const emailHtml = brandedEmailShell(
+      emailCard(`
+        ${emailSectionLabel("New Clarity Audit Intake")}
+        <table width="100%" cellpadding="0" cellspacing="0" role="presentation">
+          ${emailField("Name", name)}
+          ${emailField("Email", email)}
+          ${emailField("Company", company || "N/A")}
+          ${emailField("Website", website || "N/A")}
+        </table>
+      `) +
+      emailCard(`
+        ${emailSectionLabel("Business Context")}
+        ${contextFields.map((f) =>
+          emailInfoBlock(`
+            <p style="font-size:11px; text-transform:uppercase; letter-spacing:1px; color:rgba(232,223,207,0.3); font-weight:600; margin:0 0 6px;">${f.label}</p>
+            <p style="font-size:13px; color:rgba(232,223,207,0.65); line-height:1.5; margin:0; white-space:pre-wrap;">${esc(f.value)}</p>
+          `)
+        ).join("")}
+      `)
+    );
 
     /* Save to DB regardless of email status */
     await saveAuditSubmission({
@@ -100,7 +108,7 @@ export async function POST(request: Request) {
         to: [NOTIFY_EMAIL],
         reply_to: email,
         subject: `New Clarity Audit Intake: ${name}${company ? ` (${company})` : ""}`,
-        text: emailText,
+        html: emailHtml,
       }),
     });
 

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requestPasswordReset } from "@/lib/mc-auth";
 import { checkRateLimit } from "@/lib/rate-limit";
+import { brandedEmailShell, emailCard, emailSectionLabel, emailParagraph, emailButton } from "@/lib/email-template";
 
 export async function POST(request: Request) {
   try {
@@ -30,6 +31,16 @@ export async function POST(request: Request) {
 
     // Send reset email via Resend
     if (process.env.RESEND_API_KEY) {
+      const html = brandedEmailShell(
+        emailCard(`
+          ${emailSectionLabel("Password Reset")}
+          ${emailParagraph(`Hi ${user.full_name},`)}
+          ${emailParagraph("We received a request to reset your Mission Control password. Click the button below to set a new one.")}
+          ${emailButton("Reset Password", resetUrl)}
+          ${emailParagraph("This link expires in 1 hour. If you did not request this, you can safely ignore this email.")}
+        `)
+      );
+
       await fetch("https://api.resend.com/emails", {
         method: "POST",
         headers: {
@@ -40,17 +51,7 @@ export async function POST(request: Request) {
           from: "Mission Control <noreply@cosmicreachcreative.com>",
           to: [user.email],
           subject: "Reset your Mission Control password",
-          text: [
-            `Hi ${user.full_name},`,
-            "",
-            "We received a request to reset your Mission Control password.",
-            "",
-            `Click here to reset it: ${resetUrl}`,
-            "",
-            "This link expires in 1 hour. If you didn't request this, you can safely ignore this email.",
-            "",
-            "- Cosmic Reach Creative",
-          ].join("\n"),
+          html,
         }),
       });
     } else {
