@@ -39,9 +39,21 @@ export default function LoginPage() {
         return;
       }
 
+      // Handle TOTP requirement (if 2FA is enabled)
+      if (data.requireTotp) {
+        setError("Two-factor authentication is not yet supported in this interface. Please contact support.");
+        setLoading(false);
+        return;
+      }
+
+      if (!data.sessionId) {
+        setError("Login succeeded but no session was returned. Please try again.");
+        setLoading(false);
+        return;
+      }
+
       // Redirect through callback endpoint which sets the cookie via a
-      // full-page GET redirect — far more reliable than relying on
-      // Set-Cookie headers from a fetch() JSON response.
+      // full-page GET response — reliable cookie setting
       window.location.href = `/api/mc/auth/callback?session_id=${data.sessionId}`;
     } catch {
       setError("Something went wrong. Please try again.");
