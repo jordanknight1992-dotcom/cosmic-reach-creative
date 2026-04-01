@@ -585,6 +585,7 @@ export async function decryptCredential(ciphertext: string): Promise<string> {
 const ENV_VAR_MAP: Record<string, () => string | undefined> = {
   google_analytics: () => process.env.GA4_PROPERTY_ID,
   google_search_console: () => process.env.SEARCH_CONSOLE_SITE_URL,
+  google_calendar: () => process.env.GOOGLE_REFRESH_TOKEN,
 };
 
 /**

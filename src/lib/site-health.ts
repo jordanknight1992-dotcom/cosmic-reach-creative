@@ -49,12 +49,15 @@ export async function getPageSpeedData(
     // Note: URL.searchParams.set overwrites, need to use append for multiple categories
     const fullUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(targetUrl)}&strategy=${strategy.toUpperCase()}&category=PERFORMANCE&category=ACCESSIBILITY&category=SEO&category=BEST_PRACTICES`;
 
+    console.log("PageSpeed: fetching", targetUrl, strategy);
     const res = await fetch(fullUrl, {
-      signal: AbortSignal.timeout(30000),
+      signal: AbortSignal.timeout(60000),
+      next: { revalidate: 3600 },
     });
 
     if (!res.ok) {
-      console.error("PageSpeed API error:", res.status, await res.text().catch(() => ""));
+      const errText = await res.text().catch(() => "");
+      console.error("PageSpeed API error:", res.status, errText);
       return null;
     }
 

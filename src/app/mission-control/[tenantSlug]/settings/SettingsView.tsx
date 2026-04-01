@@ -173,7 +173,6 @@ export function SettingsView({ tenantSlug, tenant, user, connectedProviders, pro
   const TABS: { key: typeof activeTab; label: string }[] = [
     { key: "general", label: "General" },
     { key: "team", label: "Team" },
-    { key: "icp", label: "ICP & Scoring" },
     { key: "integrations", label: "Integrations" },
     { key: "security", label: "Security" },
   ];
