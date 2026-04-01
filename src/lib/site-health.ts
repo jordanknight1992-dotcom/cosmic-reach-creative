@@ -47,7 +47,9 @@ export async function getPageSpeedData(
     apiUrl.searchParams.set("category", "BEST_PRACTICES");
 
     // Note: URL.searchParams.set overwrites, need to use append for multiple categories
-    const fullUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(targetUrl)}&strategy=${strategy.toUpperCase()}&category=PERFORMANCE&category=ACCESSIBILITY&category=SEO&category=BEST_PRACTICES`;
+    const apiKey = process.env.PAGESPEED_API_KEY;
+    const keyParam = apiKey ? `&key=${apiKey}` : "";
+    const fullUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(targetUrl)}&strategy=${strategy.toUpperCase()}&category=PERFORMANCE&category=ACCESSIBILITY&category=SEO&category=BEST_PRACTICES${keyParam}`;
 
     console.log("PageSpeed: fetching", targetUrl, strategy);
     const res = await fetch(fullUrl, {
