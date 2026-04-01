@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 
-const STRIPE_PK = "pk_live_51T44ee0vGBLnj72kD2j5gz8MPQ9DaBKFFOtPacjH3NUsAns3pzr5N2C2pcqcOsvDGa0SD6sg2jcZxggna1VmAjBl00uJ9kwAz4";
+const STRIPE_PK = process.env.NEXT_PUBLIC_STRIPE_PK || "";
 
 let scriptLoaded = false;
 function ensureScript() {
