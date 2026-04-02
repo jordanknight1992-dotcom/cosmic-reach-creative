@@ -20,12 +20,17 @@ export const siteConfig = {
     {
       label: "How We Think",
       href: "/framework",
-      detail: "What we evaluate and why",
+      detail: "The four-layer evaluation framework",
     },
     {
       label: "Services",
       href: "/services",
-      detail: "Audit, rebuild, and ongoing",
+      detail: "Audit, rebuild, and optimization",
+    },
+    {
+      label: "The Clarity Audit",
+      href: "/clarity",
+      detail: "The $150 diagnostic entry point",
     },
     {
       label: "Example Report",
@@ -33,5 +38,5 @@ export const siteConfig = {
       detail: "See what the audit delivers",
     },
   ],
-  hiddenRoutes: ["/clarity", "/clarity-session"],
+  hiddenRoutes: ["/clarity-session"],
 } as const;

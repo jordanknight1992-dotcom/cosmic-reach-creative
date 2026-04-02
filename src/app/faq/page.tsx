@@ -4,70 +4,70 @@ import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "FAQ | Audit, Rebuild & Ongoing Performance",
+  title: "FAQ | Clarity Audit, 30-Day Rebuild & Continued Optimization",
   description:
-    "Answers to common questions about the $150 website audit, 30-day rebuild process, ongoing performance at $750/month, and how Cosmic Reach Creative works with small businesses.",
+    "Answers to common questions about the $150 Clarity Audit, 30-Day Rebuild, continued optimization at $750/month, Mission Control, and how Cosmic Reach Creative works with businesses.",
   alternates: { canonical: `${siteConfig.domain}/faq` },
 };
 
 const faqs: { question: string; answer: string; signals?: string[]; closing?: string }[] = [
   {
-    question: "What does the $150 audit include?",
+    question: "What does the $150 Clarity Audit include?",
     answer:
-      "A focused review of your website and messaging. You will see where visitors get stuck, what is unclear, what is limiting inquiries, and what to fix first.\n\nDelivered as a written report in 3–5 business days. Even if you never work with us again, you will know exactly what needs to change.",
+      "A structured diagnostic that evaluates your business across four layers: messaging clarity (Signal), offer strength (Gravity), site structure (Orbit), and performance visibility (Thrust). Each layer is scored 0-10.\n\nYou receive a written report with root-cause findings and a prioritized implementation path. Delivered in 3-5 business days.",
   },
   {
     question: "What happens after the audit?",
     answer:
-      "You receive a report with clear findings and priority fixes. If deeper work is needed, the next step is a full rebuild. The audit fee is credited toward any rebuild engagement.\n\nMany businesses use the audit alone and make changes on their own. There is no obligation to move forward.",
+      "You receive the report and can act on it independently. Many businesses do.\n\nIf the findings reveal deeper structural work, the next step is a 30-Day Rebuild. The audit fee is credited toward the rebuild. There is no obligation to continue.",
   },
   {
-    question: "What does a full rebuild include?",
+    question: "What does a 30-Day Rebuild include?",
     answer:
-      "A full rebuild includes a brand system (positioning, voice, visual identity, and guidelines), website design and development, sales materials, lead capture, and performance visibility. Everything is built to work together.\n\nRebuilds are completed in about 30 days and range from $4,000 to $8,000 depending on scope.",
+      "The complete growth infrastructure rebuilt from a single strategic foundation. This includes a brand system (positioning, voice, visual identity, and guidelines), website design and development, sales materials, lead capture, and Mission Control.\n\nRebuilds are completed in about 30 days and range from $4,000 to $8,000 depending on scope.",
   },
   {
     question: "What is Mission Control?",
     answer:
-      "Mission Control is included with every rebuild. It captures leads from your website, shows where those leads came from, and highlights which pages are driving action.\n\nIt gives you a clear view of what your site is doing after launch, without digging through multiple tools.",
+      "Mission Control is a live dashboard included with every rebuild. It tracks leads, shows where they came from, monitors site health, and gives you a clear view of what your site is doing.\n\nAlso available as a standalone subscription at $19.99/month for any business. Free for all Cosmic Reach Creative-built websites.",
   },
   {
-    question: "What does the $750/month ongoing service include?",
+    question: "What does the $750/month continued optimization include?",
     answer:
-      "Ongoing performance monitoring and improvement after the rebuild. This includes tracking leads and sources, monitoring site performance, improving search visibility, making small updates, and recommending what to focus on next.\n\nIt is designed for businesses that want continued visibility and improvement without managing it themselves.",
+      "Hands-on performance monitoring and strategic improvement after the rebuild. This includes tracking leads and sources, monitoring site performance, improving search visibility, making updates, and recommending what to focus on next.\n\nDesigned for businesses that want the system to keep improving without managing it themselves.",
   },
   {
-    question: "Do I need the ongoing service after a rebuild?",
+    question: "Do I need continued optimization after a rebuild?",
     answer:
-      "No. The rebuild is designed to stand on its own. Mission Control is included at launch so you have visibility from day one.\n\nThe ongoing service is for businesses that want continued improvement, SEO progress, and someone keeping an eye on performance over time.",
+      "No. The rebuild is designed to stand on its own. Mission Control is included at launch so you have visibility from day one.\n\nContinued optimization is for businesses that want ongoing improvement, search visibility growth, and someone keeping the system tuned over time.",
   },
   {
-    question: "Who is this best for?",
+    question: "Who is this built for?",
     answer:
-      "Cosmic Reach works best with small businesses and founders who know their website is not converting the way it should.",
+      "Businesses with traction and friction. Revenue exists. Customers exist. But growth has plateaued and the system underneath is not keeping up.",
     signals: [
-      "The site looks fine but leads are not coming in",
+      "The site looks fine but leads have slowed",
       "Messaging feels unclear or unfocused",
-      "There is no visibility into what is working",
-      "Marketing activity is not producing results",
+      "Marketing activity is happening but results are flat",
+      "There is no visibility into what is actually working",
     ],
     closing:
-      "If those patterns sound familiar, the $150 audit is designed to show you exactly what is going on and what to fix first.",
+      "If those patterns sound familiar, the Clarity Audit is designed to diagnose where the system breaks and what to fix first.",
   },
   {
     question: "How long does the audit take?",
     answer:
-      "Most audits are completed within 3–5 business days after the intake form is submitted. You receive a written report with clear findings and prioritized recommendations.",
+      "3-5 business days after the intake form is submitted. You receive a written report with scored findings and prioritized recommendations.",
   },
   {
     question: "Is this marketing consulting?",
     answer:
-      "Not exactly. The issue is usually not marketing tactics. It is something deeper — unclear messaging, weak site structure, or no path to action.\n\nCosmic Reach identifies what is actually holding the site back and fixes it. The result is a website that works as a system, not just a set of pages.",
+      "The issue is usually not marketing tactics. It is structural. Messaging that has drifted. An offer that creates interest but not action. A site that looks fine but does not convert. No visibility into what is working.\n\nCosmic Reach diagnoses the structural constraint and rebuilds the infrastructure. The result is a system that works together, not a collection of disconnected tactics.",
   },
   {
     question: "Do you only work with businesses in Memphis?",
     answer:
-      "No. Cosmic Reach Creative is headquartered in Memphis, Tennessee, but we work with small businesses nationwide. All engagements are delivered remotely.",
+      "No. Cosmic Reach Creative is headquartered in Memphis, Tennessee, but we work with businesses nationwide. All engagements are delivered remotely.",
   },
 ];
 

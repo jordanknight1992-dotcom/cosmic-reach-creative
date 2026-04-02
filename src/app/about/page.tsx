@@ -1,13 +1,12 @@
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import Image from "next/image";
-import { Icon } from "@/components/Icon";
 import { CTAButton } from "@/components/CTAButton";
 
 export const metadata: Metadata = {
   title: "About | Jordan Knight, Founder of Cosmic Reach Creative",
   description:
-    "Cosmic Reach Creative focuses on identifying where website performance breaks down, then rebuilding the system so it works. Founded by Jordan Knight in Memphis, TN.",
+    "Cosmic Reach Creative is a growth systems consultancy founded by Jordan Knight in Memphis, TN. We identify where business growth infrastructure breaks down and rebuild the system so it performs.",
   alternates: { canonical: `${siteConfig.domain}/about` },
 };
 
@@ -37,7 +36,7 @@ export default function AboutPage() {
         </div>
         <div className="relative mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-24 text-center">
           <div className="max-w-2xl mx-auto">
-            <h1 id="about-hero" className="text-copper">A focus on what is<br />actually working.</h1>
+            <h1 id="about-hero" className="text-copper">Systems design for<br />businesses that have outgrown<br />their infrastructure.</h1>
           </div>
         </div>
       </section>
@@ -46,15 +45,15 @@ export default function AboutPage() {
       <section className="py-12 sm:py-16 bg-section-light" aria-labelledby="origin-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 id="origin-heading" className="mb-4 text-navy">Improve website performance by fixing what is broken.</h2>
+            <h2 id="origin-heading" className="mb-4 text-navy">The problem is rarely what it looks like on the surface.</h2>
             <p className="text-navy/70 text-base mb-3">
-              Most websites are built once and rarely evaluated properly.
+              Most businesses that stall have revenue. They have customers. They have a product that works. What they lack is the infrastructure to sustain momentum at the next level.
             </p>
             <p className="text-navy/70 text-base mb-3">
-              Over time, messaging drifts and performance declines.
+              Messaging drifts. The website stops converting. Leads slow down. The team works harder, but results flatten.
             </p>
             <p className="text-navy/70 text-base">
-              Cosmic Reach Creative focuses on identifying where that breakdown occurs, then rebuilding the system so it performs with more precision.
+              Cosmic Reach identifies the structural constraint and rebuilds the system so growth compounds instead of stalling.
             </p>
           </div>
         </div>
@@ -75,25 +74,16 @@ export default function AboutPage() {
                 />
               </div>
               <div className="text-center md:text-left">
-                <h2 id="founder-heading" className="mb-4">The work is grounded in experience.</h2>
+                <h2 id="founder-heading" className="mb-4">Built from program delivery, not marketing theory.</h2>
                 <p className="text-starlight/70 text-base mb-3">
-                  Jordan Knight founded Cosmic Reach Creative in Memphis, Tennessee, after years leading programs where performance and structured reporting were not optional.
+                  Jordan Knight founded Cosmic Reach Creative in Memphis, Tennessee, after years leading complex programs where performance, structured reporting, and milestone visibility were not optional. That background shaped every part of this practice.
                 </p>
                 <p className="text-starlight/70 text-base mb-3">
-                  That experience shaped the approach:
+                  The approach is diagnostic. Every engagement starts by mapping friction across four forces: how the business communicates, how the offer converts, how the site guides action, and whether there is visibility into what is working.
                 </p>
-                <ul className="space-y-2 text-left">
-                  {[
-                    "What visitors see first",
-                    "What they understand",
-                    "What leads them to act",
-                  ].map((item) => (
-                    <li key={item} className="flex items-start gap-2.5 text-sm text-starlight/70">
-                      <span className="text-copper mt-0.5 shrink-0">&#9670;</span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
+                <p className="text-starlight/70 text-base">
+                  The output is a system that works together. Positioning, website, sales materials, lead capture, and performance monitoring. All aligned. All measurable.
+                </p>
               </div>
             </div>
           </div>
@@ -114,8 +104,33 @@ export default function AboutPage() {
         </div>
       </div>
 
+      {/* What makes this different */}
+      <section className="py-12 sm:py-16 bg-navy/30" aria-labelledby="difference-heading">
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 id="difference-heading" className="mb-6">The work is structured around a real operating model.</h2>
+            <div className="grid gap-4 sm:grid-cols-2 max-w-2xl mx-auto">
+              {[
+                { label: "Diagnostic-first", desc: "Every engagement begins with the Clarity Audit. Recommendations come from evidence, not assumptions." },
+                { label: "Systems-oriented", desc: "Messaging, website, sales materials, and visibility are built as one connected system." },
+                { label: "Measurable", desc: "Four scored layers. Real data. You see exactly where you stand and what changed." },
+                { label: "Founder-led", desc: "One point of contact. One person accountable for the outcome. No handoffs." },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  className="rounded-xl border border-starlight/8 bg-navy/50 p-5 text-left transition-all duration-[var(--duration-base)] hover:border-copper/20"
+                >
+                  <p className="text-copper text-sm font-display font-semibold mb-1">{item.label}</p>
+                  <p className="text-starlight/60 text-sm leading-relaxed">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonial */}
-      <section className="py-12 sm:py-16 bg-navy/30" aria-label="What clients say">
+      <section className="py-12 sm:py-16" aria-label="What clients say">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
             <blockquote className="rounded-2xl border border-starlight/8 bg-navy/60 p-6 sm:p-8">
@@ -134,9 +149,9 @@ export default function AboutPage() {
       <section className="py-12 sm:py-16 bg-section-light" aria-labelledby="about-cta">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 id="about-cta" className="mb-3 text-navy">Start with the audit.</h2>
+            <h2 id="about-cta" className="mb-3 text-navy">Start with the Clarity Audit.</h2>
             <p className="text-navy/70 text-base mb-6">
-              A focused $150 review of your website and messaging. You will see what is working, what is not, and where to begin.
+              A $150 diagnostic that scores your business across four layers and gives you a clear read on what is holding growth back.
             </p>
             <CTAButton label="Start with the Audit" variant="primary" />
           </div>

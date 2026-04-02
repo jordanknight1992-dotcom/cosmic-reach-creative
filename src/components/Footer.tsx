@@ -19,7 +19,7 @@ export function Footer() {
               style={{ height: "40px", width: "auto" }}
             />
             <p className="text-sm text-starlight/60 max-w-xs">
-              Marketing strategy and growth systems for founders who need structure, not more activity. Based in Memphis, TN.
+              Systems design for businesses with traction and friction. We build the infrastructure of growth. Based in Memphis, TN.
             </p>
           </div>
 

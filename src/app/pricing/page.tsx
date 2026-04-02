@@ -1,14 +1,13 @@
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import Image from "next/image";
-import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { StripeBuyButton } from "@/components/StripeBuyButton";
 
 export const metadata: Metadata = {
-  title: "Pricing | Website Audit, Brand Rebuild & Ongoing Performance",
+  title: "Pricing | Clarity Audit, 30-Day Rebuild & Continued Optimization",
   description:
-    "Start with a $150 website audit. Full brand and website rebuilds from $4K to $8K. Ongoing performance and lead tracking at $750/month. Defined outcomes at every step.",
+    "Start with a $150 Clarity Audit. Full 30-Day Rebuilds from $4K to $8K. Continued optimization at $750/month. Mission Control standalone at $19.99/month. Defined outcomes at every step.",
   alternates: { canonical: `${siteConfig.domain}/pricing` },
 };
 
@@ -39,33 +38,37 @@ export default function PricingPage() {
         <div className="relative mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-24">
           <div className="max-w-2xl mx-auto text-center">
             <h1 id="pricing-hero" className="text-copper">Clear pricing.<br />Defined outcomes.</h1>
+            <p className="text-starlight/70 text-base sm:text-lg mt-3">
+              Every engagement follows the same path. Diagnose. Rebuild. Monitor.
+            </p>
           </div>
         </div>
       </section>
 
       {/* $150 Audit */}
-      <section className="pt-12 sm:pt-16 pb-6 sm:pb-8" aria-label="Website Audit">
+      <section className="pt-12 sm:pt-16 pb-6 sm:pb-8" aria-label="Clarity Audit">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
             <article className="rounded-[var(--radius-lg)] border-2 border-copper/40 bg-navy/70 p-6 sm:p-8 flex flex-col transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/60 hover:shadow-soft">
               <div className="flex items-start gap-4 mb-5">
                 <Icon name="map" size={28} className="opacity-80 shrink-0 mt-0.5" />
                 <div>
+                  <div className="text-xs font-display font-semibold tracking-widest text-copper/60 uppercase mb-1">Stage 1</div>
                   <h2 className="font-display font-semibold text-xl text-starlight mb-1">
-                    $150 Audit
+                    Clarity Audit
                   </h2>
-                  <p className="text-starlight/50 text-sm">A focused review of your website and messaging.</p>
+                  <p className="text-starlight/50 text-sm">The diagnostic. Identifies where the system breaks.</p>
                 </div>
               </div>
               <p className="text-starlight/70 text-base mb-5">
-                You will see:
+                A structured evaluation of your messaging, offer, site structure, and visibility. You receive a scored report with root-cause findings and a prioritized implementation path.
               </p>
               <ul className="space-y-2 mb-6">
                 {[
-                  "Where visitors get stuck",
-                  "What is unclear",
-                  "What is limiting inquiries",
-                  "What to fix first",
+                  "Scored evaluation across four layers",
+                  "Root-cause analysis of the primary constraint",
+                  "Prioritized recommendations",
+                  "Written report in 3-5 business days",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-sm text-starlight/80">
                     <span className="text-copper mt-0.5 shrink-0">&#9670;</span>
@@ -78,7 +81,7 @@ export default function PricingPage() {
               </div>
               <StripeBuyButton buyButtonId="buy_btn_1TDtGA0vGBLnj72kaNhC423Y" label="Start with the Audit" />
               <p className="mt-3 text-center text-xs text-starlight/60">
-                3-5 day turnaround &middot; Written report included
+                Audit fee credited toward any rebuild engagement
               </p>
             </article>
           </div>
@@ -86,15 +89,16 @@ export default function PricingPage() {
       </section>
 
       {/* Rebuild */}
-      <section className="py-8 sm:py-10 bg-navy/20" aria-label="Brand and website rebuild">
+      <section className="py-8 sm:py-10 bg-navy/20" aria-label="30-Day Rebuild">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
             <article className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-6 sm:p-8 transition-all duration-[var(--duration-base)] hover:border-copper/30">
               <div className="flex items-start gap-4 mb-5">
                 <Icon name="gears" size={28} className="opacity-80 shrink-0 mt-0.5" />
                 <div>
+                  <div className="text-xs font-display font-semibold tracking-widest text-starlight/30 uppercase mb-1">Stage 2</div>
                   <h2 className="font-display font-semibold text-xl text-starlight mb-1">
-                    Full Rebuild
+                    30-Day Rebuild
                   </h2>
                   <div className="flex items-baseline gap-2">
                     <p className="text-copper font-display font-semibold text-2xl">$4,000&ndash;$8,000</p>
@@ -102,22 +106,20 @@ export default function PricingPage() {
                 </div>
               </div>
               <p className="text-starlight/70 text-base mb-2">
-                A complete overhaul of how your business shows up and converts.
-                Completed in about 30 days.
+                The complete growth infrastructure, rebuilt from a single strategic foundation. Completed in 30 days.
               </p>
               <p className="text-starlight/50 text-sm mb-5">
-                For businesses that are ready to fix what is holding their site back.
+                Scope is defined after the Clarity Audit.
               </p>
               <p className="text-starlight/70 text-sm font-display font-semibold mb-3">Includes:</p>
               <ul className="space-y-2 mb-6">
                 {[
-                  "A full brand system and guidelines that define how your business communicates",
-                  "Positioning and messaging that make the business clear on first pass",
-                  "A rebuilt website designed to guide visitors toward action",
-                  "Sales materials that stay aligned across every conversation",
+                  "Brand system: positioning, voice, visual identity, and guidelines",
+                  "Website: architecture, messaging, design, and development",
+                  "Sales materials: deck, one-pager, email templates",
                   "Lead capture built directly into the site",
-                  "Visibility into what is driving inquiries",
-                  "A structure that supports long-term search visibility",
+                  "Mission Control: live dashboard with performance visibility",
+                  "Search-ready structure for long-term organic growth",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-sm text-starlight/80">
                     <span className="text-copper mt-0.5 shrink-0">&#9670;</span>
@@ -126,15 +128,57 @@ export default function PricingPage() {
                 ))}
               </ul>
               <p className="text-xs text-starlight/40">
-                Scope is defined after the audit. The audit fee is applied toward the rebuild.
+                The audit fee is applied toward the rebuild.
               </p>
             </article>
           </div>
         </div>
       </section>
 
-      {/* Mission Control */}
-      <section className="py-8 sm:py-10" aria-label="Mission Control">
+      {/* Continued Optimization */}
+      <section className="py-8 sm:py-10" aria-label="Continued Optimization">
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+          <div className="max-w-2xl mx-auto">
+            <article className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-6 sm:p-8 transition-all duration-[var(--duration-base)] hover:border-copper/30">
+              <div className="flex items-start gap-4 mb-5">
+                <Icon name="signal" size={28} className="opacity-80 shrink-0 mt-0.5" />
+                <div>
+                  <div className="text-xs font-display font-semibold tracking-widest text-starlight/30 uppercase mb-1">Stage 3</div>
+                  <h2 className="font-display font-semibold text-xl text-starlight mb-1">
+                    Continued Optimization
+                  </h2>
+                  <div className="flex items-baseline gap-2">
+                    <p className="text-copper font-display font-semibold text-2xl">$750/month</p>
+                  </div>
+                </div>
+              </div>
+              <p className="text-starlight/70 text-base mb-2">
+                Ongoing performance monitoring, strategic improvement, and hands-on optimization after the rebuild.
+              </p>
+              <p className="text-starlight/50 text-sm mb-5">
+                For businesses that want continued improvement without managing it themselves.
+              </p>
+              <ul className="space-y-2 mb-6">
+                {[
+                  "Lead tracking and conversion source visibility",
+                  "Site performance, uptime, and health monitoring",
+                  "Search visibility and keyword tracking",
+                  "Monthly performance reports",
+                  "Strategic recommendations and updates",
+                ].map((item) => (
+                  <li key={item} className="flex items-start gap-2.5 text-sm text-starlight/80">
+                    <span className="text-copper mt-0.5 shrink-0">&#9670;</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      {/* Mission Control Standalone */}
+      <section className="py-8 sm:py-10 bg-navy/20" aria-label="Mission Control">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
             <article className="rounded-[var(--radius-lg)] border border-copper/20 bg-navy/50 p-6 sm:p-8 transition-all duration-[var(--duration-base)] hover:border-copper/40">
@@ -150,10 +194,10 @@ export default function PricingPage() {
                 </div>
               </div>
               <p className="text-starlight/70 text-base mb-2">
-                A clear view of website performance, lead activity, and conversion signals in one place.
+                A clear view of website performance, lead activity, and conversion signals in one place. Available to any business as a standalone dashboard.
               </p>
               <p className="text-starlight/50 text-sm mb-5">
-                Use it standalone or as part of the full rebuild. Available to any business.
+                Included free with every Cosmic Reach Creative rebuild.
               </p>
               <ul className="space-y-2 mb-6">
                 {[
@@ -161,8 +205,6 @@ export default function PricingPage() {
                   "PageSpeed, uptime, and Core Web Vitals monitoring",
                   "Lead tracking and conversion signals",
                   "Search visibility and keyword tracking",
-                  "Exportable monthly performance reports",
-                  "Small updates and ongoing recommendations",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-2.5 text-sm text-starlight/80">
                     <span className="text-copper mt-0.5 shrink-0">&#9670;</span>
@@ -180,7 +222,7 @@ export default function PricingPage() {
       </section>
 
       {/* Testimonial */}
-      <section className="py-10 sm:py-14 bg-navy/20" aria-label="What clients say">
+      <section className="py-10 sm:py-14" aria-label="What clients say">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
             <blockquote className="rounded-2xl border border-starlight/8 bg-navy/60 p-6 sm:p-8">
