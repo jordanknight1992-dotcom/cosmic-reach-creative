@@ -179,12 +179,7 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <Link
-                href="/connect"
-                className="w-full inline-flex items-center justify-center rounded-[var(--radius-md)] bg-copper text-deep-space px-6 py-3 font-display font-semibold text-sm transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0"
-              >
-                Request a Consultation
-              </Link>
+              <StripeBuyButton buyButtonId="buy_btn_1TDtJg0vGBLnj72k4vWaSa7F" label="Subscribe — $750/mo" />
             </article>
           </div>
         </div>
