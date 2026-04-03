@@ -4,14 +4,40 @@ import { useState, useEffect, useRef, useCallback } from "react";
 
 const STRIPE_PK = process.env.NEXT_PUBLIC_STRIPE_PK || "";
 
-let scriptLoaded = false;
-function ensureScript() {
-  if (scriptLoaded) return;
-  const script = document.createElement("script");
-  script.src = "https://js.stripe.com/v3/buy-button.js";
-  script.async = true;
-  document.head.appendChild(script);
-  scriptLoaded = true;
+function loadStripeScript(): Promise<void> {
+  return new Promise((resolve) => {
+    if (customElements.get("stripe-buy-button")) {
+      resolve();
+      return;
+    }
+    const existing = document.querySelector('script[src*="buy-button.js"]');
+    if (existing) {
+      existing.addEventListener("load", () => resolve());
+      // If already loaded but custom element not registered yet, poll briefly
+      const check = setInterval(() => {
+        if (customElements.get("stripe-buy-button")) {
+          clearInterval(check);
+          resolve();
+        }
+      }, 100);
+      setTimeout(() => clearInterval(check), 5000);
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = "https://js.stripe.com/v3/buy-button.js";
+    script.async = true;
+    script.onload = () => {
+      // Wait for custom element registration
+      const check = setInterval(() => {
+        if (customElements.get("stripe-buy-button")) {
+          clearInterval(check);
+          resolve();
+        }
+      }, 50);
+      setTimeout(() => clearInterval(check), 5000);
+    };
+    document.head.appendChild(script);
+  });
 }
 
 export function StripeBuyButton({
@@ -22,38 +48,42 @@ export function StripeBuyButton({
   label?: string;
 }) {
   const [open, setOpen] = useState(false);
+  const [ready, setReady] = useState(false);
   const overlayRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const close = useCallback(() => setOpen(false), []);
+  const close = useCallback(() => {
+    setOpen(false);
+    setReady(false);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
 
-    // Only load Stripe over HTTPS (or in development)
     const isSecure =
       window.location.protocol === "https:" ||
       window.location.hostname === "localhost" ||
       window.location.hostname === "127.0.0.1";
 
     if (!isSecure || !STRIPE_PK) {
-      containerRef.current?.replaceChildren();
-      const msg = document.createElement("p");
-      msg.textContent = !STRIPE_PK
-        ? "Payment system is not configured."
-        : "Payments require a secure (HTTPS) connection.";
-      msg.style.cssText = "color: rgba(232,223,207,0.6); text-align: center; padding: 40px 0; font-size: 14px;";
-      containerRef.current?.appendChild(msg);
+      setReady(true);
+      if (containerRef.current) {
+        containerRef.current.innerHTML = `<p style="color: rgba(232,223,207,0.6); text-align: center; padding: 40px 0; font-size: 14px;">${
+          !STRIPE_PK ? "Payment system is not configured." : "Payments require a secure (HTTPS) connection."
+        }</p>`;
+      }
       return;
     }
 
-    ensureScript();
+    let cancelled = false;
 
-    const el = document.createElement("stripe-buy-button");
-    el.setAttribute("buy-button-id", buyButtonId);
-    el.setAttribute("publishable-key", STRIPE_PK);
-    containerRef.current?.replaceChildren();
-    containerRef.current?.appendChild(el);
+    loadStripeScript().then(() => {
+      if (cancelled || !containerRef.current) return;
+      // Clear and insert the buy button element via innerHTML
+      // so Stripe's custom element upgrade picks it up correctly
+      containerRef.current.innerHTML = `<stripe-buy-button buy-button-id="${buyButtonId}" publishable-key="${STRIPE_PK}"></stripe-buy-button>`;
+      setReady(true);
+    });
 
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") close();
@@ -62,6 +92,7 @@ export function StripeBuyButton({
     document.body.style.overflow = "hidden";
 
     return () => {
+      cancelled = true;
       document.removeEventListener("keydown", handleKey);
       document.body.style.overflow = "";
     };
@@ -116,11 +147,17 @@ export function StripeBuyButton({
                 color: "rgba(232,223,207,0.5)",
                 fontSize: 20,
                 cursor: "pointer",
+                zIndex: 1,
               }}
               aria-label="Close"
             >
               ✕
             </button>
+            {!ready && (
+              <div style={{ textAlign: "center", padding: "60px 0", color: "rgba(232,223,207,0.4)", fontSize: 14 }}>
+                Loading checkout...
+              </div>
+            )}
             <div ref={containerRef} style={{ minHeight: 200 }} />
           </div>
         </div>
