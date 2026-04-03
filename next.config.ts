@@ -31,7 +31,7 @@ const nextConfig: NextConfig = {
             "frame-src 'self' https://js.stripe.com https://*.stripe.com https://*.stripe.network",
             "frame-ancestors 'none'",
             "base-uri 'self'",
-            "form-action 'self'",
+            "form-action 'self' https://*.stripe.com",
           ].join("; "),
         },
       ],
