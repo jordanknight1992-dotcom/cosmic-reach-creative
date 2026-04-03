@@ -29,6 +29,24 @@ export function StripeBuyButton({
 
   useEffect(() => {
     if (!open) return;
+
+    // Only load Stripe over HTTPS (or in development)
+    const isSecure =
+      window.location.protocol === "https:" ||
+      window.location.hostname === "localhost" ||
+      window.location.hostname === "127.0.0.1";
+
+    if (!isSecure || !STRIPE_PK) {
+      containerRef.current?.replaceChildren();
+      const msg = document.createElement("p");
+      msg.textContent = !STRIPE_PK
+        ? "Payment system is not configured."
+        : "Payments require a secure (HTTPS) connection.";
+      msg.style.cssText = "color: rgba(232,223,207,0.6); text-align: center; padding: 40px 0; font-size: 14px;";
+      containerRef.current?.appendChild(msg);
+      return;
+    }
+
     ensureScript();
 
     const el = document.createElement("stripe-buy-button");
