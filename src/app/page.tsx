@@ -4,6 +4,7 @@ import Image from "next/image";
 import { Icon } from "@/components/Icon";
 import { CTAButton } from "@/components/CTAButton";
 import Link from "next/link";
+import { Credentials } from "@/components/Credentials";
 
 export const metadata: Metadata = {
   title: "Cosmic Reach Creative | Growth Systems for Businesses With Traction",
@@ -266,13 +267,16 @@ export default function HomePage() {
                   I have spent decades leading infrastructure programs where milestone visibility and structured reporting were critical to success. Cosmic Reach translated that same disciplined framework into a modern, intuitive platform.
                 </p>
                 <footer className="text-sm text-copper font-display font-medium">
-                  Licensed PMO, Texas
+                  Certified PMP, Texas
                 </footer>
               </blockquote>
             </div>
           </div>
         </div>
       </section>
+
+      {/* ── Credentials ── */}
+      <Credentials />
 
       {/* ── Final CTA ── */}
       <section className="py-16 sm:py-24 bg-navy/60 border-t border-copper/15" aria-labelledby="final-cta-heading">

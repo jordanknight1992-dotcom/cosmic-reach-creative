@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { StripeBuyButton } from "@/components/StripeBuyButton";
+import { Credentials } from "@/components/Credentials";
 
 export const metadata: Metadata = {
   title: "Pricing | Clarity Audit, 30-Day Rebuild & Continued Optimization",
@@ -228,6 +229,9 @@ export default function PricingPage() {
           </div>
         </div>
       </section>
+
+      {/* Credentials */}
+      <Credentials />
 
       {/* Testimonial */}
       <section className="py-10 sm:py-14" aria-label="What clients say">
