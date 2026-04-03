@@ -18,6 +18,33 @@ export function MeetingsView({ tenantSlug, data }: { tenantSlug: string; data: M
   const [showPto, setShowPto] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [deleting, setDeleting] = useState<number | null>(null);
+  const [addingLead, setAddingLead] = useState<number | null>(null);
+  const [addedLeads, setAddedLeads] = useState<Set<number>>(new Set());
+
+  async function handleAddLead(meeting: Record<string, unknown>) {
+    const id = meeting.id as number;
+    setAddingLead(id);
+    try {
+      const res = await fetch(`/api/mc/${tenantSlug}/leads`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: meeting.client_name || "",
+          email: meeting.client_email || "",
+          notes: `Added from meeting on ${new Date(meeting.start_time as string).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}`,
+        }),
+      });
+      if (res.ok) {
+        setAddedLeads((prev) => new Set(prev).add(id));
+      } else {
+        const data = await res.json().catch(() => null);
+        alert(data?.error || "Failed to add lead");
+      }
+    } catch {
+      alert("Failed to add lead");
+    }
+    setAddingLead(null);
+  }
 
   async function handleDelete(id: number) {
     if (!confirm("Delete this meeting?")) return;
@@ -228,6 +255,21 @@ export function MeetingsView({ tenantSlug, data }: { tenantSlug: string; data: M
                         Join
                       </a>
                     )}
+                    {addedLeads.has(m.id as number) ? (
+                      <span style={{ fontSize: 12, color: "#22c55e", padding: "6px 10px" }}>Added</span>
+                    ) : (
+                      <button
+                        onClick={() => handleAddLead(m)}
+                        disabled={addingLead === (m.id as number)}
+                        style={{
+                          background: "rgba(212,165,116,0.1)", color: "#d4a574", border: "none",
+                          borderRadius: 8, padding: "6px 10px", fontSize: 12, fontWeight: 500,
+                          cursor: "pointer", opacity: addingLead === (m.id as number) ? 0.5 : 1,
+                        }}
+                      >
+                        {addingLead === (m.id as number) ? "..." : "Add as Lead"}
+                      </button>
+                    )}
                     <button
                       onClick={() => handleDelete(m.id as number)}
                       disabled={deleting === (m.id as number)}
@@ -261,6 +303,22 @@ export function MeetingsView({ tenantSlug, data }: { tenantSlug: string; data: M
                 <div style={{ fontSize: 12, color: "rgba(232,223,207,0.25)" }}>
                   {new Date(m.start_time as string).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                 </div>
+                {addedLeads.has(m.id as number) ? (
+                  <span style={{ fontSize: 12, color: "#22c55e", padding: "4px 8px" }}>Added</span>
+                ) : (
+                  <button
+                    onClick={() => handleAddLead(m)}
+                    disabled={addingLead === (m.id as number)}
+                    style={{
+                      background: "none", color: "#d4a574", border: "none",
+                      fontSize: 12, cursor: "pointer", padding: "4px 8px",
+                      fontWeight: 500,
+                      opacity: addingLead === (m.id as number) ? 0.5 : 1,
+                    }}
+                  >
+                    {addingLead === (m.id as number) ? "..." : "Add as Lead"}
+                  </button>
+                )}
                 <button
                   onClick={() => handleDelete(m.id as number)}
                   disabled={deleting === (m.id as number)}
