@@ -225,7 +225,7 @@ export default function HomePage() {
               See where your leads come from.
             </h2>
             <p className="text-starlight/70 text-base mb-8" style={{ textWrap: "pretty" }}>
-              Every rebuild includes Mission Control. It captures leads, tracks sources, monitors site health, and gives you a real-time view of what your site is doing. Available standalone for $19.99/mo.
+              Every rebuild includes Mission Control. It captures leads, tracks sources, monitors site health, and gives you a real-time view of what your site is doing. Available standalone for $150/mo.
             </p>
             <Link
               href="/pricing"

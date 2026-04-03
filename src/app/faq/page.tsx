@@ -29,7 +29,7 @@ const faqs: { question: string; answer: string; signals?: string[]; closing?: st
   {
     question: "What is Mission Control?",
     answer:
-      "Mission Control is a live dashboard included with every rebuild. It tracks leads, shows where they came from, monitors site health, and gives you a clear view of what your site is doing.\n\nAlso available as a standalone subscription at $19.99/month for any business. Free for all Cosmic Reach Creative-built websites.",
+      "Mission Control is a live dashboard included with every rebuild. It tracks leads, shows where they came from, monitors site health, and gives you a clear view of what your site is doing.\n\nAlso available as a standalone subscription at $150/month for any business. Free for all Cosmic Reach Creative-built websites.",
   },
   {
     question: "What does the $750/month continued optimization include?",

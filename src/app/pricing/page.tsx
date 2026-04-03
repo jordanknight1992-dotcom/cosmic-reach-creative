@@ -1,13 +1,14 @@
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import Image from "next/image";
+import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { StripeBuyButton } from "@/components/StripeBuyButton";
 
 export const metadata: Metadata = {
   title: "Pricing | Clarity Audit, 30-Day Rebuild & Continued Optimization",
   description:
-    "Start with a $150 Clarity Audit. Full 30-Day Rebuilds from $4K to $8K. Continued optimization at $750/month. Mission Control standalone at $19.99/month. Defined outcomes at every step.",
+    "Start with a $150 Clarity Audit. Full 30-Day Rebuilds from $4K to $8K. Continued optimization at $750/month. Mission Control standalone at $150/month. Defined outcomes at every step.",
   alternates: { canonical: `${siteConfig.domain}/pricing` },
 };
 
@@ -127,7 +128,13 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <p className="text-xs text-starlight/40">
+              <Link
+                href="/connect"
+                className="w-full inline-flex items-center justify-center rounded-[var(--radius-md)] bg-copper text-deep-space px-6 py-3 font-display font-semibold text-sm transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0"
+              >
+                Request a Consultation
+              </Link>
+              <p className="mt-3 text-xs text-starlight/40">
                 The audit fee is applied toward the rebuild.
               </p>
             </article>
@@ -172,6 +179,12 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
+              <Link
+                href="/connect"
+                className="w-full inline-flex items-center justify-center rounded-[var(--radius-md)] bg-copper text-deep-space px-6 py-3 font-display font-semibold text-sm transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0"
+              >
+                Request a Consultation
+              </Link>
             </article>
           </div>
         </div>
@@ -189,7 +202,7 @@ export default function PricingPage() {
                     Mission Control
                   </h2>
                   <div className="flex items-baseline gap-2">
-                    <p className="text-copper font-display font-semibold text-2xl">$19.99/month</p>
+                    <p className="text-copper font-display font-semibold text-2xl">$150/month</p>
                   </div>
                 </div>
               </div>
@@ -212,7 +225,7 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <StripeBuyButton buyButtonId="buy_btn_1TH9aI0vGBLnj72khWDM9KqB" label="Subscribe — $19.99/mo" />
+              <StripeBuyButton buyButtonId="buy_btn_1THvGV0vGBLnj72kN97MqFHS" label="Subscribe — $150/mo" />
               <p className="mt-4 text-center text-xs text-starlight/40">
                 Free for all Cosmic Reach Creative-built websites.
               </p>

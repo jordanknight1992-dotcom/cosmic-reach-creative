@@ -205,7 +205,7 @@ export default function ServicesPage() {
                 ))}
               </ul>
               <p className="text-xs text-starlight/40">
-                Mission Control is also available standalone at $19.99/month for businesses that want dashboard access without the full optimization service.
+                Mission Control is also available standalone at $150/month for businesses that want dashboard access without the full optimization service.
               </p>
             </article>
           </div>

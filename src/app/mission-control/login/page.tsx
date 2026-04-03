@@ -297,8 +297,8 @@ export default function LoginPage() {
                   Site health, lead tracking, and performance insights. After purchase, return here to create your workspace.
                 </p>
                 <StripeBuyButton
-                  buyButtonId="buy_btn_1TH9aI0vGBLnj72khWDM9KqB"
-                  label="Subscribe — $19.99/mo"
+                  buyButtonId="buy_btn_1THvGV0vGBLnj72kN97MqFHS"
+                  label="Subscribe — $150/mo"
                 />
               </div>
 

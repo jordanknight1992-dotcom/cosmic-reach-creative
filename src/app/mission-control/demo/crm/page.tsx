@@ -21,7 +21,7 @@ const DEMO_LEADS = [
   {
     id: 4, source: "manual" as const, name: "Amira Johnson", email: "amira@brightwell.co",
     company: "Brightwell", website: "brightwell.co",
-    status: "mission_control_active", revenue: 4800, notes: "Ongoing $19.99/mo", created_at: new Date(Date.now() - 14 * 86400000).toISOString(),
+    status: "mission_control_active", revenue: 4800, notes: "Ongoing $150/mo", created_at: new Date(Date.now() - 14 * 86400000).toISOString(),
   },
   {
     id: 5, source: "contact" as const, name: "Sam Liu", email: "sam@novaedge.com",
