@@ -33,10 +33,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Domain is required" }, { status: 400 });
     }
 
-    // Clean up the domain (remove protocol, trailing slashes)
+    // Clean up the domain (remove protocol and trailing slashes, preserve www)
     const cleanDomain = domain.trim()
       .replace(/^https?:\/\//, "")
-      .replace(/^www\./, "")
       .replace(/\/+$/, "");
 
     const sql = getSQL();

@@ -247,7 +247,7 @@ export function SettingsView({ tenantSlug, tenant, user, connectedProviders, pro
                   type="text"
                   value={domainValue}
                   onChange={(e) => setDomainValue(e.target.value)}
-                  placeholder="example.com"
+                  placeholder="www.example.com"
                   style={{ ...fieldInputStyle, flex: 1 }}
                 />
                 <button type="submit" disabled={saving === "domain"} style={{
