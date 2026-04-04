@@ -142,9 +142,10 @@ export default function LaCherieCase() {
                 nothing about what makes working with La Chérie different.
               </p>
               <p>
-                La Chérie did not need more clients. The founder needed the system around
-                the work to match the quality of the work itself. Everyone
-                should be able to see what the couples already knew.
+                Referrals were already coming in. The work was never the problem.
+                But the website was not converting anyone on its own. We wanted
+                a system that brings in couples organically, so every visitor
+                gets the same confidence the referrals already had.
               </p>
             </div>
           </div>
