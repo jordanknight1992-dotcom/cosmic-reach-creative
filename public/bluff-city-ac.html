@@ -111,7 +111,20 @@
     }
     .logo { display: flex; align-items: center; }
     .logo img { height: 40px; width: auto; }
-    .header-right { display: flex; align-items: center; gap: 16px; }
+    .header-right { display: flex; align-items: center; gap: 12px; }
+    .header-back {
+      padding: 8px 16px; color: rgba(255,255,255,0.5);
+      font-size: 13px; font-weight: 500; text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+      transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;
+      white-space: nowrap;
+    }
+    .header-back:hover { color: var(--white); border-color: rgba(255,255,255,0.25); }
+    .header-back svg { width: 14px; height: 14px; flex-shrink: 0; }
+    .header-back-text { display: none; }
+    @media (min-width: 640px) {
+      .header-back-text { display: inline; }
+    }
     .header-cta {
       padding: 8px 18px; background: var(--copper); color: var(--white);
       font-size: 14px; font-weight: 600; border: none; border-radius: 8px;
@@ -945,6 +958,10 @@
         <img src="/images/work/bluff-city-ac/logo-white.svg" alt="Bluff City AC">
       </div>
       <div class="header-right">
+        <a href="https://www.cosmicreachcreative.com/work" class="header-back">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/></svg>
+          <span class="header-back-text">Back to Cosmic Reach Creative</span>
+        </a>
         <button class="header-cta" id="headerCta">Request service</button>
       </div>
     </div>
