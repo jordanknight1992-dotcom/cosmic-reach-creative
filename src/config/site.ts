@@ -15,7 +15,7 @@ export const siteConfig = {
     { label: "Home", href: "/" },
     { label: "How It Works", href: "/how-it-works" },
     { label: "Pricing", href: "/pricing" },
-    { label: "Featured Projects", href: "/work/la-cherie" },
+    { label: "Featured Projects", href: "/work" },
     { label: "FAQ", href: "/faq" },
   ],
   ctaNav: { label: "Book a Call", href: "/connect" },
