@@ -158,14 +158,14 @@ export function Header() {
                 Pricing
               </Link>
 
+              {/* Featured Projects */}
+              <Link href="/work/la-cherie" className={linkClass}>
+                Featured Projects
+              </Link>
+
               {/* FAQ */}
               <Link href="/faq" className={linkClass}>
                 FAQ
-              </Link>
-
-              {/* Contact */}
-              <Link href="/contact" className={linkClass}>
-                Contact
               </Link>
 
               {/* CTAs */}
@@ -297,6 +297,15 @@ export function Header() {
             Pricing
           </Link>
 
+          {/* Featured Projects */}
+          <Link
+            href="/work/la-cherie"
+            onClick={() => setMenuOpen(false)}
+            className={mobileLinkClass}
+          >
+            Featured Projects
+          </Link>
+
           {/* FAQ */}
           <Link
             href="/faq"
@@ -304,15 +313,6 @@ export function Header() {
             className={mobileLinkClass}
           >
             FAQ
-          </Link>
-
-          {/* Contact */}
-          <Link
-            href="/contact"
-            onClick={() => setMenuOpen(false)}
-            className={mobileLinkClass}
-          >
-            Contact
           </Link>
 
           {/* CTAs */}

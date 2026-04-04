@@ -8,20 +8,18 @@ export const siteConfig = {
   claritySessionUrl: "/book/clarity-session",
   stripeAuditUrl:
     "https://buy.stripe.com/28EbITdzT6je8go6i4fbq07",
+  stripeOptimizationUrl: "", // TODO: Create Stripe Payment Link for $750/mo subscription
+  stripeMissionControlUrl: "", // TODO: Create Stripe Payment Link for $150/mo subscription
   ga4MeasurementId: "G-HX48MQKM94",
   nav: [
     { label: "Home", href: "/" },
     { label: "How It Works", href: "/how-it-works" },
     { label: "Pricing", href: "/pricing" },
+    { label: "Featured Projects", href: "/work/la-cherie" },
     { label: "FAQ", href: "/faq" },
-    { label: "Contact", href: "/contact" },
   ],
+  ctaNav: { label: "Book a Call", href: "/connect" },
   howItWorksDropdown: [
-    {
-      label: "How We Think",
-      href: "/framework",
-      detail: "The four-layer evaluation framework",
-    },
     {
       label: "Services",
       href: "/services",
@@ -31,11 +29,6 @@ export const siteConfig = {
       label: "The Clarity Audit",
       href: "/clarity",
       detail: "The $150 diagnostic entry point",
-    },
-    {
-      label: "Example Report",
-      href: "/clarity-report-example",
-      detail: "See what the audit delivers",
     },
   ],
   hiddenRoutes: ["/clarity-session"],

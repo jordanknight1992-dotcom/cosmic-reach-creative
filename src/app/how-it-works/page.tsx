@@ -1,15 +1,91 @@
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import Image from "next/image";
+import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { CTAButton } from "@/components/CTAButton";
 
 export const metadata: Metadata = {
-  title: "How It Works | Diagnose, Rebuild, Monitor",
+  title: "How It Works | Diagnose, Rebuild, Monitor | Cosmic Reach Creative",
   description:
-    "Every engagement follows the same structured path. Start with a $150 Clarity Audit to diagnose where growth breaks. Then a 30-Day Rebuild to fix the infrastructure. Then continued optimization to keep it improving.",
+    "Every engagement follows the same structured path. Start with a $150 Clarity Audit to diagnose where growth breaks. Then a 30-Day Rebuild to fix the infrastructure. Then continued optimization. We evaluate four layers: Signal, Gravity, Orbit, and Thrust.",
   alternates: { canonical: `${siteConfig.domain}/how-it-works` },
 };
+
+const layers = [
+  {
+    layer: "Signal",
+    name: "Messaging",
+    question: "Is your message reaching the right people?",
+    description:
+      "Most websites lead with what the business does rather than the problem the buyer is experiencing. When visitors have to work to understand why it matters to them, they leave.",
+    whatWeCheck: [
+      "Whether the headline connects with the buyer's situation",
+      "Whether the language is clear or full of jargon",
+      "Whether visitors can quickly tell if this is for them",
+    ],
+    whatWeMeasure: [
+      "SEO structure score",
+      "Average search position",
+      "Search impressions",
+      "Organic traffic share",
+    ],
+  },
+  {
+    layer: "Gravity",
+    name: "Offer",
+    question: "Is your offer converting visitors into leads?",
+    description:
+      "An unclear offer creates hesitation. If visitors cannot quickly understand what they are buying, how long it takes, or what the outcome is, they will not move forward.",
+    whatWeCheck: [
+      "Whether the offer has a defined scope and deliverable",
+      "Whether pricing or next steps are visible",
+      "Whether the value is clear before the ask",
+    ],
+    whatWeMeasure: [
+      "Engagement rate",
+      "Bounce rate",
+      "Search click-through rate",
+      "Conversion rate",
+    ],
+  },
+  {
+    layer: "Orbit",
+    name: "Path to Action",
+    question: "Is your site guiding visitors toward action?",
+    description:
+      "Multiple navigation paths and competing calls to action dilute momentum. The site should make it easy to take the next step, not force visitors to figure out what to do.",
+    whatWeCheck: [
+      "Whether each page has one clear call to action",
+      "Whether the site reduces friction at decision points",
+      "Whether there is a low-commitment entry point for visitors who are not ready to buy",
+    ],
+    whatWeMeasure: [
+      "Accessibility score",
+      "Layout stability (CLS)",
+      "Page load speed (LCP)",
+      "Responsiveness (TBT)",
+    ],
+  },
+  {
+    layer: "Thrust",
+    name: "Visibility",
+    question: "Can you see what is working?",
+    description:
+      "After launch, most businesses lose sight of what their website is doing. Without visibility, decisions are based on guesswork instead of evidence.",
+    whatWeCheck: [
+      "Whether leads are being captured and tracked",
+      "Whether you know where inquiries are coming from",
+      "Whether you can tell which pages are driving results",
+    ],
+    whatWeMeasure: [
+      "Performance score",
+      "Uptime and response time",
+      "Analytics connected",
+      "Traffic trend",
+    ],
+  },
+];
 
 export default function HowItWorksPage() {
   return (
@@ -22,6 +98,7 @@ export default function HowItWorksPage() {
           { "@type": "ListItem", position: 2, name: "How It Works", item: "https://cosmicreachcreative.com/how-it-works" },
         ]
       })}} />
+
       {/* Hero */}
       <section className="relative overflow-hidden" aria-labelledby="how-it-works-title">
         <div className="absolute inset-0">
@@ -48,10 +125,10 @@ export default function HowItWorksPage() {
       </section>
 
       {/* The Three Stages */}
-      <section className="py-16 sm:py-24 bg-section-light" aria-labelledby="steps-heading">
+      <section className="py-16 sm:py-24 bg-navy" aria-labelledby="steps-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center mb-10">
-            <h2 id="steps-heading" className="mb-3 text-navy">
+            <h2 id="steps-heading" className="mb-3 text-starlight">
               Three stages. Clear outcomes at every step.
             </h2>
           </div>
@@ -79,16 +156,16 @@ export default function HowItWorksPage() {
             ].map((item) => (
               <div
                 key={item.title}
-                className="rounded-[var(--radius-lg)] border border-navy/10 bg-white p-6 shadow-subtle text-center transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/40 hover:shadow-soft"
+                className="rounded-[var(--radius-lg)] border border-starlight/10 bg-deep-space p-6 shadow-subtle text-center transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/40 hover:shadow-soft"
               >
                 <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-copper text-deep-space text-sm font-display font-bold mb-3 mx-auto">{item.step}</span>
-                <h3 className="font-display font-semibold text-base mb-0.5 text-navy">
+                <h3 className="font-display font-semibold text-base mb-0.5 text-starlight">
                   {item.title}
                 </h3>
                 <p className="text-xs text-copper font-display font-medium mb-3">
                   {item.price}
                 </p>
-                <p className="text-sm text-navy/60 leading-relaxed">
+                <p className="text-sm text-starlight/60 leading-relaxed">
                   {item.description}
                 </p>
               </div>
@@ -97,8 +174,123 @@ export default function HowItWorksPage() {
         </div>
       </section>
 
-      {/* What the Audit Covers */}
-      <section className="py-16 sm:py-24 bg-navy/40" aria-labelledby="audit-details-heading">
+      {/* The Framework — Four Layers */}
+      <section className="py-16 sm:py-24" aria-labelledby="framework-heading">
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto text-center mb-4">
+            <h2 id="framework-heading" className="mb-4">How we think about the work.</h2>
+            <p className="text-starlight/70 text-base mb-3">
+              A website that converts has clear messaging, a defined offer, a straightforward path to action, and visibility into what is working. When any of these break down, leads stop coming in.
+            </p>
+            <p className="text-starlight/60 text-sm">
+              Every audit and ongoing performance report includes these scores so you can see exactly where your site stands and what to improve.
+            </p>
+          </div>
+
+          {/* Scoring Legend */}
+          <div className="flex justify-center gap-8 mb-10">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-[#22c55e]" />
+              <span className="text-sm text-starlight/60">8&ndash;10 Good</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-[#eab308]" />
+              <span className="text-sm text-starlight/60">5&ndash;7 Be Aware</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full bg-[#ef4444]" />
+              <span className="text-sm text-starlight/60">0&ndash;4 Warning</span>
+            </div>
+          </div>
+
+          {/* Layer Cards */}
+          <div className="grid gap-6 sm:grid-cols-2 max-w-4xl mx-auto">
+            {layers.map((area) => (
+              <article
+                key={area.layer}
+                className="rounded-2xl border border-starlight/10 bg-navy/50 p-6 sm:p-8 flex flex-col transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/30 hover:shadow-subtle"
+              >
+                <div className="mb-3 flex items-baseline gap-3">
+                  <span className="text-copper font-display font-bold text-lg">{area.layer}</span>
+                  <span className="text-starlight/60 text-sm">{area.name}</span>
+                </div>
+                <p className="text-starlight font-display font-semibold text-sm mb-3">
+                  {area.question}
+                </p>
+                <p className="text-starlight/70 text-sm leading-relaxed mb-5 flex-1">{area.description}</p>
+                <div className="mb-5">
+                  <p className="text-xs font-display font-semibold tracking-widest text-copper uppercase mb-3">
+                    What we check
+                  </p>
+                  <ul className="space-y-2">
+                    {area.whatWeCheck.map((item) => (
+                      <li key={item} className="flex items-start gap-2.5 text-sm text-starlight/60">
+                        <span className="text-copper mt-1 text-[8px] shrink-0" aria-hidden="true">&#9670;</span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="pt-4 border-t border-starlight/6">
+                  <p className="text-xs font-display font-semibold tracking-widest text-starlight/60 uppercase mb-3">
+                    What we measure
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {area.whatWeMeasure.map((item) => (
+                      <span key={item} className="text-xs bg-starlight/5 text-starlight/60 rounded-md px-2.5 py-1">
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Where You See These Scores */}
+      <section className="py-16 sm:py-24 bg-navy/30" aria-labelledby="scoring-heading">
+        <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto">
+            <h2 id="scoring-heading" className="text-center mb-8">Where you will see these scores.</h2>
+            <div className="grid gap-4 sm:grid-cols-3">
+              <div className="rounded-xl border border-starlight/10 bg-navy/40 p-5 text-center">
+                <div className="text-copper text-2xl mb-3">&#9670;</div>
+                <h3 className="font-display font-semibold text-sm text-starlight mb-2">Audit Report</h3>
+                <p className="text-starlight/60 text-xs leading-relaxed">
+                  Every audit includes a scored breakdown showing where each layer stands and what to fix first.
+                </p>
+              </div>
+              <div className="rounded-xl border border-starlight/10 bg-navy/40 p-5 text-center">
+                <div className="text-copper text-2xl mb-3">&#9670;</div>
+                <h3 className="font-display font-semibold text-sm text-starlight mb-2">Mission Control</h3>
+                <p className="text-starlight/60 text-xs leading-relaxed">
+                  Live scores update automatically based on real data from your site, analytics, and search performance.
+                </p>
+              </div>
+              <div className="rounded-xl border border-starlight/10 bg-navy/40 p-5 text-center">
+                <div className="text-copper text-2xl mb-3">&#9670;</div>
+                <h3 className="font-display font-semibold text-sm text-starlight mb-2">Monthly Reports</h3>
+                <p className="text-starlight/60 text-xs leading-relaxed">
+                  Ongoing clients receive exportable reports showing how scores change over time.
+                </p>
+              </div>
+            </div>
+            <div className="text-center mt-6">
+              <Link
+                href="/clarity-report-example"
+                className="inline-block text-sm font-display font-semibold text-copper hover:text-copper/80 transition-colors underline underline-offset-2"
+              >
+                See a scored example audit report &rarr;
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* What the Clarity Audit Evaluates */}
+      <section className="py-16 sm:py-24 bg-navy" aria-labelledby="audit-details-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center mb-8">
             <div className="mb-3">
@@ -131,17 +323,17 @@ export default function HowItWorksPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-16 sm:py-24 bg-section-light border-t border-copper/15" aria-labelledby="how-it-works-cta-heading">
+      <section className="py-16 sm:py-24 bg-navy/60" aria-labelledby="how-it-works-cta-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 id="how-it-works-cta-heading" className="mb-4 text-navy">
+            <h2 id="how-it-works-cta-heading" className="mb-4 text-starlight">
               Start with the Clarity Audit.
             </h2>
-            <p className="text-navy/70 text-base mb-6" style={{ textWrap: "pretty" }}>
+            <p className="text-starlight/70 text-base mb-6" style={{ textWrap: "pretty" }}>
               A $150 diagnostic that scores your business across four layers and gives you a clear read on where the system breaks.
             </p>
             <CTAButton label="Start with the Audit" variant="primary" />
-            <p className="mt-3 text-xs text-navy/40">
+            <p className="mt-3 text-xs text-starlight/60">
               3-5 day turnaround &middot; Scored report included
             </p>
           </div>

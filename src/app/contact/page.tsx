@@ -50,7 +50,7 @@ export default function ContactPage() {
               Tell us a bit about what you&apos;re working through. We&apos;ll follow up within one business day.
             </p>
             <p className="text-center mb-8">
-              <span className="text-starlight/50 text-sm">Prefer to talk live? </span>
+              <span className="text-starlight/60 text-sm">Prefer to talk live? </span>
               <Link href="/connect" className="text-copper text-sm font-semibold hover:underline">
                 Book a meeting →
               </Link>

@@ -42,17 +42,17 @@ export default function AboutPage() {
       </section>
 
       {/* Origin */}
-      <section className="py-12 sm:py-16 bg-section-light" aria-labelledby="origin-heading">
+      <section className="py-12 sm:py-16 bg-navy" aria-labelledby="origin-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 id="origin-heading" className="mb-4 text-navy">The problem is rarely what it looks like on the surface.</h2>
-            <p className="text-navy/70 text-base mb-3">
+            <h2 id="origin-heading" className="mb-4 text-starlight">The problem is rarely what it looks like on the surface.</h2>
+            <p className="text-starlight/70 text-base mb-3">
               Most businesses that stall have revenue. They have customers. They have a product that works. What they lack is the infrastructure to sustain momentum at the next level.
             </p>
-            <p className="text-navy/70 text-base mb-3">
+            <p className="text-starlight/70 text-base mb-3">
               Messaging drifts. The website stops converting. Leads slow down. The team works harder, but results flatten.
             </p>
-            <p className="text-navy/70 text-base">
+            <p className="text-starlight/70 text-base">
               Cosmic Reach identifies the structural constraint and rebuilds the system so growth compounds instead of stalling.
             </p>
           </div>
@@ -146,11 +146,11 @@ export default function AboutPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-12 sm:py-16 bg-section-light" aria-labelledby="about-cta">
+      <section className="py-12 sm:py-16 bg-navy" aria-labelledby="about-cta">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 id="about-cta" className="mb-3 text-navy">Start with the Clarity Audit.</h2>
-            <p className="text-navy/70 text-base mb-6">
+            <h2 id="about-cta" className="mb-3 text-starlight">Start with the Clarity Audit.</h2>
+            <p className="text-starlight/70 text-base mb-6">
               A $150 diagnostic that scores your business across four layers and gives you a clear read on what is holding growth back.
             </p>
             <CTAButton label="Start with the Audit" variant="primary" />

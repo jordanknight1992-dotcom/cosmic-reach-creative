@@ -13,7 +13,7 @@ export default function AccessibilityPage() {
       <div className="mx-auto max-w-[var(--container-max)] px-4 sm:px-6 lg:px-8">
         <div className="max-w-2xl">
           <h1 className="mb-4">Accessibility</h1>
-          <p className="text-starlight/40 text-sm mb-8">Last updated: March 30, 2026</p>
+          <p className="text-starlight/60 text-sm mb-8">Last updated: March 30, 2026</p>
 
           <div className="space-y-6 text-starlight/70">
             <p>

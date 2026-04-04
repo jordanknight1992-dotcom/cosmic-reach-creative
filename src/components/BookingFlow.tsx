@@ -116,7 +116,7 @@ export function BookingFlow({ bookingType }: BookingFlowProps) {
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-display font-semibold transition-colors ${
                   i <= stepIndex[step]
                     ? "bg-copper text-deep-space"
-                    : "bg-starlight/10 text-starlight/40"
+                    : "bg-starlight/10 text-starlight/60"
                 } ${i < stepIndex[step] ? "cursor-pointer hover:bg-copper/80" : ""}`}
               >
                 {i + 1}
@@ -125,7 +125,7 @@ export function BookingFlow({ bookingType }: BookingFlowProps) {
                 className={`text-sm font-display ${
                   i <= stepIndex[step]
                     ? "text-starlight"
-                    : "text-starlight/40"
+                    : "text-starlight/60"
                 }`}
               >
                 {label}
@@ -296,7 +296,7 @@ function DatePicker({
         {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
           <div
             key={d}
-            className="text-center text-xs font-display text-starlight/40 py-1"
+            className="text-center text-xs font-display text-starlight/60 py-1"
           >
             {d}
           </div>
@@ -386,7 +386,7 @@ function TimeSlots({
       </button>
 
       <h3 className="text-starlight font-display text-lg mb-1">{dateLabel}</h3>
-      <p className="text-starlight/50 text-sm mb-5">{duration}-minute slots</p>
+      <p className="text-starlight/60 text-sm mb-5">{duration}-minute slots</p>
 
       {loading ? (
         <div className="flex items-center justify-center py-12">
@@ -394,7 +394,7 @@ function TimeSlots({
         </div>
       ) : slots.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-starlight/50">No available times on this day.</p>
+          <p className="text-starlight/60">No available times on this day.</p>
           <button
             onClick={onBack}
             className="text-copper text-sm font-display mt-2 hover:text-copper/80 transition-colors"
@@ -465,7 +465,7 @@ function DetailsForm({
   }
 
   const inputStyles =
-    "w-full bg-deep-space/60 border border-starlight/15 rounded-[var(--radius-sm)] px-4 py-3 text-starlight text-sm font-body placeholder:text-starlight/30 focus:border-copper focus:outline-none focus:ring-1 focus:ring-copper/50 transition-colors";
+    "w-full bg-deep-space/60 border border-starlight/15 rounded-[var(--radius-sm)] px-4 py-3 text-starlight text-sm font-body placeholder:text-starlight/60 focus:border-copper focus:outline-none focus:ring-1 focus:ring-copper/50 transition-colors";
 
   return (
     <div className="bg-navy/60 rounded-[var(--radius-lg)] border border-starlight/10 p-6">
@@ -518,7 +518,7 @@ function DetailsForm({
 
         <div>
           <label htmlFor="booking-notes" className="block text-sm font-display text-starlight/70 mb-1.5">
-            Anything we should know? <span className="text-starlight/30">(optional)</span>
+            Anything we should know? <span className="text-starlight/60">(optional)</span>
           </label>
           <textarea
             id="booking-notes"
@@ -605,17 +605,17 @@ function Confirmation({
 
       <div className="bg-deep-space/60 rounded-[var(--radius-sm)] p-5 text-left space-y-3 mb-6">
         <div>
-          <p className="text-starlight/40 text-xs font-display uppercase tracking-wider">Session</p>
+          <p className="text-starlight/60 text-xs font-display uppercase tracking-wider">Session</p>
           <p className="text-starlight font-display font-semibold">{title}</p>
         </div>
         <div>
-          <p className="text-starlight/40 text-xs font-display uppercase tracking-wider">Date & Time</p>
+          <p className="text-starlight/60 text-xs font-display uppercase tracking-wider">Date & Time</p>
           <p className="text-starlight">{dateLabel}</p>
           <p className="text-starlight/70 text-sm">{timeLabel} ({duration} min)</p>
         </div>
         {meetUrl && (
           <div>
-            <p className="text-starlight/40 text-xs font-display uppercase tracking-wider">Meeting Link</p>
+            <p className="text-starlight/60 text-xs font-display uppercase tracking-wider">Meeting Link</p>
             <a
               href={meetUrl}
               target="_blank"
@@ -630,13 +630,13 @@ function Confirmation({
           </div>
         )}
         <div>
-          <p className="text-starlight/40 text-xs font-display uppercase tracking-wider">Name</p>
+          <p className="text-starlight/60 text-xs font-display uppercase tracking-wider">Name</p>
           <p className="text-starlight">{name}</p>
         </div>
         {bookingId && (
           <div>
-            <p className="text-starlight/40 text-xs font-display uppercase tracking-wider">Reference</p>
-            <p className="text-starlight/50 text-sm">CR-{String(bookingId + 1000).padStart(5, "0")}</p>
+            <p className="text-starlight/60 text-xs font-display uppercase tracking-wider">Reference</p>
+            <p className="text-starlight/60 text-sm">CR-{String(bookingId + 1000).padStart(5, "0")}</p>
           </div>
         )}
       </div>
@@ -644,7 +644,7 @@ function Confirmation({
       {/* Stripe payment prompt for paid sessions */}
       {priceCents && stripePaymentLink && (
         <div className="bg-copper/10 border border-copper/30 rounded-[var(--radius-md)] p-5 mb-6 text-center">
-          <p className="text-starlight/40 text-xs font-display uppercase tracking-wider mb-2">
+          <p className="text-starlight/60 text-xs font-display uppercase tracking-wider mb-2">
             Payment Required
           </p>
           <p className="text-starlight/80 text-sm mb-4">
@@ -665,7 +665,7 @@ function Confirmation({
             </svg>
             Complete Payment: ${(priceCents / 100).toFixed(0)}
           </a>
-          <p className="text-starlight/40 text-xs mt-3">
+          <p className="text-starlight/60 text-xs mt-3">
             Secure payment powered by Stripe
           </p>
         </div>

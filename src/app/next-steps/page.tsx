@@ -156,7 +156,7 @@ export default function NextStepsPage() {
             <ul className="space-y-2 mb-5">
               {reportIncludes.map((item) => (
                 <li key={item} className="flex items-start gap-2.5 text-sm text-starlight/70">
-                  <span className="text-copper/60 mt-0.5 shrink-0">◆</span>
+                  <span className="text-copper mt-0.5 shrink-0">◆</span>
                   {item}
                 </li>
               ))}

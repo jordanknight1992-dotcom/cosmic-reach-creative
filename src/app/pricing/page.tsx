@@ -3,8 +3,8 @@ import { siteConfig } from "@/config/site";
 import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
-import { StripeBuyButton } from "@/components/StripeBuyButton";
 import { Credentials } from "@/components/Credentials";
+import { StripeBuyButton } from "@/components/StripeBuyButton";
 
 export const metadata: Metadata = {
   title: "Pricing | Clarity Audit, 30-Day Rebuild & Continued Optimization",
@@ -12,6 +12,9 @@ export const metadata: Metadata = {
     "Start with a $150 Clarity Audit. Full 30-Day Rebuilds from $4K to $8K. Continued optimization at $750/month. Mission Control standalone at $150/month. Defined outcomes at every step.",
   alternates: { canonical: `${siteConfig.domain}/pricing` },
 };
+
+const buttonStyles =
+  "w-full inline-flex items-center justify-center rounded-[var(--radius-md)] bg-copper text-deep-space px-6 py-3 font-display font-semibold text-sm transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0";
 
 export default function PricingPage() {
   return (
@@ -55,11 +58,11 @@ export default function PricingPage() {
               <div className="flex items-start gap-4 mb-5">
                 <Icon name="map" size={28} className="opacity-80 shrink-0 mt-0.5" />
                 <div>
-                  <div className="text-xs font-display font-semibold tracking-widest text-copper/60 uppercase mb-1">Stage 1</div>
+                  <div className="text-xs font-display font-semibold tracking-widest text-copper uppercase mb-1">Stage 1</div>
                   <h2 className="font-display font-semibold text-xl text-starlight mb-1">
                     Clarity Audit
                   </h2>
-                  <p className="text-starlight/50 text-sm">The diagnostic. Identifies where the system breaks.</p>
+                  <p className="text-starlight/60 text-sm">The diagnostic. Identifies where the system breaks.</p>
                 </div>
               </div>
               <p className="text-starlight/70 text-base mb-5">
@@ -81,7 +84,9 @@ export default function PricingPage() {
               <div className="flex items-baseline gap-2 mb-5">
                 <p className="text-copper font-display font-semibold text-3xl">$150</p>
               </div>
-              <StripeBuyButton buyButtonId="buy_btn_1TDtGA0vGBLnj72kaNhC423Y" label="Start with the Audit" />
+              <a href={siteConfig.stripeAuditUrl} target="_blank" rel="noopener noreferrer" className={buttonStyles}>
+                Start with the Audit
+              </a>
               <p className="mt-3 text-center text-xs text-starlight/60">
                 Audit fee credited toward any rebuild engagement
               </p>
@@ -98,7 +103,7 @@ export default function PricingPage() {
               <div className="flex items-start gap-4 mb-5">
                 <Icon name="gears" size={28} className="opacity-80 shrink-0 mt-0.5" />
                 <div>
-                  <div className="text-xs font-display font-semibold tracking-widest text-starlight/30 uppercase mb-1">Stage 2</div>
+                  <div className="text-xs font-display font-semibold tracking-widest text-starlight/60 uppercase mb-1">Stage 2</div>
                   <h2 className="font-display font-semibold text-xl text-starlight mb-1">
                     30-Day Rebuild
                   </h2>
@@ -110,7 +115,7 @@ export default function PricingPage() {
               <p className="text-starlight/70 text-base mb-2">
                 The complete growth infrastructure, rebuilt from a single strategic foundation. Completed in 30 days.
               </p>
-              <p className="text-starlight/50 text-sm mb-5">
+              <p className="text-starlight/60 text-sm mb-5">
                 Scope is defined after the Clarity Audit.
               </p>
               <p className="text-starlight/70 text-sm font-display font-semibold mb-3">Includes:</p>
@@ -129,13 +134,10 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <Link
-                href="/connect"
-                className="w-full inline-flex items-center justify-center rounded-[var(--radius-md)] bg-copper text-deep-space px-6 py-3 font-display font-semibold text-sm transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0"
-              >
+              <Link href="/connect" className={buttonStyles}>
                 Request a Consultation
               </Link>
-              <p className="mt-3 text-xs text-starlight/40">
+              <p className="mt-3 text-xs text-starlight/60">
                 The audit fee is applied toward the rebuild.
               </p>
             </article>
@@ -151,7 +153,7 @@ export default function PricingPage() {
               <div className="flex items-start gap-4 mb-5">
                 <Icon name="signal" size={28} className="opacity-80 shrink-0 mt-0.5" />
                 <div>
-                  <div className="text-xs font-display font-semibold tracking-widest text-starlight/30 uppercase mb-1">Stage 3</div>
+                  <div className="text-xs font-display font-semibold tracking-widest text-starlight/60 uppercase mb-1">Stage 3</div>
                   <h2 className="font-display font-semibold text-xl text-starlight mb-1">
                     Continued Optimization
                   </h2>
@@ -163,13 +165,13 @@ export default function PricingPage() {
               <p className="text-starlight/70 text-base mb-2">
                 Ongoing performance monitoring, strategic improvement, and hands-on optimization after the rebuild.
               </p>
-              <p className="text-starlight/50 text-sm mb-5">
+              <p className="text-starlight/60 text-sm mb-5">
                 For businesses that want continued improvement without managing it themselves.
               </p>
               <ul className="space-y-2 mb-6">
                 {[
                   "Lead tracking and conversion source visibility",
-                  "Site performance, uptime, and health monitoring",
+                  "Site performance, uptime, speed, and health monitoring",
                   "Search visibility and keyword tracking",
                   "Monthly performance reports",
                   "Strategic recommendations and updates",
@@ -180,7 +182,7 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <StripeBuyButton buyButtonId="buy_btn_1TDtJg0vGBLnj72k4vWaSa7F" label="Subscribe — $750/mo" />
+              <StripeBuyButton buyButtonId="buy_btn_1TDtJg0vGBLnj72k4vWaSa7F" />
             </article>
           </div>
         </div>
@@ -205,7 +207,7 @@ export default function PricingPage() {
               <p className="text-starlight/70 text-base mb-2">
                 A clear view of website performance, lead activity, and conversion signals in one place. Available to any business as a standalone dashboard.
               </p>
-              <p className="text-starlight/50 text-sm mb-5">
+              <p className="text-starlight/60 text-sm mb-5">
                 Included free with every Cosmic Reach Creative rebuild.
               </p>
               <ul className="space-y-2 mb-6">
@@ -221,8 +223,8 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <StripeBuyButton buyButtonId="buy_btn_1THvGV0vGBLnj72kN97MqFHS" label="Subscribe — $150/mo" />
-              <p className="mt-4 text-center text-xs text-starlight/40">
+              <StripeBuyButton buyButtonId="buy_btn_1THvGV0vGBLnj72kN97MqFHS" />
+              <p className="mt-4 text-center text-xs text-starlight/60">
                 Free for all Cosmic Reach Creative-built websites.
               </p>
             </article>

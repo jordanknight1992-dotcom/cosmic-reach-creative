@@ -48,14 +48,14 @@ export default function ClarityPage() {
       </section>
 
       {/* The Problem */}
-      <section className="py-12 sm:py-16 bg-section-light" aria-labelledby="clarity-problem">
+      <section className="py-12 sm:py-16 bg-navy" aria-labelledby="clarity-problem">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 id="clarity-problem" className="mb-4 text-navy">Something feels off. You cannot name it. The audit can.</h2>
-            <p className="text-navy/70 text-base mb-3">
+            <h2 id="clarity-problem" className="mb-4 text-starlight">Something feels off. You cannot name it. The audit can.</h2>
+            <p className="text-starlight/70 text-base mb-3">
               You have a business that works. Customers exist. Revenue comes in. But growth has flattened and you are not sure why. The instinct is to try something new. A new channel. A new campaign. A redesign.
             </p>
-            <p className="text-navy/70 text-base">
+            <p className="text-starlight/70 text-base">
               The Clarity Audit diagnoses the actual constraint before you spend money fixing the wrong thing. It evaluates four forces that drive every business and shows you exactly where the system is breaking down.
             </p>
           </div>
@@ -84,7 +84,7 @@ export default function ClarityPage() {
               >
                 <div className="flex items-baseline gap-2 mb-2">
                   <span className="text-copper font-display font-bold text-sm">{item.name}</span>
-                  <span className="text-starlight/30 text-xs">{item.subtitle}</span>
+                  <span className="text-starlight/60 text-xs">{item.subtitle}</span>
                 </div>
                 <p className="text-starlight/60 text-sm leading-relaxed">{item.desc}</p>
               </div>
@@ -133,11 +133,11 @@ export default function ClarityPage() {
       </section>
 
       {/* Who This Is For */}
-      <section className="py-12 sm:py-16 bg-section-light" aria-labelledby="clarity-audience">
+      <section className="py-12 sm:py-16 bg-navy" aria-labelledby="clarity-audience">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 id="clarity-audience" className="mb-4 text-navy">Built for businesses with traction and friction.</h2>
-            <p className="text-navy/70 text-base mb-6">
+            <h2 id="clarity-audience" className="mb-4 text-starlight">Built for businesses with traction and friction.</h2>
+            <p className="text-starlight/70 text-base mb-6">
               The audit is most useful when the business is working but growth has plateaued. Common patterns:
             </p>
             <ul className="space-y-3 max-w-md mx-auto text-left">
@@ -147,7 +147,7 @@ export default function ClarityPage() {
                 "Marketing activity is happening but results are flat",
                 "There is no visibility into what is actually working",
               ].map((item) => (
-                <li key={item} className="flex items-start gap-3 text-sm text-navy/70">
+                <li key={item} className="flex items-start gap-3 text-sm text-starlight/70">
                   <span className="text-copper mt-0.5 shrink-0">&#9670;</span>
                   {item}
                 </li>

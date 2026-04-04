@@ -128,7 +128,7 @@ export default function FrameworkPage() {
             <p className="text-starlight/70 text-base mb-3">
               A website that converts has clear messaging, a defined offer, a straightforward path to action, and visibility into what is working. When any of these break down, leads stop coming in.
             </p>
-            <p className="text-starlight/50 text-sm">
+            <p className="text-starlight/60 text-sm">
               Every audit and ongoing performance report includes these scores so you can see exactly where your site stands and what to improve.
             </p>
           </div>
@@ -166,14 +166,14 @@ export default function FrameworkPage() {
               >
                 <div className="mb-3 flex items-baseline gap-3">
                   <span className="text-copper font-display font-bold text-lg">{area.layer}</span>
-                  <span className="text-starlight/30 text-sm">{area.name}</span>
+                  <span className="text-starlight/60 text-sm">{area.name}</span>
                 </div>
                 <p className="text-starlight font-display font-semibold text-sm mb-3">
                   {area.question}
                 </p>
                 <p className="text-starlight/70 text-sm leading-relaxed mb-5 flex-1">{area.description}</p>
                 <div className="mb-5">
-                  <p className="text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-3">
+                  <p className="text-xs font-display font-semibold tracking-widest text-copper uppercase mb-3">
                     What we check
                   </p>
                   <ul className="space-y-2">
@@ -186,12 +186,12 @@ export default function FrameworkPage() {
                   </ul>
                 </div>
                 <div className="pt-4 border-t border-starlight/6">
-                  <p className="text-xs font-display font-semibold tracking-widest text-starlight/30 uppercase mb-3">
+                  <p className="text-xs font-display font-semibold tracking-widest text-starlight/60 uppercase mb-3">
                     What we measure
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {area.whatWeMeasure.map((item) => (
-                      <span key={item} className="text-xs bg-starlight/5 text-starlight/50 rounded-md px-2.5 py-1">
+                      <span key={item} className="text-xs bg-starlight/5 text-starlight/60 rounded-md px-2.5 py-1">
                         {item}
                       </span>
                     ))}
@@ -212,21 +212,21 @@ export default function FrameworkPage() {
               <div className="rounded-xl border border-starlight/10 bg-navy/40 p-5 text-center">
                 <div className="text-copper text-2xl mb-3">&#9670;</div>
                 <h3 className="font-display font-semibold text-sm text-starlight mb-2">Audit Report</h3>
-                <p className="text-starlight/50 text-xs leading-relaxed">
+                <p className="text-starlight/60 text-xs leading-relaxed">
                   Every audit includes a scored breakdown showing where each layer stands and what to fix first.
                 </p>
               </div>
               <div className="rounded-xl border border-starlight/10 bg-navy/40 p-5 text-center">
                 <div className="text-copper text-2xl mb-3">&#9670;</div>
                 <h3 className="font-display font-semibold text-sm text-starlight mb-2">Mission Control</h3>
-                <p className="text-starlight/50 text-xs leading-relaxed">
+                <p className="text-starlight/60 text-xs leading-relaxed">
                   Live scores update automatically based on real data from your site, analytics, and search performance.
                 </p>
               </div>
               <div className="rounded-xl border border-starlight/10 bg-navy/40 p-5 text-center">
                 <div className="text-copper text-2xl mb-3">&#9670;</div>
                 <h3 className="font-display font-semibold text-sm text-starlight mb-2">Monthly Reports</h3>
-                <p className="text-starlight/50 text-xs leading-relaxed">
+                <p className="text-starlight/60 text-xs leading-relaxed">
                   Ongoing clients receive exportable reports showing how scores change over time.
                 </p>
               </div>

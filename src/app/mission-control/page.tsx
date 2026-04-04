@@ -2,6 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
+import { Icon } from "@/components/Icon";
+import { StripeBuyButton } from "@/components/StripeBuyButton";
+import { DashboardPreview } from "@/components/DashboardPreview";
 
 export const metadata: Metadata = {
   title: "Mission Control | A Clear View of What Your Website Is Doing",
@@ -42,13 +45,13 @@ export default function MissionControlLanding() {
                 href="/mission-control/demo"
                 className="inline-flex items-center justify-center rounded-[var(--radius-md)] bg-copper text-deep-space px-8 py-3 text-base font-display font-semibold transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0"
               >
-                Try the Demo
+                Try the Live Demo
               </Link>
             </div>
             <div className="mt-3 text-center">
               <Link
                 href="/mission-control/login"
-                className="text-sm text-starlight/40 hover:text-starlight/60 transition-colors underline underline-offset-2"
+                className="text-sm text-starlight/60 hover:text-starlight/80 transition-colors underline underline-offset-2"
               >
                 Already a member? Sign in
               </Link>
@@ -57,74 +60,101 @@ export default function MissionControlLanding() {
         </div>
       </section>
 
-      {/* The Problem */}
-      <section className="py-14 sm:py-20 bg-navy/40" aria-label="The problem">
-        <div className="max-w-[900px] mx-auto px-5 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-display font-bold text-2xl text-starlight mb-3">
-            It becomes unclear what is working.
-          </h2>
-          <p className="text-starlight/50 text-sm max-w-lg mx-auto mb-10">
-            Without visibility, it is hard to know where to focus.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {[
-              "Where leads are coming from",
-              "What pages are working",
-              "What needs attention",
-            ].map((signal) => (
-              <div
-                key={signal}
-                className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/40 p-5 text-center transition-all duration-[var(--duration-base)] hover:border-copper/20"
-              >
-                <span className="text-sm text-starlight/70">{signal}</span>
-              </div>
-            ))}
+      {/* ─── Dashboard Preview ──────────────────────────────────── */}
+      <section className="py-14 sm:py-20 bg-navy/40" aria-label="Dashboard preview">
+        <div style={{ maxWidth: 780, margin: "0 auto", padding: "0 20px" }}>
+          <div className="text-center mb-8">
+            <h2 className="font-display font-bold text-2xl text-starlight mb-2">
+              Everything in one place.
+            </h2>
+            <p style={{ color: "rgba(232,223,207,0.5)", fontSize: 14 }}>
+              Leads, traffic, performance, and meetings. Visible the moment you log in.
+            </p>
           </div>
+          <DashboardPreview />
         </div>
       </section>
 
-      {/* What It Handles */}
+      {/* ─── Three Pillars ──────────────────────────────────────── */}
       <section className="py-14 sm:py-20" aria-label="What Mission Control handles">
-        <div className="max-w-[900px] mx-auto px-5 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-display font-bold text-2xl text-starlight mb-3">
-            It handles three things.
-          </h2>
-          <p className="text-starlight/50 text-sm max-w-lg mx-auto mb-10">
-            You can see what is working and where to focus next without digging through multiple tools.
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
+        <div style={{ maxWidth: 720, margin: "0 auto", padding: "0 20px" }}>
+          <div className="text-center mb-8">
+            <h2 className="font-display font-bold text-2xl text-starlight mb-2">
+              Three systems. One dashboard.
+            </h2>
+            <p style={{ color: "rgba(232,223,207,0.5)", fontSize: 14 }}>
+              No switching between Google Analytics, PageSpeed, and spreadsheets.
+            </p>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}>
             {[
-              { title: "Captures leads", desc: "Leads from your website are logged and organized in one place." },
-              { title: "Shows sources", desc: "See where each inquiry came from so you know which channels are producing." },
-              { title: "Highlights performance", desc: "Understand which pages are driving action and which ones are not." },
+              {
+                icon: "network" as const,
+                title: "Lead Tracking",
+                desc: "Every inquiry captured and organized with source attribution.",
+              },
+              {
+                icon: "signal" as const,
+                title: "Performance",
+                desc: "PageSpeed, Core Web Vitals, uptime, and response times. Updated continuously.",
+              },
+              {
+                icon: "eye" as const,
+                title: "Traffic Intelligence",
+                desc: "See where visitors come from and which pages drive action.",
+              },
             ].map((item) => (
               <div
                 key={item.title}
-                className="rounded-[var(--radius-lg)] border border-starlight/10 bg-navy/50 p-6 text-center transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/30 hover:shadow-subtle"
+                className="transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/30"
+                style={{
+                  background: "#111827", border: "1px solid rgba(232,223,207,0.1)",
+                  borderRadius: 12, padding: "20px 16px", textAlign: "center",
+                }}
               >
-                <div className="font-display font-bold text-sm mb-1.5 text-starlight">{item.title}</div>
-                <div className="text-sm text-starlight/50 leading-relaxed">{item.desc}</div>
+                <Icon name={item.icon} size={20} className="opacity-50 mx-auto mb-2" />
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#e8dfcf", marginBottom: 4, fontFamily: "var(--font-display)" }}>
+                  {item.title}
+                </div>
+                <div style={{ fontSize: 12, color: "rgba(232,223,207,0.45)", lineHeight: 1.5 }}>
+                  {item.desc}
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
+      {/* ─── Pricing / CTA ──────────────────────────────────────── */}
       <section className="py-14 sm:py-20 bg-navy/40" aria-label="Get started">
         <div className="max-w-[var(--container-max)] mx-auto px-5 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl font-display font-bold mb-3 text-starlight">
-            Included with every rebuild.
+          <h2 className="text-2xl font-display font-bold mb-2 text-starlight">
+            Included with every rebuild. Available standalone.
           </h2>
-          <p className="text-starlight/50 text-sm max-w-lg mx-auto mb-8">
-            Mission Control is part of the rebuild process. After launch, you have visibility into what is working and what needs attention.
+          <p style={{ color: "rgba(232,223,207,0.5)", fontSize: 14, maxWidth: 480, margin: "0 auto 16px" }}>
+            Mission Control is part of every Cosmic Reach Creative rebuild at no extra cost. For others, it is available as a standalone subscription.
           </p>
-          <Link
-            href="/pricing"
-            className="inline-flex items-center justify-center rounded-[var(--radius-md)] bg-copper text-deep-space px-8 py-3 text-base font-display font-semibold transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0"
-          >
-            View Pricing
-          </Link>
+          <div style={{ maxWidth: 320, margin: "0 auto" }}>
+            <div style={{
+              background: "#111827", border: "1px solid rgba(212,165,116,0.2)",
+              borderRadius: 14, padding: "20px 24px", marginBottom: 12,
+            }}>
+              <div style={{ fontSize: 22, fontWeight: 700, color: "#d4a574", fontFamily: "var(--font-display)", marginBottom: 2 }}>$150/month</div>
+              <div style={{ fontSize: 12, color: "rgba(232,223,207,0.4)", marginBottom: 16 }}>Standalone subscription</div>
+              <StripeBuyButton buyButtonId="buy_btn_1THvGV0vGBLnj72kN97MqFHS" />
+            </div>
+            <p style={{ fontSize: 11, color: "rgba(232,223,207,0.3)" }}>
+              Free for all Cosmic Reach Creative-built websites.
+            </p>
+          </div>
+          <div className="mt-6">
+            <Link
+              href="/mission-control/demo"
+              className="inline-flex items-center justify-center rounded-[var(--radius-md)] border-2 border-starlight/20 text-starlight px-6 py-2.5 text-sm font-display font-semibold transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/40 hover:text-copper"
+            >
+              Try the Live Demo
+            </Link>
+          </div>
         </div>
       </section>
     </main>

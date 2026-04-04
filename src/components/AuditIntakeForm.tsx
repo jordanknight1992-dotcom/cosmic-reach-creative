@@ -33,7 +33,7 @@ const initialForm: FormData = {
 };
 
 const fieldClass =
-  "w-full rounded-[var(--radius-md)] border border-starlight/15 bg-navy/60 px-4 py-3 text-base text-starlight placeholder:text-starlight/30 focus:border-copper/50 focus:outline-none transition-colors";
+  "w-full rounded-[var(--radius-md)] border border-starlight/15 bg-navy/60 px-4 py-3 text-base text-starlight placeholder:text-starlight/60 focus:border-copper/50 focus:outline-none transition-colors";
 
 const labelClass =
   "block text-sm font-display font-medium text-starlight/80 mb-1.5";

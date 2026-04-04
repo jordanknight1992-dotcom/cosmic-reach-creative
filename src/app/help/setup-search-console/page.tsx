@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function SetupSearchConsolePage() {
   return (
     <main id="main-content">
-      <section className="py-16 sm:py-24 bg-section-light">
+      <section className="py-16 sm:py-24 bg-navy">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
             <a
@@ -21,10 +21,10 @@ export default function SetupSearchConsolePage() {
               &larr; Back to Help
             </a>
 
-            <h1 className="text-navy mb-2">
+            <h1 className="text-starlight mb-2">
               How to Find Your Search Console Site URL
             </h1>
-            <p className="text-navy/60 text-base mb-10">
+            <p className="text-starlight/60 text-base mb-10">
               Your Search Console site URL connects Mission Control to your keyword and search performance data. Here is how to find it.
             </p>
 
@@ -56,15 +56,15 @@ export default function SetupSearchConsolePage() {
               <Step
                 number={5}
                 title="Enter It in Mission Control"
-                description="Paste the value into the Search Console field during setup. Use the exact format — either sc-domain:yoursite.com for domain properties or the full URL for URL prefix properties."
+                description="Paste the value into the Search Console field during setup. Use the exact format, either sc-domain:yoursite.com for domain properties or the full URL for URL prefix properties."
               />
             </div>
 
-            <div className="mt-12 rounded-xl border border-navy/10 bg-white p-6">
-              <h3 className="font-display font-semibold text-sm text-navy mb-2">
+            <div className="mt-12 rounded-xl border border-starlight/10 bg-deep-space p-6">
+              <h3 className="font-display font-semibold text-sm text-starlight mb-2">
                 Which format should I use?
               </h3>
-              <div className="space-y-3 text-sm text-navy/60">
+              <div className="space-y-3 text-sm text-starlight/60">
                 <div className="flex gap-3">
                   <span className="shrink-0 font-mono text-copper text-xs bg-copper/10 rounded px-2 py-1">sc-domain:yoursite.com</span>
                   <span>Domain property. Covers all subdomains and protocols. This is the recommended format.</span>
@@ -77,13 +77,13 @@ export default function SetupSearchConsolePage() {
             </div>
 
             <div className="mt-12 rounded-xl border border-copper/20 bg-copper/5 p-6">
-              <h3 className="font-display font-semibold text-sm text-navy mb-2">
+              <h3 className="font-display font-semibold text-sm text-starlight mb-2">
                 Do not have Search Console yet?
               </h3>
-              <p className="text-navy/60 text-sm leading-relaxed mb-3">
+              <p className="text-starlight/60 text-sm leading-relaxed mb-3">
                 If your website is not set up in Search Console, here is how to add it.
               </p>
-              <ol className="text-navy/60 text-sm space-y-2 list-decimal list-inside">
+              <ol className="text-starlight/60 text-sm space-y-2 list-decimal list-inside">
                 <li>Go to <a href="https://search.google.com/search-console" target="_blank" rel="noopener noreferrer" className="text-copper hover:underline">search.google.com/search-console</a></li>
                 <li>Click &quot;Add property&quot;</li>
                 <li>Choose &quot;Domain&quot; (recommended) and enter your domain</li>
@@ -94,7 +94,7 @@ export default function SetupSearchConsolePage() {
             </div>
 
             <div className="mt-8 text-center">
-              <p className="text-navy/40 text-xs">
+              <p className="text-starlight/60 text-xs">
                 This connection is optional. Mission Control tracks form submissions automatically without it.
               </p>
             </div>
@@ -112,8 +112,8 @@ function Step({ number, title, description }: { number: number; title: string; d
         {number}
       </div>
       <div>
-        <h3 className="font-display font-semibold text-base text-navy mb-1">{title}</h3>
-        <p className="text-navy/60 text-sm leading-relaxed">{description}</p>
+        <h3 className="font-display font-semibold text-base text-starlight mb-1">{title}</h3>
+        <p className="text-starlight/60 text-sm leading-relaxed">{description}</p>
       </div>
     </div>
   );

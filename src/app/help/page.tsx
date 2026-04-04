@@ -27,11 +27,11 @@ const GUIDES = [
 export default function HelpPage() {
   return (
     <main id="main-content">
-      <section className="py-16 sm:py-24 bg-section-light">
+      <section className="py-16 sm:py-24 bg-navy">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
-            <h1 className="text-navy mb-2">Setup Guides</h1>
-            <p className="text-navy/60 text-base mb-10">
+            <h1 className="text-starlight mb-2">Setup Guides</h1>
+            <p className="text-starlight/60 text-base mb-10">
               Step-by-step instructions for connecting your data sources to Mission Control.
             </p>
 
@@ -40,15 +40,15 @@ export default function HelpPage() {
                 <Link
                   key={guide.href}
                   href={guide.href}
-                  className="block rounded-xl border border-navy/10 bg-white p-5 shadow-subtle transition-all duration-200 hover:border-copper/40 hover:shadow-soft"
+                  className="block rounded-xl border border-starlight/10 bg-deep-space p-5 shadow-subtle transition-all duration-200 hover:border-copper/40 hover:shadow-soft"
                 >
                   <div className="flex items-start gap-4">
                     <span className="text-2xl">{guide.icon}</span>
                     <div>
-                      <h2 className="font-display font-semibold text-base text-navy mb-1">
+                      <h2 className="font-display font-semibold text-base text-starlight mb-1">
                         {guide.title}
                       </h2>
-                      <p className="text-navy/60 text-sm">{guide.description}</p>
+                      <p className="text-starlight/60 text-sm">{guide.description}</p>
                     </div>
                     <span className="ml-auto text-copper shrink-0">&rarr;</span>
                   </div>
@@ -57,7 +57,7 @@ export default function HelpPage() {
             </div>
 
             <div className="mt-12 text-center">
-              <p className="text-navy/40 text-sm">
+              <p className="text-starlight/60 text-sm">
                 Need help with something else?{" "}
                 <a href="/connect" className="text-copper hover:underline">
                   Get in touch

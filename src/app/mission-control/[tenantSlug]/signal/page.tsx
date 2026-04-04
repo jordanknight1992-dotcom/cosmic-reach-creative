@@ -5,6 +5,7 @@ import { getEnvConfiguredProviders, resolveCredential } from "@/lib/mc-auth";
 import { getGA4Data, getSearchConsoleData, type GA4Metrics, type SearchConsoleMetrics } from "@/lib/ga4";
 import { getPageSpeedData, checkUptime, type PageSpeedResult, type UptimeResult } from "@/lib/site-health";
 import { calculateSiteHealth } from "@/lib/site-scoring";
+import { getContactSubmissions, getAuditSubmissions } from "@/lib/db";
 
 async function getPerformanceData(tenantId: number, domain: string | null) {
   const [dbProviders] = await Promise.all([
@@ -70,6 +71,18 @@ async function getPerformanceData(tenantId: number, domain: string | null) {
     }
   }
 
+  // Get submission count for conversion rate scoring
+  let submissionCount = 0;
+  try {
+    const [contacts, audits] = await Promise.all([
+      getContactSubmissions().catch(() => []),
+      getAuditSubmissions().catch(() => []),
+    ]);
+    submissionCount = (contacts as unknown[]).length + (audits as unknown[]).length;
+  } catch {
+    // non-fatal
+  }
+
   // Calculate layer scores from all available data
   const hasSearchConsole = connectedProviders.includes("google_search_console");
   const scores = calculateSiteHealth({
@@ -79,6 +92,7 @@ async function getPerformanceData(tenantId: number, domain: string | null) {
     keywords: keywordData,
     hasGA4,
     hasSearchConsole,
+    submissionCount,
   });
 
   return {

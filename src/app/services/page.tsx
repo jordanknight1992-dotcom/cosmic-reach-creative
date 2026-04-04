@@ -41,18 +41,18 @@ export default function ServicesPage() {
           <div className="max-w-2xl mx-auto">
             <h1 id="services-hero" className="text-copper">What we build.</h1>
             <p className="text-starlight/80 text-base sm:text-lg mt-3">
-              The full growth infrastructure. Diagnosed, designed, and delivered as one connected system.
+              The full growth infrastructure. Diagnosed, designed, built, and delivered as one connected system.
             </p>
           </div>
         </div>
       </section>
 
       {/* Intro */}
-      <section className="py-12 sm:py-16 bg-section-light" aria-labelledby="services-intro">
+      <section className="py-12 sm:py-16 bg-navy" aria-labelledby="services-intro">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 id="services-intro" className="mb-4 text-navy">Every part of the system is built to work together.</h2>
-            <p className="text-navy/70 text-base">
+            <h2 id="services-intro" className="mb-4 text-starlight">Every part of the system is built to work together.</h2>
+            <p className="text-starlight/70 text-base">
               Most businesses accumulate disconnected assets over time. A logo from one designer. A website from another. Copy that does not match the sales conversation. Cosmic Reach rebuilds the entire system from a single strategic foundation so every piece reinforces the same message, the same offer, and the same path to action.
             </p>
           </div>
@@ -89,7 +89,7 @@ export default function ServicesPage() {
                   </li>
                 ))}
               </ul>
-              <p className="text-xs text-starlight/40">
+              <p className="text-xs text-starlight/60">
                 The audit fee is applied toward any rebuild engagement.
               </p>
             </article>
@@ -109,7 +109,7 @@ export default function ServicesPage() {
 
               <div className="grid gap-4 sm:grid-cols-2 mb-4">
                 <div>
-                  <p className="text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-3">Brand System</p>
+                  <p className="text-xs font-display font-semibold tracking-widest text-copper uppercase mb-3">Brand System</p>
                   <ul className="space-y-2">
                     {[
                       "Positioning and messaging strategy",
@@ -118,14 +118,14 @@ export default function ServicesPage() {
                       "Brand guidelines document",
                     ].map((item) => (
                       <li key={item} className="flex items-start gap-2 text-sm text-starlight/60">
-                        <span className="text-copper/50 mt-0.5 shrink-0 text-[8px]">&#9670;</span>
+                        <span className="text-copper mt-0.5 shrink-0 text-[8px]">&#9670;</span>
                         {item}
                       </li>
                     ))}
                   </ul>
                 </div>
                 <div>
-                  <p className="text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-3">Website</p>
+                  <p className="text-xs font-display font-semibold tracking-widest text-copper uppercase mb-3">Website</p>
                   <ul className="space-y-2">
                     {[
                       "Page architecture and site structure",
@@ -134,14 +134,14 @@ export default function ServicesPage() {
                       "Search-ready structure and content",
                     ].map((item) => (
                       <li key={item} className="flex items-start gap-2 text-sm text-starlight/60">
-                        <span className="text-copper/50 mt-0.5 shrink-0 text-[8px]">&#9670;</span>
+                        <span className="text-copper mt-0.5 shrink-0 text-[8px]">&#9670;</span>
                         {item}
                       </li>
                     ))}
                   </ul>
                 </div>
                 <div>
-                  <p className="text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-3">Sales Materials</p>
+                  <p className="text-xs font-display font-semibold tracking-widest text-copper uppercase mb-3">Sales Materials</p>
                   <ul className="space-y-2">
                     {[
                       "Sales deck and presentation template",
@@ -149,14 +149,14 @@ export default function ServicesPage() {
                       "Email templates for follow-up",
                     ].map((item) => (
                       <li key={item} className="flex items-start gap-2 text-sm text-starlight/60">
-                        <span className="text-copper/50 mt-0.5 shrink-0 text-[8px]">&#9670;</span>
+                        <span className="text-copper mt-0.5 shrink-0 text-[8px]">&#9670;</span>
                         {item}
                       </li>
                     ))}
                   </ul>
                 </div>
                 <div>
-                  <p className="text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-3">Mission Control</p>
+                  <p className="text-xs font-display font-semibold tracking-widest text-copper uppercase mb-3">Mission Control</p>
                   <ul className="space-y-2">
                     {[
                       "Lead capture and source tracking",
@@ -165,7 +165,7 @@ export default function ServicesPage() {
                       "Real-time dashboard access",
                     ].map((item) => (
                       <li key={item} className="flex items-start gap-2 text-sm text-starlight/60">
-                        <span className="text-copper/50 mt-0.5 shrink-0 text-[8px]">&#9670;</span>
+                        <span className="text-copper mt-0.5 shrink-0 text-[8px]">&#9670;</span>
                         {item}
                       </li>
                     ))}
@@ -173,7 +173,7 @@ export default function ServicesPage() {
                 </div>
               </div>
 
-              <p className="text-xs text-starlight/40">
+              <p className="text-xs text-starlight/60">
                 Scope is defined after the Clarity Audit. Completed in approximately 30 days.
               </p>
             </article>
@@ -193,7 +193,7 @@ export default function ServicesPage() {
               <ul className="space-y-2 mb-4">
                 {[
                   "Lead tracking and conversion source visibility",
-                  "Site performance, uptime, and health monitoring",
+                  "Site performance, uptime, speed, and health monitoring",
                   "Search visibility and keyword tracking",
                   "Monthly performance reports",
                   "Strategic recommendations and small updates",
@@ -204,7 +204,7 @@ export default function ServicesPage() {
                   </li>
                 ))}
               </ul>
-              <p className="text-xs text-starlight/40">
+              <p className="text-xs text-starlight/60">
                 Mission Control is also available standalone at $150/month for businesses that want dashboard access without the full optimization service.
               </p>
             </article>
@@ -213,15 +213,15 @@ export default function ServicesPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-12 sm:py-16 bg-section-light" aria-labelledby="services-cta">
+      <section className="py-12 sm:py-16 bg-navy" aria-labelledby="services-cta">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto text-center">
-            <h2 id="services-cta" className="mb-3 text-navy">Start with the Clarity Audit.</h2>
-            <p className="text-navy/70 text-base mb-6">
+            <h2 id="services-cta" className="mb-3 text-starlight">Start with the Clarity Audit.</h2>
+            <p className="text-starlight/70 text-base mb-6">
               The audit diagnoses where the system breaks. Everything else follows from there.
             </p>
             <CTAButton label="Start with the Audit" variant="primary" />
-            <p className="mt-4 text-sm text-navy/40">
+            <p className="mt-4 text-sm text-starlight/60">
               Not sure yet?{" "}
               <Link href="/connect" className="text-copper hover:underline">
                 Book a free intro call

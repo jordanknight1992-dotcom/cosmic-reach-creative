@@ -54,18 +54,18 @@ export default function BrandPage() {
       </section>
 
       {/* Brand Foundation */}
-      <section className="py-12 sm:py-16 bg-section-light" aria-labelledby="foundation-heading">
+      <section className="py-12 sm:py-16 bg-navy" aria-labelledby="foundation-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
-            <h2 id="foundation-heading" className="mb-4 text-navy text-center">Brand Foundation</h2>
-            <div className="rounded-2xl border border-navy/10 bg-white shadow-subtle p-6 sm:p-8 text-center">
+            <h2 id="foundation-heading" className="mb-4 text-starlight text-center">Brand Foundation</h2>
+            <div className="rounded-2xl border border-starlight/10 bg-deep-space shadow-subtle p-6 sm:p-8 text-center">
               <p className="text-copper font-display font-bold text-xl sm:text-2xl mb-4">
                 We build the infrastructure of growth.
               </p>
-              <p className="text-navy/70 text-base mb-4">
+              <p className="text-starlight/70 text-base mb-4">
                 Systems design for businesses with traction and friction.
               </p>
-              <p className="text-navy/60 text-sm leading-relaxed max-w-xl mx-auto">
+              <p className="text-starlight/60 text-sm leading-relaxed max-w-xl mx-auto">
                 Cosmic Reach exists to serve businesses that have real momentum but are losing it to structural problems they cannot see from the inside. The brand communicates precision, structure, and clarity. Every visual and verbal decision reinforces the idea that growth is systematic, not heroic.
               </p>
             </div>
@@ -91,7 +91,7 @@ export default function BrandPage() {
                 <div key={item.name} className="rounded-xl border border-starlight/10 bg-navy/40 p-5">
                   <div className="flex items-baseline gap-2 mb-2">
                     <span className="text-copper font-display font-bold text-sm">{item.name}</span>
-                    <span className="text-starlight/30 text-xs">{item.subtitle}</span>
+                    <span className="text-starlight/60 text-xs">{item.subtitle}</span>
                   </div>
                   <p className="text-starlight/60 text-sm leading-relaxed">{item.desc}</p>
                 </div>
@@ -102,12 +102,12 @@ export default function BrandPage() {
       </section>
 
       {/* Voice and Language */}
-      <section className="py-12 sm:py-16 bg-section-light" aria-labelledby="voice-heading">
+      <section className="py-12 sm:py-16 bg-navy" aria-labelledby="voice-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
-            <h2 id="voice-heading" className="mb-6 text-navy text-center">Voice and Language</h2>
+            <h2 id="voice-heading" className="mb-6 text-starlight text-center">Voice and Language</h2>
             <div className="grid gap-6 sm:grid-cols-2">
-              <div className="rounded-2xl border border-navy/10 bg-white shadow-subtle p-6">
+              <div className="rounded-2xl border border-starlight/10 bg-deep-space shadow-subtle p-6">
                 <p className="text-copper text-xs font-display font-semibold tracking-widest uppercase mb-4">How we sound</p>
                 <ul className="space-y-3">
                   {[
@@ -117,15 +117,15 @@ export default function BrandPage() {
                     "Steady and human. Like an operator thinking clearly.",
                     "Short sentences when possible. Longer when necessary.",
                   ].map((item) => (
-                    <li key={item} className="flex items-start gap-2.5 text-sm text-navy/70">
+                    <li key={item} className="flex items-start gap-2.5 text-sm text-starlight/70">
                       <span className="text-copper mt-0.5 shrink-0">&#9670;</span>
                       {item}
                     </li>
                   ))}
                 </ul>
               </div>
-              <div className="rounded-2xl border border-navy/10 bg-white shadow-subtle p-6">
-                <p className="text-navy/40 text-xs font-display font-semibold tracking-widest uppercase mb-4">What we avoid</p>
+              <div className="rounded-2xl border border-starlight/10 bg-deep-space shadow-subtle p-6">
+                <p className="text-starlight/60 text-xs font-display font-semibold tracking-widest uppercase mb-4">What we avoid</p>
                 <ul className="space-y-3">
                   {[
                     "Jargon-heavy corporate language.",
@@ -134,8 +134,8 @@ export default function BrandPage() {
                     "Trend-chasing tone or startup cliches.",
                     "Filler transitions and structural narration.",
                   ].map((item) => (
-                    <li key={item} className="flex items-start gap-2.5 text-sm text-navy/50">
-                      <span className="text-navy/20 mt-0.5 shrink-0">&#9670;</span>
+                    <li key={item} className="flex items-start gap-2.5 text-sm text-starlight/60">
+                      <span className="text-starlight/20 mt-0.5 shrink-0">&#9670;</span>
                       {item}
                     </li>
                   ))}
@@ -170,7 +170,7 @@ export default function BrandPage() {
                   </div>
                   <div className="bg-navy/40 p-4 flex-1">
                     <p className="text-starlight font-display font-semibold text-sm mb-1">{color.name}</p>
-                    <p className="text-starlight/50 text-xs leading-relaxed">{color.role}</p>
+                    <p className="text-starlight/60 text-xs leading-relaxed">{color.role}</p>
                   </div>
                 </div>
               ))}
@@ -180,22 +180,22 @@ export default function BrandPage() {
       </section>
 
       {/* Typography */}
-      <section className="py-12 sm:py-16 bg-section-light" aria-labelledby="type-heading">
+      <section className="py-12 sm:py-16 bg-navy" aria-labelledby="type-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
-            <h2 id="type-heading" className="mb-6 text-navy text-center">Typography</h2>
+            <h2 id="type-heading" className="mb-6 text-starlight text-center">Typography</h2>
             <div className="grid gap-6 sm:grid-cols-2">
-              <div className="rounded-2xl border border-navy/10 bg-white shadow-subtle p-6">
-                <p className="font-display text-3xl text-navy mb-2">Space Grotesk</p>
+              <div className="rounded-2xl border border-starlight/10 bg-deep-space shadow-subtle p-6">
+                <p className="font-display text-3xl text-starlight mb-2">Space Grotesk</p>
                 <p className="text-copper text-xs font-display font-semibold tracking-widest uppercase mb-3">Display / Headings</p>
-                <p className="text-navy/60 text-sm leading-relaxed">
+                <p className="text-starlight/60 text-sm leading-relaxed">
                   Geometric sans-serif with a technical character. Used for headlines, labels, navigation, buttons, and any element that anchors the visual hierarchy. Bold and semibold weights.
                 </p>
               </div>
-              <div className="rounded-2xl border border-navy/10 bg-white shadow-subtle p-6">
-                <p className="text-3xl text-navy mb-2">Atkinson Hyperlegible</p>
+              <div className="rounded-2xl border border-starlight/10 bg-deep-space shadow-subtle p-6">
+                <p className="text-3xl text-starlight mb-2">Atkinson Hyperlegible</p>
                 <p className="text-copper text-xs font-display font-semibold tracking-widest uppercase mb-3">Body / UI</p>
-                <p className="text-navy/60 text-sm leading-relaxed">
+                <p className="text-starlight/60 text-sm leading-relaxed">
                   Designed for maximum legibility at all sizes. Used for body copy, descriptions, form labels, and any extended reading. Regular and bold weights. Prioritizes clarity over personality.
                 </p>
               </div>
@@ -223,7 +223,7 @@ export default function BrandPage() {
               ].map((item) => (
                 <div key={item.label} className="rounded-xl border border-starlight/10 bg-navy/40 p-5">
                   <p className="text-copper text-sm font-display font-semibold mb-1">{item.label}</p>
-                  <p className="text-starlight/50 text-xs leading-relaxed">{item.desc}</p>
+                  <p className="text-starlight/60 text-xs leading-relaxed">{item.desc}</p>
                 </div>
               ))}
             </div>
@@ -232,11 +232,11 @@ export default function BrandPage() {
       </section>
 
       {/* Motion */}
-      <section className="py-12 sm:py-16 bg-section-light" aria-labelledby="motion-heading">
+      <section className="py-12 sm:py-16 bg-navy" aria-labelledby="motion-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
-            <h2 id="motion-heading" className="mb-4 text-navy">Motion and Behavior</h2>
-            <p className="text-navy/70 text-base mb-6 max-w-xl mx-auto">
+            <h2 id="motion-heading" className="mb-4 text-starlight">Motion and Behavior</h2>
+            <p className="text-starlight/70 text-base mb-6 max-w-xl mx-auto">
               Transitions are smooth, fast, and understated. Movement supports comprehension. Nothing animates for decoration. Hover states provide feedback. Page transitions are seamless. Loading states communicate progress without distraction.
             </p>
             <div className="grid gap-3 sm:grid-cols-2 max-w-lg mx-auto">
@@ -246,9 +246,9 @@ export default function BrandPage() {
                 { label: "Hover", value: "Subtle border and shadow shift" },
                 { label: "Restraint", value: "No bounce, no overshoot" },
               ].map((item) => (
-                <div key={item.label} className="rounded-lg border border-navy/10 bg-white px-4 py-3 text-left">
+                <div key={item.label} className="rounded-lg border border-starlight/10 bg-deep-space px-4 py-3 text-left">
                   <p className="text-xs font-display font-semibold text-copper">{item.label}</p>
-                  <p className="text-navy/60 text-xs">{item.value}</p>
+                  <p className="text-starlight/60 text-xs">{item.value}</p>
                 </div>
               ))}
             </div>
@@ -275,7 +275,7 @@ export default function BrandPage() {
               ].map((item) => (
                 <div key={item.label} className="rounded-xl border border-starlight/10 bg-navy/40 p-5">
                   <p className="text-starlight font-display font-semibold text-sm mb-1">{item.label}</p>
-                  <p className="text-starlight/50 text-xs leading-relaxed">{item.desc}</p>
+                  <p className="text-starlight/60 text-xs leading-relaxed">{item.desc}</p>
                 </div>
               ))}
             </div>

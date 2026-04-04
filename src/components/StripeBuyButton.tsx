@@ -1,23 +1,22 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 const STRIPE_PK = process.env.NEXT_PUBLIC_STRIPE_PK || "";
 
 export function StripeBuyButton({
   buyButtonId,
-  label = "Continue to Payment",
 }: {
   buyButtonId: string;
-  label?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [revealed, setRevealed] = useState(false);
+  const mounted = useRef(false);
 
   useEffect(() => {
-    if (!ref.current || !STRIPE_PK || !revealed) return;
+    if (!ref.current || !STRIPE_PK || mounted.current) return;
+    mounted.current = true;
 
-    // Load script once
+    // Load script once globally
     if (!document.querySelector('script[src*="buy-button.js"]')) {
       const script = document.createElement("script");
       script.src = "https://js.stripe.com/v3/buy-button.js";
@@ -25,9 +24,16 @@ export function StripeBuyButton({
       document.head.appendChild(script);
     }
 
-    // Render the buy button inline — Stripe handles its own UI and checkout overlay
-    ref.current.innerHTML = `<stripe-buy-button buy-button-id="${buyButtonId}" publishable-key="${STRIPE_PK}"></stripe-buy-button>`;
-  }, [buyButtonId, revealed]);
+    // Create the element only once
+    const el = document.createElement("stripe-buy-button");
+    el.setAttribute("buy-button-id", buyButtonId);
+    el.setAttribute("publishable-key", STRIPE_PK);
+    ref.current.appendChild(el);
+
+    return () => {
+      mounted.current = false;
+    };
+  }, [buyButtonId]);
 
   if (!STRIPE_PK) {
     return (
@@ -37,34 +43,5 @@ export function StripeBuyButton({
     );
   }
 
-  return (
-    <div>
-      {/* Brand-styled button — visible until user clicks */}
-      {!revealed && (
-        <button
-          type="button"
-          onClick={() => setRevealed(true)}
-          className="w-full inline-flex items-center justify-center rounded-[var(--radius-md)] bg-copper text-deep-space px-6 py-3 font-display font-semibold text-sm transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
-        >
-          {label}
-        </button>
-      )}
-
-      {/* Stripe widget — revealed on click with smooth transition */}
-      <div
-        className={`transition-all duration-500 ease-out overflow-hidden ${
-          revealed
-            ? "max-h-[500px] opacity-100 mt-2"
-            : "max-h-0 opacity-0"
-        }`}
-      >
-        {revealed && (
-          <p className="text-center text-xs text-starlight/40 mb-2">
-            Complete your purchase below via Stripe
-          </p>
-        )}
-        <div ref={ref} />
-      </div>
-    </div>
-  );
+  return <div ref={ref} />;
 }

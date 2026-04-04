@@ -51,7 +51,7 @@ export function ContactForm() {
     <>
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label htmlFor="name" className="block text-sm font-display font-medium text-starlight/80 mb-1.5">
+          <label htmlFor="name" className="block text-sm font-display font-medium text-starlight/80 mb-1.5 text-left">
             Name
           </label>
           <input
@@ -60,12 +60,12 @@ export function ContactForm() {
             required
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
-            className="w-full rounded-[var(--radius-md)] border border-starlight/15 bg-navy/60 px-4 py-3 text-base text-starlight placeholder:text-starlight/30 focus:border-copper/50 focus:outline-none transition-colors"
+            className="w-full rounded-[var(--radius-md)] border border-starlight/15 bg-navy/60 px-4 py-3 text-base text-starlight placeholder:text-starlight/60 focus:border-copper/50 focus:outline-none transition-colors"
             placeholder="Your name"
           />
         </div>
         <div>
-          <label htmlFor="email" className="block text-sm font-display font-medium text-starlight/80 mb-1.5">
+          <label htmlFor="email" className="block text-sm font-display font-medium text-starlight/80 mb-1.5 text-left">
             Email
           </label>
           <input
@@ -74,12 +74,12 @@ export function ContactForm() {
             required
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
-            className="w-full rounded-[var(--radius-md)] border border-starlight/15 bg-navy/60 px-4 py-3 text-base text-starlight placeholder:text-starlight/30 focus:border-copper/50 focus:outline-none transition-colors"
+            className="w-full rounded-[var(--radius-md)] border border-starlight/15 bg-navy/60 px-4 py-3 text-base text-starlight placeholder:text-starlight/60 focus:border-copper/50 focus:outline-none transition-colors"
             placeholder="you@company.com"
           />
         </div>
         <div>
-          <label htmlFor="company" className="block text-sm font-display font-medium text-starlight/80 mb-1.5">
+          <label htmlFor="company" className="block text-sm font-display font-medium text-starlight/80 mb-1.5 text-left">
             Company <span className="text-starlight/60">(optional)</span>
           </label>
           <input
@@ -87,12 +87,12 @@ export function ContactForm() {
             type="text"
             value={form.company}
             onChange={(e) => setForm({ ...form, company: e.target.value })}
-            className="w-full rounded-[var(--radius-md)] border border-starlight/15 bg-navy/60 px-4 py-3 text-base text-starlight placeholder:text-starlight/30 focus:border-copper/50 focus:outline-none transition-colors"
+            className="w-full rounded-[var(--radius-md)] border border-starlight/15 bg-navy/60 px-4 py-3 text-base text-starlight placeholder:text-starlight/60 focus:border-copper/50 focus:outline-none transition-colors"
             placeholder="Company name"
           />
         </div>
         <div>
-          <label htmlFor="message" className="block text-sm font-display font-medium text-starlight/80 mb-1.5">
+          <label htmlFor="message" className="block text-sm font-display font-medium text-starlight/80 mb-1.5 text-left">
             What are you working through?
           </label>
           <textarea
@@ -101,7 +101,7 @@ export function ContactForm() {
             rows={4}
             value={form.message}
             onChange={(e) => setForm({ ...form, message: e.target.value })}
-            className="w-full rounded-[var(--radius-md)] border border-starlight/15 bg-navy/60 px-4 py-3 text-base text-starlight placeholder:text-starlight/30 focus:border-copper/50 focus:outline-none transition-colors resize-none"
+            className="w-full rounded-[var(--radius-md)] border border-starlight/15 bg-navy/60 px-4 py-3 text-base text-starlight placeholder:text-starlight/60 focus:border-copper/50 focus:outline-none transition-colors resize-none"
             placeholder="Briefly describe the operational challenge or question..."
           />
         </div>
@@ -112,7 +112,7 @@ export function ContactForm() {
         >
           {status === "sending" ? "Sending..." : "Send Message"}
         </button>
-        <p className="text-xs text-starlight/50 text-center mt-3">
+        <p className="text-xs text-starlight/60 text-center mt-3">
           By submitting this form, you agree to our{" "}
           <Link href="/privacy" className="text-copper/80 hover:text-copper hover:underline transition-colors">
             Privacy Policy

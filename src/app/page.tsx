@@ -5,6 +5,7 @@ import { Icon } from "@/components/Icon";
 import { CTAButton } from "@/components/CTAButton";
 import Link from "next/link";
 import { Credentials } from "@/components/Credentials";
+import { TestimonialCarousel } from "@/components/TestimonialCarousel";
 
 export const metadata: Metadata = {
   title: "Cosmic Reach Creative | Growth Systems for Businesses With Traction",
@@ -32,11 +33,11 @@ export default function HomePage() {
         <div className="relative mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-24 text-center">
           <div className="max-w-2xl mx-auto">
             <h1 id="hero-title" className="mb-4 text-copper">
-              We build the infrastructure<br />
-              of growth.
+              Your business has traction.<br />
+              Your system does not.
             </h1>
             <p className="text-starlight/80 text-base sm:text-lg mb-2" style={{ textWrap: "pretty" }}>
-              Systems design for businesses with traction and friction. When your messaging, offer, site, or visibility breaks under pressure, growth stalls. We find the break and fix the system.
+              When your messaging, offer, site, or visibility breaks under pressure, growth stalls. We find the break and fix the system. That is the infrastructure of growth.
             </p>
             <p className="text-starlight/60 text-sm mb-6">
               Start with a $150 Clarity Audit. Rebuilds completed in 30 days.
@@ -51,7 +52,7 @@ export default function HomePage() {
 
       {/* ── The Problem ── */}
       <section
-        className="relative overflow-hidden py-16 sm:py-24 bg-section-light"
+        className="relative overflow-hidden py-16 sm:py-24 bg-navy"
         aria-labelledby="problem-heading"
       >
         <div
@@ -72,10 +73,10 @@ export default function HomePage() {
             <div className="mb-3">
               <Icon name="spark" size={36} className="opacity-80 mx-auto" />
             </div>
-            <h2 id="problem-heading" className="mb-4 text-navy">
+            <h2 id="problem-heading" className="mb-4 text-starlight">
               Businesses do not stall because of effort.
             </h2>
-            <p className="text-navy/70 text-base mb-8">
+            <p className="text-starlight/70 text-base mb-8">
               They stall when the system underneath breaks under pressure. The messaging drifts. The offer loses clarity. The site stops converting. Visibility disappears. More effort does not fix a structural problem.
             </p>
 
@@ -88,18 +89,18 @@ export default function HomePage() {
               ].map((item) => (
                 <div
                   key={item.label}
-                  className="rounded-xl border border-navy/10 bg-white p-5 flex items-center gap-4 shadow-subtle transition-all duration-[var(--duration-base)] hover:border-copper/20"
+                  className="rounded-xl border border-starlight/10 bg-deep-space p-5 flex items-center gap-4 shadow-subtle transition-all duration-[var(--duration-base)] hover:border-copper/20"
                 >
                   <Icon name={item.icon} size={22} className="opacity-70 shrink-0" />
                   <div className="text-left">
                     <p className="text-copper text-xs font-display font-semibold tracking-wider uppercase">{item.label}</p>
-                    <p className="text-navy/70 text-sm leading-snug">{item.text}</p>
+                    <p className="text-starlight/70 text-sm leading-snug">{item.text}</p>
                   </div>
                 </div>
               ))}
             </div>
 
-            <p className="text-navy/70 text-base">
+            <p className="text-starlight/70 text-base">
               The Clarity Audit maps where the system breaks. The rebuild fixes the infrastructure. Growth compounds from there.
             </p>
           </div>
@@ -171,33 +172,34 @@ export default function HomePage() {
       </section>
 
       {/* ── Framework Preview ── */}
-      <section className="py-16 sm:py-24 bg-section-light" aria-labelledby="framework-heading">
+      <section className="py-16 sm:py-24 bg-navy" aria-labelledby="framework-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center mb-10">
             <div className="mb-3">
               <Icon name="eye" size={36} className="opacity-80 mx-auto" />
             </div>
-            <h2 id="framework-heading" className="mb-3 text-navy">Four forces drive every business.</h2>
-            <p className="text-navy/70 text-base">
+            <h2 id="framework-heading" className="mb-3 text-starlight">Four forces drive every business.</h2>
+            <p className="text-starlight/70 text-base">
               When one force is weak, the others compensate. That is how &ldquo;working harder&rdquo; becomes the default strategy. We evaluate and score all four.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 max-w-2xl mx-auto mb-8">
             {[
-              { name: "Signal", subtitle: "Messaging", desc: "Can the right people understand what you do and why it matters in under 10 seconds?" },
-              { name: "Gravity", subtitle: "Offer", desc: "Is the offer strong enough to convert without pressure or a lengthy sales conversation?" },
-              { name: "Orbit", subtitle: "Path to Action", desc: "Does the site guide visitors toward a clear next step without friction?" },
-              { name: "Thrust", subtitle: "Visibility", desc: "Do you have evidence of what is working and what needs attention?" },
+              { name: "Signal", subtitle: "Messaging", icon: "signal", desc: "Can the right people understand what you do and why it matters in under 10 seconds?" },
+              { name: "Gravity", subtitle: "Offer", icon: "compass", desc: "Is the offer strong enough to convert without pressure or a lengthy sales conversation?" },
+              { name: "Orbit", subtitle: "Path to Action", icon: "orbit", desc: "Does the site guide visitors toward a clear next step without friction?" },
+              { name: "Thrust", subtitle: "Visibility", icon: "eye", desc: "Do you have evidence of what is working and what needs attention?" },
             ].map((item) => (
               <div
                 key={item.name}
-                className="rounded-xl border border-navy/10 bg-white p-5 shadow-subtle transition-all duration-[var(--duration-base)] hover:border-copper/20"
+                className="rounded-[var(--radius-md)] border border-copper/15 bg-deep-space p-5 transition-all duration-[var(--duration-base)] hover:border-copper/30"
               >
-                <div className="flex items-baseline gap-2 mb-2">
+                <div className="flex items-center gap-3 mb-2">
+                  <Icon name={item.icon} size={20} className="opacity-70 shrink-0" />
                   <span className="text-copper font-display font-bold text-sm">{item.name}</span>
-                  <span className="text-navy/30 text-xs">{item.subtitle}</span>
+                  <span className="text-starlight/60 text-xs">{item.subtitle}</span>
                 </div>
-                <p className="text-navy/70 text-sm leading-relaxed">{item.desc}</p>
+                <p className="text-starlight/70 text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -238,13 +240,13 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ── Testimonial ── */}
+      {/* ── Testimonials ── */}
       <section
-        className="relative overflow-hidden py-16 sm:py-24 bg-section-light"
+        className="relative overflow-hidden py-16 sm:py-24 bg-navy"
         aria-label="What clients say"
       >
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
-          <div className="relative max-w-4xl mx-auto">
+          <div className="relative max-w-2xl mx-auto text-center">
             <div
               aria-hidden="true"
               className="pointer-events-none absolute -left-10 sm:-left-16 md:-left-24 top-[-56px] sm:top-[-72px] md:top-[-92px] select-none font-display text-[220px] sm:text-[280px] md:text-[360px] leading-none text-copper/[0.10] z-0"
@@ -252,24 +254,23 @@ export default function HomePage() {
               &ldquo;
             </div>
 
-            <div className="relative z-10 grid gap-6 md:grid-cols-2">
-              <blockquote className="rounded-2xl border border-navy/10 bg-white shadow-subtle p-6 sm:p-8">
-                <p className="text-navy/75 text-base italic leading-relaxed mb-4">
-                  Cosmic Reach brings a level of imagination and strategic thinking that is rare to find. Jordan has a way of seeing the system underneath a business and identifying where momentum is breaking down. The result is direction you would not arrive at on your own.
-                </p>
-                <footer className="text-sm text-copper font-display font-medium">
-                  Fractional Sales &amp; Marketing Director, California
-                </footer>
-              </blockquote>
-
-              <blockquote className="rounded-2xl border border-navy/10 bg-white shadow-subtle p-6 sm:p-8">
-                <p className="text-navy/75 text-base italic leading-relaxed mb-4">
-                  I have spent decades leading infrastructure programs where milestone visibility and structured reporting were critical to success. Cosmic Reach translated that same disciplined framework into a modern, intuitive platform.
-                </p>
-                <footer className="text-sm text-copper font-display font-medium">
-                  Certified PMP, Texas
-                </footer>
-              </blockquote>
+            <div className="relative z-10">
+              <TestimonialCarousel
+                testimonials={[
+                  {
+                    quote: "Jordan took what felt overwhelming and turned it into something clear, beautiful, and genuinely easy to trust. Seeing the site come together made me feel as proud of my business online as I do when everything comes together on a wedding day. Having a clear path for couples to understand what to expect and how to get started is going to make a huge difference.",
+                    attribution: "Founder, La Chérie Weddings",
+                  },
+                  {
+                    quote: "Cosmic Reach brings a level of imagination and strategic thinking that is rare to find. Jordan has a way of seeing the system underneath a business and identifying where momentum is breaking down. The result is direction you would not arrive at on your own.",
+                    attribution: "Fractional Sales & Marketing Director, California",
+                  },
+                  {
+                    quote: "I have spent decades leading infrastructure programs where milestone visibility and structured reporting were critical to success. Cosmic Reach translated that same disciplined framework into a modern, intuitive platform.",
+                    attribution: "Certified PMP, Texas",
+                  },
+                ]}
+              />
             </div>
           </div>
         </div>
@@ -279,7 +280,7 @@ export default function HomePage() {
       <Credentials />
 
       {/* ── Final CTA ── */}
-      <section className="py-16 sm:py-24 bg-navy/60 border-t border-copper/15" aria-labelledby="final-cta-heading">
+      <section className="py-16 sm:py-24 bg-navy/60" aria-labelledby="final-cta-heading">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <div className="mb-3">
@@ -298,7 +299,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Homepage FAQ (SEO + AI Searchability) ── */}
-      <section className="py-16 sm:py-24 bg-section-light" aria-labelledby="home-faq-heading">
+      <section className="py-16 sm:py-24 bg-navy" aria-labelledby="home-faq-heading">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify({
@@ -350,7 +351,7 @@ export default function HomePage() {
         />
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center mb-10">
-            <h2 id="home-faq-heading" className="text-navy mb-3">Common Questions</h2>
+            <h2 id="home-faq-heading" className="text-starlight mb-3">Common Questions</h2>
           </div>
           <div className="max-w-2xl mx-auto space-y-4">
             {[
@@ -360,12 +361,12 @@ export default function HomePage() {
               { q: "Do you only work with businesses in Memphis?", a: "We are headquartered in Memphis, TN, but work with businesses nationwide. All engagements are delivered remotely." },
               { q: "What does a full rebuild include?", a: "Positioning, messaging, brand system, website design and development, sales materials, lead capture, and performance visibility through Mission Control. Completed in about 30 days. Pricing ranges from $4,000 to $8,000 depending on scope." },
             ].map((faq) => (
-              <details key={faq.q} className="group rounded-xl border border-navy/10 bg-white shadow-subtle">
-                <summary className="flex items-center justify-between px-5 py-4 cursor-pointer font-display font-semibold text-sm text-navy list-none [&::-webkit-details-marker]:hidden">
+              <details key={faq.q} className="group rounded-xl border border-starlight/10 bg-deep-space shadow-subtle">
+                <summary className="flex items-center justify-between px-5 py-4 cursor-pointer font-display font-semibold text-sm text-starlight list-none [&::-webkit-details-marker]:hidden">
                   {faq.q}
                   <span className="text-copper ml-2 group-open:rotate-45 transition-transform text-lg shrink-0" aria-hidden="true">+</span>
                 </summary>
-                <p className="px-5 pb-4 text-navy/70 text-sm leading-relaxed">{faq.a}</p>
+                <p className="px-5 pb-4 text-starlight/70 text-sm leading-relaxed">{faq.a}</p>
               </details>
             ))}
           </div>

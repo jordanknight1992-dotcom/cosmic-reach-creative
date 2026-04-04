@@ -73,27 +73,32 @@ export async function GET(req: NextRequest) {
   const tokenData = await tokenRes.json();
 
   if (tokenData.refresh_token) {
+    const masked = tokenData.refresh_token.substring(0, 8) + "..." + tokenData.refresh_token.slice(-8);
     // Show the token in a safe page (super admin only, already verified)
     return new Response(
       `<!DOCTYPE html>
 <html><head><title>OAuth Token</title><style>
   body { background: #0B1120; color: #E8DFCF; font-family: monospace; padding: 40px; }
-  .token { background: #111827; border: 1px solid rgba(212,165,116,0.3); border-radius: 8px; padding: 16px; word-break: break-all; margin: 16px 0; }
+  .token { background: #111827; border: 1px solid rgba(212,165,116,0.3); border-radius: 8px; padding: 16px; word-break: break-all; margin: 16px 0; position: relative; }
+  .token.masked { filter: blur(4px); user-select: none; }
   h1 { color: #D4A574; }
   .label { color: rgba(232,223,207,0.5); font-size: 13px; margin-top: 20px; }
   .warn { color: #ef4444; margin-top: 24px; }
+  button { background: #D4A574; color: #0B1120; border: none; border-radius: 6px; padding: 8px 16px; cursor: pointer; font-weight: 600; font-size: 13px; margin-top: 8px; }
+  button:hover { opacity: 0.9; }
 </style></head><body>
   <h1>New Refresh Token Generated</h1>
   <p>Scopes: analytics.readonly, calendar, webmasters.readonly</p>
   <div class="label">GOOGLE_REFRESH_TOKEN (copy this to Vercel env vars):</div>
-  <div class="token">${tokenData.refresh_token}</div>
-  <div class="label">Access Token (temporary, don't need to save):</div>
-  <div class="token">${tokenData.access_token?.substring(0, 20)}...</div>
+  <div class="label">Preview: ${masked}</div>
+  <div class="token masked" id="rt">${tokenData.refresh_token}</div>
+  <button onclick="navigator.clipboard.writeText(document.getElementById('rt').textContent);this.textContent='Copied!'">Copy Token</button>
+  <button onclick="document.getElementById('rt').classList.toggle('masked')">Reveal / Hide</button>
   <div class="label">Scopes granted:</div>
   <div class="token">${tokenData.scope || "unknown"}</div>
-  <p class="warn">⚠️ Delete this endpoint after copying the token. Do not share this page.</p>
+  <p class="warn">Copy the token, then close this page. Do not share or bookmark it.</p>
 </body></html>`,
-      { headers: { "Content-Type": "text/html" } }
+      { headers: { "Content-Type": "text/html", "Cache-Control": "no-store, no-cache, must-revalidate", "Pragma": "no-cache" } }
     );
   }
 

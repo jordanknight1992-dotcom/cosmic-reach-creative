@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 function SectionLabel({ label }: { label: string }) {
   return (
     <div className="flex items-center gap-3 mb-5">
-      <p className="text-xs font-display font-semibold tracking-widest text-copper/70 uppercase whitespace-nowrap">
+      <p className="text-xs font-display font-semibold tracking-widest text-copper uppercase whitespace-nowrap">
         {label}
       </p>
       <div className="flex-1 h-px bg-starlight/8" aria-hidden="true" />
@@ -79,7 +79,7 @@ export default function ClarityReportExamplePage() {
         </div>
         <div className="relative mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-20">
           <div className="max-w-2xl mx-auto text-center">
-            <span className="inline-block text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-4">
+            <span className="inline-block text-xs font-display font-semibold tracking-widest text-copper uppercase mb-4">
               Sample Deliverable
             </span>
             <h1 id="report-hero-title" className="text-starlight mb-4">
@@ -229,15 +229,15 @@ export default function ClarityReportExamplePage() {
       </div>
 
       {/* ── Intro explanation (screen only) ── */}
-      <div className="print:hidden py-8 sm:py-10 bg-section-light">
+      <div className="print:hidden py-8 sm:py-10 bg-navy">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto">
-            <div className="rounded-2xl border border-copper/30 bg-white shadow-subtle px-6 py-5 flex gap-4 items-start">
+            <div className="rounded-2xl border border-copper/30 bg-deep-space shadow-subtle px-6 py-5 flex gap-4 items-start">
               <span className="text-copper text-sm mt-0.5 shrink-0" aria-hidden="true">
                 &#9670;
               </span>
-              <p className="text-navy/70 text-sm leading-relaxed">
-                <strong className="text-navy font-display font-semibold">
+              <p className="text-starlight/70 text-sm leading-relaxed">
+                <strong className="text-starlight font-display font-semibold">
                   This is a sanitized example report
                 </strong>{" "}
                 using a fictional company called AtlasOps. It shows the exact structure
@@ -257,19 +257,19 @@ export default function ClarityReportExamplePage() {
           <ReportCard label="Business Context">
             <div className="grid sm:grid-cols-3 gap-4 mb-6">
               <div>
-                <p className="text-xs font-display font-semibold tracking-widest text-starlight/40 uppercase mb-0.5">
+                <p className="text-xs font-display font-semibold tracking-widest text-starlight/60 uppercase mb-0.5">
                   Business
                 </p>
                 <p className="text-starlight font-display font-semibold text-base">{reportMeta.business}</p>
               </div>
               <div>
-                <p className="text-xs font-display font-semibold tracking-widest text-starlight/40 uppercase mb-0.5">
+                <p className="text-xs font-display font-semibold tracking-widest text-starlight/60 uppercase mb-0.5">
                   Industry
                 </p>
                 <p className="text-starlight/80 text-sm">{reportMeta.industry}</p>
               </div>
               <div>
-                <p className="text-xs font-display font-semibold tracking-widest text-starlight/40 uppercase mb-0.5">
+                <p className="text-xs font-display font-semibold tracking-widest text-starlight/60 uppercase mb-0.5">
                   Primary Offer
                 </p>
                 <p className="text-starlight/80 text-sm">{reportMeta.primaryOffer}</p>
@@ -284,7 +284,7 @@ export default function ClarityReportExamplePage() {
           <ReportCard label="Layer Scores">
             <div className="mb-6">
               <div className="flex items-baseline gap-3 mb-1">
-                <span className="text-xs font-display font-semibold tracking-widest text-starlight/40 uppercase">
+                <span className="text-xs font-display font-semibold tracking-widest text-starlight/60 uppercase">
                   Overall Health
                 </span>
                 <span
@@ -304,13 +304,13 @@ export default function ClarityReportExamplePage() {
                   <div className="flex items-center justify-between mb-1">
                     <div>
                       <span className="font-display font-bold text-starlight text-base">{layer.label}</span>
-                      <span className="text-starlight/30 text-sm ml-2">{layer.area}</span>
+                      <span className="text-starlight/60 text-sm ml-2">{layer.area}</span>
                     </div>
                     <span className="font-display font-bold text-xl" style={{ color: getScoreColor(layer.score) }}>
                       {layer.score}
                     </span>
                   </div>
-                  <p className="text-starlight/40 text-xs mb-3">{layer.question}</p>
+                  <p className="text-starlight/60 text-xs mb-3">{layer.question}</p>
                   {/* Score bar */}
                   <div className="h-2 rounded-full bg-starlight/6 overflow-hidden mb-3">
                     <div
@@ -337,15 +337,15 @@ export default function ClarityReportExamplePage() {
             <div className="flex items-center gap-5 mt-5 pt-4 border-t border-starlight/6">
               <div className="flex items-center gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: "#22c55e" }} />
-                <span className="text-xs text-starlight/40">8–10 Good</span>
+                <span className="text-xs text-starlight/60">8–10 Good</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: "#eab308" }} />
-                <span className="text-xs text-starlight/40">5–7 Be Aware</span>
+                <span className="text-xs text-starlight/60">5–7 Be Aware</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: "#ef4444" }} />
-                <span className="text-xs text-starlight/40">0–4 Warning</span>
+                <span className="text-xs text-starlight/60">0–4 Warning</span>
               </div>
             </div>
           </ReportCard>
@@ -363,13 +363,13 @@ export default function ClarityReportExamplePage() {
                   </h3>
                   <div className="space-y-3">
                     <div className="rounded-xl border border-starlight/8 bg-deep-space/40 p-4">
-                      <p className="text-xs font-display font-semibold tracking-widest text-starlight/40 uppercase mb-1.5">
+                      <p className="text-xs font-display font-semibold tracking-widest text-starlight/60 uppercase mb-1.5">
                         What We Observed
                       </p>
                       <p className="text-starlight/70 text-sm leading-relaxed">{item.observation}</p>
                     </div>
                     <div className="rounded-xl border border-starlight/8 bg-deep-space/40 p-4">
-                      <p className="text-xs font-display font-semibold tracking-widest text-copper/70 uppercase mb-1.5">
+                      <p className="text-xs font-display font-semibold tracking-widest text-copper uppercase mb-1.5">
                         Impact
                       </p>
                       <p className="text-starlight/70 text-sm leading-relaxed">{item.impact}</p>
@@ -423,7 +423,7 @@ export default function ClarityReportExamplePage() {
             <ul className="space-y-3">
               {afterFixing.map((item, i) => (
                 <li key={i} className="flex items-start gap-3 text-starlight/80 text-sm leading-relaxed">
-                  <span className="text-copper/60 text-xs mt-1 shrink-0" aria-hidden="true">&#9670;</span>
+                  <span className="text-copper text-xs mt-1 shrink-0" aria-hidden="true">&#9670;</span>
                   {item}
                 </li>
               ))}
@@ -441,7 +441,7 @@ export default function ClarityReportExamplePage() {
               </p>
             </div>
             <div className="rounded-xl border border-starlight/8 bg-deep-space/40 p-4">
-              <p className="text-xs font-display font-semibold tracking-widest text-copper/60 uppercase mb-1.5">
+              <p className="text-xs font-display font-semibold tracking-widest text-copper uppercase mb-1.5">
                 Next Step
               </p>
               <p className="text-starlight/80 text-sm leading-relaxed">
@@ -453,7 +453,7 @@ export default function ClarityReportExamplePage() {
           {/* ── Report Footer ── */}
           <div className="rounded-[var(--radius-lg)] border border-starlight/8 bg-navy/30 px-6 py-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
-              <p className="text-xs font-display font-semibold tracking-widest text-copper/60 uppercase mb-1">
+              <p className="text-xs font-display font-semibold tracking-widest text-copper uppercase mb-1">
                 Prepared by
               </p>
               <p className="font-display font-semibold text-starlight">Cosmic Reach Creative</p>
@@ -486,7 +486,7 @@ export default function ClarityReportExamplePage() {
               If your website is not bringing in consistent business, this is where to start.
             </p>
             <CTAButton label="Start with the Audit" variant="primary" />
-            <p className="mt-3 text-xs text-starlight/50">
+            <p className="mt-3 text-xs text-starlight/60">
               3&ndash;5 day turnaround &middot; Written report included
             </p>
           </div>

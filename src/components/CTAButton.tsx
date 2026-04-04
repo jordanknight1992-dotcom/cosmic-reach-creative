@@ -10,11 +10,9 @@ interface CTAButtonProps {
   className?: string;
 }
 
-function resolveCtaHref(label: string): string {
+function isAuditLabel(label: string): boolean {
   const lower = label.toLowerCase();
-
-  // High-intent: Audit / Clarity → Book a conversation first
-  if (
+  return (
     lower.includes("start the clarity audit") ||
     lower.includes("start with the audit") ||
     lower.includes("get your clarity audit") ||
@@ -23,9 +21,14 @@ function resolveCtaHref(label: string): string {
     lower.includes("see the clarity audit") ||
     lower.includes("request a clarity audit") ||
     lower.includes("get clarity")
-  ) {
-    return siteConfig.signalCheckUrl;
-  }
+  );
+}
+
+function resolveCtaHref(label: string): string {
+  const lower = label.toLowerCase();
+
+  // Audit labels go directly to Stripe checkout in same window
+  if (isAuditLabel(lower)) return siteConfig.stripeAuditUrl;
 
   // Signal Check / Intro Call
   if (
@@ -92,6 +95,7 @@ export function CTAButton({
   const pathname = usePathname();
   const href = resolveCtaHref(label);
   const isExternal = href.startsWith("http") || href.startsWith("mailto:");
+  const isAudit = isAuditLabel(label);
 
   const baseStyles =
     "inline-flex items-center justify-center rounded-[var(--radius-md)] px-6 py-3 font-display font-semibold text-base transition-all duration-[var(--duration-base)] ease-[var(--ease-out)]";
@@ -100,6 +104,21 @@ export function CTAButton({
     variant === "secondary"
       ? "border-2 border-starlight text-starlight bg-transparent hover:bg-starlight/10"
       : "bg-copper text-deep-space hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0";
+
+  // Audit button — opens Stripe checkout in new tab
+  if (isAudit) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`${baseStyles} ${variantStyles} ${className}`}
+        onClick={() => trackClick(label, pathname)}
+      >
+        {label}
+      </a>
+    );
+  }
 
   if (isExternal) {
     return (

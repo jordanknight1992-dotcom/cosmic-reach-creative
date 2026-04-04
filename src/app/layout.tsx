@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     template: `%s | Cosmic Reach Creative`,
   },
   description:
-    "Cosmic Reach Creative is a marketing strategy consultancy founded by Jordan Knight in Memphis, TN. We help founders and growing businesses build messaging, offer design, customer journeys, and growth systems that scale. Start with a Business Clarity Audit.",
+    "Cosmic Reach Creative builds growth infrastructure for businesses with traction and friction. Founded by Jordan Knight in Memphis, TN. We diagnose where your messaging, offer, site, or visibility breaks under pressure, then rebuild the system so growth compounds. Start with a $150 Clarity Audit.",
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -103,7 +103,9 @@ const jsonLd = {
         "Go-to-Market Strategy",
         "Fractional Marketing Strategy",
       ],
-      sameAs: [],
+      sameAs: [
+        "https://www.linkedin.com/company/cosmic-reach-creative",
+      ],
     },
     {
       "@type": "WebSite",

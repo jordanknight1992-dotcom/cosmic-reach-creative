@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function SetupGA4Page() {
   return (
     <main id="main-content">
-      <section className="py-16 sm:py-24 bg-section-light">
+      <section className="py-16 sm:py-24 bg-navy">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="max-w-2xl mx-auto">
             <a
@@ -21,10 +21,10 @@ export default function SetupGA4Page() {
               &larr; Back to Help
             </a>
 
-            <h1 className="text-navy mb-2">
+            <h1 className="text-starlight mb-2">
               How to Find Your GA4 Property ID
             </h1>
-            <p className="text-navy/60 text-base mb-10">
+            <p className="text-starlight/60 text-base mb-10">
               Your GA4 Property ID connects Mission Control to your Google Analytics data. Here is how to find it.
             </p>
 
@@ -50,7 +50,7 @@ export default function SetupGA4Page() {
               <Step
                 number={4}
                 title="Go to Property Settings"
-                description='Click "Property Settings" in the Property column. You will see your Property ID displayed near the top — it is a number like 123456789.'
+                description='Click "Property Settings" in the Property column. You will see your Property ID displayed near the top. It is a number like 123456789.'
               />
 
               <Step
@@ -61,13 +61,13 @@ export default function SetupGA4Page() {
             </div>
 
             <div className="mt-12 rounded-xl border border-copper/20 bg-copper/5 p-6">
-              <h3 className="font-display font-semibold text-sm text-navy mb-2">
+              <h3 className="font-display font-semibold text-sm text-starlight mb-2">
                 Do not have Google Analytics yet?
               </h3>
-              <p className="text-navy/60 text-sm leading-relaxed mb-3">
+              <p className="text-starlight/60 text-sm leading-relaxed mb-3">
                 If your website does not have Google Analytics set up, you will need to create an account first.
               </p>
-              <ol className="text-navy/60 text-sm space-y-2 list-decimal list-inside">
+              <ol className="text-starlight/60 text-sm space-y-2 list-decimal list-inside">
                 <li>Go to <a href="https://analytics.google.com" target="_blank" rel="noopener noreferrer" className="text-copper hover:underline">analytics.google.com</a></li>
                 <li>Click &quot;Start measuring&quot;</li>
                 <li>Create an account name (your business name works)</li>
@@ -79,7 +79,7 @@ export default function SetupGA4Page() {
             </div>
 
             <div className="mt-8 text-center">
-              <p className="text-navy/40 text-xs">
+              <p className="text-starlight/60 text-xs">
                 This connection is optional. Mission Control tracks form submissions automatically without it.
               </p>
             </div>
@@ -97,8 +97,8 @@ function Step({ number, title, description }: { number: number; title: string; d
         {number}
       </div>
       <div>
-        <h3 className="font-display font-semibold text-base text-navy mb-1">{title}</h3>
-        <p className="text-navy/60 text-sm leading-relaxed">{description}</p>
+        <h3 className="font-display font-semibold text-base text-starlight mb-1">{title}</h3>
+        <p className="text-starlight/60 text-sm leading-relaxed">{description}</p>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useIsMobile } from "@/hooks/useIsMobile";
@@ -50,7 +50,7 @@ export function McShell({ user, tenant, isImpersonation, isSupportMode, supportS
   const isMobile = useIsMobile();
 
   // Support session countdown timer
-  useState(() => {
+  useEffect(() => {
     if (!isSupportMode || !supportSession?.expires_at) return;
     const updateTimer = () => {
       const now = new Date().getTime();
@@ -67,7 +67,7 @@ export function McShell({ user, tenant, isImpersonation, isSupportMode, supportS
     updateTimer();
     const interval = setInterval(updateTimer, 1000);
     return () => clearInterval(interval);
-  });
+  }, [isSupportMode, supportSession]);
 
   async function handleEndSupportSession() {
     if (!supportSession) return;

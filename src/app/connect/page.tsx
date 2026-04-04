@@ -3,11 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { siteConfig } from "@/config/site";
 import { bookingTypes, connectTypes } from "@/config/booking";
+import { ContactForm } from "@/components/ContactForm";
 
 export const metadata: Metadata = {
-  title: "Book a Call with Jordan Knight | Cosmic Reach Creative",
+  title: "Connect with Jordan Knight | Cosmic Reach Creative",
   description:
-    "Schedule a conversation with Jordan Knight, founder of Cosmic Reach Creative. Choose a session and pick a time that works. Free Signal Check or paid Business Clarity Session available.",
+    "Schedule a conversation with Jordan Knight, founder of Cosmic Reach Creative. Book a call or send a message. Free Signal Check or paid Business Clarity Session available.",
   alternates: { canonical: `${siteConfig.domain}/connect` },
 };
 
@@ -35,7 +36,7 @@ export default function ConnectPage() {
           <p className="text-copper font-display text-sm font-semibold tracking-wider uppercase mb-2">
             Cosmic Reach Creative
           </p>
-          <p className="text-starlight/50 text-sm mb-8 max-w-xs mx-auto">
+          <p className="text-starlight/60 text-sm mb-8 max-w-xs mx-auto">
             Choose a session length and pick a time that works for you.
           </p>
 
@@ -51,7 +52,7 @@ export default function ConnectPage() {
                   <p className="text-starlight font-display font-semibold text-base group-hover:text-copper transition-colors">
                     {type.durationMinutes} Minutes
                   </p>
-                  <p className="text-starlight/40 text-xs mt-0.5">
+                  <p className="text-starlight/60 text-xs mt-0.5">
                     {type.description}
                   </p>
                 </div>
@@ -74,6 +75,14 @@ export default function ConnectPage() {
                 </div>
               </Link>
             ))}
+          </div>
+
+          {/* Divider */}
+          <div className="mt-10 pt-8 border-t border-starlight/10">
+            <p className="text-starlight/60 text-sm mb-6">
+              Prefer to send a message instead?
+            </p>
+            <ContactForm />
           </div>
 
           {/* Footer */}

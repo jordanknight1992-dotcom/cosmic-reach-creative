@@ -180,11 +180,11 @@ export function CookieConsent() {
                     <p className="text-sm font-display font-medium">
                       Essential Cookies
                     </p>
-                    <p className="text-xs text-starlight/50 mt-0.5">
+                    <p className="text-xs text-starlight/60 mt-0.5">
                       Required for the site to function
                     </p>
                   </div>
-                  <span className="text-xs text-starlight/40 font-display">
+                  <span className="text-xs text-starlight/60 font-display">
                     Always on
                   </span>
                 </div>
@@ -195,7 +195,7 @@ export function CookieConsent() {
                     <p className="text-sm font-display font-medium">
                       Analytics Cookies
                     </p>
-                    <p className="text-xs text-starlight/50 mt-0.5">
+                    <p className="text-xs text-starlight/60 mt-0.5">
                       Help us understand traffic patterns
                     </p>
                   </div>
