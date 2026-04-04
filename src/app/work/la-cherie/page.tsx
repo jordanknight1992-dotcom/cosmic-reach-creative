@@ -75,7 +75,8 @@ export default function LaCherieCase() {
             src="/images/work/image-asset-11.jpeg"
             alt="The founder of La Chérie Weddings"
             fill
-            className="object-cover object-top"
+            className="object-cover"
+            style={{ objectPosition: "center 35%" }}
             priority
             sizes="100vw"
           />
