@@ -345,7 +345,7 @@ function scoreOrbit(input: ScoringInput): LayerScore {
     factors.push({
       name: "No Data",
       value: input.hasDomain
-        ? "PageSpeed data unavailable. Retrying on next load."
+        ? "Waiting for PageSpeed data"
         : "Add your website domain in Settings",
       contribution: 0,
       weight: 1,

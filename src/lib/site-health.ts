@@ -59,7 +59,11 @@ export async function getPageSpeedData(
 
     if (!res.ok) {
       const errText = await res.text().catch(() => "");
-      console.error("PageSpeed API error:", res.status, errText.substring(0, 500));
+      if (res.status === 429) {
+        console.error("PageSpeed API rate limited (429). Set PAGESPEED_API_KEY env var for 25k/day free quota.");
+      } else {
+        console.error("PageSpeed API error:", res.status, errText.substring(0, 500));
+      }
       return null;
     }
 
