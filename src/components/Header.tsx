@@ -160,6 +160,11 @@ export function Header() {
                 Featured Projects
               </Link>
 
+              {/* Observatory */}
+              <Link href="/observatory" className={linkClass}>
+                Observatory
+              </Link>
+
               {/* FAQ */}
               <Link href="/faq" className={linkClass}>
                 FAQ
@@ -301,6 +306,15 @@ export function Header() {
             className={mobileLinkClass}
           >
             Featured Projects
+          </Link>
+
+          {/* Observatory */}
+          <Link
+            href="/observatory"
+            onClick={() => setMenuOpen(false)}
+            className={mobileLinkClass}
+          >
+            Observatory
           </Link>
 
           {/* FAQ */}

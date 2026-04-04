@@ -16,6 +16,7 @@ export const siteConfig = {
     { label: "How It Works", href: "/how-it-works" },
     { label: "Pricing", href: "/pricing" },
     { label: "Featured Projects", href: "/work" },
+    { label: "Observatory", href: "/observatory" },
     { label: "FAQ", href: "/faq" },
   ],
   ctaNav: { label: "Book a Call", href: "/connect" },

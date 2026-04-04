@@ -4,6 +4,7 @@ import { useState, useTransition, useCallback, useRef } from "react";
 import { setStatus, setNotes } from "./actions";
 import type { GA4Metrics, GA4DailyPoint } from "@/lib/ga4";
 import { CrmTab } from "./CrmTab";
+import { BlogTab } from "./BlogTab";
 
 /* ─────────────────────────── Types ─────────────────────────── */
 
@@ -1496,7 +1497,7 @@ export function AdminDashboard({
   submissionTimeline,
   ga4,
 }: AdminDashboardProps) {
-  const [tab, setTab] = useState<"crm" | "signals" | "meetings">("crm");
+  const [tab, setTab] = useState<"crm" | "signals" | "meetings" | "observatory">("crm");
   const [submissions, setSubmissions] = useState<Submission[]>(initialSubmissions);
   const [, startTransition] = useTransition();
 
@@ -1533,9 +1534,10 @@ export function AdminDashboard({
   );
 
   const navItems: { key: typeof tab; label: string; icon: string }[] = [
-    { key: "crm",      label: "Mission Control", icon: "◈" },
-    { key: "signals",  label: "Digital Signals",  icon: "◇" },
-    { key: "meetings", label: "Meetings",         icon: "◆" },
+    { key: "crm",         label: "Mission Control", icon: "◈" },
+    { key: "signals",     label: "Digital Signals",  icon: "◇" },
+    { key: "meetings",    label: "Meetings",         icon: "◆" },
+    { key: "observatory", label: "Observatory",      icon: "✦" },
   ];
 
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
@@ -1661,6 +1663,8 @@ export function AdminDashboard({
                 onNotesSave={handleNotesSave}
               />
             </div>
+          ) : tab === "observatory" ? (
+            <BlogTab />
           ) : (
             <BookingsTab />
           )}
