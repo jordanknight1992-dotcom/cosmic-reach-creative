@@ -3,7 +3,12 @@ import { cookies } from "next/headers";
 import { validateTenantAccess, getSessionCookieName, encryptCredential, getEnvConfiguredProviders } from "@/lib/mc-auth";
 import { saveCredential, getCredentialProviders, logAudit } from "@/lib/mc-db";
 
-const ALLOWED_PROVIDERS = ["google_analytics", "google_search_console"];
+const ALLOWED_PROVIDERS = [
+  "google_analytics",
+  "google_search_console",
+  "google_calendar",
+  "pagespeed",
+];
 
 export async function GET(
   _request: Request,

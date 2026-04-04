@@ -59,9 +59,11 @@ async function getPerformanceData(tenantId: number, domain: string | null) {
 
   if (domain) {
     const siteUrl = domain.startsWith("http") ? domain : `https://${domain}`;
+    // Resolve PageSpeed API key from tenant credentials or env var
+    const psKeyCred = await resolveCredential(tenantId, "pagespeed").catch(() => null);
     try {
       const [psResult, uptimeResult] = await Promise.all([
-        getPageSpeedData(siteUrl, "mobile").catch((err) => {
+        getPageSpeedData(siteUrl, "mobile", psKeyCred?.value).catch((err) => {
           console.error("PageSpeed fetch failed:", err instanceof Error ? err.message : err);
           return null;
         }),

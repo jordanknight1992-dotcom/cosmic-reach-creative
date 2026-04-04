@@ -45,8 +45,10 @@ interface Props {
 }
 
 const INTEGRATIONS = [
-  { key: "google_analytics", label: "Google Analytics (GA4)", description: "Website traffic and engagement data", icon: "📊" },
-  { key: "google_search_console", label: "Google Search Console", description: "Search visibility and keyword performance", icon: "🔍" },
+  { key: "google_analytics", label: "Google Analytics (GA4)", description: "Website traffic and engagement data", icon: "📊", placeholder: "GA4 Property ID (e.g. 123456789)" },
+  { key: "google_search_console", label: "Google Search Console", description: "Search visibility and keyword performance", icon: "🔍", placeholder: "Site URL (e.g. sc-domain:example.com)" },
+  { key: "google_calendar", label: "Google OAuth Refresh Token", description: "Required for GA4 and Search Console API access", icon: "🔑", placeholder: "Paste refresh token" },
+  { key: "pagespeed", label: "PageSpeed Insights API Key", description: "Enables Orbit scoring with 25k free requests/day", icon: "⚡", placeholder: "Paste Google API key" },
 ];
 
 export function SettingsView({ tenantSlug, tenant, user, connectedProviders, providerSources = {}, members, icp, supportAccess, isSupportMode }: Props) {
@@ -396,7 +398,7 @@ export function SettingsView({ tenantSlug, tenant, user, connectedProviders, pro
                     </div>
                   ) : showKeyInput === int.key ? (
                     <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                      <input type="password" value={keyValue} onChange={(e) => setKeyValue(e.target.value)} placeholder={`Paste ${int.label} key`} style={{ ...fieldInputStyle, width: 200 }} />
+                      <input type="password" value={keyValue} onChange={(e) => setKeyValue(e.target.value)} placeholder={int.placeholder || `Paste ${int.label} key`} style={{ ...fieldInputStyle, width: isMobile ? "100%" : 260 }} />
                       <button onClick={() => saveCredential(int.key)} disabled={saving === int.key} style={{ background: "#d4a574", color: "#1a1f2e", border: "none", borderRadius: 6, padding: "6px 12px", fontSize: 12, fontWeight: 600, cursor: "pointer", fontFamily: 'var(--font-display)' }}>
                         {saving === int.key ? "..." : "Save"}
                       </button>

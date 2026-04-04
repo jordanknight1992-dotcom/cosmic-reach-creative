@@ -30,7 +30,8 @@ export interface PageSpeedResult {
 
 export async function getPageSpeedData(
   url: string,
-  strategy: "mobile" | "desktop" = "mobile"
+  strategy: "mobile" | "desktop" = "mobile",
+  apiKey?: string | null,
 ): Promise<PageSpeedResult | null> {
   if (!url) return null;
 
@@ -38,17 +39,9 @@ export async function getPageSpeedData(
   const targetUrl = url.startsWith("http") ? url : `https://${url}`;
 
   try {
-    const apiUrl = new URL("https://www.googleapis.com/pagespeedonline/v5/runPagespeed");
-    apiUrl.searchParams.set("url", targetUrl);
-    apiUrl.searchParams.set("strategy", strategy.toUpperCase());
-    apiUrl.searchParams.set("category", "PERFORMANCE");
-    apiUrl.searchParams.set("category", "ACCESSIBILITY");
-    apiUrl.searchParams.set("category", "SEO");
-    apiUrl.searchParams.set("category", "BEST_PRACTICES");
-
-    // Note: URL.searchParams.set overwrites, need to use append for multiple categories
-    const apiKey = process.env.PAGESPEED_API_KEY;
-    const keyParam = apiKey ? `&key=${apiKey}` : "";
+    // Resolve API key: parameter > env var > none
+    const resolvedKey = apiKey || process.env.PAGESPEED_API_KEY;
+    const keyParam = resolvedKey ? `&key=${resolvedKey}` : "";
     const fullUrl = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(targetUrl)}&strategy=${strategy.toUpperCase()}&category=PERFORMANCE&category=ACCESSIBILITY&category=SEO&category=BEST_PRACTICES${keyParam}`;
 
     console.log("PageSpeed: fetching", targetUrl, strategy);
