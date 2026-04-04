@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { StripeBuyButton } from "@/components/StripeBuyButton";
 
 export default function LoginPage() {
   const [mode, setMode] = useState<"login" | "register">("login");
@@ -296,9 +295,24 @@ export default function LoginPage() {
                 >
                   Site health, lead tracking, and performance insights. After purchase, return here to create your workspace.
                 </p>
-                <StripeBuyButton
-                  buyButtonId="buy_btn_1THvGV0vGBLnj72kN97MqFHS"
-                />
+                <a
+                  href="https://buy.stripe.com/7sY8wH67rePK1S06i4fbq0e"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8,
+                    borderRadius: 10, padding: "12px 32px", width: "100%",
+                    fontFamily: "var(--font-display)", fontWeight: 600, fontSize: 15,
+                    background: "#d4a574", color: "#0b1120",
+                    textDecoration: "none", transition: "all 0.2s ease",
+                  }}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path d="M21 4H3a2 2 0 00-2 2v12a2 2 0 002 2h18a2 2 0 002-2V6a2 2 0 00-2-2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M1 10h22" stroke="currentColor" strokeWidth="2"/>
+                  </svg>
+                  Start Mission Control
+                </a>
               </div>
 
               {/* Already purchased */}

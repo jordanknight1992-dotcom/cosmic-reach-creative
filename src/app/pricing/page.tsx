@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/Icon";
 import { Credentials } from "@/components/Credentials";
-import { StripeBuyButton } from "@/components/StripeBuyButton";
 
 export const metadata: Metadata = {
   title: "Pricing | Clarity Audit, 30-Day Rebuild & Continued Optimization",
@@ -182,7 +181,21 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <StripeBuyButton buyButtonId="buy_btn_1TDtJg0vGBLnj72k4vWaSa7F" />
+              <a
+                href="https://buy.stripe.com/aFa14f2Vf22Y2W4aykfbq00"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-[var(--radius-md)] px-8 py-3
+                  font-display font-semibold text-base
+                  bg-copper text-deep-space hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0
+                  transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] w-full"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M21 4H3a2 2 0 00-2 2v12a2 2 0 002 2h18a2 2 0 002-2V6a2 2 0 00-2-2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M1 10h22" stroke="currentColor" strokeWidth="2"/>
+                </svg>
+                Start Continued Optimization
+              </a>
             </article>
           </div>
         </div>
@@ -223,7 +236,21 @@ export default function PricingPage() {
                   </li>
                 ))}
               </ul>
-              <StripeBuyButton buyButtonId="buy_btn_1THvGV0vGBLnj72kN97MqFHS" />
+              <a
+                href="https://buy.stripe.com/7sY8wH67rePK1S06i4fbq0e"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 rounded-[var(--radius-md)] px-8 py-3
+                  font-display font-semibold text-base
+                  bg-copper text-deep-space hover:shadow-soft hover:-translate-y-0.5 active:translate-y-0
+                  transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] w-full"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M21 4H3a2 2 0 00-2 2v12a2 2 0 002 2h18a2 2 0 002-2V6a2 2 0 00-2-2z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M1 10h22" stroke="currentColor" strokeWidth="2"/>
+                </svg>
+                Start Mission Control
+              </a>
               <p className="mt-4 text-center text-xs text-starlight/60">
                 Free for all Cosmic Reach Creative-built websites.
               </p>
