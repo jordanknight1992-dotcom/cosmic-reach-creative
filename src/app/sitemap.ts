@@ -23,6 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { route: "/connect", changeFrequency: "monthly", priority: 0.8 },
     { route: "/mission-control", changeFrequency: "monthly", priority: 0.8 },
     { route: "/work/la-cherie", changeFrequency: "monthly", priority: 0.8 },
+    { route: "/work/bluff-city-ac", changeFrequency: "monthly", priority: 0.8 },
     { route: "/brand", changeFrequency: "monthly", priority: 0.6 },
     { route: "/help", changeFrequency: "monthly", priority: 0.5 },
     { route: "/help/setup-ga4", changeFrequency: "monthly", priority: 0.5 },
