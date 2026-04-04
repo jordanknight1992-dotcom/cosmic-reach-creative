@@ -39,6 +39,10 @@ export async function PUT(
       body.reading_time_minutes = calculateReadingTime(body.body);
     }
 
+    if (typeof body.tags === "string") {
+      body.tags = body.tags.split(",").map((t: string) => t.trim()).filter(Boolean);
+    }
+
     await updatePost(postId, body);
     const updated = await getPostById(postId);
 

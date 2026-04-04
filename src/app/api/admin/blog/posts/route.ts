@@ -43,7 +43,9 @@ export async function POST(req: NextRequest) {
       excerpt: body.excerpt,
       feature_image: body.feature_image,
       category: body.category,
-      tags: body.tags,
+      tags: typeof body.tags === "string"
+        ? body.tags.split(",").map((t: string) => t.trim()).filter(Boolean)
+        : body.tags,
       author: body.author,
       status: body.status,
       featured: body.featured,

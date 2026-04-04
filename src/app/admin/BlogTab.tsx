@@ -223,7 +223,7 @@ export function BlogTab() {
         excerpt: post.excerpt ?? "",
         feature_image: post.feature_image ?? "",
         category: post.category ?? "",
-        tags: post.tags ?? "",
+        tags: Array.isArray(post.tags) ? post.tags.join(", ") : (post.tags ?? ""),
         author: post.author,
         status: post.status,
         featured: post.featured,
