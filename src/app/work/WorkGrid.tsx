@@ -24,7 +24,7 @@ const clientWork: Project[] = [
     image: "/images/work/image-asset-11.jpeg",
     imageAlt: "The founder of La Ch\u00e9rie Weddings",
     imagePosition: "center 35%",
-    tags: ["Brand System", "Website Rebuild", "Memphis", "Weddings"],
+    tags: ["Full Brand System", "Website Rebuild", "Memphis", "Weddings"],
     type: "client",
     score: { before: 1.6, after: 7.0 },
   },
