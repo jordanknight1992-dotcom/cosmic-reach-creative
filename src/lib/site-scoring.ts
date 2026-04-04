@@ -48,6 +48,7 @@ export interface ScoringInput {
   keywords?: SearchConsoleMetrics | null;
   hasGA4?: boolean;
   hasSearchConsole?: boolean;
+  hasDomain?: boolean;
   /** Number of form submissions in last 30 days */
   submissionCount?: number;
 }
@@ -343,7 +344,9 @@ function scoreOrbit(input: ScoringInput): LayerScore {
   if (factors.length === 0) {
     factors.push({
       name: "No Data",
-      value: "Add your website domain",
+      value: input.hasDomain
+        ? "PageSpeed data unavailable. Retrying on next load."
+        : "Add your website domain in Settings",
       contribution: 0,
       weight: 1,
     });

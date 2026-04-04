@@ -54,12 +54,12 @@ export async function getPageSpeedData(
     console.log("PageSpeed: fetching", targetUrl, strategy);
     const res = await fetch(fullUrl, {
       signal: AbortSignal.timeout(60000),
-      next: { revalidate: 3600 },
+      cache: "no-store",
     });
 
     if (!res.ok) {
       const errText = await res.text().catch(() => "");
-      console.error("PageSpeed API error:", res.status, errText);
+      console.error("PageSpeed API error:", res.status, errText.substring(0, 500));
       return null;
     }
 

@@ -61,14 +61,25 @@ async function getPerformanceData(tenantId: number, domain: string | null) {
     const siteUrl = domain.startsWith("http") ? domain : `https://${domain}`;
     try {
       const [psResult, uptimeResult] = await Promise.all([
-        getPageSpeedData(siteUrl, "mobile").catch(() => null),
-        checkUptime(siteUrl).catch(() => null),
+        getPageSpeedData(siteUrl, "mobile").catch((err) => {
+          console.error("PageSpeed fetch failed:", err instanceof Error ? err.message : err);
+          return null;
+        }),
+        checkUptime(siteUrl).catch((err) => {
+          console.error("Uptime check failed:", err instanceof Error ? err.message : err);
+          return null;
+        }),
       ]);
       pageSpeed = psResult;
       uptime = uptimeResult;
+      if (!psResult) {
+        console.warn("PageSpeed returned null for domain:", siteUrl);
+      }
     } catch (err) {
       console.error("Site health fetch failed:", err);
     }
+  } else {
+    console.warn("No domain set for tenant, skipping site health checks");
   }
 
   // Get submission count for conversion rate scoring
@@ -92,6 +103,7 @@ async function getPerformanceData(tenantId: number, domain: string | null) {
     keywords: keywordData,
     hasGA4,
     hasSearchConsole,
+    hasDomain: !!domain,
     submissionCount,
   });
 

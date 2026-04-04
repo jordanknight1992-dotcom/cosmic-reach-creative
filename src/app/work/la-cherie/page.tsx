@@ -407,8 +407,8 @@ export default function LaCherieCase() {
             </div>
 
             {/* Testimonial */}
-            <blockquote className="mt-10 border-l-2 border-copper/40 pl-6">
-              <p className="text-starlight/80 text-base italic leading-relaxed">
+            <blockquote className="mt-10 py-8 sm:py-10">
+              <p className="text-starlight/80 text-base sm:text-lg italic leading-relaxed mb-4">
                 &ldquo;Jordan took what felt overwhelming and turned it into
                 something clear, beautiful, and genuinely easy to trust. Seeing the site
                 come together made me feel as proud of my business online as I do
@@ -416,14 +416,14 @@ export default function LaCherieCase() {
                 path for couples to understand what to expect and how to get
                 started is going to make a huge difference.&rdquo;
               </p>
-              <footer className="mt-3 text-sm text-copper font-display font-semibold">
+              <footer className="text-sm text-copper font-display font-semibold">
                 Founder, La Chérie Weddings
               </footer>
             </blockquote>
 
             {/* Deliverables list */}
             <div className="mt-8">
-              <GlassCard className="p-8">
+              <GlassCard className="p-8 text-left">
                 <h3 className="font-display font-semibold text-copper mb-4">
                   What we delivered
                 </h3>
