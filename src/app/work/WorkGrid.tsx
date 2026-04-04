@@ -1,6 +1,3 @@
-"use client";
-
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -13,13 +10,11 @@ type Project = {
   imageAlt: string;
   imagePosition: string;
   tags: string[];
-  location: string;
-  industry: string;
   type: "client" | "speculative";
   score: { before: number; after: number } | null;
 };
 
-const projects: Project[] = [
+const clientWork: Project[] = [
   {
     slug: "la-cherie",
     title: "La Ch\u00e9rie Weddings",
@@ -29,12 +24,13 @@ const projects: Project[] = [
     image: "/images/work/image-asset-11.jpeg",
     imageAlt: "The founder of La Ch\u00e9rie Weddings",
     imagePosition: "center 35%",
-    tags: ["Brand System", "Website Rebuild"],
-    location: "Memphis",
-    industry: "Weddings",
+    tags: ["Brand System", "Website Rebuild", "Memphis", "Weddings"],
     type: "client",
     score: { before: 1.6, after: 7.0 },
   },
+];
+
+const specBuilds: Project[] = [
   {
     slug: "bluff-city-ac",
     title: "Bluff City AC",
@@ -44,29 +40,17 @@ const projects: Project[] = [
     image: "/images/work/bluff-city-ac/hero_thermostat.jpg",
     imageAlt: "Thermostat reading 85 degrees in a Memphis home",
     imagePosition: "center center",
-    tags: ["Concept Build", "Full Brand System"],
-    location: "Memphis",
-    industry: "HVAC",
+    tags: ["Concept Build", "Full Brand System", "Memphis", "HVAC"],
     type: "speculative",
     score: null,
   },
 ];
 
-const locations = [...new Set(projects.map((p) => p.location))];
-const industries = [...new Set(projects.map((p) => p.industry))];
-
 function ProjectCard({ project }: { project: Project }) {
   const isSpec = project.type === "speculative";
-  const linkProps = isSpec
-    ? { target: "_blank" as const, rel: "noopener noreferrer" }
-    : {};
 
-  return (
-    <Link
-      href={`/work/${project.slug}`}
-      {...linkProps}
-      className="group block rounded-2xl border border-starlight/10 bg-navy/50 overflow-hidden transition-all duration-300 hover:border-copper/30 hover:shadow-lg"
-    >
+  const card = (
+    <div className="group block rounded-2xl border border-starlight/10 bg-navy/50 overflow-hidden transition-all duration-300 hover:border-copper/30 hover:shadow-lg">
       <div className="grid sm:grid-cols-2">
         <div className="relative overflow-hidden" style={{ minHeight: 280 }}>
           <Image
@@ -93,12 +77,6 @@ function ProjectCard({ project }: { project: Project }) {
                 {tag}
               </span>
             ))}
-            <span className="text-[10px] font-display font-semibold uppercase tracking-widest text-starlight/30 bg-starlight/5 px-2.5 py-1 rounded">
-              {project.location}
-            </span>
-            <span className="text-[10px] font-display font-semibold uppercase tracking-widest text-starlight/30 bg-starlight/5 px-2.5 py-1 rounded">
-              {project.industry}
-            </span>
           </div>
           <h3 className="font-display font-semibold text-xl sm:text-2xl text-starlight mb-2 tracking-tight">
             {project.title}
@@ -149,115 +127,53 @@ function ProjectCard({ project }: { project: Project }) {
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   );
+
+  if (isSpec) {
+    return (
+      <a href={`/work/${project.slug}`} target="_blank" rel="noopener noreferrer">
+        {card}
+      </a>
+    );
+  }
+
+  return <Link href={`/work/${project.slug}`}>{card}</Link>;
 }
 
 export function WorkGrid() {
-  const [location, setLocation] = useState("All");
-  const [industry, setIndustry] = useState("All");
-
-  const filtered = projects.filter((p) => {
-    if (location !== "All" && p.location !== location) return false;
-    if (industry !== "All" && p.industry !== industry) return false;
-    return true;
-  });
-
-  const clientWork = filtered.filter((p) => p.type === "client");
-  const specBuilds = filtered.filter((p) => p.type === "speculative");
-
-  const buttonBase =
-    "px-3 py-1.5 text-xs font-display font-semibold uppercase tracking-wider rounded transition-all";
-  const buttonActive = "bg-copper/20 text-copper border border-copper/30";
-  const buttonInactive =
-    "text-starlight/40 border border-starlight/10 hover:text-starlight/60 hover:border-starlight/20";
-
   return (
     <section className="bg-deep-space pb-20 sm:pb-28">
       <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
-        {/* Filters */}
-        <div className="flex flex-wrap items-center gap-6 mb-10 pt-2">
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] font-display uppercase tracking-widest text-starlight/30 mr-1">
-              Location
-            </span>
-            <button
-              onClick={() => setLocation("All")}
-              className={`${buttonBase} ${location === "All" ? buttonActive : buttonInactive}`}
-            >
-              All
-            </button>
-            {locations.map((loc) => (
-              <button
-                key={loc}
-                onClick={() => setLocation(loc)}
-                className={`${buttonBase} ${location === loc ? buttonActive : buttonInactive}`}
-              >
-                {loc}
-              </button>
-            ))}
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] font-display uppercase tracking-widest text-starlight/30 mr-1">
-              Industry
-            </span>
-            <button
-              onClick={() => setIndustry("All")}
-              className={`${buttonBase} ${industry === "All" ? buttonActive : buttonInactive}`}
-            >
-              All
-            </button>
-            {industries.map((ind) => (
-              <button
-                key={ind}
-                onClick={() => setIndustry(ind)}
-                className={`${buttonBase} ${industry === ind ? buttonActive : buttonInactive}`}
-              >
-                {ind}
-              </button>
+        {/* Client Work */}
+        <div className="mb-14">
+          <h2 className="font-display font-semibold text-lg text-starlight mb-1 tracking-tight">
+            Client Work
+          </h2>
+          <p className="text-starlight/40 text-sm mb-6">
+            Real engagements with real businesses.
+          </p>
+          <div className="grid gap-8">
+            {clientWork.map((project) => (
+              <ProjectCard key={project.slug} project={project} />
             ))}
           </div>
         </div>
 
-        {/* Client Work */}
-        {clientWork.length > 0 && (
-          <div className="mb-14">
-            <h2 className="font-display font-semibold text-lg text-starlight mb-1 tracking-tight">
-              Client Work
-            </h2>
-            <p className="text-starlight/40 text-sm mb-6">
-              Real engagements with real businesses.
-            </p>
-            <div className="grid gap-8">
-              {clientWork.map((project) => (
-                <ProjectCard key={project.slug} project={project} />
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* Speculative Builds */}
-        {specBuilds.length > 0 && (
-          <div>
-            <h2 className="font-display font-semibold text-lg text-starlight mb-1 tracking-tight">
-              Speculative Builds
-            </h2>
-            <p className="text-starlight/40 text-sm mb-6">
-              Concept brands built from scratch to prove the system.
-            </p>
-            <div className="grid gap-8">
-              {specBuilds.map((project) => (
-                <ProjectCard key={project.slug} project={project} />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {filtered.length === 0 && (
-          <p className="text-starlight/40 text-sm text-center py-16">
-            No projects match that filter. More case studies are on the way.
+        <div>
+          <h2 className="font-display font-semibold text-lg text-starlight mb-1 tracking-tight">
+            Speculative Builds
+          </h2>
+          <p className="text-starlight/40 text-sm mb-6">
+            Concept brands built from scratch to prove the system.
           </p>
-        )}
+          <div className="grid gap-8">
+            {specBuilds.map((project) => (
+              <ProjectCard key={project.slug} project={project} />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

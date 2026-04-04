@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { siteConfig } from "@/config/site";
 
 function ChevronDown({ className }: { className?: string }) {
@@ -76,13 +75,11 @@ export function Header() {
               className="shrink-0"
               aria-label="Cosmic Reach Creative home"
             >
-              <Image
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src="/logo/logo-primary-dark.svg"
                 alt="Cosmic Reach Creative"
-                width={160}
-                height={32}
                 className="h-8 sm:h-10 w-auto"
-                priority
               />
             </Link>
 
@@ -159,7 +156,7 @@ export function Header() {
               </Link>
 
               {/* Featured Projects */}
-              <Link href="/work/la-cherie" className={linkClass}>
+              <Link href="/work" className={linkClass}>
                 Featured Projects
               </Link>
 
@@ -299,7 +296,7 @@ export function Header() {
 
           {/* Featured Projects */}
           <Link
-            href="/work/la-cherie"
+            href="/work"
             onClick={() => setMenuOpen(false)}
             className={mobileLinkClass}
           >
