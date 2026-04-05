@@ -144,7 +144,7 @@ export default function HowItWorksPage() {
               {
                 step: "2",
                 title: "30-Day Rebuild",
-                price: "$4K\u2013$8K",
+                price: "Custom scoped",
                 description: "The complete growth infrastructure rebuilt from a single strategic foundation. Positioning, messaging, website, sales materials, lead capture, and Mission Control. Scope defined after the audit.",
               },
               {

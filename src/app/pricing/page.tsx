@@ -107,16 +107,14 @@ export default function PricingPage() {
                     30-Day Rebuild
                   </h2>
                   <div className="flex items-baseline gap-2">
-                    <p className="text-copper font-display font-semibold text-2xl">$4,000&ndash;$8,000</p>
+                    <p className="text-copper font-display font-semibold text-2xl">Custom scoped after the Clarity Audit.</p>
                   </div>
                 </div>
               </div>
               <p className="text-starlight/70 text-base mb-2">
                 The complete growth infrastructure, rebuilt from a single strategic foundation. Completed in 30 days.
               </p>
-              <p className="text-starlight/60 text-sm mb-5">
-                Scope is defined after the Clarity Audit.
-              </p>
+              <div className="mb-5" />
               <p className="text-starlight/70 text-sm font-display font-semibold mb-3">Includes:</p>
               <ul className="space-y-2 mb-6">
                 {[

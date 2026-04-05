@@ -100,7 +100,7 @@ export default function ServicesPage() {
                 <Icon name="gears" size={28} className="opacity-80 shrink-0 mt-0.5" />
                 <div>
                   <h3 className="font-display font-semibold text-xl text-starlight mb-1">30-Day Rebuild</h3>
-                  <p className="text-copper text-sm font-display font-medium">$4,000 - $8,000</p>
+                  <p className="text-copper text-sm font-display font-medium">Custom scoped after the Clarity Audit.</p>
                 </div>
               </div>
               <p className="text-starlight/70 text-base mb-4">
