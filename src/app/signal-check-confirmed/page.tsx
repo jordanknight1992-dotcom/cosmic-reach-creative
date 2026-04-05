@@ -46,7 +46,7 @@ export default function SignalCheckConfirmedPage() {
             <ul className="space-y-2 mb-6">
               <li className="flex items-start gap-2 text-starlight/70">
                 <span className="text-copper mt-1.5 text-xs" aria-hidden="true">&#9670;</span>
-                Where clarity currently breaks down
+                Where your messaging or positioning feels off
               </li>
               <li className="flex items-start gap-2 text-starlight/70">
                 <span className="text-copper mt-1.5 text-xs" aria-hidden="true">&#9670;</span>

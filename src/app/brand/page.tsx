@@ -66,7 +66,7 @@ export default function BrandPage() {
                 Systems design for businesses with traction and friction.
               </p>
               <p className="text-starlight/60 text-sm leading-relaxed max-w-xl mx-auto">
-                Cosmic Reach exists to serve businesses that have real momentum but are losing it to structural problems they cannot see from the inside. The brand communicates precision, structure, and clarity. Every visual and verbal decision reinforces the idea that growth is systematic, not heroic.
+                Cosmic Reach exists to serve businesses that have real momentum but are losing it to structural problems they cannot see from the inside. The brand communicates precision, structure, and conviction. Every visual and verbal decision reinforces the idea that growth is systematic, not heroic.
               </p>
             </div>
           </div>
@@ -196,7 +196,7 @@ export default function BrandPage() {
                 <p className="text-3xl text-starlight mb-2">Atkinson Hyperlegible</p>
                 <p className="text-copper text-xs font-display font-semibold tracking-widest uppercase mb-3">Body / UI</p>
                 <p className="text-starlight/60 text-sm leading-relaxed">
-                  Designed for maximum legibility at all sizes. Used for body copy, descriptions, form labels, and any extended reading. Regular and bold weights. Prioritizes clarity over personality.
+                  Designed for maximum legibility at all sizes. Used for body copy, descriptions, form labels, and any extended reading. Regular and bold weights. Prioritizes readability over personality.
                 </p>
               </div>
             </div>

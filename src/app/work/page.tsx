@@ -53,8 +53,8 @@ export default function WorkPage() {
               Your system has the same gap.
             </h2>
             <p className="text-starlight/50 text-sm mb-6">
-              The Clarity Audit scores your business across four layers and
-              shows you exactly where momentum is breaking down.
+              The Clarity Audit scores your messaging, offer, site, and visibility.
+              You get a written report showing exactly where momentum is stalling.
             </p>
             <Link
               href="/book/signal-check"

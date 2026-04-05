@@ -61,7 +61,7 @@ export default function PricingPage() {
                   <h2 className="font-display font-semibold text-xl text-starlight mb-1">
                     Clarity Audit
                   </h2>
-                  <p className="text-starlight/60 text-sm">The diagnostic. Identifies where the system breaks.</p>
+                  <p className="text-starlight/60 text-sm">The diagnostic. Identifies the root constraint holding growth back.</p>
                 </div>
               </div>
               <p className="text-starlight/70 text-base mb-5">

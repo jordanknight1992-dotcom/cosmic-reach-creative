@@ -8,7 +8,7 @@ import { CTAButton } from "@/components/CTAButton";
 export const metadata: Metadata = {
   title: "How It Works | Diagnose, Rebuild, Monitor | Cosmic Reach Creative",
   description:
-    "Every engagement follows the same structured path. Start with a $150 Clarity Audit to diagnose where growth breaks. Then a 30-Day Rebuild to fix the infrastructure. Then continued optimization. We evaluate four layers: Signal, Gravity, Orbit, and Thrust.",
+    "Every engagement follows the same structured path. Start with a $150 Clarity Audit to find where growth stalls. Then a 30-Day Rebuild to fix the infrastructure. Then continued optimization. We score four layers: Signal, Gravity, Orbit, and Thrust.",
   alternates: { canonical: `${siteConfig.domain}/how-it-works` },
 };
 
@@ -21,7 +21,7 @@ const layers = [
       "Most websites lead with what the business does rather than the problem the buyer is experiencing. When visitors have to work to understand why it matters to them, they leave.",
     whatWeCheck: [
       "Whether the headline connects with the buyer's situation",
-      "Whether the language is clear or full of jargon",
+      "Whether the language resonates with buyers or sounds like internal jargon",
       "Whether visitors can quickly tell if this is for them",
     ],
     whatWeMeasure: [
@@ -40,7 +40,7 @@ const layers = [
     whatWeCheck: [
       "Whether the offer has a defined scope and deliverable",
       "Whether pricing or next steps are visible",
-      "Whether the value is clear before the ask",
+      "Whether visitors understand the value before being asked to act",
     ],
     whatWeMeasure: [
       "Engagement rate",
@@ -115,10 +115,10 @@ export default function HowItWorksPage() {
         <div className="relative mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 pt-28 sm:pt-36 pb-16 sm:pb-24 text-center">
           <div className="max-w-2xl mx-auto">
             <h1 id="how-it-works-title" className="text-copper mb-4">
-              Diagnose. Rebuild. Monitor.
+              Find the break. Fix the system. Keep it visible.
             </h1>
             <p className="text-starlight/70 text-lg sm:text-xl" style={{ textWrap: "pretty" }}>
-              Every engagement follows the same structured path. Clarity first, then execution, then ongoing visibility into what is working.
+              Every engagement follows the same structured path. Diagnosis first, then a full rebuild, then ongoing performance tracking so you always know what is working.
             </p>
           </div>
         </div>
@@ -129,7 +129,7 @@ export default function HowItWorksPage() {
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center mb-10">
             <h2 id="steps-heading" className="mb-3 text-starlight">
-              Three stages. Clear outcomes at every step.
+              One structured path. Measurable outcomes at every stage.
             </h2>
           </div>
 
@@ -180,7 +180,7 @@ export default function HowItWorksPage() {
           <div className="max-w-3xl mx-auto text-center mb-4">
             <h2 id="framework-heading" className="mb-4">How we think about the work.</h2>
             <p className="text-starlight/70 text-base mb-3">
-              A website that converts has clear messaging, a defined offer, a straightforward path to action, and visibility into what is working. When any of these break down, leads stop coming in.
+              A website that converts makes the value obvious, presents a compelling offer, guides visitors toward action, and gives you evidence of what is performing. When any of those fail, leads stop coming in.
             </p>
             <p className="text-starlight/60 text-sm">
               Every audit and ongoing performance report includes these scores so you can see exactly where your site stands and what to improve.
@@ -259,7 +259,7 @@ export default function HowItWorksPage() {
                 <div className="text-copper text-2xl mb-3">&#9670;</div>
                 <h3 className="font-display font-semibold text-sm text-starlight mb-2">Audit Report</h3>
                 <p className="text-starlight/60 text-xs leading-relaxed">
-                  Every audit includes a scored breakdown showing where each layer stands and what to fix first.
+                  Every audit includes a scored breakdown showing where each layer stands and where to focus.
                 </p>
               </div>
               <div className="rounded-xl border border-starlight/10 bg-navy/40 p-5 text-center">
@@ -300,12 +300,12 @@ export default function HowItWorksPage() {
               What the Clarity Audit evaluates.
             </h2>
             <p className="text-starlight/70 text-base mb-6">
-              Four layers. Scored 0-10. The report identifies the root constraint and shows you what to fix first.
+              Four layers. Scored 0-10. The report identifies the root constraint and gives you a prioritized path forward.
             </p>
           </div>
           <div className="grid gap-3 sm:grid-cols-2 max-w-2xl mx-auto">
             {[
-              { layer: "Signal", desc: "Is your message clear enough to reach the right people?" },
+              { layer: "Signal", desc: "Can the right people tell what you do and why it matters within 10 seconds?" },
               { layer: "Gravity", desc: "Is your offer strong enough to convert without pressure?" },
               { layer: "Orbit", desc: "Does your site guide visitors toward action without friction?" },
               { layer: "Thrust", desc: "Do you have visibility into what is working and what is not?" },
@@ -330,7 +330,7 @@ export default function HowItWorksPage() {
               Start with the Clarity Audit.
             </h2>
             <p className="text-starlight/70 text-base mb-6" style={{ textWrap: "pretty" }}>
-              A $150 diagnostic that scores your business across four layers and gives you a clear read on where the system breaks.
+              $150. Scored across four layers. You get a written report showing where growth is stalling and what needs to change first.
             </p>
             <CTAButton label="Start with the Audit" variant="primary" />
             <p className="mt-3 text-xs text-starlight/60">

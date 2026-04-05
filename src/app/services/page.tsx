@@ -74,12 +74,12 @@ export default function ServicesPage() {
                 </div>
               </div>
               <p className="text-starlight/70 text-base mb-4">
-                A structured diagnostic that evaluates your business across four layers: messaging clarity, offer strength, site structure, and visibility. The report identifies the root constraint and delivers a prioritized implementation path.
+                A structured diagnostic that evaluates your business across four layers: whether your messaging lands, whether your offer converts, whether your site guides visitors to act, and whether you can see what is working. The report identifies the root constraint and delivers a prioritized path forward.
               </p>
               <ul className="space-y-2 mb-4">
                 {[
                   "Scored evaluation across Signal, Gravity, Orbit, and Thrust",
-                  "Root-cause analysis of where the system breaks",
+                  "Root-cause analysis of the primary growth constraint",
                   "Prioritized recommendations with clear next steps",
                   "Written deliverable in 3-5 business days",
                 ].map((item) => (
@@ -218,7 +218,7 @@ export default function ServicesPage() {
           <div className="max-w-2xl mx-auto text-center">
             <h2 id="services-cta" className="mb-3 text-starlight">Start with the Clarity Audit.</h2>
             <p className="text-starlight/70 text-base mb-6">
-              The audit diagnoses where the system breaks. Everything else follows from there.
+              The audit finds the constraint holding your business back. Everything else follows from there.
             </p>
             <CTAButton label="Start with the Audit" variant="primary" />
             <p className="mt-4 text-sm text-starlight/60">

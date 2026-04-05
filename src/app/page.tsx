@@ -10,7 +10,7 @@ import { TestimonialCarousel } from "@/components/TestimonialCarousel";
 export const metadata: Metadata = {
   title: "Cosmic Reach Creative | Growth Systems for Businesses With Traction",
   description:
-    "Businesses stall when their systems break under pressure. Cosmic Reach identifies the friction across your messaging, offer, site, and visibility, then rebuilds the infrastructure so growth compounds. Start with a $150 Clarity Audit.",
+    "Businesses stall when their marketing infrastructure breaks under pressure. Cosmic Reach finds the friction across your messaging, offer, site, and visibility, then rebuilds the system so growth compounds. Start with a $150 Clarity Audit.",
   alternates: { canonical: siteConfig.domain },
 };
 
@@ -77,7 +77,7 @@ export default function HomePage() {
               Businesses do not stall because of effort.
             </h2>
             <p className="text-starlight/70 text-base mb-8">
-              They stall when the system underneath breaks under pressure. The messaging drifts. The offer loses clarity. The site stops converting. Visibility disappears. More effort does not fix a structural problem.
+              They stall when the system underneath breaks under pressure. The messaging drifts. The offer stops making sense to buyers. The site creates friction instead of trust. Visibility disappears. More effort does not fix a structural problem.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl mx-auto mb-10">
@@ -101,7 +101,7 @@ export default function HomePage() {
             </div>
 
             <p className="text-starlight/70 text-base">
-              The Clarity Audit maps where the system breaks. The rebuild fixes the infrastructure. Growth compounds from there.
+              The Clarity Audit finds the constraint. The rebuild fixes the infrastructure. Growth compounds from there.
             </p>
           </div>
         </div>
@@ -129,10 +129,10 @@ export default function HomePage() {
               <Icon name="orbit" size={36} className="opacity-80 mx-auto" />
             </div>
             <h2 id="process-heading" className="mb-3">
-              Diagnose. Rebuild. Monitor.
+              Find the break. Fix the system. Keep it visible.
             </h2>
             <p className="text-starlight/70 text-base">
-              Every engagement follows the same structured path. Clarity first. Then execution. Then ongoing visibility.
+              Every engagement follows the same structured path. Diagnosis first, then a full rebuild, then ongoing performance tracking.
             </p>
           </div>
 
@@ -142,7 +142,7 @@ export default function HomePage() {
                 step: "1",
                 title: "Clarity Audit",
                 price: "$150",
-                description: "A diagnostic that evaluates your messaging, offer, site structure, and visibility. Identifies the root constraint and shows you what to fix first.",
+                description: "A diagnostic that evaluates your messaging, offer, site structure, and visibility. Identifies the root constraint and gives you a prioritized path forward.",
               },
               {
                 step: "2",
@@ -288,7 +288,7 @@ export default function HomePage() {
             </div>
             <h2 id="final-cta-heading" className="mb-4">Start with the Clarity Audit.</h2>
             <p className="text-starlight/70 text-base mb-6" style={{ textWrap: "pretty" }}>
-              A $150 diagnostic that scores your business across four layers and shows you exactly where the system breaks and what to fix first.
+              A $150 diagnostic that scores your messaging, offer, site, and visibility. You get a written report showing exactly where growth is stalling and what needs to change.
             </p>
             <CTAButton label="Start with the Audit" variant="primary" />
             <p className="mt-3 text-xs text-starlight/60">
@@ -311,7 +311,7 @@ export default function HomePage() {
                 name: "What is Cosmic Reach Creative?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Cosmic Reach Creative is a growth systems consultancy founded by Jordan Knight in Memphis, TN. We help businesses diagnose where their growth infrastructure breaks and rebuild it so the system works. We evaluate four forces: messaging clarity, offer strength, site structure, and performance visibility."
+                  text: "Cosmic Reach Creative is a growth systems consultancy founded by Jordan Knight in Memphis, TN. We help businesses diagnose where their growth infrastructure breaks and rebuild it so the system works. We evaluate four forces: messaging, offer strength, site structure, and performance visibility."
                 }
               },
               {
@@ -319,7 +319,7 @@ export default function HomePage() {
                 name: "My website is not converting. Can you help?",
                 acceptedAnswer: {
                   "@type": "Answer",
-                  text: "Yes. Most websites underperform because of a deeper structural issue: unclear messaging, a weak offer, friction in the site experience, or no visibility into what is working. We start with a $150 Clarity Audit to diagnose the root constraint, then rebuild the system in about 30 days."
+                  text: "Yes. Most websites underperform because of a deeper structural issue. Messaging that does not land, an offer that creates hesitation, friction in the site experience, or no way to tell what is working. We start with a $150 Clarity Audit to find the root constraint, then rebuild the system in about 30 days."
                 }
               },
               {
@@ -355,8 +355,8 @@ export default function HomePage() {
           </div>
           <div className="max-w-2xl mx-auto space-y-4">
             {[
-              { q: "What is Cosmic Reach Creative?", a: "A growth systems consultancy founded by Jordan Knight in Memphis, TN. We help businesses diagnose where their growth infrastructure breaks and rebuild it so the system works." },
-              { q: "My website is not converting. Can you help?", a: "Yes. Most websites underperform because of a deeper structural issue: unclear messaging, a weak offer, friction in the site experience, or no visibility into what is working. The $150 Clarity Audit diagnoses the root constraint. The 30-Day Rebuild fixes it." },
+              { q: "What is Cosmic Reach Creative?", a: "A growth systems consultancy founded by Jordan Knight in Memphis, TN. We help businesses find where their marketing infrastructure is failing and rebuild it so the system actually converts." },
+              { q: "My website is not converting. Can you help?", a: "Yes. Most websites underperform because of a deeper structural issue. Messaging that does not land, an offer that creates hesitation, friction in the site experience, or no way to tell what is working. The $150 Clarity Audit finds the root constraint. The 30-Day Rebuild fixes it." },
               { q: "What does the $150 Clarity Audit include?", a: "A structured diagnostic that scores your business across four layers: Signal (messaging), Gravity (offer), Orbit (site structure), and Thrust (visibility). You receive a written report with root-cause findings and a prioritized implementation path. Delivered in 3-5 business days." },
               { q: "Do you only work with businesses in Memphis?", a: "We are headquartered in Memphis, TN, but work with businesses nationwide. All engagements are delivered remotely." },
               { q: "What does a full rebuild include?", a: "Positioning, messaging, brand system, website design and development, sales materials, lead capture, and performance visibility through Mission Control. Completed in about 30 days. Pricing ranges from $4,000 to $8,000 depending on scope." },

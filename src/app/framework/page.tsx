@@ -20,7 +20,7 @@ const layers = [
       "Most websites lead with what the business does rather than the problem the buyer is experiencing. When visitors have to work to understand why it matters to them, they leave.",
     whatWeCheck: [
       "Whether the headline connects with the buyer's situation",
-      "Whether the language is clear or full of jargon",
+      "Whether the language resonates with buyers or sounds like internal jargon",
       "Whether visitors can quickly tell if this is for them",
     ],
     whatWeMeasure: [
@@ -39,7 +39,7 @@ const layers = [
     whatWeCheck: [
       "Whether the offer has a defined scope and deliverable",
       "Whether pricing or next steps are visible",
-      "Whether the value is clear before the ask",
+      "Whether visitors understand the value before being asked to act",
     ],
     whatWeMeasure: [
       "Engagement rate",
@@ -126,7 +126,7 @@ export default function FrameworkPage() {
           <div className="max-w-3xl mx-auto text-center">
             <h2 id="framework-intro" className="mb-4">Four layers. Scored 0&ndash;10.</h2>
             <p className="text-starlight/70 text-base mb-3">
-              A website that converts has clear messaging, a defined offer, a straightforward path to action, and visibility into what is working. When any of these break down, leads stop coming in.
+              A website that converts makes the value obvious, presents a compelling offer, guides visitors toward action, and gives you evidence of what is performing. When any of those fail, leads stop coming in.
             </p>
             <p className="text-starlight/60 text-sm">
               Every audit and ongoing performance report includes these scores so you can see exactly where your site stands and what to improve.
@@ -213,7 +213,7 @@ export default function FrameworkPage() {
                 <div className="text-copper text-2xl mb-3">&#9670;</div>
                 <h3 className="font-display font-semibold text-sm text-starlight mb-2">Audit Report</h3>
                 <p className="text-starlight/60 text-xs leading-relaxed">
-                  Every audit includes a scored breakdown showing where each layer stands and what to fix first.
+                  Every audit includes a scored breakdown showing where each layer stands and where to focus.
                 </p>
               </div>
               <div className="rounded-xl border border-starlight/10 bg-navy/40 p-5 text-center">
@@ -255,7 +255,7 @@ export default function FrameworkPage() {
           <div className="max-w-2xl mx-auto text-center">
             <h2 id="framework-cta" className="mb-3">Start with the audit.</h2>
             <p className="text-starlight/70 text-base mb-6">
-              The $150 audit scores all four layers and shows you exactly what is not working and what to fix first.
+              The $150 audit scores all four layers and gives you a prioritized report showing exactly where to focus.
             </p>
             <CTAButton label="Start with the Audit" variant="primary" />
             <p className="mt-3 text-xs text-starlight/60">

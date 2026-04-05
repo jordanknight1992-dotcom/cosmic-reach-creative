@@ -64,7 +64,7 @@ export default function ClarityConfirmedPage() {
               If you need to adjust scheduling, use the reschedule link in your confirmation email.
             </p>
             <p className="text-starlight/70 font-semibold">
-              Clarity is not accidental. It is designed.
+              Trust is built on precision. That is what we design.
             </p>
           </div>
         </div>

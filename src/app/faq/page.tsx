@@ -14,7 +14,7 @@ const faqs: { question: string; answer: string; signals?: string[]; closing?: st
   {
     question: "What does the $150 Clarity Audit include?",
     answer:
-      "A structured diagnostic that evaluates your business across four layers: messaging clarity (Signal), offer strength (Gravity), site structure (Orbit), and performance visibility (Thrust). Each layer is scored 0-10.\n\nYou receive a written report with root-cause findings and a prioritized implementation path. Delivered in 3-5 business days.",
+      "A structured diagnostic that evaluates your business across four layers: whether your messaging lands (Signal), whether your offer converts (Gravity), whether your site guides visitors to act (Orbit), and whether you have performance visibility (Thrust). Each layer is scored 0-10.\n\nYou receive a written report with root-cause findings and a prioritized path forward. Delivered in 3-5 business days.",
   },
   {
     question: "What happens after the audit?",
@@ -47,12 +47,12 @@ const faqs: { question: string; answer: string; signals?: string[]; closing?: st
       "Businesses with traction and friction. Revenue exists. Customers exist. But growth has plateaued and the system underneath is not keeping up.",
     signals: [
       "The site looks fine but leads have slowed",
-      "Messaging feels unclear or unfocused",
+      "People visit but do not understand why you are worth choosing",
       "Marketing activity is happening but results are flat",
-      "There is no visibility into what is actually working",
+      "You cannot tell which pages or channels are producing results",
     ],
     closing:
-      "If those patterns sound familiar, the Clarity Audit is designed to diagnose where the system breaks and what to fix first.",
+      "If those patterns sound familiar, the Clarity Audit is designed to find the root constraint and show you where to focus.",
   },
   {
     question: "How long does the audit take?",

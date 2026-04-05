@@ -120,7 +120,7 @@ const jsonLd = {
       name: "Website Audit",
       provider: { "@id": `${siteConfig.domain}/#organization` },
       description:
-        "A focused review of your website and messaging that shows where visitors get stuck, what is unclear, what is limiting inquiries, and what to fix first.",
+        "A focused review of your website and messaging that shows where visitors get stuck, what is limiting trust, what is blocking inquiries, and where to focus.",
       serviceType: "Website Audit",
       offers: {
         "@type": "Offer",

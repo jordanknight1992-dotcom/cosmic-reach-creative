@@ -467,8 +467,8 @@ export default function LaCherieCase() {
               We can find it.
             </h2>
             <p className="text-starlight/60 text-base mb-8 max-w-lg mx-auto">
-              The Clarity Audit scores your business across four layers and shows
-              you exactly where the system breaks. $150. Delivered in 3 to 5
+              The Clarity Audit scores your messaging, offer, site, and visibility
+              and tells you exactly where momentum is stalling. $150. Delivered in 3 to 5
               business days.
             </p>
             <CTAButton label="Start with the Audit" variant="primary" />

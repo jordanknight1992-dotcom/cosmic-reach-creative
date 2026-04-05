@@ -8,7 +8,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Clarity Audit | A $150 Diagnostic of Where Growth Breaks Down",
   description:
-    "The Clarity Audit evaluates your business across four layers: messaging clarity, offer strength, site structure, and visibility. You receive a scored report with root-cause findings and a prioritized implementation path. $150. 3-5 day turnaround.",
+    "The Clarity Audit evaluates your business across four layers: whether your messaging lands, whether your offer converts, whether your site drives action, and whether you can see what is working. Scored report with root-cause findings. $150. 3-5 day turnaround.",
   alternates: { canonical: `${siteConfig.domain}/clarity` },
 };
 
@@ -41,7 +41,7 @@ export default function ClarityPage() {
           <div className="max-w-2xl mx-auto">
             <h1 id="clarity-hero" className="text-copper mb-4">The Clarity Audit.</h1>
             <p className="text-starlight/80 text-base sm:text-lg" style={{ textWrap: "pretty" }}>
-              A structured diagnostic that identifies where your growth system breaks and what to fix first. $150. Delivered in 3-5 business days.
+              A structured diagnostic that identifies where your growth system is failing and what needs to change. $150. Delivered in 3-5 business days.
             </p>
           </div>
         </div>
@@ -68,7 +68,7 @@ export default function ClarityPage() {
           <div className="max-w-3xl mx-auto text-center mb-8">
             <h2 id="clarity-layers" className="mb-3">Four layers. Scored 0-10.</h2>
             <p className="text-starlight/70 text-base">
-              The audit evaluates each layer and identifies the root constraint holding growth back.
+              The audit evaluates each layer and identifies the root constraint keeping your business from growing.
             </p>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 max-w-2xl mx-auto">
@@ -143,9 +143,9 @@ export default function ClarityPage() {
             <ul className="space-y-3 max-w-md mx-auto text-left">
               {[
                 "The site looks fine but leads have slowed",
-                "Messaging feels unclear or unfocused",
+                "People visit but do not understand why you are worth choosing",
                 "Marketing activity is happening but results are flat",
-                "There is no visibility into what is actually working",
+                "You cannot tell which pages or channels are producing results",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3 text-sm text-starlight/70">
                   <span className="text-copper mt-0.5 shrink-0">&#9670;</span>
@@ -176,9 +176,9 @@ export default function ClarityPage() {
       <section className="py-16 sm:py-24 bg-navy/60 border-t border-copper/15" aria-labelledby="clarity-cta">
         <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <h2 id="clarity-cta" className="mb-4">$150. Clear answers. No obligation.</h2>
+            <h2 id="clarity-cta" className="mb-4">$150. Scored report. No obligation.</h2>
             <p className="text-starlight/70 text-base mb-6">
-              Stop guessing where the problem is. The Clarity Audit maps the system and shows you what to fix first.
+              Stop guessing where the problem is. The Clarity Audit evaluates your full system and tells you exactly where to focus.
             </p>
             <CTAButton label="Start with the Audit" variant="primary" />
             <p className="mt-3 text-xs text-starlight/60">
