@@ -7,7 +7,7 @@ export function Footer() {
   return (
     <footer className="border-t border-starlight/8" role="contentinfo">
       <div className="mx-auto max-w-[var(--container-max)] px-5 sm:px-6 lg:px-8 py-12">
-        <div className="grid gap-10 md:grid-cols-3">
+        <div className="grid gap-10 md:grid-cols-4">
           {/* Brand */}
           <div>
             <Image
@@ -57,6 +57,47 @@ export function Footer() {
                 ))}
               </ul>
             </nav>
+          </div>
+
+          {/* Resources */}
+          <div>
+            <h3 className="text-sm font-display font-semibold text-copper mb-4">
+              Resources
+            </h3>
+            <ul className="space-y-2">
+              <li>
+                <Link
+                  href="/faq"
+                  className="text-sm text-starlight/60 hover:text-copper transition-colors duration-[var(--duration-fast)]"
+                >
+                  FAQ
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/observatory"
+                  className="text-sm text-starlight/60 hover:text-copper transition-colors duration-[var(--duration-fast)]"
+                >
+                  The Observatory
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/how-it-works"
+                  className="text-sm text-starlight/60 hover:text-copper transition-colors duration-[var(--duration-fast)]"
+                >
+                  Framework
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/mission-control"
+                  className="text-sm text-starlight/60 hover:text-copper transition-colors duration-[var(--duration-fast)]"
+                >
+                  Mission Control
+                </Link>
+              </li>
+            </ul>
           </div>
 
           {/* Contact + CTA */}

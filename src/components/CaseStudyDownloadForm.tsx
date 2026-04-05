@@ -29,7 +29,7 @@ export function CaseStudyDownloadForm() {
       if (!res.ok) throw new Error("Submission failed");
 
       setState("success");
-      window.open("/api/case-study/la-cherie/pdf", "_blank");
+      window.open("/downloads/la-cherie-case-study.pdf", "_blank");
     } catch {
       setState("error");
     }
@@ -44,7 +44,7 @@ export function CaseStudyDownloadForm() {
         <p className="text-starlight/70 text-sm">
           If the download didn&apos;t begin automatically,{" "}
           <a
-            href="/api/case-study/la-cherie/pdf"
+            href="/downloads/la-cherie-case-study.pdf"
             target="_blank"
             rel="noopener noreferrer"
             className="text-copper hover:underline"

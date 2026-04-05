@@ -155,31 +155,15 @@ export function Header() {
                 Pricing
               </Link>
 
-              {/* Featured Projects */}
+              {/* Work */}
               <Link href="/work" className={linkClass}>
-                Featured Projects
+                Work
               </Link>
 
-              {/* Observatory */}
-              <Link href="/observatory" className={linkClass}>
-                Observatory
-              </Link>
-
-              {/* FAQ */}
-              <Link href="/faq" className={linkClass}>
-                FAQ
-              </Link>
-
-              {/* CTAs */}
-              <Link
-                href="/mission-control"
-                className="ml-4 inline-flex items-center justify-center rounded-[var(--radius-md)] border border-copper/40 text-copper px-5 py-2 text-sm font-display font-semibold transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:border-copper/70 hover:bg-copper/10 hover:-translate-y-0.5"
-              >
-                Mission Control
-              </Link>
+              {/* CTA */}
               <Link
                 href="/connect"
-                className="ml-2 inline-flex items-center justify-center rounded-[var(--radius-md)] bg-spark-red text-white px-5 py-2 text-sm font-display font-semibold transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5"
+                className="ml-4 inline-flex items-center justify-center rounded-[var(--radius-md)] bg-spark-red text-white px-5 py-2 text-sm font-display font-semibold transition-all duration-[var(--duration-base)] ease-[var(--ease-out)] hover:shadow-soft hover:-translate-y-0.5"
               >
                 Book a Call
               </Link>
@@ -299,44 +283,19 @@ export function Header() {
             Pricing
           </Link>
 
-          {/* Featured Projects */}
+          {/* Work */}
           <Link
             href="/work"
             onClick={() => setMenuOpen(false)}
             className={mobileLinkClass}
           >
-            Featured Projects
+            Work
           </Link>
 
-          {/* Observatory */}
-          <Link
-            href="/observatory"
-            onClick={() => setMenuOpen(false)}
-            className={mobileLinkClass}
-          >
-            Observatory
-          </Link>
-
-          {/* FAQ */}
-          <Link
-            href="/faq"
-            onClick={() => setMenuOpen(false)}
-            className={mobileLinkClass}
-          >
-            FAQ
-          </Link>
-
-          {/* CTAs */}
-          <Link
-            href="/mission-control"
-            className="mt-4 inline-flex items-center justify-center rounded-[var(--radius-md)] border border-copper/40 text-copper px-5 py-3 font-display font-semibold transition-all duration-[var(--duration-base)] hover:border-copper/70 hover:bg-copper/10"
-            onClick={() => setMenuOpen(false)}
-          >
-            Mission Control
-          </Link>
+          {/* CTA */}
           <Link
             href="/connect"
-            className="mt-2 inline-flex items-center justify-center rounded-[var(--radius-md)] bg-spark-red text-white px-5 py-3 font-display font-semibold transition-all duration-[var(--duration-base)]"
+            className="mt-4 inline-flex items-center justify-center rounded-[var(--radius-md)] bg-spark-red text-white px-5 py-3 font-display font-semibold transition-all duration-[var(--duration-base)]"
             onClick={() => setMenuOpen(false)}
           >
             Book a Call
