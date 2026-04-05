@@ -29,6 +29,11 @@ export const siteConfig = {
       href: "/clarity",
       detail: "The $150 diagnostic entry point",
     },
+    {
+      label: "Mission Control",
+      href: "/mission-control",
+      detail: "Live dashboard for performance visibility",
+    },
   ],
   hiddenRoutes: ["/clarity-session"],
 } as const;
